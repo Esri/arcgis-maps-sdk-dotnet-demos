@@ -1,0 +1,5 @@
+src/GeocodeAndRoutingOnMouseMove/src/LocalNetworkSample.WinStore/bin/
+src/GeocodeAndRoutingOnMouseMove/src/LocalNetworkSample.WinStore/obj/
+src/GeocodeAndRoutingOnMouseMove/src/LocalNetworkSample.Desktop/obj/
+*.suo
+src/GeocodeAndRoutingOnMouseMove/src/LocalNetworkSample.Desktop/bin/
