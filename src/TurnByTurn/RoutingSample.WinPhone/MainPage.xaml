@@ -1,0 +1,111 @@
+﻿<Page
+    x:Class="RoutingSample_WP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ 	xmlns:esri="using:Esri.ArcGISRuntime.Controls"
+	xmlns:layers="using:Esri.ArcGISRuntime.Layers"
+	xmlns:symbology="using:Esri.ArcGISRuntime.Symbology"
+	xmlns:vm="using:RoutingSample.ViewModels"
+	xmlns:local="using:RoutingSample"
+    mc:Ignorable="d"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+
+	<Page.Resources>
+		<vm:MainPageVM x:Key="viewmodel" />
+	</Page.Resources>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{StaticResource viewmodel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel" Grid.Row="0">
+			<StackPanel>
+				<TextBlock Text="Enter address:" />
+				<TextBox Text="{Binding RouteToAddress, Mode=TwoWay}" />
+
+				<ProgressBar IsIndeterminate="{Binding IsCalculatingRoute}" />
+				<TextBlock Text="{Binding RouteCalculationErrorMessage}" Foreground="Red" FontWeight="Bold" 
+						   Visibility="{Binding RouteCalculationErrorMessage, Converter={StaticResource nullToCollapsed}}"/>
+			</StackPanel>
+
+			<!--Route Details Panel-->
+			<Grid DataContext="{Binding Route}" Visibility="{Binding Converter={StaticResource nullToCollapsed}}">
+				<TextBlock Text="{Binding NextManeuver}" 
+						   FontSize="32" Grid.ColumnSpan="2" 
+						   HorizontalAlignment="Center"
+						   TextWrapping="Wrap" />
+			</Grid>
+		</StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+			<esri:MapView LocationDisplay="{Binding LocationDisplay}"
+					  local:CommandBinder.RequestView="{Binding ViewpointRequested}" >
+				<local:RestoreAutoPanMode.RestoreAutoPanSettings>
+					<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
+				</local:RestoreAutoPanMode.RestoreAutoPanSettings>
+				<esri:Map>
+					<layers:ArcGISTiledMapServiceLayer
+					ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
+
+					<layers:GraphicsLayer GraphicsSource="{Binding Route.RouteLines, Source={StaticResource viewmodel}}">
+						<layers:GraphicsLayer.Renderer>
+							<symbology:SimpleRenderer>
+								<symbology:SimpleLineSymbol Width="10" Color="#BE3232FF" />
+							</symbology:SimpleRenderer>
+						</layers:GraphicsLayer.Renderer>
+					</layers:GraphicsLayer>
+
+					<layers:GraphicsLayer GraphicsSource="{Binding Route.Maneuvers, Source={StaticResource viewmodel}}">
+						<layers:GraphicsLayer.Renderer>
+							<symbology:SimpleRenderer>
+								<symbology:SimpleMarkerSymbol Size="10" Color="Black" />
+							</symbology:SimpleRenderer>
+						</layers:GraphicsLayer.Renderer>
+					</layers:GraphicsLayer>
+
+				</esri:Map>
+			</esri:MapView>
+		</Grid>
+		<Grid Grid.Row="2"
+			  DataContext="{Binding Route}" Visibility="{Binding Converter={StaticResource nullToCollapsed}}">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<StackPanel Grid.Column="0" Margin="5">
+				<TextBlock Text="{Binding MilesToWaypoint}" FontSize="28" Grid.Row="2" HorizontalAlignment="Center" />
+			</StackPanel>
+			<StackPanel Grid.Column="1" Margin="5">
+				<TextBlock Text="{Binding TimeToWaypoint, Converter={StaticResource timeSpanFormatter}}" FontSize="28" Grid.Row="2" HorizontalAlignment="Center" />
+			</StackPanel>
+			<StackPanel Grid.Column="2" Margin="5">
+				<TextBlock Text="{Binding MilesToDestination}" FontSize="28" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" />
+			</StackPanel>
+			<StackPanel Grid.Column="3" Margin="5">
+				<TextBlock Text="{Binding TimeToDestination, Converter={StaticResource timeSpanFormatter}}" FontSize="28" Grid.Row="4" HorizontalAlignment="Center" />
+			</StackPanel>
+			<TextBlock FontSize="14" Text="WAYPOINT" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" />
+			<TextBlock FontSize="14" Text="DESTINATION" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="2" HorizontalAlignment="Center" />
+
+		</Grid>
+
+		<local:SayMessageControl Message="{Binding Route.NextManeuver}"
+								 TimeToMessage="{Binding Route.TimeToWaypoint}"
+								 />
+
+	</Grid>
+
+</Page>
