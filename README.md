@@ -6,4 +6,39 @@ arcgis-runtime-demos-dotnet
 
 * [`Geocode & Routing on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing on mouse move on WinStore and WinDesktop.
 * [`Turn-by-Turn App`](src/TurnByTurn) - A universal Turn-by-Turn routing app show route navigation on Windows Phone, Windows Store and Windows Desktop.
-* [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app for on Windows Phone, Windows Store and Windows Desktop.
+* [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
+
+
+
+## Resources
+
+* [ArcGIS Runtime SDK for .NET](https://developers.arcgis.com/net/)
+
+## Issues
+
+Find a bug or want to request a new feature?  Please let us know by submitting an issue.
+
+## Contributing
+
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
+
+## Licensing
+Copyright 2014 Esri
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+A copy of the license is available in the repository's [license.txt](license.txt) file.
+
+
+[](Esri Tags: ArcGIS API WinStore WinRT WPF WinPhone)
+[](Esri Language: C#)
