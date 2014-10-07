@@ -15,7 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>LocalNetworkSample_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <NuGetPackageImportStamp>1cb246da</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>9f4051e1</NuGetPackageImportStamp>
     <PackageCertificateThumbprint>EDACE5DADD5D7E7AD65A8E9A2C16D57A8342EC72</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
@@ -139,6 +139,7 @@
     <Content Include="..\Data\Networks\SanDiego\san-diego-network.db">
       <Link>Data\Networks\SanDiego\san-diego-network.db</Link>
     </Content>
+    <None Include="packages.config" />
     <None Include="README.txt" />
     <None Include="LocalNetworkSample_TemporaryKey.pfx" />
   </ItemGroup>
@@ -177,9 +178,6 @@
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
     </SDKReference>
-    <SDKReference Include="Esri.ArcGISRuntime, Version=10.2.4">
-      <Name>ArcGIS Runtime for Windows Store apps</Name>
-    </SDKReference>
     <SDKReference Include="Microsoft.VCLibs, version=12.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows</Name>
     </SDKReference>
@@ -192,6 +190,13 @@
   <PropertyGroup>
     <SDKReferenceDirectoryRoot>C:\applications\output\winrt_sdk\;$(SDKReferenceDirectoryRoot)</SDKReferenceDirectoryRoot>
   </PropertyGroup>
+  <Import Project="..\packages\Esri.ArcGISRuntime.10.2.4.748\build\win81\Esri.ArcGISRuntime.targets" Condition="Exists('..\packages\Esri.ArcGISRuntime.10.2.4.748\build\win81\Esri.ArcGISRuntime.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Esri.ArcGISRuntime.10.2.4.748\build\win81\Esri.ArcGISRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Esri.ArcGISRuntime.10.2.4.748\build\win81\Esri.ArcGISRuntime.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
