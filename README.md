@@ -1,13 +1,14 @@
 arcgis-runtime-demos-dotnet
 ===========================
 
+This project contains source code for applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.   
 
-### Samples:
+### Demos
 
-* [`Geocode & Routing on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing on mouse move on WinStore and WinDesktop.
-* [`Turn-by-Turn App`](src/TurnByTurn) - A universal Turn-by-Turn routing app show route navigation on Windows Phone, Windows Store and Windows Desktop.
+* [`Geocode & Routing on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Store and Windows Desktop.
+* [`Turn-by-Turn App`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Phone, Windows Store and Windows Desktop.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
-* [`External GPS`](src/ExternalNmeaGPS) - A Windows Desktop App showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
+* [`External GPS`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
 
 
 
@@ -21,7 +22,7 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 
 ## Contributing
 
-Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
+Anyone and everyone is welcome to [contribute](CONTRIBUTING.md).
 
 ## Licensing
 Copyright 2014 Esri
@@ -41,5 +42,5 @@ limitations under the License.
 A copy of the license is available in the repository's [license.txt](license.txt) file.
 
 
-[](Esri Tags: ArcGIS API WinStore WinRT WPF WinPhone)
-[](Esri Language: C#)
+[](Esri Tags: ArcGIS Runtime SDK .NET WinRT WinStore WPF WinPhone C# C-Sharp DotNet XAML)
+[](Esri Language: DotNet)
