@@ -5,10 +5,10 @@ This project contains source code for native Windows Desktop, Store, and Phone a
 
 ### Demos
 
-* [`Geocode & Routing on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Store and Windows Desktop.
-* [`Turn-by-Turn App`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Phone, Windows Store and Windows Desktop.
+* [`Geocode & Route on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Store and Windows Desktop.
+* [`Turn-by-Turn Routing`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Phone, Windows Store and Windows Desktop.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
-* [`External GPS`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
+* [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
 
 
 
