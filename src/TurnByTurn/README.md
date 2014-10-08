@@ -1,6 +1,6 @@
-Turn-by-Turn Routing Sample - ArcGIS Runtime for .NET
+Demo: Turn-by-Turn Routing
 =======================
-Required version: ArcGIS Runtime v10.2.4
+Required version: ArcGIS Runtime SDK 10.2.4 for .NET
 
 Sample app that shows how to write a turn-by-turn routing application using the [ArcGIS Runtime SDK for Windows Store, Windows Phone and Windows Desktop (WPF) apps](https://developers.arcgis.com/net/). The app uses MVVM patterns and shares the services, models and viewmodels between all platforms through a shared project, but uses individual views tailored for the experience on the specific device.
 
@@ -14,5 +14,5 @@ When the app is run in debug mode, it uses a [`Route Location Simulator`](Routin
 
 <img src="Screenshot.png"/>
 
-[](Esri Tags: ArcGIS API WinStore WinRT WPF WinPhone Routing Navigation)
-[](Esri Language: C#)
+[](Esri Tags: ArcGIS API WinStore WinRT WPF WinPhone Routing Navigation C# CSharp)
+[](Esri Language: DotNet)

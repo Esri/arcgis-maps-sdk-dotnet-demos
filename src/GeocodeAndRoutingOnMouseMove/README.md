@@ -1,6 +1,6 @@
-SAMPLE: Geocode & Routing on MouseMove
+Demo: Geocode & Route on MouseMove
 ============================
-Required version: ArcGIS Runtime v10.2.4
+Required version: ArcGIS Runtime SDK 10.2.4 for .NET
 
 
 Demonstrates fast reverse geocoding and routing on mouse move.
@@ -14,3 +14,7 @@ Demonstrates fast reverse geocoding and routing on mouse move.
 
 
 ![Screenshot](Screenshot_WinDesktop.png)
+
+
+[](Esri Tags: ArcGIS API WinStore WinRT WPF WinPhone Portal C# CSharp)
+[](Esri Language: DotNet)
