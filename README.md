@@ -7,6 +7,7 @@ arcgis-runtime-demos-dotnet
 * [`Geocode & Routing on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing on mouse move on WinStore and WinDesktop.
 * [`Turn-by-Turn App`](src/TurnByTurn) - A universal Turn-by-Turn routing app show route navigation on Windows Phone, Windows Store and Windows Desktop.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
+* [`External GPS`](src/ExternalNmeaGPS) - A Windows Desktop App showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
 
 
 
