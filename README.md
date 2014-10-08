@@ -1,7 +1,7 @@
 arcgis-runtime-demos-dotnet
 ===========================
 
-This project contains source code for applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.   
+This project contains source code for native Windows Desktop, Store, and Phone applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.   
 
 ### Demos
 
