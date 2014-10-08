@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Layers;
+using Esri.ArcGISRuntime.Symbology;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +26,12 @@ namespace ExternalNmeaGPS
 		private ExternalNmeaGPS.Controls.SatelliteViewWindow skyViewWindow = new Controls.SatelliteViewWindow();
 		private ExternalNmeaGPS.Controls.NmeaRawMessagesWindow messagesWindow = new Controls.NmeaRawMessagesWindow();
 		private NmeaParser.NmeaDevice currentNmeaDevice;
+		private string currentNmeaFile;
 		public MainWindow()
 		{
 			InitializeComponent();
-			NmeaParser.NmeaDevice device = new NmeaParser.NmeaFileDevice("NmeaSampleData.txt", 50);
+			currentNmeaFile = "NmeaSampleData.txt";
+			NmeaParser.NmeaDevice device = new NmeaParser.NmeaFileDevice(currentNmeaFile, 50);
 			LoadDevice(device);
 			var ports = System.IO.Ports.SerialPort.GetPortNames();
 		 	PortsList.ItemsSource = ports;
@@ -92,8 +97,10 @@ namespace ExternalNmeaGPS
 		{
 			if(PortsList.SelectedItem != null)
 			{
+				mapView.Map.Layers.OfType<GraphicsLayer>().First().Graphics.Clear();
 				var port = new System.IO.Ports.SerialPort((string)PortsList.SelectedItem, int.Parse(BaudRate.Text));
 				var device = new NmeaParser.SerialPortDevice(port);
+				currentNmeaFile = null;
 				LoadDevice(device);
 			}
 		}
@@ -104,11 +111,55 @@ namespace ExternalNmeaGPS
 			var result = dialog.ShowDialog();
 			if(result.HasValue && result.Value)
 			{
-				var file = dialog.FileName;
-				var device = new NmeaParser.NmeaFileDevice(file, 50);
+				currentNmeaFile = dialog.FileName;
+				mapView.Map.Layers.OfType<GraphicsLayer>().First().Graphics.Clear();
+				var device = new NmeaParser.NmeaFileDevice(currentNmeaFile, 50);
 				LoadDevice(device);
-				SelectedFileName.Text = new System.IO.FileInfo(file).Name;
+				SelectedFileName.Text = new System.IO.FileInfo(currentNmeaFile).Name;
 			}
+		}
+
+		private void LoadAsLayer_Click(object sender, RoutedEventArgs e)
+		{
+			LoadEntireNmeaTrack(currentNmeaFile);
+		}
+
+		private void LoadEntireNmeaTrack(string filename)
+		{
+			var layer = mapView.Map.Layers.OfType<GraphicsLayer>().First();
+			layer.Graphics.Clear();
+			if (currentNmeaFile == null)
+				return;
+			List<MapPoint> vertices = new List<MapPoint>();
+			using (var sr = System.IO.File.OpenText(filename))
+			{
+				while (!sr.EndOfStream)
+				{
+					var line = sr.ReadLine();
+					if (line.StartsWith("$"))
+					{
+						try
+						{
+							var msg = NmeaParser.Nmea.NmeaMessage.Parse(line);
+							if (msg is NmeaParser.Nmea.Gps.Gprmc)
+							{
+								var rmc = (NmeaParser.Nmea.Gps.Gprmc)msg;
+								if (!double.IsNaN(rmc.Longitude))
+									vertices.Add(new MapPoint(rmc.Longitude, rmc.Latitude));
+							}
+						}
+						catch { }
+					}
+				}
+			}
+			var pline = new Esri.ArcGISRuntime.Geometry.Polyline(vertices, SpatialReferences.Wgs84);
+			var linesymbol = new SimpleLineSymbol() { Width = 4, Color = Colors.CornflowerBlue };
+			var symbol = new CompositeSymbol();
+			symbol.Symbols.Add(linesymbol);
+			symbol.Symbols.Add(new SimpleMarkerSymbol() { Size = 5, Color = Colors.Black });
+
+			Esri.ArcGISRuntime.Layers.Graphic g = new Esri.ArcGISRuntime.Layers.Graphic(pline, symbol);
+			layer.Graphics.Add(g);
 		}
 	}
 }

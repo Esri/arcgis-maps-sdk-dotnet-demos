@@ -57,14 +57,18 @@
 								</Style.Triggers>
 							</Style>
 						</Border.Style>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-							<TextBox Text="NmeaSampleData.txt" x:Name="SelectedFileName" IsReadOnly="True" />
-							<Button Grid.Column="1" Content="..." Click="BrowseForNmeaFile_Click" Padding="5,0" Margin="5,0,0,0" />
-						</Grid>
+						<StackPanel>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<TextBox Text="NmeaSampleData.txt" x:Name="SelectedFileName" IsReadOnly="True" />
+								<Button Grid.Column="1" Content="..." Click="BrowseForNmeaFile_Click" Padding="5,0" Margin="5,0,0,0" />
+							
+							</Grid>
+							<Button Content="Load Log Into Layer" Click="LoadAsLayer_Click" />
+						</StackPanel>
 					</Border>
 
 					<Border Margin="10">
