@@ -50,7 +50,7 @@ namespace ServiceRequestsSample
 			}
 			catch (Exception ex)
 			{
-				var _ = new MessageDialog(ex.ToString(), "Error occured").ShowAsync();
+				var _ = new MessageDialog(ex.ToString(), "Error occurred").ShowAsync();
 			}
 		}
 
@@ -103,7 +103,7 @@ namespace ServiceRequestsSample
 			}
 			catch (Exception ex)
 			{
-				var _ = new MessageDialog(ex.ToString(), "Error occured").ShowAsync();
+				var _ = new MessageDialog(ex.ToString(), "Error occurred").ShowAsync();
 			}
 		}
 		
@@ -118,7 +118,7 @@ namespace ServiceRequestsSample
 			}
 			catch (Exception ex)
 			{
-				var _ = new MessageDialog(ex.ToString(), "Error occured").ShowAsync();
+				var _ = new MessageDialog(ex.ToString(), "Error occurred").ShowAsync();
 			}
 		}
 
@@ -155,7 +155,7 @@ namespace ServiceRequestsSample
 			}
 			catch (Exception ex)
 			{
-				var _ = new MessageDialog(ex.ToString(), "Error occured").ShowAsync();
+				var _ = new MessageDialog(ex.ToString(), "Error occurred").ShowAsync();
 			}
 		}
 	}
