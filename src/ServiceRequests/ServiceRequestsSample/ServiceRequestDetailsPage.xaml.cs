@@ -59,10 +59,14 @@ namespace ServiceRequestsSample
 		/// </summary>
 		private void UpdateUI()
 		{
-			requestidText.Text = _serviceRequest.Attributes["requestid"].ToString();
-			submittedDate.Text = _serviceRequest.Attributes["requestdate"].ToString();
-			createdName.Text = _serviceRequest.Attributes["name"].ToString();
-			comment.Text = _serviceRequest.Attributes["comments"].ToString();
+			if (_serviceRequest.Attributes.ContainsKey("requestid") && _serviceRequest.Attributes["requestid"] != null)
+				requestidText.Text = _serviceRequest.Attributes["requestid"].ToString();
+			if (_serviceRequest.Attributes.ContainsKey("requestdate") && _serviceRequest.Attributes["requestdate"] != null)
+				submittedDate.Text = _serviceRequest.Attributes["requestdate"].ToString();
+			if (_serviceRequest.Attributes.ContainsKey("name") && _serviceRequest.Attributes["name"] != null)
+				createdName.Text = _serviceRequest.Attributes["name"].ToString();
+			if (_serviceRequest.Attributes.ContainsKey("comments") && _serviceRequest.Attributes["comments"] != null)
+				comment.Text = _serviceRequest.Attributes["comments"].ToString();
 
 			// Get "status" attributes value from CodedComainValue and use it's value
 			// Get domain, get key and get value for the key from the domain

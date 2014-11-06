@@ -66,16 +66,16 @@
 				<TextBlock  Style="{StaticResource BaseTextBlockStyle}" FontWeight="Bold" 
 							TextWrapping="NoWrap">
 						<Run Text="Request ID :"  />
-						<Run x:Name="requestidText"  />
+						<Run x:Name="requestidText" />
 				</TextBlock>
 
 				<TextBlock  Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap">
 						<Run Text="Created by :" />
-						<Run x:Name="createdName"  />
+						<Run x:Name="createdName" />
 				</TextBlock>
 				<TextBlock  Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap">
 						<Run Text="Status :" />
-						<Run x:Name="statusText"  />
+						<Run x:Name="statusText" />
 				</TextBlock>
 			</StackPanel>
 		</Grid>
