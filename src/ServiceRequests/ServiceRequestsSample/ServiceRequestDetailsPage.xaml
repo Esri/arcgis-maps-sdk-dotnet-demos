@@ -61,6 +61,12 @@
 			</Grid.ColumnDefinitions>
 			<Border x:Name="statusIndicator" Margin="5,5,5,5"
 						Height="90" Width="90">
+
+				<Grid>
+					<TextBlock x:Name="assignedSymbol" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center">😑</TextBlock>
+					<TextBlock x:Name="unassignedSymbol" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center">😩</TextBlock>
+					<TextBlock x:Name="doneSymbol" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center">☺</TextBlock>
+				</Grid>
 			</Border>
 			<StackPanel Grid.Column="1" Margin="5,10,0,5">
 				<TextBlock  Style="{StaticResource BaseTextBlockStyle}" FontWeight="Bold" 

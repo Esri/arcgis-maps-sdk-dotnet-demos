@@ -78,12 +78,21 @@ namespace ServiceRequestsSample
 			{
 				case "Assigned":
 					statusIndicator.Background = new SolidColorBrush(Windows.UI.Colors.Gray);
+					assignedSymbol.Visibility = Visibility.Visible;
+					unassignedSymbol.Visibility = Visibility.Collapsed;
+					doneSymbol.Visibility = Visibility.Collapsed;
 					break;
 				case "Unassigned":
 					statusIndicator.Background = new SolidColorBrush(Windows.UI.Colors.Red);
+					assignedSymbol.Visibility = Visibility.Collapsed;
+					unassignedSymbol.Visibility = Visibility.Visible;
+					doneSymbol.Visibility = Visibility.Collapsed;
 					break;
 				case "Closed":
 					statusIndicator.Background = new SolidColorBrush(Windows.UI.Colors.Green);
+					assignedSymbol.Visibility = Visibility.Collapsed;
+					unassignedSymbol.Visibility = Visibility.Collapsed;
+					doneSymbol.Visibility = Visibility.Visible;
 					break;
 				default:
 					break;

@@ -25,6 +25,7 @@
 					</Grid.ColumnDefinitions>
 					<Border Background="Gray" Margin="5,5,5,5"
 						Height="80" Width="80">
+						<TextBlock FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center">😑</TextBlock>
 					</Border>
 					<StackPanel Grid.Column="1" Margin="0,5,0,5">
 						<TextBlock  Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap">
@@ -53,6 +54,7 @@
 					</Grid.ColumnDefinitions>
 					<Border Background="Red" Margin="5,5,5,5"
 						Height="80" Width="80">
+						<TextBlock FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center">😩</TextBlock>
 					</Border>
 					<StackPanel Grid.Column="1" Margin="0,5,0,5">
 						<TextBlock  Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap">
@@ -81,6 +83,7 @@
 					</Grid.ColumnDefinitions>
 					<Border Background="Green" Margin="5,5,5,5"
 						Height="80" Width="80">
+						<TextBlock FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center">☺</TextBlock>
 					</Border>
 					<StackPanel Grid.Column="1" Margin="0,5,0,5">
 						<TextBlock  Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap">
