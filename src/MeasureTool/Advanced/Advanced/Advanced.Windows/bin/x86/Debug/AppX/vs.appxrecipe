@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Machine>JNERY4</Machine>
+    <Machine>JNERYWIN8</Machine>
     <WindowsUser>jenn6286</WindowsUser>
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <SolutionConfiguration>Debug|x86</SolutionConfiguration>
     <PackageArchitecture>x86</PackageArchitecture>
     <PackageIdentityName>2233b566-7d33-476d-b01d-3b89b306d389</PackageIdentityName>
-    <IntermediateOutputPath>C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\obj\x86\Debug\</IntermediateOutputPath>
-    <RegisteredManifestChecksum>0FECBE8F0E5B192B288A5EF3C78DE1559A4BC17B8A3799A52AF769BF370B35D8</RegisteredManifestChecksum>
+    <IntermediateOutputPath>C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\obj\x86\Debug\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>E5AD18AC30CD95604E9D46E66C383E06EDED06082CD22817AC1F736D6DE2FE3C</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>2233b566-7d33-476d-b01d-3b89b306d389_1.0.0.0_x86__meez4exah1tce</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>2233b566-7d33-476d-b01d-3b89b306d389_meez4exah1tce!App</RegisteredUserModeAppID>
     <RegisteredPackageID>2233b566-7d33-476d-b01d-3b89b306d389</RegisteredPackageID>
@@ -17,192 +17,196 @@
     <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\AppxManifest.xml">
+    <AppXManifest Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2014-10-08T20:48:18.779</Modified>
+      <Modified>2015-03-13T17:35:49.541</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\Advanced.Windows.exe">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\Advanced.Windows.exe">
       <PackagePath>Advanced.Windows.exe</PackagePath>
-      <Modified>2014-10-08T20:53:04.800</Modified>
+      <Modified>2015-03-13T17:35:47.090</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\References\CommonConfiguration\x86\Esri.ArcGISRuntime.dll">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\build\win81\..\..\sdk\win81\x86\Esri.ArcGISRuntime.dll">
       <PackagePath>Esri.ArcGISRuntime.dll</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
+      <Modified>2015-03-13T17:16:07.089</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\References\CommonConfiguration\neutral\RuntimeCoreNet.winmd">
-      <PackagePath>RuntimeCoreNet.winmd</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\Esri.ArcGISRuntime\Themes\Generic.xbf">
-      <PackagePath>Esri.ArcGISRuntime\Themes\Generic.xbf</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\pedata\gtdefaults.json">
-      <PackagePath>RuntimeCoreNet\resources\pedata\gtdefaults.json</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\Esri.ArcGISRuntime\Logo.scale-100.png">
-      <PackagePath>Esri.ArcGISRuntime\Logo.scale-100.png</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\Esri.ArcGISRuntime\Logo.scale-180.png">
-      <PackagePath>Esri.ArcGISRuntime\Logo.scale-180.png</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\magnifier_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\magnifier_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\magnifier_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\magnifier_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\offscreen_buffer_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\offscreen_buffer_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\offscreen_buffer_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\offscreen_buffer_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\screen_image_renderer_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\screen_image_renderer_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\screen_image_renderer_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\screen_image_renderer_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_area_pick_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_pick_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_area_pick_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_pick_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_area_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_area_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_line_halo_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_halo_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_line_halo_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_halo_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_line_pick_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_pick_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_line_pick_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_pick_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_line_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_line_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_point_halo_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_halo_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_point_halo_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_halo_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_point_pick_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_pick_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_point_pick_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_pick_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_point_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\seq_render_point_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\simple_grid_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\simple_grid_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\simple_grid_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\simple_grid_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_ps_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_ps_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\neutral\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_vs_4_0.cso">
-      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_vs_4_0.cso</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\ArcGIS SDKs\DotNet10.2.4\WindowsStore\Redist\CommonConfiguration\x86\RuntimeCoreNet.dll">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\build\win81\..\..\sdk\win81\x86\RuntimeCoreNet.dll">
       <PackagePath>RuntimeCoreNet.dll</PackagePath>
-      <Modified>2014-10-03T21:10:12.000</Modified>
+      <Modified>2015-03-13T17:16:07.118</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\Assets\Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\build\win81\..\..\sdk\win81\x86\RuntimeCoreNet.winmd">
+      <PackagePath>RuntimeCoreNet.winmd</PackagePath>
+      <Modified>2015-03-13T17:16:07.120</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\Assets\Logo.scale-100.png">
       <PackagePath>Assets\Logo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2014-03-14T17:55:28.000</Modified>
+      <Modified>2015-03-13T17:12:12.108</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\Assets\SmallLogo.scale-100.png">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\Assets\SmallLogo.scale-100.png">
       <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2014-03-14T17:55:28.000</Modified>
+      <Modified>2015-03-13T17:12:12.109</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\Assets\SplashScreen.scale-100.png">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\Assets\SplashScreen.scale-100.png">
       <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2014-03-14T17:55:28.000</Modified>
+      <Modified>2015-03-13T17:12:12.110</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\Assets\StoreLogo.scale-100.png">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\Assets\StoreLogo.scale-100.png">
       <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2014-03-14T17:55:28.000</Modified>
+      <Modified>2015-03-13T17:12:12.110</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\App.xbf">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2014-10-08T20:48:14.686</Modified>
+      <Modified>2015-03-13T17:35:46.660</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\MainPage.xbf">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2014-10-08T20:48:14.686</Modified>
+      <Modified>2015-03-13T17:35:46.660</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\Advanced.Windows.xr.xml">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\Advanced.Windows.xr.xml">
       <PackagePath>Advanced.Windows.xr.xml</PackagePath>
-      <Modified>2014-09-29T01:27:46.013</Modified>
+      <Modified>2015-03-13T17:12:12.282</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\applications\jenn6286\MeasureEditor\src\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\resources.pri">
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\magnifier_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\magnifier_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.124</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\magnifier_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\magnifier_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.124</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\offscreen_buffer_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\offscreen_buffer_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.126</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\offscreen_buffer_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\offscreen_buffer_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.127</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\screen_image_renderer_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\screen_image_renderer_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.127</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\screen_image_renderer_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\screen_image_renderer_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.128</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_area_pick_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_pick_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.129</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_area_pick_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_pick_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.130</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_area_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.130</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_area_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_area_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.133</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_line_halo_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_halo_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.134</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_line_halo_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_halo_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.134</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_line_pick_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_pick_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.135</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_line_pick_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_pick_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.136</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_line_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.137</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_line_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_line_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.138</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_point_halo_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_halo_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.139</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_point_halo_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_halo_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.140</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_point_pick_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_pick_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.140</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_point_pick_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_pick_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.141</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_point_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.142</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\seq_render_point_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\seq_render_point_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.142</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\simple_grid_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\simple_grid_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.143</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\simple_grid_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\simple_grid_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.144</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.145</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_advanced_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.145</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_ps_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_ps_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.147</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\RuntimeCoreNet\resources\shaders\tex_quad_shader_program_vs_4_0.cso">
+      <PackagePath>RuntimeCoreNet\resources\shaders\tex_quad_shader_program_vs_4_0.cso</PackagePath>
+      <Modified>2015-03-13T17:16:07.147</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\Esri.ArcGISRuntime\Esri.ArcGISRuntime.xr.xml">
+      <PackagePath>Esri.ArcGISRuntime\Esri.ArcGISRuntime.xr.xml</PackagePath>
+      <Modified>2015-03-13T17:16:07.095</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\Esri.ArcGISRuntime\Logo.scale-180.png">
+      <PackagePath>Esri.ArcGISRuntime\Logo.scale-180.png</PackagePath>
+      <Modified>2015-03-13T17:16:07.105</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\Esri.ArcGISRuntime\Logo.scale-100.png">
+      <PackagePath>Esri.ArcGISRuntime\Logo.scale-100.png</PackagePath>
+      <Modified>2015-03-13T17:16:07.096</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\Esri.ArcGISRuntime\Themes\Generic.xaml">
+      <PackagePath>Esri.ArcGISRuntime\Themes\Generic.xaml</PackagePath>
+      <Modified>2015-03-13T17:16:07.107</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\packages\Esri.ArcGISRuntime.10.2.5.857\sdk\win81\x86\Esri.ArcGISRuntime\Themes\Generic.xbf">
+      <PackagePath>Esri.ArcGISRuntime\Themes\Generic.xbf</PackagePath>
+      <Modified>2015-03-13T17:16:07.107</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\applications\dotnet\arcgis-runtime-demos-dotnet\src\MeasureTool\Advanced\Advanced\Advanced.Windows\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2014-10-08T20:48:16.398</Modified>
+      <Modified>2015-03-13T17:35:47.709</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
