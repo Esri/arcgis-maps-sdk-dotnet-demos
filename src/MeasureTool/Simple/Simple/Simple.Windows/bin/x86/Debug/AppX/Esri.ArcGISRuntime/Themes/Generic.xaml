@@ -1,0 +1,34 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Esri.ArcGISRuntime" xmlns:controls="using:Esri.ArcGISRuntime.Controls">
+
+	<Style TargetType="controls:MapView">
+		<Setter Property="ManipulationMode" Value="Scale,ScaleInertia,TranslateX,TranslateY,TranslateInertia,Rotate" />
+		<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:MapView">
+					<Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+						<Grid>
+							<Border x:Name="MapSurface" />
+							<!-- Note: Before removing the following logo, please read the terms of use -->
+							<Image Source="/Esri.ArcGISRuntime/Logo.png"
+								   HorizontalAlignment="Left"
+								   VerticalAlignment="Bottom"
+								   Stretch="Fill"
+								   Margin="20"
+								   IsHitTestVisible="False"
+								   Width="56" Height="32" />
+                            <Rectangle x:Name="ZoomBox" Fill="#55FFFFFF" Stroke="Red" StrokeThickness="2" Visibility="Collapsed" />
+                            <Border x:Name="Overlay" />
+						</Grid>
+					</Border>
+				</ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
+
