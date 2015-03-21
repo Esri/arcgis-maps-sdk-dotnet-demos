@@ -31,7 +31,7 @@ namespace ExternalNmeaGPS
 		{
 			InitializeComponent();
 			currentNmeaFile = "NmeaSampleData.txt";
-			NmeaParser.NmeaDevice device = new NmeaParser.NmeaFileDevice(currentNmeaFile, 50);
+			NmeaParser.NmeaDevice device = new NmeaParser.NmeaFileDevice(currentNmeaFile);
 			LoadDevice(device);
 			var ports = System.IO.Ports.SerialPort.GetPortNames();
 		 	PortsList.ItemsSource = ports;
@@ -75,7 +75,7 @@ namespace ExternalNmeaGPS
 				if(args.Message is NmeaParser.Nmea.Gps.Gpgsv)
 				{
 					var gpgsv = (NmeaParser.Nmea.Gps.Gpgsv)args.Message;
-					if(args.IsMultiPart && args.MessageParts != null)
+					if(args.IsMultipart && args.MessageParts != null)
 						skyViewWindow.GpgsvMessages = args.MessageParts.OfType<NmeaParser.Nmea.Gps.Gpgsv>();
 				}
 			});
