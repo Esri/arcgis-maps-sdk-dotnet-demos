@@ -36,7 +36,6 @@ namespace KmlViewer
         public App()
         {
             this.InitializeComponent();
-			Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ClientId = "1234567890123456";
             this.Suspending += this.OnSuspending;
         }
 
