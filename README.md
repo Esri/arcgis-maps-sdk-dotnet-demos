@@ -9,6 +9,8 @@ This project contains source code for native Windows Desktop, Store, and Phone a
 * [`Turn-by-Turn Routing`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Phone, Windows Store and Windows Desktop.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
 * [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
+* [`Measure Tool`](src/MeasureTool) - A sample demonstrates how to extend the editor to create a measure tool.
+* [`KML Viewer`](src/KmlViewer) - A Windows Store app for visualizing KML/KMZ files in 2D and 3D.
 
 
 

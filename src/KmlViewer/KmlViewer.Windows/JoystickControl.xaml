@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="KmlViewer.JoystickControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KmlViewer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="20">
+    
+    <Grid>
+
+		<Border CornerRadius="7" Width="20" x:Name="border"
+				BorderBrush="Gray" BorderThickness="2"
+				Background="#44000000" ManipulationDelta="Border_ManipulationDelta"
+				ManipulationCompleted="Border_ManipulationCompleted"
+				ManipulationMode="TranslateY"
+				>
+
+			<Ellipse VerticalAlignment="Center"
+				Stroke="White" StrokeThickness="1" Fill="#99000000" 
+				HorizontalAlignment="Stretch" x:Name="thumb"
+				Height="{Binding ActualWidth, ElementName=thumb}" >
+				<Ellipse.RenderTransform>
+					<TranslateTransform Y="0" x:Name="translationTransform" />
+				</Ellipse.RenderTransform>
+			</Ellipse>
+
+		</Border>
+		
+    </Grid>
+</UserControl>

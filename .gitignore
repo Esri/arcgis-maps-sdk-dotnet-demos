@@ -2,3 +2,4 @@
 src/*/*/bin/
 src/*/*/obj/
 src/*/packages/*/
+src/KmlViewer/KmlViewer.Windows/AppPackages/
