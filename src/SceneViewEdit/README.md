@@ -68,13 +68,11 @@ try
 				_drawTaskTokenSource.Token);
 			break;
 		case GeometryType.Polyline:
-			_selection.SetHidden();
 			editedGeometry = await SceneEditHelper.Current.EditPolylineAsync(
 				editGeometry as Polyline, 
 				_drawTaskTokenSource.Token);
 			break;
 		case GeometryType.Polygon:
-			_selection.SetHidden();
 			editedGeometry = await SceneEditHelper.Current.EditPolygonAsync(
 				editGeometry as Polygon, 
 				_drawTaskTokenSource.Token);
