@@ -11,8 +11,7 @@ This project contains source code for native Windows Desktop, Store, and Phone a
 * [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
 * [`Measure Tool`](src/MeasureTool) - A sample demonstrates how to extend the editor to create a measure tool.
 * [`KML Viewer`](src/KmlViewer) - A Windows Store app for visualizing KML/KMZ files in 2D and 3D.
-
-
+* [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D.
 
 ## Resources
 
