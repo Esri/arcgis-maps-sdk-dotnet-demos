@@ -7,45 +7,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
-using SceneEditingSample;
+
 #if NETFX_CORE
 using Windows.UI;
 #else
 using System.Windows.Media;
-
 #endif
+
 namespace SceneEditingDemo.Helpers
 {
-	public class SceneEditHelper
+    /// <summary>
+    /// <see cref="SceneEditHelper"/> provides methods for creating and editing geometries on the SceneView.
+    /// When draw or edit is requested, draw experience is started in the assosiated SceneView that provides
+    /// visual feedback for the user about the operation. 
+    /// </summary>
+    /// <remarks><see cref="SceneEditHelper"/> provides basic draw and edit operations for working with geometries that
+    /// can come from a <see cref="Esri.ArcGISRuntime.Data.Feature"/> or <see cref="Graphic"/>.
+    /// </remarks>
+    public class SceneEditHelper
 	{
-		#region Constructor and unique instance management
-	
-		// Private constructor
-		private SceneEditHelper() { }
-
-		// Static initialization of the unique instance 
-		private static readonly SceneEditHelper SingleInstance = new SceneEditHelper();
-
-		/// <summary>
-		/// Gets the single <see cref="MapViewController"/> instance.
-		/// </summary>
-		public static SceneEditHelper Current
-		{
-			get { return SingleInstance; }
-		}
-
-		public void Initialize(SceneView sceneView)
-		{
-			SceneView = sceneView;
-		}
-
-		private void CheckInitializedState()
-		{
-			if (SceneView == null)
-				throw new Exception("SceneEditHelper is not initialized.");
-		}
-
-		#endregion // Constructor and unique instance management
+        private static CancellationTokenSource _drawTaskTokenSource;
 
 		#region Default draw symbols
 	
@@ -79,59 +60,94 @@ namespace SceneEditingDemo.Helpers
 
 		#endregion // Default draw symbols
 
-		public SceneView SceneView { get; protected set; }
-
-		public bool IsActive { get; private set; }
+        /// <summary>
+        /// Gets the value indicating wheter there is a draw or edit session ongoing.
+        /// </summary>
+		public static bool IsActive { get; private set; }
 
 		#region Create geometries
 
-		public async Task<MapPoint> CreatePointAsync(CancellationToken cancellationToken)
+        /// <summary>
+        /// Cancels current draw or edit session. Only one session can be active at the time.
+        /// </summary>
+        public static void Cancel()
+        {
+            if (!IsActive) return;
+
+            // Cancel previous source and create new
+            if (_drawTaskTokenSource != null)
+                _drawTaskTokenSource.Cancel();
+            Cleanup();
+        }
+
+        /// <summary>
+        /// Create a new point. This will activate drawing experience on the map. To complete it, select location from the map.
+        /// </summary>
+        /// <param name="sceneView">The <see cref="SceneView"/> that is used for drawing.</param>
+        /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
+        /// will be thrown. The task is cancelled if <see cref="Cancel"/> method or if any other draw or edit method is called.
+        /// </exception>
+        /// <returns>Return new <see cref="MapPoint"/> based on the user interactions.</returns>
+        public static async Task<MapPoint> CreatePointAsync(SceneView sceneView)
+        {
+            Initialize();
+            var geometry = await SceneDrawHelper.DrawPointAsync(sceneView, _drawTaskTokenSource.Token);
+            Cleanup();
+            return geometry;
+        }
+
+        /// <summary>
+        /// Create a new <see cref="Polyline"/>. This will activate drawing experience on the map. Draw is completed on douple click.
+        /// </summary>
+        /// <param name="sceneView">The <see cref="SceneView"/> that is used for drawing.</param>
+        /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
+        /// will be thrown. The task is cancelled if <see cref="Cancel"/> method or if any other draw or edit method is called.
+        /// </exception>
+        /// <returns>Return new <see cref="Polyline"/> based on the user interactions.</returns>
+        public static async Task<Polyline> CreatePolylineAsync(SceneView sceneView)
 		{
-			CheckInitializedState();
-			SetActivity(); // set to active
-			var geometry = await SceneDrawHelper.DrawPointAsync(SceneView, cancellationToken);
-			SetActivity(false); // set to deactive
-			return geometry;
+            Initialize();
+            var geometry = await SceneDrawHelper.DrawPolylineAsync(sceneView, _drawTaskTokenSource.Token);
+            Cleanup();
+            return geometry;
 		}
 
-		public async Task<Polyline> CreatePolylineAsync(CancellationToken cancellationToken)
+        /// <summary>
+        /// Create a new <see cref="Polygon"/>. This will activate drawing experience on the map. Draw is completed on douple click.
+        /// </summary>
+        /// <param name="sceneView">The <see cref="SceneView"/> that is used for drawing.</param>
+        /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
+        /// will be thrown. The task is cancelled if <see cref="Cancel"/> method or if any other draw or edit method is called.
+        /// </exception>
+        /// <returns>Return new <see cref="Polygon"/> based on the user interactions.</returns>
+        public static async Task<Polygon> CreatePolygonAsync(SceneView sceneView)
+        {
+            Initialize();
+            var geometry = await SceneDrawHelper.DrawPolygonAsync(sceneView, _drawTaskTokenSource.Token);
+            Cleanup();
+            return geometry;
+        }
+
+        #endregion // Create geometries 
+
+        #region Edit geometries
+
+        /// <summary>
+        /// Edit existing <see cref="Polygon"/>. This will activate editing experience on the map. Edit is completed on douple click.
+        /// </summary>
+        /// <param name="sceneView">The <see cref="SceneView"/> that is used for editing.</param>
+        /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
+        /// will be thrown. The task is cancelled if <see cref="Cancel"/> method or if any other draw or edit method is called.
+        /// </exception>
+        /// <returns>Return edited <see cref="Polygon"/> based on the user interactions.</returns>
+        public static async Task<Polygon> EditPolygonAsync(SceneView sceneView, Polygon polygon)
 		{
-			CheckInitializedState();
-			SetActivity(); // set to active
-			var geometry = await SceneDrawHelper.DrawPolylineAsync(SceneView, cancellationToken);
-			SetActivity(false); // set to deactive
-			return geometry;
-		}
-
-		public async Task<Polygon> CreatePolygonAsync(CancellationToken cancellationToken)
-		{
-			CheckInitializedState();
-			SetActivity(); // set to active
-			var geometry = await SceneDrawHelper.DrawPolygonAsync(SceneView, cancellationToken);
-			SetActivity(false); // set to deactive
-			return geometry;
-		}
-
-		#endregion // Create geometries 
-
-		#region Edit geometries
-
-		public async Task<MapPoint> EditPointAsync(MapPoint mapPoint, CancellationToken cancellationToken)
-		{
-			CheckInitializedState();
-
-			return await CreatePointAsync(cancellationToken);
-		}
-
-		public async Task<Polygon> EditPolygonAsync(Polygon polygon, CancellationToken cancellationToken)
-		{
-			CheckInitializedState();
-			SetActivity(); // set to active
+            Initialize();
 
 			var tcs = new TaskCompletionSource<Polygon>();
-			PolygonBuilder polylineBuilder = new PolygonBuilder(SceneView.SpatialReference);
-			var sketchlayer = CreateSketchLayer(SceneView);
-			var vertexlayer = CreateSketchLayer(SceneView);
+			PolygonBuilder polylineBuilder = new PolygonBuilder(sceneView.SpatialReference);
+			var sketchlayer = CreateSketchLayer(sceneView);
+			var vertexlayer = CreateSketchLayer(sceneView);
 
 			// Create vertices from the original polyline
 			var vertices = new List<Graphic>();
@@ -153,7 +169,7 @@ namespace SceneEditingDemo.Helpers
 			Graphic selectedVertex = null;
 			bool isEditingVertex = false;
 
-			Action cleanupEvents = SetUpHandlers(SceneView,
+			Action cleanupEvents = SetUpHandlers(sceneView,
 				(p) => //On mouse move, move completion line around
 				{
 					if (p != null && isEditingVertex)
@@ -191,7 +207,7 @@ namespace SceneEditingDemo.Helpers
 					if (isEditingVertex) return;
 					if (selectedVertex != null) selectedVertex.IsSelected = false;
 
-					selectedVertex = await vertexlayer.HitTestAsync(SceneView, SceneView.LocationToScreen(p));
+					selectedVertex = await vertexlayer.HitTestAsync(sceneView, sceneView.LocationToScreen(p));
 
 					// No vertex found so return
 					if (selectedVertex == null)
@@ -202,7 +218,7 @@ namespace SceneEditingDemo.Helpers
 					tokenSource = new CancellationTokenSource();
 					try
 					{
-						var newPoint = await SceneDrawHelper.DrawPointAsync(SceneView, tokenSource.Token);
+						var newPoint = await SceneDrawHelper.DrawPointAsync(sceneView, tokenSource.Token);
 						if (newPoint == null) return;
 
 						var vertexPoints = newPolygon.Parts[0].GetPoints().ToList();
@@ -240,12 +256,12 @@ namespace SceneEditingDemo.Helpers
 			Action cleanup = () =>
 			{
 				cleanupEvents();
-				SceneView.GraphicsOverlays.Remove(sketchlayer);
-				SceneView.GraphicsOverlays.Remove(vertexlayer);
+                sceneView.GraphicsOverlays.Remove(sketchlayer);
+                sceneView.GraphicsOverlays.Remove(vertexlayer);
 				if (tokenSource != null) tokenSource.Cancel(); // Cancel vertex draw if it isn't finished
-				SetActivity(false);
+                Cleanup();
 			};
-			cancellationToken.Register(() => tcs.SetCanceled());
+            _drawTaskTokenSource.Token.Register(() => tcs.SetCanceled());
 
 			Polygon result = null;
 			try
@@ -259,15 +275,22 @@ namespace SceneEditingDemo.Helpers
 			return result;
 		}
 
-		public async Task<Polyline> EditPolylineAsync(Polyline polyline, CancellationToken cancellationToken)
+        /// <summary>
+        /// Edit existing <see cref="Polyline"/>. This will activate editing experience on the map. Edit is completed on douple click.
+        /// </summary>
+        /// <param name="sceneView">The <see cref="SceneView"/> that is used for editing.</param>
+        /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
+        /// will be thrown. The task is cancelled if <see cref="Cancel"/> method or if any other draw or edit method is called.
+        /// </exception>
+        /// <returns>Return edited <see cref="Polygon"/> based on the user interactions.</returns>
+        public static async Task<Polyline> EditPolylineAsync(SceneView sceneView, Polyline polyline)
 		{
-			CheckInitializedState();
-			SetActivity(); // set to active
+            Initialize();
 
 			var tcs = new TaskCompletionSource<Polyline>();
-			PolylineBuilder polylineBuilder = new PolylineBuilder(SceneView.SpatialReference);
-			var sketchlayer = CreateSketchLayer(SceneView);
-			var vertexlayer = CreateSketchLayer(SceneView);
+			PolylineBuilder polylineBuilder = new PolylineBuilder(sceneView.SpatialReference);
+			var sketchlayer = CreateSketchLayer(sceneView);
+			var vertexlayer = CreateSketchLayer(sceneView);
 
 			// Create vertices from the original polyline
 			var vertices = new List<Graphic>();
@@ -287,7 +310,7 @@ namespace SceneEditingDemo.Helpers
 			Graphic selectedVertex = null;
 			bool isEditingVertex = false;
 
-			Action cleanupEvents = SetUpHandlers(SceneView,
+			Action cleanupEvents = SetUpHandlers(sceneView,
 				(p) => //On mouse move, move completion line around
 				{
 					if (p != null && isEditingVertex)
@@ -316,7 +339,7 @@ namespace SceneEditingDemo.Helpers
 					if (isEditingVertex) return;
 					if (selectedVertex != null) selectedVertex.IsSelected = false;
 
-					selectedVertex = await vertexlayer.HitTestAsync(SceneView, SceneView.LocationToScreen(p));
+					selectedVertex = await vertexlayer.HitTestAsync(sceneView, sceneView.LocationToScreen(p));
 
 					// No vertex found so return
 					if (selectedVertex == null)
@@ -327,7 +350,7 @@ namespace SceneEditingDemo.Helpers
 					tokenSource = new CancellationTokenSource();
 					try
 					{
-						var newPoint = await SceneDrawHelper.DrawPointAsync(SceneView, tokenSource.Token);
+						var newPoint = await SceneDrawHelper.DrawPointAsync(sceneView, tokenSource.Token);
 
 						if (newPoint == null) return;
 						
@@ -366,12 +389,12 @@ namespace SceneEditingDemo.Helpers
 			Action cleanup = () =>
 			{
 				cleanupEvents();
-				SceneView.GraphicsOverlays.Remove(sketchlayer);
-				SceneView.GraphicsOverlays.Remove(vertexlayer);
+                sceneView.GraphicsOverlays.Remove(sketchlayer);
+                sceneView.GraphicsOverlays.Remove(vertexlayer);
 				if (tokenSource != null) tokenSource.Cancel();
-				SetActivity(false);
+                Cleanup();
 			};
-			cancellationToken.Register(() => tcs.SetCanceled());
+            _drawTaskTokenSource.Token.Register(() => tcs.SetCanceled());
 
 			Polyline result = null;
 			try
@@ -385,12 +408,39 @@ namespace SceneEditingDemo.Helpers
 			return result;
 		}
 
-		#endregion // Edit geometries
+        #endregion // Edit geometries
 
-		#region Private utility methods
+        #region Private utility methods
 
-		private void SetActivity(bool isActive = true)
+        /// <summary>
+        /// Call to start new drawing / editing session.
+        /// </summary>
+        private static void Initialize()
+        {
+            SetActivity(); // set to active
+
+            // Cancel previous source and create new
+            if (_drawTaskTokenSource != null)
+                _drawTaskTokenSource.Cancel();
+            _drawTaskTokenSource = new CancellationTokenSource();
+        }
+
+        /// <summary>
+        /// Call to close existing drawing / editing session.
+        /// </summary>
+        private static void Cleanup()
+        {
+            _drawTaskTokenSource = null;
+            SetActivity(false);
+        }
+
+        /// <summary>
+        /// Call to change activity. This will cancel previous task if it exists and current status is `true`.
+        /// </summary>
+        private static void SetActivity(bool isActive = true)
 		{
+            if (IsActive && isActive)
+                _drawTaskTokenSource.Cancel();
 			IsActive = isActive;
 		}
 

@@ -13,7 +13,8 @@ namespace SceneEditingDemo
 		}
 
 		public Graphic SelectedGraphic { get; set; }
-		public GraphicsOverlay SelectedOverlay { get; set; }
+
+        public GraphicsOverlay SelectedOverlay { get; set; }
 
 		public GeometryType GeometryType
 		{

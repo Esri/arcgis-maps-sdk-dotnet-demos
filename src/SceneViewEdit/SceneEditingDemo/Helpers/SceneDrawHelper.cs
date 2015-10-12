@@ -12,9 +12,13 @@ using Windows.UI;
 using System.Windows.Media;
 #endif
 
-namespace SceneEditingSample
+namespace SceneEditingDemo.Helpers
 {
-	public static class SceneDrawHelper
+    /// <summary>
+    /// Utility class that provides helper methods for drawing geometries on the <see cref="SceneView"/>.
+    /// <see cref="SceneEditHelper"/> class provides simplified interface for creating and editing geometries.
+    /// </summary>
+	public class SceneDrawHelper
 	{
 		#region Default draw symbols
 		//Symbol used by DrawPointAsync while moving the mouse
@@ -44,13 +48,13 @@ namespace SceneEditingSample
 		#endregion Default draw symbols
 
 		#region public draw operations
-		public static async Task<MapPoint> DrawPointAsync(Esri.ArcGISRuntime.Controls.SceneView scene, System.Threading.CancellationToken cancellationToken)
+		public static async Task<MapPoint> DrawPointAsync(SceneView sceneView, System.Threading.CancellationToken cancellationToken)
 		{
 			var tcs = new TaskCompletionSource<MapPoint>();
-			var sketchlayer = CreateSketchLayer(scene);
+			var sketchlayer = CreateSketchLayer(sceneView);
 			sketchlayer.Opacity = .5;
 			Graphic pointGraphic = null;
-			Action cleanupEvents = SetUpHandlers(scene,
+			Action cleanupEvents = SetUpHandlers(sceneView,
 				(p) => //On mouse move move graphic around
 				{
 					if (p != null)
@@ -71,7 +75,7 @@ namespace SceneEditingSample
 			Action cleanup = () =>
 			{
 				cleanupEvents();
-				scene.GraphicsOverlays.Remove(sketchlayer);
+				sceneView.GraphicsOverlays.Remove(sketchlayer);
 			};
 			cancellationToken.Register(() => tcs.SetCanceled());
 
@@ -87,15 +91,15 @@ namespace SceneEditingSample
 			return result;
 		}
 
-		public static async Task<Polyline> DrawPolylineAsync(Esri.ArcGISRuntime.Controls.SceneView scene, System.Threading.CancellationToken cancellationToken)
+		public static async Task<Polyline> DrawPolylineAsync(SceneView sceneView, System.Threading.CancellationToken cancellationToken)
 		{
 			var tcs = new TaskCompletionSource<Polyline>();
-			PolylineBuilder polylineBuilder = new PolylineBuilder(scene.SpatialReference);
-			var sketchlayer = CreateSketchLayer(scene);
+			PolylineBuilder polylineBuilder = new PolylineBuilder(sceneView.SpatialReference);
+			var sketchlayer = CreateSketchLayer(sceneView);
 			Graphic lineGraphic = new Graphic() { Symbol = DefaultLineSymbol };
 			Graphic lineMoveGraphic = new Graphic() { Symbol = DefaultLineMoveSymbol };
 			sketchlayer.Graphics.AddRange(new Graphic[] { lineGraphic, lineMoveGraphic });
-			Action cleanupEvents = SetUpHandlers(scene,
+			Action cleanupEvents = SetUpHandlers(sceneView,
 				(p) => //On mouse move, move completion line around
 				{
 					if (p != null && polylineBuilder.Parts.Count > 0 && polylineBuilder.Parts[0].Count > 0)
@@ -119,7 +123,7 @@ namespace SceneEditingSample
 			Action cleanup = () =>
 			{
 				cleanupEvents();
-				scene.GraphicsOverlays.Remove(sketchlayer);
+				sceneView.GraphicsOverlays.Remove(sketchlayer);
 			};
 			cancellationToken.Register(() => tcs.SetCanceled());
 
@@ -135,15 +139,15 @@ namespace SceneEditingSample
 			return result;
 		}
 
-		public static async Task<Polygon> DrawPolygonAsync(Esri.ArcGISRuntime.Controls.SceneView scene, System.Threading.CancellationToken cancellationToken)
+		public static async Task<Polygon> DrawPolygonAsync(SceneView sceneView, System.Threading.CancellationToken cancellationToken)
 		{
 			var tcs = new TaskCompletionSource<Polygon>();
-			PolygonBuilder polygonBuilder = new PolygonBuilder(scene.SpatialReference);
-			var sketchlayer = CreateSketchLayer(scene);
+			PolygonBuilder polygonBuilder = new PolygonBuilder(sceneView.SpatialReference);
+			var sketchlayer = CreateSketchLayer(sceneView);
 			Graphic polygonGraphic = new Graphic() { Symbol = DefaultFillSymbol };
 			Graphic lineMoveGraphic = new Graphic() { Symbol = DefaultLineMoveSymbol };
 			sketchlayer.Graphics.AddRange(new Graphic[] { polygonGraphic, lineMoveGraphic });
-			Action cleanupEvents = SetUpHandlers(scene,
+			Action cleanupEvents = SetUpHandlers(sceneView,
 				(p) => //On mouse move move completion line around
 				{
 					if (p != null && polygonBuilder.Parts.Count > 0)
@@ -175,7 +179,7 @@ namespace SceneEditingSample
 			Action cleanup = () =>
 			{
 				cleanupEvents();
-				scene.GraphicsOverlays.Remove(sketchlayer);
+				sceneView.GraphicsOverlays.Remove(sketchlayer);
 			};
 			cancellationToken.Register(() => tcs.SetCanceled());
 

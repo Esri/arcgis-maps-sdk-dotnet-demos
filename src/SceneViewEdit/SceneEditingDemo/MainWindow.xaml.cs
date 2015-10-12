@@ -3,16 +3,13 @@ using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Layers;
 using SceneEditingDemo.Helpers;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace SceneEditingDemo
 {
-	public partial class MainWindow : Window
+    public partial class MainWindow : Window
 	{
-		CancellationTokenSource _drawTaskTokenSource;
-
 		GraphicsOverlay _pointsOverlay;
 		GraphicsOverlay _polylinesOverlay;
 		GraphicsOverlay _polygonsOverlay;
@@ -35,110 +32,115 @@ namespace SceneEditingDemo
 			_polylinesOverlay = MySceneView.GraphicsOverlays["PolylineGraphicsOverlay"];
 			_polygonsOverlay = MySceneView.GraphicsOverlays["PolygonGraphicsOverlay"];
 
-			SceneEditHelper.Current.Initialize(MySceneView);
-
 			EditButton.IsEnabled = false;
-		}
+            CancelButton.IsEnabled = false;
+        }
 
-		private async void DrawButton_Click(object sender, RoutedEventArgs e)
-		{
-			// Cancel previous source and create new
-			if (_drawTaskTokenSource != null)
-				_drawTaskTokenSource.Cancel();
-			_drawTaskTokenSource = new CancellationTokenSource();
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Cancel existing draw or edit operation.
+            SceneEditHelper.Cancel();
+        }
 
-			try
-			{
-				Geometry geometry = null; 
-				Graphic graphic = null;
+        private async void DrawButton_Click(object sender, RoutedEventArgs e)
+        {
+	        try
+	        {
+		        Geometry geometry = null; 
+		        Graphic graphic = null;
 
-				// Execute draw logic
-				switch ((DrawShape)DrawShapes.SelectedValue)
-				{
-					case DrawShape.Point:
-						geometry = await SceneEditHelper.Current.CreatePointAsync(_drawTaskTokenSource.Token);
-						graphic = new Graphic(geometry);
-						_pointsOverlay.Graphics.Add(graphic);
-						break;
-					case DrawShape.Polygon:
-						geometry = await SceneEditHelper.Current.CreatePolygonAsync(_drawTaskTokenSource.Token);
-						graphic = new Graphic(geometry);
-						_polygonsOverlay.Graphics.Add(graphic);
-						break;
-					case DrawShape.Polyline:
-						geometry = await SceneEditHelper.Current.CreatePolylineAsync(_drawTaskTokenSource.Token);
-						graphic = new Graphic(geometry);
-						_polylinesOverlay.Graphics.Add(graphic);
-						break;
-					default:
-						break;
-				}
-			}
-			catch (TaskCanceledException tce)
-			{
-				Debug.WriteLine("Previous draw operation was cancelled.");
-			}
-			finally
-			{
-				_drawTaskTokenSource = null;
-			}			
-		}
+                CancelButton.IsEnabled = true;
+                ClearButton.IsEnabled = false;
 
-		private async void EditButton_Click(object sender, RoutedEventArgs e)
-		{
-			if (_selection == null) return; // Selection missing
+                // Draw geometry and create a new graphic using it
+                switch ((DrawShape)DrawShapes.SelectedValue)
+		        {
+			        case DrawShape.Point:
+                        geometry = await SceneEditHelper.CreatePointAsync(MySceneView);
+				        graphic = new Graphic(geometry);
+				        _pointsOverlay.Graphics.Add(graphic);
+				        break;
+			        case DrawShape.Polygon:
+				        geometry = await SceneEditHelper.CreatePolygonAsync(MySceneView);
+				        graphic = new Graphic(geometry);
+				        _polygonsOverlay.Graphics.Add(graphic);
+				        break;
+			        case DrawShape.Polyline:
+				        geometry = await SceneEditHelper.CreatePolylineAsync(MySceneView);
+				        graphic = new Graphic(geometry);
+				        _polylinesOverlay.Graphics.Add(graphic);
+				        break;
+			        default:
+				        break;
+		        }
+	        }
+	        catch (TaskCanceledException tce)
+	        {
+                // This occurs if draw operation is canceled or new operation is started before previous was finished.
+		        Debug.WriteLine("Previous draw operation was canceled.");
+	        }			
+            finally
+            {
+                CancelButton.IsEnabled = false;
+                ClearButton.IsEnabled = true;
+            }
+        }
 
-			// Cancel previous source and create new
-			if (_drawTaskTokenSource != null)
-				_drawTaskTokenSource.Cancel();
-			_drawTaskTokenSource = new CancellationTokenSource();
+        private async void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+	        if (_selection == null) return; // Selection missing
 
-			_selection.SetVisible();
-			Geometry editedGeometry = null;
+            // Cancel previous edit
+            if (SceneEditHelper.IsActive)
+                SceneEditHelper.Cancel();
 
-			DrawButton.IsEnabled = false;
-			ClearButton.IsEnabled = false;
-			EditButton.IsEnabled = false;
+	        Geometry editedGeometry = null;
 
-			try
-			{
-				switch (_selection.GeometryType)
-				{
-					case GeometryType.Point:
-						editedGeometry = await SceneEditHelper.Current.EditPointAsync(
-							_selection.SelectedGraphic.Geometry as MapPoint, 
-							_drawTaskTokenSource.Token);
-						break;
-					case GeometryType.Polyline:
-						_selection.SetHidden();
-						editedGeometry = await SceneEditHelper.Current.EditPolylineAsync(
-							_selection.SelectedGraphic.Geometry as Polyline, 
-							_drawTaskTokenSource.Token);
-						break;
-					case GeometryType.Polygon:
-						_selection.SetHidden();
-						editedGeometry = await SceneEditHelper.Current.EditPolygonAsync(
-							_selection.SelectedGraphic.Geometry as Polygon, 
-							_drawTaskTokenSource.Token);
-						break;
-					default:
-						break;
-				}
+	        DrawButton.IsEnabled = false;
+	        ClearButton.IsEnabled = false;
+	        EditButton.IsEnabled = false;
+            CancelButton.IsEnabled = true;
 
-				_selection.SelectedGraphic.Geometry = editedGeometry;
-			}
-			catch (TaskCanceledException tce)
-			{
-				Debug.WriteLine("Previous edit operation was cancelled.");
-			}
+	        try
+	        {
+                // Edit selected geometry and set it back to the selected graphic
+		        switch (_selection.GeometryType)
+		        {
+			        case GeometryType.Point:
+                        editedGeometry = await SceneEditHelper.CreatePointAsync(
+                            MySceneView);
+				        break;
+			        case GeometryType.Polyline:
+				        _selection.SetHidden(); // Hide selected graphic from the UI
+                        editedGeometry = await SceneEditHelper.EditPolylineAsync(
+                            MySceneView,
+                            _selection.SelectedGraphic.Geometry as Polyline);
+				        break;
+			        case GeometryType.Polygon:
+				        _selection.SetHidden(); // Hide selected graphic from the UI
+                        editedGeometry = await SceneEditHelper.EditPolygonAsync(
+                            MySceneView,
+                            _selection.SelectedGraphic.Geometry as Polygon);
+				        break;
+			        default:
+				        break;
+		        }
+
+		        _selection.SelectedGraphic.Geometry = editedGeometry; // Set edited geometry to selected graphic
+	        }
+	        catch (TaskCanceledException tce)
+	        {
+                // This occurs if draw operation is canceled or new operation is started before previous was finished.
+                Debug.WriteLine("Previous edit operation was canceled.");
+	        }
 			finally
 			{
 				_selection.Unselect();
-				_selection.SetVisible();
-				_drawTaskTokenSource = null;
-				DrawButton.IsEnabled = true; 
+				_selection.SetVisible(); // Show selected graphic from the UI
+                DrawButton.IsEnabled = true; 
 				ClearButton.IsEnabled = true;
-			}
+                CancelButton.IsEnabled = false;
+            }
 		}
 
 		private void Clear_Click(object sender, RoutedEventArgs e)
@@ -160,8 +162,9 @@ namespace SceneEditingDemo
 		private async void MySceneView_SceneViewTapped(object sender, MapViewInputEventArgs e)
 		{
 			// If draw or edit is active, return
-			if (SceneEditHelper.Current.IsActive) return; 
+			if (SceneEditHelper.IsActive) return; 
 
+            // Try to select a graphic from the map location
 			await SelectGraphicAsync(e.Position);
 		}
 

@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
-		Title="SceneView - Create and edit geometries" WindowState="Maximized">
+		Title="SceneView - Create and edit geometries" 
+        WindowState="Maximized">
 	<Grid>
 		<Grid.Resources>
 			<esri:SimpleMarkerSymbol x:Key="SMS" Color="Red" Style="Circle" Size="10" />
@@ -12,10 +13,9 @@
 			<esri:SimpleRenderer x:Key="PolylineRenderer" Symbol="{StaticResource SLS}" />
 			<esri:SimpleRenderer x:Key="PolygonRenderer" Symbol="{StaticResource SFS}" />
 		</Grid.Resources>
-		<esri:SceneView x:Name="MySceneView"
-						SceneViewTapped="MySceneView_SceneViewTapped"
-                       >
-			<esri:Scene>
+        <esri:SceneView x:Name="MySceneView"
+						SceneViewTapped="MySceneView_SceneViewTapped">
+            <esri:Scene>
 				<esri:ArcGISTiledMapServiceLayer 
                     ID="StreetMapLayer"
 					ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
@@ -51,10 +51,9 @@
                             Padding="10" Margin="5"/>
 					<Button x:Name="EditButton" Content="Edit" Click="EditButton_Click"
                             Padding="10" Margin="5" />
-					<!--<Button x:Name="FinishButton" Content="Finish" Click="Finish_Click"
-							Padding="10" Margin="5"/>-->
-
-					<Button x:Name="ClearButton" Content="Clear" Click="Clear_Click"
+                    <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click"
+							Padding="10" Margin="5"/>
+                    <Button x:Name="ClearButton" Content="Clear" Click="Clear_Click"
                             Padding="10" Margin="5" />
 				</StackPanel>
 			</Grid>
