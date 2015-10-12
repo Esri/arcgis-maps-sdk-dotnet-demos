@@ -18,7 +18,7 @@ namespace SceneEditingDemo.Helpers
 {
     /// <summary>
     /// <see cref="SceneEditHelper"/> provides methods for creating and editing geometries on the SceneView.
-    /// When draw or edit is requested, draw experience is started in the assosiated SceneView that provides
+    /// When draw or edit is requested, draw experience is started in the associated SceneView that provides
     /// visual feedback for the user about the operation. 
     /// </summary>
     /// <remarks><see cref="SceneEditHelper"/> provides basic draw and edit operations for working with geometries that
@@ -58,12 +58,12 @@ namespace SceneEditingDemo.Helpers
 			Style = SimpleLineStyle.Dot
 		};
 
-		#endregion // Default draw symbols
+        #endregion // Default draw symbols
 
         /// <summary>
-        /// Gets the value indicating wheter there is a draw or edit session ongoing.
+        /// Gets the value indicating whether there is a draw or edit session ongoing.
         /// </summary>
-		public static bool IsActive { get; private set; }
+        public static bool IsActive { get; private set; }
 
 		#region Create geometries
 
@@ -84,7 +84,7 @@ namespace SceneEditingDemo.Helpers
         }
 
         /// <summary>
-        /// Create a new <see cref="Polyline"/>. This will activate drawing experience on the map. Draw is completed on douple click.
+        /// Create a new <see cref="Polyline"/>. This will activate drawing experience on the map. Draw is completed on double click.
         /// </summary>
         /// <param name="sceneView">The <see cref="SceneView"/> that is used for drawing.</param>
         /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
@@ -100,7 +100,7 @@ namespace SceneEditingDemo.Helpers
 		}
 
         /// <summary>
-        /// Create a new <see cref="Polygon"/>. This will activate drawing experience on the map. Draw is completed on douple click.
+        /// Create a new <see cref="Polygon"/>. This will activate drawing experience on the map. Draw is completed on double click.
         /// </summary>
         /// <param name="sceneView">The <see cref="SceneView"/> that is used for drawing.</param>
         /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
@@ -120,7 +120,7 @@ namespace SceneEditingDemo.Helpers
         #region Edit geometries
 
         /// <summary>
-        /// Edit existing <see cref="Polygon"/>. This will activate editing experience on the map. Edit is completed on douple click.
+        /// Edit existing <see cref="Polygon"/>. This will activate editing experience on the map. Edit is completed on double click.
         /// </summary>
         /// <param name="sceneView">The <see cref="SceneView"/> that is used for editing.</param>
         /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
@@ -234,8 +234,8 @@ namespace SceneEditingDemo.Helpers
 						isEditingVertex = false;
 					}
 				},
-				(p) => // Douple tapped - completes task and returns new polygon
-				{
+				(p) => // Double tapped - completes task and returns new polygon
+                {
 					fillGraphic.IsVisible = false;
 					lineMoveGraphic.IsVisible = false;
 					tcs.SetResult(newPolygon);
@@ -263,7 +263,7 @@ namespace SceneEditingDemo.Helpers
 		}
 
         /// <summary>
-        /// Edit existing <see cref="Polyline"/>. This will activate editing experience on the map. Edit is completed on douple click.
+        /// Edit existing <see cref="Polyline"/>. This will activate editing experience on the map. Edit is completed on double click.
         /// </summary>
         /// <param name="sceneView">The <see cref="SceneView"/> that is used for editing.</param>
         /// <exception cref="TaskCanceledException">If previous task wasn't completed, <see cref="TaskCanceledException"/>
@@ -369,8 +369,8 @@ namespace SceneEditingDemo.Helpers
 						isEditingVertex = false;
 					}
 				},
-				(p) => // Douple tapped - completes task and returns new polyline
-				{
+				(p) => // Double tapped - completes task and returns new polyline
+                {
 					tcs.SetResult(newPolyline);
 				});
 			Action cleanup = () =>
