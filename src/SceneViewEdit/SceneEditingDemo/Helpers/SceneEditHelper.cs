@@ -68,19 +68,6 @@ namespace SceneEditingDemo.Helpers
 		#region Create geometries
 
         /// <summary>
-        /// Cancels current draw or edit session. Only one session can be active at the time.
-        /// </summary>
-        public static void Cancel()
-        {
-            if (!IsActive) return;
-
-            // Cancel previous source and create new
-            if (_drawTaskTokenSource != null)
-                _drawTaskTokenSource.Cancel();
-            Cleanup();
-        }
-
-        /// <summary>
         /// Create a new point. This will activate drawing experience on the map. To complete it, select location from the map.
         /// </summary>
         /// <param name="sceneView">The <see cref="SceneView"/> that is used for drawing.</param>
@@ -409,6 +396,23 @@ namespace SceneEditingDemo.Helpers
 		}
 
         #endregion // Edit geometries
+
+        #region Cancel
+
+        /// <summary>
+        /// Cancels current draw or edit session. Only one session can be active at the time.
+        /// </summary>
+        public static void Cancel()
+        {
+            if (!IsActive) return;
+
+            // Cancel previous source and create new
+            if (_drawTaskTokenSource != null)
+                _drawTaskTokenSource.Cancel();
+            Cleanup();
+        }
+
+        #endregion // Cancel
 
         #region Private utility methods
 
