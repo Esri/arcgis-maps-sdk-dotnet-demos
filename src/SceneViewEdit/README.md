@@ -10,7 +10,7 @@ Demo to show how to do custom geometry editing on a SceneView. Implements drawin
 
 #### Using SceneEditHelper
 
-`SceneEditHelper` provides methods for creating and editing geometries on a `SceneView`. You can use the class as-is, extend it or take some ideas from it while implemening your own custom editing experience.
+`SceneEditHelper` provides methods for creating and editing geometries on a `SceneView`. You can use the class as-is, extend it or take some ideas from it while implementing your own custom editing experience.
 
 Only one draw or edit operation can be active at the time and preivous is canceled if new one is invoked. You can also use `Cancel` method to cancel ongoing operation. When an operation is canceled `TaskCanceledException` is thrown.
 
