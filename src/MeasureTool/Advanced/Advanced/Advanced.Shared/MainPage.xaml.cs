@@ -80,6 +80,7 @@ namespace Advanced
 				var lineSegment = new Polyline(new MapPoint[] {previous, point}, polyline.SpatialReference);
 				var intermediateLength = GeometryEngine.GeodesicLength(lineSegment);
 				_measurements.Add(string.Format("[{0}-{1}]\t:\t{2:0} m\n", i, i + 1, intermediateLength));
+				previous = point;
 				i++;
 			}
 			var totalLength = GeometryEngine.GeodesicLength(polyline);
