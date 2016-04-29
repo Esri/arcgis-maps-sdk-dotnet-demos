@@ -1,7 +1,8 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Layers;
-using Esri.ArcGISRuntime.Symbology;
+
+
 using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -95,8 +96,8 @@ namespace RoutingSample
 			var maneuvers = new ObservableCollection<Graphic>();
 			foreach (var directions in m_route.Routes)
 			{
-				routeLines.Add(new Graphic() { Geometry = CombineParts(directions.RouteFeature.Geometry as Polyline) });
-				var turns = (from a in directions.RouteDirections select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
+				routeLines.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
+				var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
 				foreach (var m in turns)
 				{
 					maneuvers.Add(new Graphic() { Geometry = m });
@@ -117,14 +118,14 @@ namespace RoutingSample
 						"DistanceToDestination", "DistanceToWaypoint", "TimeToDestination",
 						"MilesToDestination", "MilesToWaypoint", 
 					});
-			RouteDirection closest = null;
+			DirectionManeuver closest = null;
 			double distance = double.NaN;
 			MapPoint snappedLocation = null;
 			Route direction = null;
 			// Find the route part that we are currently on by snapping to each segment and see which one is the closest
 			foreach (var dir in m_route.Routes)
 			{
-				var closestCandidate = (from a in dir.RouteDirections
+				var closestCandidate = (from a in dir.DirectionManeuvers
 										where a.Geometry is Polyline
 										select new { Direction = a, Proximity = GeometryEngine.NearestCoordinate(a.Geometry, location) }).OrderBy(b => b.Proximity.Distance).FirstOrDefault();
 				if (double.IsNaN(distance) || distance < closestCandidate.Proximity.Distance)
@@ -137,25 +138,25 @@ namespace RoutingSample
 			}
 			if (closest != null)
 			{
-				var directions = direction.RouteDirections.ToList();
+				var directions = direction.DirectionManeuvers.ToList();
 				var idx = directions.IndexOf(closest);
 				if (idx < directions.Count)
 				{
-					RouteDirection next = directions[idx + 1];
+					DirectionManeuver next = directions[idx + 1];
 
 					//calculate how much is left of current route segment
 					var segment = closest.Geometry as Polyline;
 					var proximity = GeometryEngine.NearestVertex(segment, snappedLocation);
 					double frac = 1 - GetFractionAlongLine(segment, proximity, snappedLocation);
-					TimeSpan timeLeft = new TimeSpan((long)(closest.Time.Ticks * frac));
-					double segmentLengthLeft = (Convert.ToDouble(closest.GetLength(LinearUnits.Meters))) * frac;
+					TimeSpan timeLeft = new TimeSpan((long)(closest.Duration.Ticks * frac));
+					double segmentLengthLeft = (Convert.ToDouble(closest.Length)) * frac;
 					//Sum up the time and lengths for the remaining route segments
 					TimeSpan totalTimeLeft = timeLeft;
 					double totallength = segmentLengthLeft;
 					for (int i = idx + 1; i < directions.Count; i++)
 					{
-						totalTimeLeft += directions[i].Time;
-						totallength += directions[i].GetLength(LinearUnits.Meters);
+						totalTimeLeft += directions[i].Duration;
+						totallength += directions[i].Length;
 					}
 
 					//Update properties
@@ -176,7 +177,7 @@ namespace RoutingSample
 						ManeuverImage = maneuverUri;
 						propertyNames.Add("ManeuverImage");
 					}
-					NextManeuver = next.Text;
+					NextManeuver = next.DirectionText;
 
 					RaisePropertiesChanged(propertyNames);
 				}
