@@ -5,18 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-	<Grid x:Name="LayoutRoot">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-		<TextBlock Text="{Binding Text}" FontSize="18" TextWrapping="Wrap" />
-		<StackPanel Orientation="Horizontal"
-					HorizontalAlignment="Right"
-					Grid.Row="1">
-			<TextBlock x:Name="time" />
-			<TextBlock Text=" / " />
-			<TextBlock Text="" x:Name="distance" />
-		</StackPanel>
-	</Grid>
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding DirectionText}" FontSize="18" TextWrapping="Wrap" />
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Grid.Row="1">
+            <TextBlock x:Name="time" />
+            <TextBlock Text=" / " />
+            <TextBlock Text="" x:Name="distance" />
+        </StackPanel>
+    </Grid>
 </UserControl>

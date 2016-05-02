@@ -17,59 +17,59 @@ using System.Windows.Shapes;
 
 namespace LocalNetworkSample.Controls
 {
-	/// <summary>
-	/// Interaction logic for RouteDirectionView.xaml
-	/// </summary>
-	public partial class RouteDirectionView : UserControl
-	{
-		public RouteDirectionView()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for RouteDirectionView.xaml
+    /// </summary>
+    public partial class RouteDirectionView : UserControl
+    {
+        public RouteDirectionView()
+        {
+            InitializeComponent();
+        }
 
-		public Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteDirection RouteDirection
-		{
-			get { return (Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteDirection)GetValue(RouteDirectionProperty); }
-			set { SetValue(RouteDirectionProperty, value); }
-		}
+        public DirectionManeuver RouteDirection
+        {
+            get { return (DirectionManeuver)GetValue(RouteDirectionProperty); }
+            set { SetValue(RouteDirectionProperty, value); }
+        }
 
-		public static readonly DependencyProperty RouteDirectionProperty =
-			DependencyProperty.Register("RouteDirection", typeof(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteDirection),
-			typeof(RouteDirectionView), new PropertyMetadata(null, OnRouteDirectionPropertyChanged));
+        public static readonly DependencyProperty RouteDirectionProperty =
+            DependencyProperty.Register("RouteDirection", typeof(DirectionManeuver),
+            typeof(RouteDirectionView), new PropertyMetadata(null, OnRouteDirectionPropertyChanged));
 
-		private static void OnRouteDirectionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var direction = e.NewValue as RouteDirection;
-			(d as RouteDirectionView).UpdateDirection(direction);
-		}
+        private static void OnRouteDirectionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var direction = e.NewValue as DirectionManeuver;
+            (d as RouteDirectionView).UpdateDirection(direction);
+        }
 
-		private void UpdateDirection(RouteDirection direction)
-		{
-			if (direction == null)
-			{
-				LayoutRoot.Visibility = Visibility.Collapsed;
-				return;
-			}
-			LayoutRoot.Visibility = Visibility.Visible;
-			LayoutRoot.DataContext = direction;
-			var d = direction.GetLength(LinearUnits.Miles);
-			if (d == 0)
-				distance.Text = "";
-			else if (d >= .25)
-				distance.Text = d.ToString("0.0 mi");
-			else
-			{
-				d = direction.GetLength(LinearUnits.Yards);
-				distance.Text = d.ToString("0 yd");
-			}
-			if (direction.Time.TotalHours >= 1)
-				time.Text = direction.Time.ToString("hh\\:mm");
-			else if (direction.Time.TotalMinutes > 1)
-				time.Text = direction.Time.ToString("mm\\:ss");
-			else if (direction.Time.TotalSeconds > 0)
-				time.Text = direction.Time.ToString("ss") + " sec";
-			else
-				time.Text = "";
-		}
-	}
+        private void UpdateDirection(DirectionManeuver direction)
+        {
+            if (direction == null)
+            {
+                LayoutRoot.Visibility = Visibility.Collapsed;
+                return;
+            }
+            LayoutRoot.Visibility = Visibility.Visible;
+            LayoutRoot.DataContext = direction;
+            var d = LinearUnits.Miles.ConvertFromMeters(direction.Length);
+            if (d == 0)
+                distance.Text = "";
+            else if (d >= .25)
+                distance.Text = d.ToString("0.0 mi");
+            else
+            {
+                d = LinearUnits.Yards.ConvertFromMeters(direction.Length);
+                distance.Text = d.ToString("0 yd");
+            }
+            if (direction.Duration.TotalHours >= 1)
+                time.Text = direction.Duration.ToString("hh\\:mm");
+            else if (direction.Duration.TotalMinutes > 1)
+                time.Text = direction.Duration.ToString("mm\\:ss");
+            else if (direction.Duration.TotalSeconds > 0)
+                time.Text = direction.Duration.ToString("ss") + " sec";
+            else
+                time.Text = "";
+        }
+    }
 }
