@@ -76,12 +76,6 @@ namespace RoutingSample.Models
 			parameters.RouteShapeType = RouteShapeType.TrueShapeWithMeasures;
 			parameters.OutputSpatialReference = SpatialReferences.Wgs84;
 			parameters.DirectionsDistanceUnits = DirectionsDistanceTextUnits.Metric;
-            var travelMode = new TravelMode()
-            {
-                
-            };
-            travelMode.RestrictionAttributeNames.Add("OneWay");
-            parameters.TravelMode = travelMode;
             parameters.LocalStartTime = DateTime.Now;
             return await task.SolveRouteAsync(parameters);
 		}

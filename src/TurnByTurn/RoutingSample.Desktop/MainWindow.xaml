@@ -77,8 +77,9 @@
         </StackPanel>
 
         <Grid x:Name="MapPanel" Grid.Column="1" Grid.Row="1">
-            <esri:MapView LocationDisplay="{Binding LocationDisplay}"
-					  local:CommandBinder.RequestView="{Binding ViewpointRequested}" >
+            <esri:MapView GraphicsOverlays="{Binding Route.RouteResultOverlays}"
+					  local:CommandBinder.RequestView="{Binding ViewpointRequested}"
+                          Loaded="OnMapViewLoaded">
 				<local:RestoreAutoPanMode.RestoreAutoPanSettings>
 					<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
 				</local:RestoreAutoPanMode.RestoreAutoPanSettings>
@@ -87,25 +88,6 @@
 					Source="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
 
 				</esri:Map>
-                <esri:MapView.GraphicsOverlays>
-                    <esri:GraphicsOverlay>
-                        <!--<esri:GraphicsOverlay GraphicsSource="{Binding Route.RouteLines, Source={StaticResource viewmodel}}">-->
-                        <esri:GraphicsOverlay.Renderer>
-                            <esri:SimpleRenderer>
-                                <esri:SimpleLineSymbol Width="10" Color="#BE3232FF" />
-                            </esri:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-
-                    <esri:GraphicsOverlay>
-                        <!--<esri:GraphicsOverlay GraphicsSource="{Binding Route.Maneuvers, Source={StaticResource viewmodel}}">-->
-                        <esri:GraphicsOverlay.Renderer>
-                            <esri:SimpleRenderer>
-                                <esri:SimpleMarkerSymbol Size="10" Color="Black" />
-                            </esri:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-                </esri:MapView.GraphicsOverlays>
 			</esri:MapView>
         </Grid>
 

@@ -1,6 +1,5 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-
-
+using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
 using Esri.ArcGISRuntime.UI;
 using System;
@@ -47,11 +46,9 @@ namespace RoutingSample
 			}
 		}
 
-		public IList<Graphic> Maneuvers { get; private set; }
+        public GraphicsOverlayCollection RouteResultOverlays { get; private set; }
 
-		public IList<Graphic> RouteLines { get; private set; }
-
-		public string NextManeuver { get; private set; }
+        public string NextManeuver { get; private set; }
 		public MapPoint WaypointLocation { get; private set; }
 
 		public double DistanceToDestination { get; private set; }
@@ -92,19 +89,40 @@ namespace RoutingSample
 
 		private void InitializeRoute()
 		{
-			var routeLines = new ObservableCollection<Graphic>();
-			var maneuvers = new ObservableCollection<Graphic>();
-			foreach (var directions in m_route.Routes)
+            var routeLinesOverlay = new GraphicsOverlay()
+            {
+                Renderer = new SimpleRenderer()
+                {
+                    Symbol = new SimpleLineSymbol()
+                    {
+                        Width = 10,
+                        Color = Color.FromArgb(75, 50, 50, 255)
+                    }
+                }
+            };
+            var maneuversOverlay = new GraphicsOverlay()
+            {
+                Renderer = new SimpleRenderer()
+                {
+                    Symbol = new SimpleLineSymbol()
+                    {
+                        Width = 10,
+                        Color = Colors.Black
+                    }
+                }
+            };
+            RouteResultOverlays = new GraphicsOverlayCollection();
+            RouteResultOverlays.Add(routeLinesOverlay);
+            RouteResultOverlays.Add(maneuversOverlay);
+            foreach (var directions in m_route.Routes)
 			{
-				routeLines.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
+                routeLinesOverlay.Graphics.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
 				var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
 				foreach (var m in turns)
 				{
-					maneuvers.Add(new Graphic() { Geometry = m });
+                    maneuversOverlay.Graphics.Add(new Graphic() { Geometry = m });
 				}
 			}
-			RouteLines = routeLines;
-			Maneuvers = maneuvers;
 		}
 
 		/// <summary>

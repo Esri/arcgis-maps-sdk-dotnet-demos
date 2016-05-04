@@ -113,32 +113,34 @@ namespace RoutingSample.ViewModels
 				m_ViewpointRequested = value;
 				RaisePropertyChanged("ViewpointRequested");
 			}
-		}
+        }
 
-		/// <summary>
-		/// The current location display used for displaying location on the mapView
-		/// </summary>
-		public LocationDisplay LocationDisplay
-		{
-			get
-			{
-				if (m_locationDisplay == null)
-				{
-					//m_locationDisplay = new LocationDisplay();
-					m_locationDisplay.PropertyChanged += LocationDisplay_PropertyChanged;
-					//m_locationDisplay.IsEnabled = true;
-					if (Route != null)
-						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
-				}
-				return m_locationDisplay;
-			}
-		}
+        /// <summary>
+        /// The current location display used for displaying location on the mapView
+        /// </summary>
+        public LocationDisplay LocationDisplay
+        {
+            get { return m_locationDisplay; }
+            set
+            {
+                if (m_locationDisplay != null)
+                    m_locationDisplay.PropertyChanged -= LocationDisplay_PropertyChanged;
+                m_locationDisplay = value;
+                if(m_locationDisplay != null)
+                {                    
+                    m_locationDisplay.PropertyChanged += LocationDisplay_PropertyChanged;
+                    m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
+                    m_locationDisplay.Start();
+                }
+                RaisePropertyChanged("LocationDisplay");
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		private async void GenerateRoute(string address)
+        private async void GenerateRoute(string address)
 		{
 			if (!string.IsNullOrWhiteSpace(address) && LocationDisplay != null && LocationDisplay.Location != null)
 			{

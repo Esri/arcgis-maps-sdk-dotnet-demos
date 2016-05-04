@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Esri.ArcGISRuntime.UI;
+using RoutingSample.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RoutingSample.Desktop
 {
@@ -29,5 +18,12 @@ namespace RoutingSample.Desktop
 		{
 			this.Close();
 		}
+
+        private void OnMapViewLoaded(object sender, RoutedEventArgs e)
+        {
+            var mapView = (MapView)sender;
+            var viewModel = (MainPageVM)mapView.DataContext;
+            viewModel.LocationDisplay = mapView.LocationDisplay;
+        }
     }
 }
