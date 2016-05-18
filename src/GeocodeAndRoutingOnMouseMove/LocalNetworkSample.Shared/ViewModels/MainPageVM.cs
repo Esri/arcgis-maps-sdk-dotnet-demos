@@ -251,7 +251,7 @@ namespace LocalNetworkSample
                     var file = files.Where(f => f.Name.EndsWith(".db")).FirstOrDefault();
                     if (file != null) //Locator found
                     {
-                        return new LocalRouteTask(file.Path, "");
+                        return await RouteTask.CreateAsync(file.Path, "Streets_ND");
                     }
                 }
 #else
@@ -298,7 +298,7 @@ namespace LocalNetworkSample
                     var file = files.Where(f => f.Name.EndsWith(".loc")).FirstOrDefault();
                     if (file != null)
                     {
-                        return new Esri.ArcGISRuntime.Tasks.Geocoding.LocalLocatorTask(file.Path);
+                        return await LocatorTask.CreateAsync(new Uri(file.Path));
                     }
                 }
 #else
@@ -336,15 +336,18 @@ namespace LocalNetworkSample
         private Map m_Map;
         public Map Map
         {
-            get { return m_Map; }
-            set
+            get
             {
-                m_Map = value;
-                if (m_Map != null)
+                if (m_Map == null)
                 {
                     var extent = new Envelope(-13044883, 3853913, -13039791, 3857887, SpatialReferences.WebMercator);
-                    m_Map.InitialViewpoint = new Viewpoint(extent);
+                    m_Map = new Map(Basemap.CreateImagery()) { InitialViewpoint = new Viewpoint(extent) };
                 }
+                return m_Map;
+            }
+            private set
+            {
+                m_Map = value;
                 OnPropertyChanged();
             }
         }
@@ -387,17 +390,17 @@ namespace LocalNetworkSample
                 if (typeof(T) == typeof(MapPoint))
                 {
                     barriers = FindGraphicsOverlay("PointBarriers");
-                    geometry = await GeoViewDrawHelper.DrawPointAsync(m_geoView, CancellationToken.None);
+                    geometry = await GeoViewDrawHelper.DrawPointAsync(GeoView, CancellationToken.None);
                 }
                 else if (typeof(T) == typeof(Polyline))
                 {
                     barriers = FindGraphicsOverlay("PolylineBarriers");
-                    geometry = await GeoViewDrawHelper.DrawPolylineAsync(m_geoView, CancellationToken.None);
+                    geometry = await GeoViewDrawHelper.DrawPolylineAsync(GeoView, CancellationToken.None);
                 }
                 else if (typeof(T) == typeof(Polygon))
                 {
                     barriers = FindGraphicsOverlay("PolygonBarriers");
-                    geometry = await GeoViewDrawHelper.DrawPolygonAsync(m_geoView, CancellationToken.None);
+                    geometry = await GeoViewDrawHelper.DrawPolygonAsync(GeoView, CancellationToken.None);
                 }
 
                 if (geometry != null)

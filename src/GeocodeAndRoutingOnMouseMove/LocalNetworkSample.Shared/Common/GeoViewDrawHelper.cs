@@ -21,7 +21,7 @@ namespace LocalNetworkSample.Common
     {
         #region Default draw symbols
         //Symbol used by DrawPointAsync while moving the mouse
-        private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = Colors.Blue };
+        private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = Colors.Blue, Size = 12, Style = SimpleMarkerSymbolStyle.Circle };
 
         //Symbol used by DrawPolylineAsync	
         private static LineSymbol DefaultLineSymbol = new SimpleLineSymbol()
@@ -218,10 +218,10 @@ namespace LocalNetworkSample.Common
             if (onMove != null)
             {
 #if NETFX_CORE
-                movehandler = (s, e) => onMove(view.ScreenToLocation(e.GetCurrentPoint(view).Position));
+                movehandler = (s, e) => onMove(((MapView)view).ScreenToLocation(e.GetCurrentPoint(view).Position));
                 view.PointerMoved += movehandler;
 #else
-                movehandler = (s, e) => onMove(view.ScreenToLocation(e.GetPosition(view)));
+                movehandler = (s, e) => onMove(((MapView)view).ScreenToLocation(e.GetPosition(view)));
                 view.MouseMove += movehandler;
 #endif
             }

@@ -1,0 +1,36 @@
+﻿<Application
+    x:Class="LocalNetworkSample.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LocalNetworkSample"
+    RequestedTheme="Light">
+    <Application.Resources>
+        <Color x:Key="AppAccentColor">#FF26A0DA</Color>
+        <SolidColorBrush x:Key="AppAccentBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="AppAccentForegroundBrush" Color="White"/>
+        <SolidColorBrush x:Key="HyperlinkPointerOverForegroundThemeBrush" Color="#FF5598A2"/>
+        <SolidColorBrush x:Key="ToggleSwitchCurtainBackgroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="ToggleSwitchCurtainPressedBackgroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="ToggleSwitchCurtainPointerOverBackgroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="ListViewItemSelectedPointerOverBackgroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="ListViewItemSelectedPointerOverBorderThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <SolidColorBrush x:Key="ComboBoxSelectedBackgroundThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <SolidColorBrush x:Key="ComboBoxSelectedPointerOverBackgroundThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <SolidColorBrush x:Key="ComboBoxItemSelectedBackgroundThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <SolidColorBrush x:Key="ComboBoxItemSelectedPointerOverBackgroundThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <SolidColorBrush x:Key="SliderTrackDecreaseBackgroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="ProgressBarForegroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush" Color="{StaticResource AppAccentColor}"/>
+        <SolidColorBrush x:Key="SplashScreenBackground" Color="White"/>
+
+        <!-- Search button background when when the control is focused, but the mouse is out of the button. It is also the background of search suggestions when the mouse is over them -->
+        <SolidColorBrush x:Key="SearchBoxButtonBackgroundThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <!-- Search button background when the mouse is over the button (when the control is focused or not) -->
+        <SolidColorBrush x:Key="SearchBoxButtonPointerOverBackgroundThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <!-- Color of highlighted characters in the result suggestions -->
+        <SolidColorBrush x:Key="SearchBoxHitHighlightForegroundThemeBrush" Color="{StaticResource AppAccentColor}" />
+        <!-- Color of highlighted characters in the result suggestions when the mouse is over the element -->
+        <SolidColorBrush x:Key="SearchBoxHitHighlightSelectedForegroundThemeBrush" Color="Black" />
+    </Application.Resources>
+</Application>
