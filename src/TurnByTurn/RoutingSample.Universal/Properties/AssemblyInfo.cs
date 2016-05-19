@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RoutingSample.WinStore")]
-[assembly: AssemblyDescription("ArcGIS Windows Store Routing Sample by Morten Nielsen, Esri")]
+[assembly: AssemblyTitle("RoutingSample")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ESRI")]
-[assembly: AssemblyProduct("RoutingSample.WinStore")]
-[assembly: AssemblyCopyright("Copyright © Esri 2014")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("RoutingSample")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -17,110 +17,144 @@ using System.Windows.Media;
 
 namespace RoutingSample
 {
-	/// <summary>
-	/// Data source that wraps a route result and based on a location exposes properties
-	/// like next turn, distance, etc
-	/// </summary>
-	public class RouteDataSource : ModelBase
-	{
-		private readonly RouteResult m_route;
+    /// <summary>
+    /// Data source that wraps a route result and based on a location exposes properties
+    /// like next turn, distance, etc
+    /// </summary>
+    public class RouteDataSource : ModelBase
+    {
+        private readonly RouteResult m_route;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RouteDataSource"/> class.
-		/// </summary>
-		/// <param name="route">The route.</param>
-		public RouteDataSource(RouteResult route)
-		{
-			m_route = route;
-			if (IsDesignMode) //Design time data
-			{
-				DistanceToDestination = 1000;
-				DistanceToWaypoint = 500;
-				TimeToWaypoint = new TimeSpan(1, 2, 3);
-				TimeToDestination = new TimeSpan(2, 3, 4);
-				NextManeuver = "Turn right onto Main St.";
-			}
-			else
-			{
-				InitializeRoute();
-			}
-		}
-
-        public GraphicsOverlayCollection RouteResultOverlays { get; private set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RouteDataSource"/> class.
+        /// </summary>
+        /// <param name="route">The route.</param>
+        public RouteDataSource(RouteResult route)
+        {
+            m_route = route;
+            if (IsDesignMode) //Design time data
+            {
+                DistanceToDestination = 1000;
+                DistanceToWaypoint = 500;
+                TimeToWaypoint = new TimeSpan(1, 2, 3);
+                TimeToDestination = new TimeSpan(2, 3, 4);
+                NextManeuver = "Turn right onto Main St.";
+            }
+            else
+            {
+                InitializeRoute();
+            }
+        }
+        private GraphicsOverlayCollection m_routeResultOverlays;
+        public GraphicsOverlayCollection RouteResultOverlays
+        {
+            get { return m_routeResultOverlays; }
+            set
+            {
+                m_routeResultOverlays = value;
+                if (m_routeResultOverlays != null)
+                {
+                    m_routeResultOverlays.Add(RouteLinesOverlay);
+                    m_routeResultOverlays.Add(ManeuversOverlay);
+                }
+            }
+        }
 
         public string NextManeuver { get; private set; }
-		public MapPoint WaypointLocation { get; private set; }
+        public MapPoint WaypointLocation { get; private set; }
 
-		public double DistanceToDestination { get; private set; }
+        public double DistanceToDestination { get; private set; }
 
-		public string MilesToDestination
-		{
-			get { return MetersToMilesFeet(DistanceToDestination); }
-		}
+        public string MilesToDestination
+        {
+            get { return MetersToMilesFeet(DistanceToDestination); }
+        }
 
-		public TimeSpan TimeToDestination { get; private set; }
+        public TimeSpan TimeToDestination { get; private set; }
 
-		public TimeSpan TimeToWaypoint { get; private set; }
+        public TimeSpan TimeToWaypoint { get; private set; }
 
-		public double DistanceToWaypoint { get; private set; }
+        public double DistanceToWaypoint { get; private set; }
 
-		public string MilesToWaypoint
-		{
-			get { return MetersToMilesFeet(DistanceToWaypoint); }
-		}
+        public string MilesToWaypoint
+        {
+            get { return MetersToMilesFeet(DistanceToWaypoint); }
+        }
 
-		public MapPoint SnappedLocation { get; private set; }
+        public MapPoint SnappedLocation { get; private set; }
 
-		public Uri ManeuverImage { get; private set; }
+        public Uri ManeuverImage { get; private set; }
 
-		private string MetersToMilesFeet(double distance)
-		{
+        private string MetersToMilesFeet(double distance)
+        {
 
-			var miles = LinearUnits.Miles.ConvertFromMeters(distance);
-			if (miles >= 10)
-				return string.Format("{0:0} mi", miles);
-			if (miles >= 1)
-				return string.Format("{0:0.0} mi", miles);
-			else if (miles >= .25)
-				return string.Format("{0:0.00} mi", miles);
-			else //less than .25mi
-				return string.Format("{0:0} ft", LinearUnits.Feet.ConvertFromMeters(distance));
-		}
+            var miles = LinearUnits.Miles.ConvertFromMeters(distance);
+            if (miles >= 10)
+                return string.Format("{0:0} mi", miles);
+            if (miles >= 1)
+                return string.Format("{0:0.0} mi", miles);
+            else if (miles >= .25)
+                return string.Format("{0:0.00} mi", miles);
+            else //less than .25mi
+                return string.Format("{0:0} ft", LinearUnits.Feet.ConvertFromMeters(distance));
+        }
 
-		private void InitializeRoute()
-		{
-            var routeLinesOverlay = new GraphicsOverlay()
+        private GraphicsOverlay m_routeLinesOverlay;
+        private GraphicsOverlay RouteLinesOverlay
+        {
+            get
             {
-                Renderer = new SimpleRenderer()
+                if (m_routeLinesOverlay == null)
                 {
-                    Symbol = new SimpleLineSymbol()
+                    m_routeLinesOverlay = new GraphicsOverlay()
                     {
-                        Width = 10,
-                        Color = Color.FromArgb(75, 50, 50, 255)
-                    }
+                        Renderer = new SimpleRenderer()
+                        {
+                            Symbol = new SimpleLineSymbol()
+                            {
+                                Width = 10,
+                                Color = Color.FromArgb(75, 50, 50, 255)
+                            }
+                        }
+                    };
+
                 }
-            };
-            var maneuversOverlay = new GraphicsOverlay()
+                return m_routeLinesOverlay;
+            }
+        }
+        private GraphicsOverlay m_maneuversOverlay;
+        private GraphicsOverlay ManeuversOverlay
+        {
+            get
             {
-                Renderer = new SimpleRenderer()
+                if (m_maneuversOverlay == null)
                 {
-                    Symbol = new SimpleLineSymbol()
+                    m_maneuversOverlay = new GraphicsOverlay()
                     {
-                        Width = 10,
-                        Color = Colors.Black
-                    }
+                        Renderer = new SimpleRenderer()
+                        {
+                            Symbol = new SimpleLineSymbol()
+                            {
+                                Width = 10,
+                                Color = Colors.Black
+                            }
+                        }
+                    };
                 }
-            };
-            RouteResultOverlays = new GraphicsOverlayCollection();
-            RouteResultOverlays.Add(routeLinesOverlay);
-            RouteResultOverlays.Add(maneuversOverlay);
+                return m_maneuversOverlay;
+            }
+        }
+
+
+        private void InitializeRoute()
+		{          
             foreach (var directions in m_route.Routes)
 			{
-                routeLinesOverlay.Graphics.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
+                RouteLinesOverlay.Graphics.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
 				var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
 				foreach (var m in turns)
 				{
-                    maneuversOverlay.Graphics.Add(new Graphic() { Geometry = m });
+                    ManeuversOverlay.Graphics.Add(new Graphic() { Geometry = m });
 				}
 			}
 		}

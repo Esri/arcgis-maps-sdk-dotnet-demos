@@ -1,14 +1,9 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.UI;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RoutingSample.ViewModels
 {
@@ -26,6 +21,7 @@ namespace RoutingSample.ViewModels
 		private Viewpoint m_ViewpointRequested;
 		private string m_RouteCalculationErrorMessage;
 		private LocationDisplay m_locationDisplay;
+        private GraphicsOverlayCollection m_resultGraphicsOverlays;
 		#endregion
 
 		/// <summary>
@@ -73,6 +69,8 @@ namespace RoutingSample.ViewModels
 					else
 						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Off;
 				}
+                if (m_routeDataSource != null)
+                    m_routeDataSource.RouteResultOverlays = m_resultGraphicsOverlays;
 			}
 		}
 
@@ -136,6 +134,21 @@ namespace RoutingSample.ViewModels
             }
         }
 
+        /// <summary>
+        /// The collection of <see cref="GraphicsOverlay"/> which holds graphic result of RouteTask.
+        /// </summary>
+        public GraphicsOverlayCollection ResultGraphicsOverlays
+        {
+            get { return m_resultGraphicsOverlays; }
+            set
+            {
+                m_resultGraphicsOverlays = value;
+                if (m_routeDataSource != null)
+                    m_routeDataSource.RouteResultOverlays = m_resultGraphicsOverlays;
+                RaisePropertyChanged("ResultGraphicsOverlays");
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -161,6 +174,7 @@ namespace RoutingSample.ViewModels
 #if DEBUG
 					// When debugging use a simulator for the generated route
 					LocationDisplay.DataSource = new RouteLocationSimulator(result);
+                    LocationDisplay.Start();
 #endif
 					LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 				}
@@ -182,9 +196,9 @@ namespace RoutingSample.ViewModels
 		//When location changes, push this location to the route datasource
 		private void LocationDisplay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == "CurrentLocation")
+			if (e.PropertyName == "Location")
 			{
-				if (LocationDisplay.Location != null && !LocationDisplay.Location.Position.IsEmpty)
+				if (LocationDisplay.Location != null && LocationDisplay.Location.Position != null &&  !LocationDisplay.Location.Position.IsEmpty)
 				{
 					if (Route != null)
 						Route.SetCurrentLocation(LocationDisplay.Location.Position);

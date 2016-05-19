@@ -1,20 +1,27 @@
-﻿using Esri.ArcGISRuntime.Security;
+﻿using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Security;
 using RoutingSample.ViewModels;
 using System;
 using System.Threading.Tasks;
-using System.Windows;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
-namespace RoutingSample.Desktop
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+
+namespace RoutingSample
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public partial class MainWindow : Window, IChallengeHandler
+    public sealed partial class MainPage : Page, IChallengeHandler
     {
-        public MainWindow()
+        public MainPage()
         {
-            InitializeComponent();
-            
+            this.InitializeComponent();
+
+            MyMapView.Map = new Map(Basemap.CreateStreets());
+
             var viewModel = (MainPageVM)MyMapView.DataContext;
             viewModel.LocationDisplay = MyMapView.LocationDisplay;
             viewModel.ResultGraphicsOverlays = MyMapView.GraphicsOverlays;
@@ -22,35 +29,33 @@ namespace RoutingSample.Desktop
             AuthenticationManager.Current.ChallengeHandler = this;
         }
 
-        private void Exit_Clicked(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
 
         #region IChallendHandler 
 
         public async Task<Credential> CreateCredentialAsync(CredentialRequestInfo requestInfo)
         {
-            if (Dispatcher == null)
+            var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+            if (dispatcher == null)
                 return await ChallengeUI(requestInfo);
-            return await Dispatcher.Invoke(() => ChallengeUI(requestInfo));
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () => await ChallengeUI(requestInfo));
+            return await loginTask.Task;
         }
-        
+
         TaskCompletionSource<Credential> loginTask = null;
         int loginAttempt = 0;
         private async Task<Credential> ChallengeUI(CredentialRequestInfo cri)
-		{ 
-			try 
-			{ 
+        {
+            try
+            {
                 loginTask = new TaskCompletionSource<Credential>();
                 LoginUI.Visibility = Visibility.Visible;
-				return await loginTask.Task; 
-			} 
-			finally 
-			{
-                LoginUI.Visibility = Visibility.Collapsed; 
-			} 
-		} 
+                return await loginTask.Task;
+            }
+            finally
+            {
+                LoginUI.Visibility = Visibility.Collapsed;
+            }
+        }
 
         private async void OnSignIn_Click(object sender, RoutedEventArgs e)
         {
@@ -61,11 +66,11 @@ namespace RoutingSample.Desktop
                 var credential = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri("http://www.arcgis.com/sharing/rest"), username, password);
                 loginTask.TrySetResult(credential);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LoginError.Text = ex.Message;
                 loginAttempt++;
-                if(loginAttempt >= 3)
+                if (loginAttempt >= 3)
                     loginTask.TrySetException(ex);
             }
         }

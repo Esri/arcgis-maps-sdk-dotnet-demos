@@ -76,16 +76,8 @@ namespace RoutingSample
 			while (course < 0) course += 360;
 			while (course > 360) course -= 360;
 
-			if (LocationChanged != null)
-			{
-				 LocationChanged(this, new Location(new MapPoint(lon, lat, SpatialReferences.Wgs84),0.001, Speed, course, false));
-			}
+            base.UpdateLocation(new Location(new MapPoint(lon, lat, SpatialReferences.Wgs84), 0.001, Speed, course, false));
 		}
-
-		/// <summary>
-		/// Raised when the location provider has a new location.
-		/// </summary>
-		public event EventHandler<Location> LocationChanged;
         
         /// <summary>
         /// Starts the location provider.
