@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PortalBrowser.WinStore")]
-[assembly: AssemblyDescription("ArcGIS Windows Desktop (WPF) Portal Browser Sample by Morten Nielsen, Esri")]
+[assembly: AssemblyTitle("PortalBrowser")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PortalBrowser.WinStore")]
-[assembly: AssemblyCopyright("Copyright © Esri 2014")]
+[assembly: AssemblyProduct("PortalBrowser")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

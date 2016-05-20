@@ -23,6 +23,7 @@ namespace PortalBrowser.WPF
 		public MainWindow()
 		{
 			InitializeComponent();
+            MyMapView.LocationDisplay.Start();
 		}
 
 		private void Exit_Clicked(object sender, RoutedEventArgs e)

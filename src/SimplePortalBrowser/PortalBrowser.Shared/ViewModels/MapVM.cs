@@ -1,10 +1,5 @@
-﻿using Esri.ArcGISRuntime.Portal;
-using Esri.ArcGISRuntime.WebMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Portal;
 
 namespace PortalBrowser.ViewModels
 {
@@ -23,14 +18,14 @@ namespace PortalBrowser.ViewModels
 			try
 			{
 				if (item == null)
-					WebMapVM = null;
+                    Map = null;
 				else
 				{
 					StatusMessage = "Loading Webmap...";
 					IsLoadingWebMap = true;
-					var webmap = await WebMap.FromPortalItemAsync(item);
-					WebMapVM = await WebMapViewModel.LoadAsync(webmap, item.ArcGISPortal);
-					IsLoadingWebMap = false;
+                    Map = new Map(item);
+                    await Map.LoadAsync();
+                    IsLoadingWebMap = false;
 					StatusMessage = "";
 				}
 			}
@@ -41,15 +36,15 @@ namespace PortalBrowser.ViewModels
 			}
 		}
 
-		private WebMapViewModel m_WebMapVM;
+		private Map m_Map;
 
-		public WebMapViewModel WebMapVM
-		{
-			get { return m_WebMapVM; }
+		public Map Map
+        {
+			get { return m_Map; }
 			set
 			{
-				m_WebMapVM = value;
-				OnPropertyChanged("WebMapVM");
+                m_Map = value;
+				OnPropertyChanged("Map");
 			}
 		}
 
