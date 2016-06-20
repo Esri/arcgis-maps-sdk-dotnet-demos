@@ -9,6 +9,7 @@
     <Import_RootNamespace>LocalNetworkSample</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\GeoViewDrawHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NullToCollapsedConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\DelegateCommand.cs" />
