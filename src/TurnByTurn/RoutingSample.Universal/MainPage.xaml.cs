@@ -19,12 +19,9 @@ namespace RoutingSample
         public MainPage()
         {
             this.InitializeComponent();
-
-            MyMapView.Map = new Map(Basemap.CreateStreets());
-
+            
             var viewModel = (MainPageVM)MyMapView.DataContext;
             viewModel.LocationDisplay = MyMapView.LocationDisplay;
-            viewModel.ResultGraphicsOverlays = MyMapView.GraphicsOverlays;
 
             AuthenticationManager.Current.ChallengeHandler = this;
         }

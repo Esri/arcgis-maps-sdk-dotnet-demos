@@ -78,7 +78,8 @@
 
         <Grid x:Name="MapPanel" Grid.Column="1" Grid.Row="1">
             <esri:MapView x:Name="MyMapView" 
-                          local:CommandBinder.RequestView="{Binding ViewpointRequested}">
+                          local:CommandBinder.RequestView="{Binding ViewpointRequested}"
+                          GraphicsOverlays="{Binding ResultGraphicsOverlays}">
 				<local:RestoreAutoPanMode.RestoreAutoPanSettings>
 					<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
 				</local:RestoreAutoPanMode.RestoreAutoPanSettings>

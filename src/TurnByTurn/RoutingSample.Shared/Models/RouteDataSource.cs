@@ -1,19 +1,10 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
 using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-#if NETFX_CORE
-using Windows.UI;
-#else
-using System.Windows.Media;
-#endif
 
 namespace RoutingSample
 {
@@ -39,24 +30,6 @@ namespace RoutingSample
                 TimeToWaypoint = new TimeSpan(1, 2, 3);
                 TimeToDestination = new TimeSpan(2, 3, 4);
                 NextManeuver = "Turn right onto Main St.";
-            }
-            else
-            {
-                InitializeRoute();
-            }
-        }
-        private GraphicsOverlayCollection m_routeResultOverlays;
-        public GraphicsOverlayCollection RouteResultOverlays
-        {
-            get { return m_routeResultOverlays; }
-            set
-            {
-                m_routeResultOverlays = value;
-                if (m_routeResultOverlays != null)
-                {
-                    m_routeResultOverlays.Add(RouteLinesOverlay);
-                    m_routeResultOverlays.Add(ManeuversOverlay);
-                }
             }
         }
 
@@ -98,67 +71,7 @@ namespace RoutingSample
             else //less than .25mi
                 return string.Format("{0:0} ft", LinearUnits.Feet.ConvertFromMeters(distance));
         }
-
-        private GraphicsOverlay m_routeLinesOverlay;
-        private GraphicsOverlay RouteLinesOverlay
-        {
-            get
-            {
-                if (m_routeLinesOverlay == null)
-                {
-                    m_routeLinesOverlay = new GraphicsOverlay()
-                    {
-                        Renderer = new SimpleRenderer()
-                        {
-                            Symbol = new SimpleLineSymbol()
-                            {
-                                Width = 10,
-                                Color = Color.FromArgb(75, 50, 50, 255)
-                            }
-                        }
-                    };
-
-                }
-                return m_routeLinesOverlay;
-            }
-        }
-        private GraphicsOverlay m_maneuversOverlay;
-        private GraphicsOverlay ManeuversOverlay
-        {
-            get
-            {
-                if (m_maneuversOverlay == null)
-                {
-                    m_maneuversOverlay = new GraphicsOverlay()
-                    {
-                        Renderer = new SimpleRenderer()
-                        {
-                            Symbol = new SimpleLineSymbol()
-                            {
-                                Width = 10,
-                                Color = Colors.Black
-                            }
-                        }
-                    };
-                }
-                return m_maneuversOverlay;
-            }
-        }
-
-
-        private void InitializeRoute()
-		{          
-            foreach (var directions in m_route.Routes)
-			{
-                RouteLinesOverlay.Graphics.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
-				var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
-				foreach (var m in turns)
-				{
-                    ManeuversOverlay.Graphics.Add(new Graphic() { Geometry = m });
-				}
-			}
-		}
-
+        
 		/// <summary>
 		/// Call this to set your current location and update directions based on that.
 		/// </summary>
@@ -234,17 +147,6 @@ namespace RoutingSample
 					RaisePropertiesChanged(propertyNames);
 				}
 			}
-		}
-
-		private static Polyline CombineParts(Polyline line)
-		{
-			List<MapPoint> vertices = new List<MapPoint>();
-			foreach(var part in line.Parts.GetPartsAsPoints())
-			{
-				foreach (var p in part)
-					vertices.Add(p);
-			}
-			return new Polyline(vertices, line.SpatialReference);
 		}
 		
 		// calculates how far down a line a certain point on the line is located as a value from 0..1

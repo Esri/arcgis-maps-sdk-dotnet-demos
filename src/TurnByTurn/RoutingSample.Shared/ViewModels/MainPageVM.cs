@@ -1,9 +1,18 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Symbology;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
 using Esri.ArcGISRuntime.UI;
 using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
+#if NETFX_CORE
+using Windows.UI;
+#else
+using System.Windows.Media;
+#endif
 
 namespace RoutingSample.ViewModels
 {
@@ -69,8 +78,6 @@ namespace RoutingSample.ViewModels
 					else
 						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Off;
 				}
-                if (m_routeDataSource != null)
-                    m_routeDataSource.RouteResultOverlays = m_resultGraphicsOverlays;
 			}
 		}
 
@@ -139,13 +146,38 @@ namespace RoutingSample.ViewModels
         /// </summary>
         public GraphicsOverlayCollection ResultGraphicsOverlays
         {
-            get { return m_resultGraphicsOverlays; }
-            set
+            get
             {
-                m_resultGraphicsOverlays = value;
-                if (m_routeDataSource != null)
-                    m_routeDataSource.RouteResultOverlays = m_resultGraphicsOverlays;
-                RaisePropertyChanged("ResultGraphicsOverlays");
+                if (m_resultGraphicsOverlays == null)
+                {
+                    m_resultGraphicsOverlays = new GraphicsOverlayCollection();
+                    if (m_resultGraphicsOverlays != null)
+                    {
+                        m_resultGraphicsOverlays.Add(new GraphicsOverlay()
+                        {
+                            Renderer = new SimpleRenderer()
+                            {
+                                Symbol = new SimpleLineSymbol()
+                                {
+                                    Width = 10,
+                                    Color = Color.FromArgb(75, 50, 50, 255)
+                                }
+                            }
+                        });
+                        m_resultGraphicsOverlays.Add(new GraphicsOverlay()
+                        {
+                            Renderer = new SimpleRenderer()
+                            {
+                                Symbol = new SimpleLineSymbol()
+                                {
+                                    Width = 10,
+                                    Color = Colors.Black
+                                }
+                            }
+                        });
+                    }
+                }
+                return m_resultGraphicsOverlays;
             }
         }
 
@@ -170,6 +202,7 @@ namespace RoutingSample.ViewModels
 
 					m_routeTaskCancellationToken = null;
 					Route = new RouteDataSource(result);
+                    InitializeRoute(result.Routes);
 					Route.SetCurrentLocation(LocationDisplay.Location.Position);
 #if DEBUG
 					// When debugging use a simulator for the generated route
@@ -193,8 +226,36 @@ namespace RoutingSample.ViewModels
 			}
 		}
 
-		//When location changes, push this location to the route datasource
-		private void LocationDisplay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void InitializeRoute(IReadOnlyList<Route> routes)
+        {
+            if (routes == null)
+                return;
+            var routeLines = ResultGraphicsOverlays[0];
+            var maneuvers = ResultGraphicsOverlays[1];
+            foreach (var directions in routes)
+            {
+                routeLines.Graphics.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
+                var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
+                foreach (var m in turns)
+                {
+                    maneuvers.Graphics.Add(new Graphic() { Geometry = m });
+                }
+            }
+        }
+        
+        private static Polyline CombineParts(Polyline line)
+        {
+            List<MapPoint> vertices = new List<MapPoint>();
+            foreach (var part in line.Parts.GetPartsAsPoints())
+            {
+                foreach (var p in part)
+                    vertices.Add(p);
+            }
+            return new Polyline(vertices, line.SpatialReference);
+        }
+
+        //When location changes, push this location to the route datasource
+        private void LocationDisplay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == "Location")
 			{
