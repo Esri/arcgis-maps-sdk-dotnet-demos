@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Tasks.Geocoding;
+using Esri.ArcGISRuntime.Security;
 
 namespace RoutingSample.Models
 {
@@ -16,9 +17,11 @@ namespace RoutingSample.Models
 	{
 		private const string locatorService = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
 		private const string routeService = "http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
-
+        
+        private readonly Credential credential;
 		public RouteService()
         {
+            credential = AuthenticationManager.Current.FindCredential(new Uri("http://www.arcgis.com/sharing/rest"));
         }
 
 		public async Task<RouteResult> GetRoute(string address, MapPoint from, CancellationToken cancellationToken)
@@ -59,7 +62,7 @@ namespace RoutingSample.Models
 			string svc = routeService;
 
 			//Calculate route
-			RouteTask task = await RouteTask.CreateAsync(new Uri(svc)).ConfigureAwait(false);
+			RouteTask task = await RouteTask.CreateAsync(new Uri(svc), credential).ConfigureAwait(false);
             
 			var parameters = await task.GenerateDefaultParametersAsync().ConfigureAwait(false);
             parameters.SetStops(stopList);

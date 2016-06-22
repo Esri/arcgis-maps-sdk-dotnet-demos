@@ -49,7 +49,7 @@
             <Grid x:Uid="MapPanel" Grid.Column="1" >
                 <esri:MapView x:Name="MyMapView"
                               local:CommandBinder.RequestView="{Binding ViewpointRequested}" 
-                              GraphicsOverlays="{Binding ResultGraphicsOverlays}">
+                              GraphicsOverlays="{Binding ResultGraphicsOverlays, Mode=OneWay}">
                     <!--Restores the map pan mode after interacting with the map-->
                     <local:RestoreAutoPanMode.RestoreAutoPanSettings>
                         <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
@@ -85,27 +85,6 @@
                         <SearchBox PlaceholderText="Enter destination" SearchHistoryEnabled="True"  QueryText="{Binding RouteToAddress, Mode=TwoWay}" Width="200" />
                         <ProgressBar IsIndeterminate="{Binding IsCalculatingRoute}" Margin="0,0,0,-5" />
                     </StackPanel>
-                    <!-- Login with ArcGIS Online to use http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World -->
-                    <Grid x:Name="LoginUI" Grid.Row="1" Visibility="Collapsed">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="ArcGIS Online Sign In" Grid.ColumnSpan="2"/>
-                        <TextBlock x:Name="LoginError" Grid.Row="1" Grid.ColumnSpan="2"/>
-                        <TextBlock Text="Username" Grid.Row="2"/>
-                        <TextBox x:Name="Username" Grid.Row="2" Grid.Column="1"/>
-                        <TextBlock Text="Password" Grid.Row="3" />
-                        <PasswordBox x:Name="Password" Grid.Row="3" Grid.Column="1"/>
-                        <Button Content="Sign In" Grid.Row="4" Grid.ColumnSpan="2" Click="OnSignIn_Click"/>
-                    </Grid>
                 </Grid>
             </Border>
 
@@ -136,7 +115,5 @@
                 </Grid>
             </Border>            
         </Grid>
-
-
     </Grid>
 </Page>

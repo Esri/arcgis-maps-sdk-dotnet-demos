@@ -89,28 +89,6 @@
 
 				</esri:Map>
 			</esri:MapView>
-        </Grid>
-        
-        <!-- Login with ArcGIS Online to use http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World -->
-        <Grid x:Name="LoginUI" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="1" Background="LightGray" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="ArcGIS Online Sign In" Grid.ColumnSpan="2"/>
-            <TextBlock x:Name="LoginError" Grid.Row="1" Grid.ColumnSpan="2"/>
-            <TextBlock Text="Username" Grid.Row="2"/>
-            <TextBox x:Name="Username" Grid.Row="2" Grid.Column="1"/>
-            <TextBlock Text="Password" Grid.Row="3" />
-            <PasswordBox x:Name="Password" Grid.Row="3" Grid.Column="1"/>
-            <Button Content="Sign In" Grid.Row="4" Grid.ColumnSpan="2" Click="OnSignIn_Click"/>
-        </Grid>
+        </Grid>        
     </Grid>
 </Window>
