@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinPortalBrowser.MapPage"
+             xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Xamarin.Forms;assembly=Esri.ArcGISRuntime.Xamarin.Forms"
+             Title="{Binding PortalItem.Title}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Label Text="{Binding PortalItem.Title}" LineBreakMode="WordWrap" BackgroundColor="Black" TextColor="White" FontAttributes="Bold"/>
+    <esriUI:MapView Map="{Binding Map}" Grid.Row="1"/>
+  </Grid>
+</ContentPage>

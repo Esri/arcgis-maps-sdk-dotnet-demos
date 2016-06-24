@@ -1,16 +1,7 @@
 ﻿using Esri.ArcGISRuntime.Portal;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-#if NETFX_CORE
-using Windows.UI.Xaml.Data;
-#else
-using System.Windows.Data;
-#endif
+using System.Threading.Tasks;
 
 namespace PortalBrowser.ViewModels
 {
