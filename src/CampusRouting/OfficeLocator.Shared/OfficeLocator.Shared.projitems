@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>87a50f5e-b3ff-42cf-9fa1-9e0257c86852</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>OfficeLocator</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ProvisionDataHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RouteHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GeocodeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MapViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)MarkerA.png" />
+    <Content Include="$(MSBuildThisFileDirectory)MarkerB.png" />
+  </ItemGroup>
+</Project>

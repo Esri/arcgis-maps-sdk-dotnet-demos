@@ -1,0 +1,118 @@
+﻿<Page
+    x:Class="OfficeLocator.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OfficeLocator.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:esri="using:Esri.ArcGISRuntime"
+    xmlns:esriUI="using:Esri.ArcGISRuntime.UI"
+	xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
+	xmlns:data="using:Esri.ArcGISRuntime.Data"
+	xmlns:symb="using:Esri.ArcGISRuntime.Symbology"
+	xmlns:geom="using:Esri.ArcGISRuntime.Geometry"
+    mc:Ignorable="d" NavigationCacheMode="Required">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{x:Bind VM}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+        <esriUI:MapView x:Name="CampusView" Background="White"
+						Map="{x:Bind VM.Map, Mode=OneWay}" 
+						GraphicsOverlays="{x:Bind VM.Overlays}" 
+						Grid.Row="1" Grid.RowSpan="2" >
+            <esriUI:MapView.BackgroundGrid>
+                <esriUI:BackgroundGrid Color="White" GridLineColor="Transparent" />
+            </esriUI:MapView.BackgroundGrid>
+        </esriUI:MapView>
+
+        <!-- If you want a 3D view of the campus which also helps to to better 
+             visualize floor changes, replace the above MapView with this SceneView -->
+        <!--<esriUI:SceneView x:Name="CampusView" Background="White"
+						Scene="{x:Bind VM.Scene, Mode=OneWay}" 
+						GraphicsOverlays="{x:Bind VM.Overlays}" 
+						Grid.Row="1" Grid.RowSpan="2" />-->
+
+
+        <StackPanel x:Name="loadingStatus" HorizontalAlignment="Center" VerticalAlignment="Center"
+              Grid.Row="1" Grid.RowSpan="2" DataContext="{x:Null}" IsHitTestVisible="False">
+            <TextBlock Text="{x:Bind VM.LoadStatus, Mode=OneWay}" Foreground="CornflowerBlue" />
+            <ProgressRing IsActive="True" />
+        </StackPanel>
+        
+        <!--Office Geocode entry box-->
+		<Grid Margin="0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+            
+			<Image Source="ms-appx:///MarkerA.png" Width="20" Margin="10,0"/>
+			<Image Source="ms-appx:///MarkerB.png" Width="20" Margin="10,0" Grid.Row="1" />			
+			
+			<AutoSuggestBox x:Name="searchFrom" VerticalAlignment="Top" Grid.Column="1"
+					  PlaceholderText="From" IsEnabled="{x:Bind VM.IsLoaded, Mode=OneWay}"
+					  QuerySubmitted="search_QuerySubmitted"
+					  TextChanged="search_SuggestionsRequested" 
+					  SuggestionChosen="search_SuggestionChosen" />
+
+			<AutoSuggestBox x:Name="searchTo" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Margin="0,2,0,0"
+					  PlaceholderText="To" IsEnabled="{x:Bind VM.IsLoaded, Mode=OneWay}"
+					  QuerySubmitted="search_QuerySubmitted" 
+					  TextChanged="search_SuggestionsRequested"
+					  SuggestionChosen="search_SuggestionChosen" />
+
+			<Border Grid.Column="2" Background="Transparent" Margin="5,0" HorizontalAlignment="Center"
+					Tapped="Scan_Tapped" x:Name="ScanA">
+				<Image Source="Assets/QRScan_Black.png" HorizontalAlignment="Right" Width="20" />
+			</Border>
+			<Border Grid.Column="2" Grid.Row="1" Background="Transparent" Padding="10,0"
+					Tapped="Calendar_Tapped" x:Name="ScanB">
+				<SymbolIcon Symbol="Calendar" />
+			</Border>
+
+		</Grid>
+
+
+        <!--Route result panel-->
+		<Border Background="White" Grid.Row="2" Padding="10" x:Name="RouteDetails" >
+			<RelativePanel>
+				<TextBlock Text="Walk time" FontWeight="Bold" x:Name="walkTimeTb" Foreground="CornflowerBlue" FontSize="18"/>
+				<TextBlock Text="{x:Bind VM.WalkTime, Mode=OneWay}" FontWeight="Bold" RelativePanel.RightOf="walkTimeTb" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Foreground="CornflowerBlue" FontSize="18" />
+				<TextBlock Text="Alternate route" FontWeight="Bold" x:Name="walkTimeTb2" RelativePanel.Below="walkTimeTb" Foreground="Gray" />
+				<TextBlock Text="{x:Bind VM.WalkTimeAlt, Mode=OneWay}" FontWeight="Bold" RelativePanel.RightOf="walkTimeTb2" 
+						   RelativePanel.AlignVerticalCenterWith="walkTimeTb2" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Foreground="Gray"/>
+			</RelativePanel>			
+		</Border>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="ShowRouteDetails">
+				<VisualState x:Name="HideRoute">
+					<VisualState.StateTriggers>
+						<StateTrigger IsActive="{Binding NoRoute, Mode=OneWay}" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="RouteDetails.Height" Value="0"  />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="ShowRoute">
+					<VisualState.StateTriggers>
+						<StateTrigger IsActive="{Binding HasRoute, Mode=OneWay}" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="RouteDetails.Height" Value="64"  />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+	</Grid>
+</Page>
