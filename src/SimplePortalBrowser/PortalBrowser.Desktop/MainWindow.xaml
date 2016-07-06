@@ -82,11 +82,8 @@
 				   Grid.Column="1" Grid.Row="1" FontSize="24"
 				   HorizontalAlignment="Center" />
 		<Grid Grid.Column="2" Grid.Row="2" DataContext="{StaticResource mapVM}" >
-			<esri:MapView LocationDisplay="{x:Null}" 
-						  Map="{Binding WebMapVM.Map}"
-						  MinScale="{Binding WebMapVM.RecommendedMinScale}"
-						  MaxScale="{Binding WebMapVM.RecommendedMaxScale}"						  
-						  />
+            <esri:MapView x:Name="MyMapView"
+                          Map="{Binding Map}"/>
 		</Grid>
 		
 	</Grid>

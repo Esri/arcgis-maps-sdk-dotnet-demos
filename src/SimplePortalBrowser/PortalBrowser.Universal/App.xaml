@@ -1,13 +1,14 @@
 ﻿<Application
-    x:Class="PortalBrowser.WinStore.App"
+    x:Class="PortalBrowser.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:PortalBrowser.WinStore"
-	xmlns:vm="using:PortalBrowser.ViewModels">
-
+    xmlns:local="using:PortalBrowser"
+	xmlns:vm="using:PortalBrowser.ViewModels"
+    RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
-			<vm:BoolToVisibility x:Key="BoolToViz" />
-		</ResourceDictionary>
+            <vm:BoolToVisibility x:Key="BoolToViz" />
+        </ResourceDictionary>
     </Application.Resources>
+
 </Application>
