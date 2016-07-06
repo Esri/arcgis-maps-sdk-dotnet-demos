@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:vm="clr-namespace:PortalBrowser.ViewModels"
+                  xmlns:local="clr-namespace:XamarinPortalBrowser;assembly=XamarinPortalBrowser"
+                  x:Class="XamarinPortalBrowser.StartPage">
+  <MasterDetailPage.Resources>
+    <ResourceDictionary>
+      <vm:PortalVM x:Key="portalVM" />
+      <vm:MapVM x:Key="mapVM" />
+    </ResourceDictionary>
+  </MasterDetailPage.Resources>
+  <MasterDetailPage.Master>
+    <TabbedPage BindingContext="{StaticResource portalVM}"
+            Title="Map List"
+            ItemsSource="{Binding Groups}">
+      <TabbedPage.ItemTemplate>
+        <DataTemplate>
+          <ContentPage Title="{Binding Name}">
+            <Grid>
+              <ListView ItemsSource="{Binding Items}"
+                        SelectedItem="{Binding PortalItem, Mode=TwoWay, Source={StaticResource mapVM}}">
+                <ListView.ItemTemplate>
+                  <DataTemplate>
+                    <ViewCell>
+                      <Grid WidthRequest="250" HeightRequest="250">
+                        <Grid.RowDefinitions>
+                          <RowDefinition Height="*"/>
+                          <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="{Binding ThumbnailUri}"/>
+                        <Label Text="{Binding Title}"  LineBreakMode="WordWrap" BackgroundColor="Black" TextColor="White" FontAttributes="Bold" Grid.Row="1"/>
+                      </Grid>
+                    </ViewCell>
+                  </DataTemplate>
+                </ListView.ItemTemplate>
+              </ListView>
+              <ActivityIndicator IsRunning="{Binding IsLoading}" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </Grid>
+          </ContentPage>
+        </DataTemplate>
+      </TabbedPage.ItemTemplate>
+    </TabbedPage>
+  </MasterDetailPage.Master>
+  <MasterDetailPage.Detail>
+    <NavigationPage>
+      <x:Arguments>
+        <local:MapPage BindingContext="{StaticResource mapVM}"/>
+      </x:Arguments>
+    </NavigationPage>
+  </MasterDetailPage.Detail>
+</MasterDetailPage>
