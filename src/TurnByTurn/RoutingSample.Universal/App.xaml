@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:RoutingSample"
 	xmlns:converters="using:RoutingSample.Converters"
-	>
-
+    RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,13 +16,14 @@
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-			<converters:NullToCollapsedConverter x:Key="nullToCollapsed" />
-			<converters:TimeSpanFormatter x:Key="timeSpanFormatter" />
-			
-			<Style TargetType="TextBlock">
-				<Setter Property="FontSize" Value="16" />
-				<Setter Property="TextWrapping" Value="Wrap" />
-			</Style>
-		</ResourceDictionary>
+            <converters:NullToCollapsedConverter x:Key="nullToCollapsed" />
+            <converters:TimeSpanFormatter x:Key="timeSpanFormatter" />
+
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
+
 </Application>

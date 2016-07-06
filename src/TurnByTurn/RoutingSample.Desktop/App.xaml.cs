@@ -15,7 +15,6 @@ namespace RoutingSample.Desktop
     {
 		public App()
 		{
-			Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ClientId = "1234567890123456";
 		}
     }
 }
