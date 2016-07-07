@@ -3,3 +3,10 @@ src/*/*/bin/
 src/*/*/obj/
 src/*/packages/*/
 src/KmlViewer/KmlViewer.Windows/AppPackages/
+src/CampusRouting/Forms/OfficeLocator.Forms.Droid/obj/
+src/CampusRouting/Forms/OfficeLocator.Forms.UWP/obj/
+src/CampusRouting/Forms/OfficeLocator.Forms.UWP/bin/
+project.lock.json
+src/CampusRouting/Forms/OfficeLocator.Forms.Droid/bin/
+src/CampusRouting/Forms/OfficeLocator.Forms.iOS/obj/
+src/CampusRouting/Forms/OfficeLocator.Forms.iOS/bin/

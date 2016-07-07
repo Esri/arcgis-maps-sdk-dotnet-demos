@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			       xmlns:esri="clr-namespace:Esri.ArcGISRuntime.Xamarin.Forms;assembly=Esri.ArcGISRuntime.Xamarin.Forms"
+             xmlns:xlabs="clr-namespace:XLabs.Forms.Controls"
+             x:Class="OfficeLocator.Forms.CampusMapPage">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    
+    <esri:MapView x:Name="CampusView"
+						Map="{Binding Map, Mode=OneWay}"
+						GraphicsOverlays="{Binding Overlays}"
+						Grid.Row="1" Grid.RowSpan="2" />
+
+    <!-- If you want a 3D view of the campus which also helps to to better 
+         visualize floor changes, replace the above MapView with this SceneView -->
+    <!--<esri:SceneView x:Name="CampusView"
+          Scene="{Binding Scene, Mode=OneWay}"
+          GraphicsOverlays="{Binding Overlays}"
+          Grid.Row="1" Grid.RowSpan="2" />-->
+
+    <StackLayout x:Name="loadingStatus" VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="1" Grid.RowSpan="2" >
+      <Label Text="{Binding LoadStatus, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="18" >
+        <Label.TextColor>
+          <OnPlatform x:TypeArguments="Color" Android="White" />
+        </Label.TextColor>
+      </Label>
+        <ActivityIndicator IsRunning="True" />
+    </StackLayout>
+    
+    <Grid Padding="0,10">
+        <Grid.BackgroundColor>
+          <OnPlatform x:TypeArguments="Color"
+                    iOS="White"
+                    Android="#099688" 
+                    WinPhone="White" />
+        </Grid.BackgroundColor>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+      <Image Source="MarkerA.png" WidthRequest="20" Margin="10,0"/>
+      <Image Source="MarkerB.png" WidthRequest="20" Margin="10,0" Grid.Row="1" />
+
+      <xlabs:AutoCompleteView x:Name="searchFrom" TextBackgroundColor="White" SearchTextColor="Gray" TextColor="Black" VerticalOptions="Start" Grid.Column="1" Placeholder="From" ExecuteOnSuggestionClick="true" TextChanged="Search_TextChanged" SelectedItemChanged="Search_SelectedItemChanged" IsEnabled="{Binding IsLoaded, Mode=OneWay}" />
+
+      <xlabs:AutoCompleteView x:Name="searchTo" TextBackgroundColor="White" SearchTextColor="Gray" TextColor="Black" VerticalOptions="Start" Placeholder="To" ExecuteOnSuggestionClick="true" TextChanged="Search_TextChanged" SelectedItemChanged="Search_SelectedItemChanged" IsEnabled="{Binding IsLoaded, Mode=OneWay}" Grid.Column="1" Grid.Row="1" />
+
+  </Grid>
+
+
+    <Frame BackgroundColor="White" Grid.Row="2" Padding="10" x:Name="RouteDetails" >
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Text="Walk time" FontAttributes="Bold" x:Name="walkTimeTb" TextColor="#6495ED" FontSize="18" Grid.Column="0" Grid.Row="0"/>
+        <Label Text="{Binding WalkTime, Mode=OneWay}" FontAttributes="Bold" HorizontalOptions="End" TextColor="#6495ED" FontSize="18" Grid.Column="1" Grid.Row="0"/>
+        <Label Text="Alternate route" FontAttributes="Bold" x:Name="walkTimeTb2" TextColor="Gray" Grid.Column="0" Grid.Row="1"/>
+        <Label Text="{Binding WalkTimeAlt, Mode=OneWay}" FontAttributes="Bold" HorizontalOptions="End" TextColor="Gray" Grid.Column="1" Grid.Row="1" />
+      </Grid>
+
+    </Frame>
+  </Grid>
+</ContentPage>
