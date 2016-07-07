@@ -12,6 +12,7 @@ This project contains source code for native Windows Desktop, Store, and Phone a
 * [`Measure Tool`](src/MeasureTool) - A sample demonstrating how to extend the editor to create a measure tool.
 * [`KML Viewer`](src/KmlViewer) - A Windows Store app for visualizing KML/KMZ files in 2D and 3D.
 * [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D.
+* [`Esri Campus Routing`](src/CampusRouting) - A cross-platform (Xamarin) sample demonstrating indoor geocoding and routing for a campus running on Windows Universap, Android and iOS.
 
 ## Resources
 
