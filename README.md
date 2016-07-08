@@ -4,7 +4,7 @@ arcgis-runtime-demos-dotnet
 This project contains source code for native Windows Desktop, Store, and Phone applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.   
 
 ### Quartz Beta
-For samples for the [Quartz beta](https://developers.arcgis.com/net/quartz/) release, please see the [Quartz Branch](https://github.com/Esri/arcgis-runtime-demos-dotnet/tree/Quartz)
+For samples for the [Quartz beta](https://developers.arcgis.com/net/quartz/) for .NET and Xamarin, please see the [Quartz Branch](https://github.com/Esri/arcgis-runtime-demos-dotnet/tree/Quartz)
 
 ### Demos
 
