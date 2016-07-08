@@ -3,6 +3,9 @@ arcgis-runtime-demos-dotnet
 
 This project contains source code for native Windows Desktop, Store, and Phone applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.   
 
+### Quartz Beta
+For samples for the Quartz release, please see the [Quartz Branch](https://github.com/Esri/arcgis-runtime-demos-dotnet/tree/Quartz)
+
 ### Demos
 
 * [`Geocode & Route on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Store and Windows Desktop.
