@@ -1,17 +1,13 @@
 ﻿namespace SymbolPicker
 {
-#if NETFX_CORE
+#if XAMARIN
+    using Xamarin.Forms;
+#elif NETFX_CORE
     using Windows.UI.Xaml.Media;
-#elif !XAMARIN
-    using System.Windows.Media;
 #else
-#if __ANDROID__
-    using ImageSource = Android.Graphics.Bitmap;
-#elif __IOS__
-using ImageSource = UIKit.UIImage;
+    using System.Windows.Media;
 #endif
 
-#endif
     using Esri.ArcGISRuntime.Symbology;
 
     public sealed class SymbolSourceModel

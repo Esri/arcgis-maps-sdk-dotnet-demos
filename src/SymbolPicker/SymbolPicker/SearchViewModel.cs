@@ -5,21 +5,20 @@
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices.WindowsRuntime;
     using System.Threading.Tasks;
     using System.Windows.Input;
-    using System.Reflection;
 #if NETFX_CORE
     using Windows.ApplicationModel;
-    using Windows.UI.Xaml.Media;
-#elif !XAMARIN
-    using System.Windows.Media;
-#else
-#if __ANDROID__
-    using ImageSource = Android.Graphics.Bitmap;
-#elif __IOS__
-using ImageSource = UIKit.UIImage;
 #endif
+#if XAMARIN
+    using Xamarin.Forms;
+#elif NETFX_CORE
+    using Windows.UI.Xaml.Media;
+#else
+    using System.Windows.Media;
 #endif
     using Esri.ArcGISRuntime.Symbology;
 
@@ -647,7 +646,7 @@ using ImageSource = UIKit.UIImage;
                     ImageSource source = null;
                     try
                     {
-                        source = await r.Symbol?.CreateSwatchAsync();
+                        source = await this.CreateSwatchAsync(r.Symbol);
                     }
                     catch (Exception ex)
                     {
@@ -664,6 +663,34 @@ using ImageSource = UIKit.UIImage;
             this.SearchResults = symbolSource;
             this.ResultCount = symbolSource.Count;
             this.IsBusy = false;
+        }
+
+        private async Task<ImageSource> CreateSwatchAsync(Symbol symbol)
+        {
+            var nativeImage = await symbol.CreateSwatchAsync();
+#if __ANDROID__
+			var memstream = new MemoryStream();
+			await nativeImage.CompressAsync(Android.Graphics.Bitmap.CompressFormat.Png, 100, memstream);
+			memstream.Seek(0L, SeekOrigin.Begin);
+			return ImageSource.FromStream(() => memstream);
+#elif __IOS__
+            return ImageSource.FromStream(() => nativeImage.AsPNG().AsStream());
+#elif NETFX_CORE && XAMARIN
+            var bmp = nativeImage as Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
+            MemoryStream ms = new MemoryStream();
+            var stream = ms.AsRandomAccessStream();
+            var encoder = await Windows.Graphics.Imaging.BitmapEncoder.CreateAsync(Windows.Graphics.Imaging.BitmapEncoder.JpegEncoderId, stream);
+            Stream pixelStream = bmp.PixelBuffer.AsStream();
+            byte[] pixels = new byte[pixelStream.Length];
+            await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+            var dpi = Windows.Graphics.Display.DisplayInformation.GetForCurrentView()?.LogicalDpi ?? 96f;
+            encoder.SetPixelData(Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8, Windows.Graphics.Imaging.BitmapAlphaMode.Ignore, (uint)bmp.PixelWidth, (uint)bmp.PixelHeight, dpi, dpi, pixels);
+            //await encoder.FlushAsync();
+            ms.Seek(0, SeekOrigin.Begin);
+            return ImageSource.FromStream(() => { return ms; });
+#else
+            return nativeImage;
+#endif
         }
 
         private ICommand clear;
