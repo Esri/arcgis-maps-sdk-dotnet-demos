@@ -7,10 +7,10 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices.WindowsRuntime;
     using System.Threading.Tasks;
     using System.Windows.Input;
 #if NETFX_CORE
+    using System.Runtime.InteropServices.WindowsRuntime;
     using Windows.ApplicationModel;
 #endif
 #if XAMARIN
@@ -51,6 +51,8 @@
             var fileName = string.Format("{0}.stylx", SPECIFICATION);
 #if NETFX_CORE
             path = Path.Combine(Package.Current.InstalledLocation.Path, fileName);
+#elif XAMARIN
+            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
 #else
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), fileName);
 #endif
@@ -669,25 +671,25 @@
         {
             var nativeImage = await symbol.CreateSwatchAsync();
 #if __ANDROID__
-			var memstream = new MemoryStream();
-			await nativeImage.CompressAsync(Android.Graphics.Bitmap.CompressFormat.Png, 100, memstream);
-			memstream.Seek(0L, SeekOrigin.Begin);
-			return ImageSource.FromStream(() => memstream);
+            var memstream = new MemoryStream();
+            await nativeImage.CompressAsync(Android.Graphics.Bitmap.CompressFormat.Png, 100, memstream);
+            memstream.Seek(0L, SeekOrigin.Begin);
+            return ImageSource.FromStream(() => memstream);
 #elif __IOS__
             return ImageSource.FromStream(() => nativeImage.AsPNG().AsStream());
 #elif NETFX_CORE && XAMARIN
-            var bmp = nativeImage as Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
-            MemoryStream ms = new MemoryStream();
-            var stream = ms.AsRandomAccessStream();
-            var encoder = await Windows.Graphics.Imaging.BitmapEncoder.CreateAsync(Windows.Graphics.Imaging.BitmapEncoder.JpegEncoderId, stream);
-            Stream pixelStream = bmp.PixelBuffer.AsStream();
-            byte[] pixels = new byte[pixelStream.Length];
-            await pixelStream.ReadAsync(pixels, 0, pixels.Length);
-            var dpi = Windows.Graphics.Display.DisplayInformation.GetForCurrentView()?.LogicalDpi ?? 96f;
-            encoder.SetPixelData(Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8, Windows.Graphics.Imaging.BitmapAlphaMode.Ignore, (uint)bmp.PixelWidth, (uint)bmp.PixelHeight, dpi, dpi, pixels);
-            //await encoder.FlushAsync();
-            ms.Seek(0, SeekOrigin.Begin);
-            return ImageSource.FromStream(() => { return ms; });
+            //var bmp = nativeImage as Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
+            //MemoryStream ms = new MemoryStream();
+            //var stream = ms.AsRandomAccessStream();
+            //var encoder = await Windows.Graphics.Imaging.BitmapEncoder.CreateAsync(Windows.Graphics.Imaging.BitmapEncoder.JpegEncoderId, stream);
+            //Stream pixelStream = bmp.PixelBuffer.AsStream();
+            //byte[] pixels = new byte[pixelStream.Length];
+            //await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+            //var dpi = Windows.Graphics.Display.DisplayInformation.GetForCurrentView()?.LogicalDpi ?? 96f;
+            //encoder.SetPixelData(Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8, Windows.Graphics.Imaging.BitmapAlphaMode.Ignore, (uint)bmp.PixelWidth, (uint)bmp.PixelHeight, dpi, dpi, pixels);
+            // await encoder.FlushAsync();
+            //ms.Seek(0, SeekOrigin.Begin);
+            //return ImageSource.FromStream(() => { return ms; });
 #else
             return nativeImage;
 #endif

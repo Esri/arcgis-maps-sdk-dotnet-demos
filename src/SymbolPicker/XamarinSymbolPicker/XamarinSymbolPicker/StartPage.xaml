@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage  xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinSymbolPicker.StartPage"
+                  xmlns:local="clr-namespace:XamarinSymbolPicker"
+                  xmlns:vm="clr-namespace:SymbolPicker" BindingContext="{StaticResource MySearchViewModel}" >
+  <MasterDetailPage.Resources>
+    <ResourceDictionary>
+      <vm:SearchViewModel x:Key="MySearchViewModel" />
+    </ResourceDictionary>
+  </MasterDetailPage.Resources>
+  <MasterDetailPage.Master>
+    <ContentPage Title="Symbol Picker">
+      <ScrollView>
+      <Grid >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="50" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ActivityIndicator IsRunning="{Binding IsBusy}" Grid.ColumnSpan="4" />
+        <Label Text="Categories:" Grid.Row="1" />
+        <local:BindablePicker ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" />
+        <Button Text="+" Command="{Binding AddSelection}" CommandParameter="Category" Grid.Row="1" Grid.Column="2" />
+        <Button Text="-" Command="{Binding SubtractSelection}" CommandParameter="Category" Grid.Row="1" Grid.Column="3" />
+        <Label Text="Keys:" Grid.Row="2" />
+        <local:BindablePicker ItemsSource="{Binding Keys}" SelectedItem="{Binding SelectedKey, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" />
+        <Button Text="+" Command="{Binding AddSelection}" CommandParameter="Key" Grid.Row="2" Grid.Column="2" />
+        <Button Text="-" Command="{Binding SubtractSelection}" CommandParameter="Key" Grid.Row="2" Grid.Column="3" />
+        <Label Text="Names:" Grid.Row="3" />
+        <local:BindablePicker ItemsSource="{Binding Names}" SelectedItem="{Binding SelectedName, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" />
+        <Button Text="+" Command="{Binding AddSelection}" CommandParameter="Name" Grid.Row="3" Grid.Column="2" />
+        <Button Text="-" Command="{Binding SubtractSelection}" CommandParameter="Name" Grid.Row="3" Grid.Column="3" />
+        <Label Text="Symbol Classes:" Grid.Row="4" />
+        <local:BindablePicker ItemsSource="{Binding SymbolClasses}" SelectedItem="{Binding SelectedSymbolClass, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" />
+        <Button Text="+" Command="{Binding AddSelection}" CommandParameter="SymbolClass" Grid.Row="4" Grid.Column="2" />
+        <Button Text="-" Command="{Binding SubtractSelection}" CommandParameter="SymbolClass" Grid.Row="4" Grid.Column="3" />
+        <Label Text="Tags:" Grid.Row="5" />
+        <local:BindablePicker ItemsSource="{Binding Tags}" SelectedItem="{Binding SelectedTag, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" />
+        <Button Text="+" Command="{Binding AddSelection}" CommandParameter="Tag" Grid.Row="5" Grid.Column="2" />
+        <Button Text="-" Command="{Binding SubtractSelection}" CommandParameter="Tag" Grid.Row="5" Grid.Column="3" />
+        <StackLayout Grid.Row="6" Grid.ColumnSpan="4" Orientation="Horizontal">
+          <StackLayout Orientation="Vertical">
+            <Label Text="Strict Match:" />
+            <StackLayout Orientation="Horizontal">
+              <Switch IsToggled="{Binding CategoriesStrictMatch}" />
+              <Label Text="Categories"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+              <Switch IsToggled="{Binding KeysStrictMatch}" />
+              <Label Text="Keys"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+              <Switch IsToggled="{Binding NamesStrictMatch}" />
+              <Label Text="Names"  />
+            </StackLayout>
+          </StackLayout>
+          <StackLayout Orientation="Vertical">
+            <Label Text="" />
+            <StackLayout Orientation="Horizontal">
+              <Switch IsToggled="{Binding SymbolClassesStrictMatch}" />
+              <Label Text="Symbol Classes"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+              <Switch IsToggled="{Binding TagsStrictMatch}" />
+              <Label Text="Tags"  />
+            </StackLayout>
+          </StackLayout>
+        </StackLayout>
+        <Label Text="{Binding CurrentSelection}" Grid.Row="7" Grid.ColumnSpan="4" />
+        <StackLayout Grid.Row="8" Grid.ColumnSpan="4" VerticalOptions="Start" Orientation="Horizontal">
+          <Button Text="Search Symbols" Command="{Binding SearchSymbols}" />
+          <Button Text="Clear" Command="{Binding Clear}" />
+        </StackLayout>
+        <StackLayout Grid.Row="9" Grid.ColumnSpan="4" VerticalOptions="Start" Orientation="Horizontal">
+          <Label Text="Result(s) found:" />
+          <Label Text="{Binding ResultCount}" />
+        </StackLayout>
+        <ListView  ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedResult, Mode=TwoWay}"  Grid.Row="10" Grid.ColumnSpan="4" VerticalOptions="FillAndExpand">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <ViewCell>
+                <Grid HeightRequest="100">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+                  <Image Source="{Binding Source}" Grid.RowSpan="5" />
+                  <Label Text="{Binding Category}" LineBreakMode="TailTruncation" Grid.Column="1" />
+                  <Label Text="{Binding Key}" LineBreakMode="TailTruncation"  Grid.Row="1" Grid.Column="1" />
+                  <Label Text="{Binding Name}" FontAttributes="Bold" LineBreakMode="TailTruncation" Grid.Row="2" Grid.Column="1" />
+                  <Label Text="{Binding SymbolClass}" LineBreakMode="TailTruncation" Grid.Row="3" Grid.Column="1" />
+                  <Label Text="{Binding Tags}" LineBreakMode="TailTruncation" Grid.Row="4" Grid.Column="1" />
+                </Grid>
+              </ViewCell>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+      </Grid>
+      </ScrollView>
+    </ContentPage>
+  </MasterDetailPage.Master>
+  <MasterDetailPage.Detail>
+    <NavigationPage>
+      <x:Arguments>
+        <local:MapPage BindingContext="{StaticResource MySearchViewModel}" />
+      </x:Arguments>
+    </NavigationPage>
+  </MasterDetailPage.Detail>
+</MasterDetailPage>
