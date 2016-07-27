@@ -7,7 +7,7 @@
     <ProjectGuid>{FE86605E-14FA-4798-B39B-040141F68CA8}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SymbolPicker.Universal</RootNamespace>
+    <RootNamespace>SymbolPicker</RootNamespace>
     <AssemblyName>SymbolPicker.Universal</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -89,9 +89,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="mil2525d.stylx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

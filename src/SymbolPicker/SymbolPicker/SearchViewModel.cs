@@ -12,6 +12,7 @@
 #if NETFX_CORE
     using System.Runtime.InteropServices.WindowsRuntime;
     using Windows.ApplicationModel;
+    using Windows.Storage;
 #endif
 #if XAMARIN
     using Xamarin.Forms;
@@ -48,16 +49,30 @@
         {
             this.IsBusy = true;
             string path = string.Empty;
+            string folder = string.Empty;
             var fileName = string.Format("{0}.stylx", SPECIFICATION);
-#if NETFX_CORE
-            path = Path.Combine(Package.Current.InstalledLocation.Path, fileName);
-#elif XAMARIN
-            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
-#else
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), fileName);
-#endif
+            var assembly = typeof(SearchViewModel).GetTypeInfo().Assembly;
             try
             {
+#if NETFX_CORE
+                folder = ApplicationData.Current.LocalFolder.Path;
+#else
+                folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+#endif
+                path = Path.Combine(folder, fileName);
+                if (!File.Exists(path))
+                {
+                    var embeddedResourceName = string.Format("{0}.{0}.{1}", nameof(SymbolPicker), fileName);
+                    using (var stream = assembly.GetManifestResourceStream(embeddedResourceName))
+                    {
+                        using (var mem = new MemoryStream())
+                        {
+                            stream.CopyTo(mem);
+                            System.IO.File.WriteAllBytes(path, mem.ToArray());
+                        }
+                    }
+                }
+
                 this.dictionary = await SymbolDictionary.OpenAsync(SPECIFICATION, path);
                 var result = await this.dictionary.SearchSymbolsAsync(new StyleSymbolSearchParameters());
                 this.Categories = (from r in result where !string.IsNullOrEmpty(r.Category) select r.Category).Distinct();

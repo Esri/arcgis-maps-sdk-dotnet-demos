@@ -7,7 +7,7 @@
     <ProjectGuid>{6EC29071-D44F-4792-BC81-4F78470967DE}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XamarinSymbolPicker.UWP</RootNamespace>
+    <RootNamespace>SymbolPicker</RootNamespace>
     <AssemblyName>XamarinSymbolPicker.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -90,9 +90,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="mil2525d.stylx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

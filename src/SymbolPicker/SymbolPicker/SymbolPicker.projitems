@@ -14,4 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SearchViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SymbolSourceModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SymbolPicker\mil2525d.stylx" />
+  </ItemGroup>
 </Project>
