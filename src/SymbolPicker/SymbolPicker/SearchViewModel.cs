@@ -744,6 +744,7 @@
             this.NamesStrictMatch = false;
             this.SymbolClassesStrictMatch = false;
             this.TagsStrictMatch = false;
+            this.SelectedResult = null;
             this.SearchResults = Enumerable.Empty<SymbolSourceModel>();
             this.ResultCount = 0;
         }
