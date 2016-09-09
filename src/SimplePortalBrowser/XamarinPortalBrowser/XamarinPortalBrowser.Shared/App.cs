@@ -27,7 +27,8 @@ namespace XamarinPortalBrowser
             // ArcGISRuntimeEnvironment.License.SetLicense("<Your License String or Strings (extensions) Here>");
 
             // The root page of your application
-            MainPage = new StartPage();
+            MainPage = new NavigationPage(new StartPage());
+
 		}
 
 		protected override void OnStart ()

@@ -21,13 +21,14 @@ namespace PortalBrowser.ViewModels
                     Map = null;
 				else
 				{
-					StatusMessage = "Loading Webmap...";
-					IsLoadingWebMap = true;
+                    StatusMessage = "Loading Webmap...";
+                    IsLoadingWebMap = true;
                     Map = new Map(item);
                     await Map.LoadAsync();
+                    Map = Map;
                     IsLoadingWebMap = false;
-					StatusMessage = "";
-				}
+                    StatusMessage = "";
+                }
 			}
 			catch (System.Exception ex)
 			{
@@ -43,8 +44,11 @@ namespace PortalBrowser.ViewModels
 			get { return m_Map; }
 			set
 			{
-                m_Map = value;
-				OnPropertyChanged("Map");
+                if (m_Map != value)
+                {
+                    m_Map = value;
+                    OnPropertyChanged("Map");
+                }
 			}
 		}
 
@@ -57,7 +61,6 @@ namespace PortalBrowser.ViewModels
 			{
 				m_StatusMessage = value;
 				OnPropertyChanged("StatusMessage");
-				System.Diagnostics.Debug.WriteLine(value);
 			}
 		}
 

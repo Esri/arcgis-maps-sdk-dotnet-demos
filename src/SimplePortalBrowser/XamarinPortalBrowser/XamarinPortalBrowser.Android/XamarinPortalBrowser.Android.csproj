@@ -47,10 +47,11 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Esri.ArcGISRuntime">
+    <Reference Include="Esri.ArcGISRuntime, Version=100.0.0.0, Culture=neutral, PublicKeyToken=29c6dd6e8553d944, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Esri.ArcGISRuntime.Xamarin.Android.100.0.0.1369-beta\lib\MonoAndroid10\Esri.ArcGISRuntime.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Esri.ArcGISRuntime.Xamarin.Forms">
+    <Reference Include="Esri.ArcGISRuntime.Xamarin.Forms, Version=100.0.0.0, Culture=neutral, PublicKeyToken=29c6dd6e8553d944, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Esri.ArcGISRuntime.Xamarin.Forms.100.0.0.1369-beta\lib\MonoAndroid10\Esri.ArcGISRuntime.Xamarin.Forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -120,13 +121,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Values\" />
   </ItemGroup>
   <Import Project="..\XamarinPortalBrowser.Shared\XamarinPortalBrowser.Shared.projitems" Label="Shared" />
   <Import Project="..\..\PortalBrowser.Shared\PortalBrowser.Shared.projitems" Label="Shared" />
