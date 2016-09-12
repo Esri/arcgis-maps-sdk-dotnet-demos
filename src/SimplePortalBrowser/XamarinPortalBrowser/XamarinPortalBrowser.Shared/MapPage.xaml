@@ -10,8 +10,7 @@
     </ResourceDictionary>
   </ContentPage.Resources>
   <Grid>
+    <!-- MapView containing map item -->
     <esriUI:MapView Map="{Binding Map}"/>
-    <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" IsEnabled="{Binding IsLoading}" 
-                       VerticalOptions="Center" HorizontalOptions="Center" BindingContext="{StaticResource portalVM}"/>
   </Grid>
 </ContentPage>

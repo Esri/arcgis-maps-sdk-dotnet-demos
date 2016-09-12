@@ -20,10 +20,12 @@
     </Style>
     </ResourceDictionary>
   </TabbedPage.Resources>
+      <!-- Item template for tabbed page to contain the 2 tabs for Basemaps and Featured Maps -->
       <TabbedPage.ItemTemplate>
         <DataTemplate>
           <ContentPage Title="{Binding Name}" Icon="Basemap.png">
             <Grid>
+              <!-- List of map items -->
               <ListView ItemsSource="{Binding Items}" ItemTapped="ListView_ItemTapped">              
                 <ListView.ItemTemplate>
                   <DataTemplate>
@@ -32,7 +34,6 @@
                   </DataTemplate>
                 </ListView.ItemTemplate>
               </ListView>
-              <!--<ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" IsEnabled="{Binding IsLoading}" VerticalOptions="Center" HorizontalOptions="Center"/>-->
             </Grid>
             </ContentPage>
         </DataTemplate>

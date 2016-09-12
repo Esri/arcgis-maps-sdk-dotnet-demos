@@ -79,17 +79,6 @@
                                    Margin="0,0,0,20" TextWrapping="NoWrap" 
                                    Style="{StaticResource SubheaderTextBlockStyle}"/>
                                         </Grid>
-
-                                        <!--<Grid Margin="0,0,0,2">
-											<Button Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}"
-                                    AutomationProperties.Name="Group Title"
-                                    Click="Header_Click"
-                                    Style="{StaticResource TextBlockButtonStyle}" >
-												<StackPanel Orientation="Horizontal">
-													<TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-												</StackPanel>
-											</Button>
-										</Grid>-->
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
 

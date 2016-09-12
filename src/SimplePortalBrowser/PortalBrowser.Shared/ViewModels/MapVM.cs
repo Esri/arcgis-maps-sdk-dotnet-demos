@@ -3,6 +3,9 @@ using Esri.ArcGISRuntime.Portal;
 
 namespace PortalBrowser.ViewModels
 {
+    /// <summary>
+    /// Map View Model that handles all logic related to the map object
+    /// </summary>
 	public class MapVM : BaseViewModel
 	{
 		private ArcGISPortalItem m_portalItem;
@@ -12,7 +15,10 @@ namespace PortalBrowser.ViewModels
 			get { return m_portalItem; }
 			set { m_portalItem = value; LoadPortalItem(value); OnPropertyChanged("PortalItem"); }
 		}
-
+        /// <summary>
+        /// Method runs when a portal item is selected by the user
+        /// </summary>
+        /// <param name="item">Item selected by user</param>
 		private async void LoadPortalItem(ArcGISPortalItem item)
 		{
 			try
@@ -23,6 +29,7 @@ namespace PortalBrowser.ViewModels
 				{
                     StatusMessage = "Loading Webmap...";
                     IsLoadingWebMap = true;
+                    // Create a new map from the portal item and load it
                     Map = new Map(item);
                     await Map.LoadAsync();
                     Map = Map;
@@ -39,6 +46,9 @@ namespace PortalBrowser.ViewModels
 
 		private Map m_Map;
 
+        /// <summary>
+        /// Property holding the map item used by the MapView
+        /// </summary>
 		public Map Map
         {
 			get { return m_Map; }
@@ -53,7 +63,9 @@ namespace PortalBrowser.ViewModels
 		}
 
 		private string m_StatusMessage;
-
+        /// <summary>
+        /// Status message to inform user or loading progress
+        /// </summary>
 		public string StatusMessage
 		{
 			get { return m_StatusMessage; }
@@ -65,7 +77,9 @@ namespace PortalBrowser.ViewModels
 		}
 
 		private bool m_IsLoadingWebMap = true;
-
+        /// <summary>
+        /// Boolean to reflect whether the map has finished loading
+        /// </summary>
 		public bool IsLoadingWebMap
 		{
 			get { return m_IsLoadingWebMap; }
