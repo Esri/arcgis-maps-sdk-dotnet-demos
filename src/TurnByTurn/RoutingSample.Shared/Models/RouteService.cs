@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Tasks.Geocoding;
-using Esri.ArcGISRuntime.Layers;
+
 using Esri.ArcGISRuntime.Http;
+using Esri.ArcGISRuntime.UI;
 
 namespace RoutingSample.Models
 {
@@ -34,11 +35,10 @@ namespace RoutingSample.Models
 
 		public async Task<MapPoint> Geocode(string address, CancellationToken cancellationToken)
 		{
-			OnlineLocatorTask locator = new OnlineLocatorTask(new Uri(locatorService), null);
-			var result = await locator.FindAsync(new OnlineLocatorFindParameters(address),
-				cancellationToken).ConfigureAwait(false);
-			if (result != null && result.Count > 0)
-				return result.First().Feature.Geometry as MapPoint;
+            LocatorTask locator = await LocatorTask.CreateAsync(new Uri(locatorService));
+            var result = await locator.GeocodeAsync(address).ConfigureAwait(false);
+            if (result != null && result.Count > 0)
+				return result.First().RouteLocation as MapPoint;
 			return null;
 		}
 
@@ -52,32 +52,38 @@ namespace RoutingSample.Models
 			if (stops == null)
 				throw new ArgumentNullException("stops");
 
-			List<Graphic> stopList = new List<Graphic>();
+			List<Stop> stopList = new List<Stop>();
 			foreach (var stop in stops)
 			{
-				stopList.Add(new Graphic(stop));
+				stopList.Add(new Stop(stop));
 			}
 			if (stopList.Count < 2)
 				throw new ArgumentException("Not enough stops");
 
 			//determine which route service to use. Long distance routes should use the long-route service
 			Polyline line = new Polyline(stops, SpatialReferences.Wgs84);
-			var length = GeometryEngine.GeodesicLength(line);
+			var length = GeometryEngine.LengthGeodesic(line);
 			string svc = routeService;
 			if (length > 200000)
 				svc = longRouteService;
 
 			//Calculate route
-			RouteTask task = new OnlineRouteTask(new Uri(svc));
-			var parameters = await task.GetDefaultParametersAsync().ConfigureAwait(false);
-			parameters.SetStops(stopList);
+			RouteTask task = await RouteTask.CreateAsync(new Uri(svc)).ConfigureAwait(false);
+            
+			var parameters = await task.GenerateDefaultParametersAsync().ConfigureAwait(false);
+            parameters.SetStops(stopList);
 			parameters.ReturnStops = true;
-			parameters.OutputLines = OutputLine.TrueShapeWithMeasure;
-			parameters.OutSpatialReference = SpatialReferences.Wgs84;
-			parameters.DirectionsLengthUnit = LinearUnits.Meters;
-			parameters.UseTimeWindows = false;
-			parameters.RestrictionAttributeNames = new List<string>(new string[] { "OneWay " });
-			return await task.SolveAsync(parameters, cancellationToken);
+			parameters.RouteShapeType = RouteShapeType.TrueShapeWithMeasures;
+			parameters.OutputSpatialReference = SpatialReferences.Wgs84;
+			parameters.DirectionsDistanceUnits = DirectionsDistanceTextUnits.Metric;
+            var travelMode = new TravelMode()
+            {
+                
+            };
+            travelMode.RestrictionAttributeNames.Add("OneWay");
+            parameters.TravelMode = travelMode;
+            parameters.LocalStartTime = DateTime.Now;
+            return await task.SolveRouteAsync(parameters);
 		}
 	}
 }

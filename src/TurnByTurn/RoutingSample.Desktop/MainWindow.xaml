@@ -83,25 +83,29 @@
 					<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
 				</local:RestoreAutoPanMode.RestoreAutoPanSettings>
 				<esri:Map>
-					<esri:ArcGISTiledMapServiceLayer
-					ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
+					<esri:ArcGISTiledLayer
+					Source="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
 
-					<esri:GraphicsLayer GraphicsSource="{Binding Route.RouteLines, Source={StaticResource viewmodel}}">
-						<esri:GraphicsLayer.Renderer>
-							<esri:SimpleRenderer>
-								<esri:SimpleLineSymbol Width="10" Color="#BE3232FF" />
-							</esri:SimpleRenderer>
-						</esri:GraphicsLayer.Renderer>
-					</esri:GraphicsLayer>
-					
-					<esri:GraphicsLayer GraphicsSource="{Binding Route.Maneuvers, Source={StaticResource viewmodel}}">
-						<esri:GraphicsLayer.Renderer>
-							<esri:SimpleRenderer>
-								<esri:SimpleMarkerSymbol Size="10" Color="Black" />
-							</esri:SimpleRenderer>
-						</esri:GraphicsLayer.Renderer>
-					</esri:GraphicsLayer>
 				</esri:Map>
+                <esri:MapView.GraphicsOverlays>
+                    <esri:GraphicsOverlay>
+                        <!--<esri:GraphicsOverlay GraphicsSource="{Binding Route.RouteLines, Source={StaticResource viewmodel}}">-->
+                        <esri:GraphicsOverlay.Renderer>
+                            <esri:SimpleRenderer>
+                                <esri:SimpleLineSymbol Width="10" Color="#BE3232FF" />
+                            </esri:SimpleRenderer>
+                        </esri:GraphicsOverlay.Renderer>
+                    </esri:GraphicsOverlay>
+
+                    <esri:GraphicsOverlay>
+                        <!--<esri:GraphicsOverlay GraphicsSource="{Binding Route.Maneuvers, Source={StaticResource viewmodel}}">-->
+                        <esri:GraphicsOverlay.Renderer>
+                            <esri:SimpleRenderer>
+                                <esri:SimpleMarkerSymbol Size="10" Color="Black" />
+                            </esri:SimpleRenderer>
+                        </esri:GraphicsOverlay.Renderer>
+                    </esri:GraphicsOverlay>
+                </esri:MapView.GraphicsOverlays>
 			</esri:MapView>
         </Grid>
 

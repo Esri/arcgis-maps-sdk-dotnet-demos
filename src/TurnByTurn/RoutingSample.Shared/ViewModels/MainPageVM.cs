@@ -1,5 +1,6 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,7 +23,7 @@ namespace RoutingSample.ViewModels
 		private bool firstLocation = true;
 		private RouteDataSource m_routeDataSource;
 		private bool m_IsCalculatingRoute;
-		private Esri.ArcGISRuntime.Controls.Viewpoint m_ViewpointRequested;
+		private Viewpoint m_ViewpointRequested;
 		private string m_RouteCalculationErrorMessage;
 		private LocationDisplay m_locationDisplay;
 		#endregion
@@ -68,9 +69,9 @@ namespace RoutingSample.ViewModels
 				if (m_locationDisplay != null)
 				{
 					if(value != null)
-						m_locationDisplay.AutoPanMode = AutoPanMode.Navigation;
+						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 					else
-						m_locationDisplay.AutoPanMode = AutoPanMode.Off;
+						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Off;
 				}
 			}
 		}
@@ -104,7 +105,7 @@ namespace RoutingSample.ViewModels
 		/// <summary>
 		/// Used for requesting an extent for the mapView to ZoomTo
 		/// </summary>
-		public Esri.ArcGISRuntime.Controls.Viewpoint ViewpointRequested
+		public Viewpoint ViewpointRequested
 		{
 			get { return m_ViewpointRequested; }
 			private set
@@ -123,11 +124,11 @@ namespace RoutingSample.ViewModels
 			{
 				if (m_locationDisplay == null)
 				{
-					m_locationDisplay = new LocationDisplay();
+					//m_locationDisplay = new LocationDisplay();
 					m_locationDisplay.PropertyChanged += LocationDisplay_PropertyChanged;
-					m_locationDisplay.IsEnabled = true;
+					//m_locationDisplay.IsEnabled = true;
 					if (Route != null)
-						m_locationDisplay.AutoPanMode = AutoPanMode.Navigation;
+						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 				}
 				return m_locationDisplay;
 			}
@@ -139,7 +140,7 @@ namespace RoutingSample.ViewModels
 
 		private async void GenerateRoute(string address)
 		{
-			if (!string.IsNullOrWhiteSpace(address) && LocationDisplay != null && LocationDisplay.CurrentLocation != null)
+			if (!string.IsNullOrWhiteSpace(address) && LocationDisplay != null && LocationDisplay.Location != null)
 			{
 				if (m_routeTaskCancellationToken != null)
 					m_routeTaskCancellationToken.Cancel();
@@ -149,17 +150,17 @@ namespace RoutingSample.ViewModels
 					m_routeTaskCancellationToken = new CancellationTokenSource();
 					IsCalculatingRoute = true;
 					var result = await new Models.RouteService().GetRoute(
-						address, LocationDisplay.CurrentLocation.Location, 
+						address, LocationDisplay.Location.Position, 
 						m_routeTaskCancellationToken.Token);
 
 					m_routeTaskCancellationToken = null;
 					Route = new RouteDataSource(result);
-					Route.SetCurrentLocation(LocationDisplay.CurrentLocation.Location);
+					Route.SetCurrentLocation(LocationDisplay.Location.Position);
 #if DEBUG
 					// When debugging use a simulator for the generated route
-					LocationDisplay.LocationProvider = new RouteLocationSimulator(result);
+					LocationDisplay.DataSource = new RouteLocationSimulator(result);
 #endif
-					LocationDisplay.AutoPanMode = AutoPanMode.Navigation;
+					LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 				}
 				catch (OperationCanceledException)
 				{
@@ -181,16 +182,16 @@ namespace RoutingSample.ViewModels
 		{
 			if (e.PropertyName == "CurrentLocation")
 			{
-				if (LocationDisplay.CurrentLocation != null && !LocationDisplay.CurrentLocation.Location.IsEmpty)
+				if (LocationDisplay.Location != null && !LocationDisplay.Location.Position.IsEmpty)
 				{
 					if (Route != null)
-						Route.SetCurrentLocation(LocationDisplay.CurrentLocation.Location);
+						Route.SetCurrentLocation(LocationDisplay.Location.Position);
 					if (firstLocation)
 					{
-						var accuracy = double.IsNaN(LocationDisplay.CurrentLocation.HorizontalAccuracy) ? 0 :
-							LocationDisplay.CurrentLocation.HorizontalAccuracy;
-						ViewpointRequested = new Esri.ArcGISRuntime.Controls.Viewpoint(
-							GeometryEngine.GeodesicBuffer(LocationDisplay.CurrentLocation.Location, accuracy + 500, LinearUnits.Meters)
+						var accuracy = double.IsNaN(LocationDisplay.Location.HorizontalAccuracy) ? 0 :
+							LocationDisplay.Location.HorizontalAccuracy;
+						ViewpointRequested = new Viewpoint(
+							GeometryEngine.BufferGeodesic(LocationDisplay.Location.Position, accuracy + 500, LinearUnits.Meters)
 						);
 						firstLocation = false;
 						if (Route == null && m_routeTaskCancellationToken == null && !string.IsNullOrWhiteSpace(RouteToAddress)) //calculate route now
