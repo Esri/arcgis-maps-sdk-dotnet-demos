@@ -6,8 +6,9 @@
 		ResizeMode="CanResizeWithGrip"
 		xmlns:vm="clr-namespace:PortalBrowser.ViewModels" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
 		>
-	<Window.Resources>
-		<vm:PortalVM x:Key="portalVM" />
+    <!-- Resources to be used by the control-->
+    <Window.Resources>
+        <vm:PortalVM x:Key="portalVM" />
 		<vm:MapVM x:Key="mapVM" />
 		<DataTemplate x:Key="mapItemsTemplate">
 			<Grid  Width="125">

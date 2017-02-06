@@ -10,6 +10,8 @@ namespace XamarinPortalBrowser
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(118, 53, 235);
+
             Forms.Init();
             LoadApplication(new App());
 
