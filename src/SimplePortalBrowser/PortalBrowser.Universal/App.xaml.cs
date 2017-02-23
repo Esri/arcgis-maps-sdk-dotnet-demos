@@ -64,7 +64,7 @@ namespace PortalBrowser
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
-
+            rootFrame.Navigated += RootFrame_Navigated;
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -77,6 +77,19 @@ namespace PortalBrowser
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += (s, args) =>
+            {
+                if (!args.Handled && rootFrame.CanGoBack)
+                {
+                    rootFrame.GoBack();
+                    args.Handled = true;
+                }
+            };
+        }
+
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = (sender as Frame).CanGoBack ? Windows.UI.Core.AppViewBackButtonVisibility.Visible : Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
         }
 
         /// <summary>

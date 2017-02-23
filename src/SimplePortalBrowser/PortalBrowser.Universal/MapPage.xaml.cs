@@ -15,15 +15,17 @@ namespace PortalBrowser
         public MapPage()
         {
             this.InitializeComponent();
+            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            MyMapView.LocationDisplay.Start();
-            var item = e.Parameter as ArcGISPortalItem;
+            MyMapView.LocationDisplay.IsEnabled = true;
+            var item = e.Parameter as PortalItem;
             var vm = Resources["mapVM"] as ViewModels.MapVM;            
             vm.PortalItem = item;
+            
         }
         private void GoBack(object sender, RoutedEventArgs e)
         {

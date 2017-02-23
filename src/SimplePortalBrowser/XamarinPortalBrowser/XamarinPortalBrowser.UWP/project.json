@@ -1,6 +1,7 @@
 ﻿{
   "dependencies": {
-    "Esri.ArcGISRuntime.Xamarin.Forms": "100.0.0.1369-beta",
+    "Esri.ArcGISRuntime.UWP": "100.0.0",
+    "Esri.ArcGISRuntime.Xamarin.Forms": "100.0.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
   },
   "frameworks": {

@@ -1,6 +1,7 @@
 ﻿using Esri.ArcGISRuntime.Portal;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PortalBrowser.ViewModels
@@ -35,7 +36,7 @@ namespace PortalBrowser.ViewModels
 		{
 			StatusMessage = "Initializing Portal...";
 			var portal = await ArcGISPortal.CreateAsync();
-			PortalInfo = portal.ArcGISPortalInfo;
+			PortalInfo = portal.PortalInfo;
 			IsLoadingPortal = false;
 			await LoadMaps(portal);
 		}
@@ -46,29 +47,36 @@ namespace PortalBrowser.ViewModels
         /// <param name="portal">Portal instance</param>
         /// <returns></returns>
 		private async Task LoadMaps(ArcGISPortal portal)
-		{
-			StatusMessage = "Loading maps...";
-			
-			var task1 = portal.ArcGISPortalInfo.SearchBasemapGalleryAsync();
-			var task2 = portal.ArcGISPortalInfo.SearchFeaturedItemsAsync(new SearchParameters("") { Limit = 50 });
-			var items = await task1;
-			Basemaps = items.Results;
-			var groups = new ObservableCollection<MapGroup>();
-			Groups = groups;
-			groups.Add(new MapGroup() { Name = "Base maps", Items = Basemaps });
-			IsLoadingBasemaps = false;
-			StatusMessage = string.Format("Connected to {0} ({1})", portal.ArcGISPortalInfo.PortalName, portal.ArcGISPortalInfo.PortalHostname);
-			items = await task2;
-			Featured = items.Results;
-			groups.Add(new MapGroup() { Name = "Featured", Items = Featured });
-			Groups = groups;
-		}
+        {
+            StatusMessage = "Loading maps...";
 
-		private ArcGISPortalInfo m_portalInfo;
+            var task1 = portal.GetBasemapsAsync();
+            var items = await task1;
+            Basemaps = items.Select(b => b.Item).OfType<PortalItem>();
+            var groups = new ObservableCollection<MapGroup>();
+            Groups = groups;
+            groups.Add(new MapGroup() { Name = "Base maps", Items = Basemaps });
+            IsLoadingBasemaps = false;
+            StatusMessage = string.Format("Connected to {0} ({1})", portal.PortalInfo.PortalName, portal.PortalInfo.PortalName);
+            foreach(var item in await portal.GetFeaturedGroupsAsync())
+            {
+                var query = PortalQueryParameters.CreateForItemsOfTypeInGroup(PortalItemType.WebMap, item.GroupId);
+                query.Limit = 20;
+                var result = await portal.FindItemsAsync(query);
+                if (result.TotalResultsCount > 0)
+                {
+                    groups.Add(new MapGroup() { Name = item.Title, Items = result.Results });
+                    if (Featured == null)
+                        Featured = result.Results;
+                }
+            }
+        }
+
+		private PortalInfo m_portalInfo;
         /// <summary>
         /// Property holds information about the loaded portal 
         /// </summary>
-		public ArcGISPortalInfo PortalInfo
+		public PortalInfo PortalInfo
 		{
 			get { return m_portalInfo; }
 			set
@@ -92,11 +100,11 @@ namespace PortalBrowser.ViewModels
 			}
 		}
 		
-		private IEnumerable<ArcGISPortalItem> m_Basemaps;
+		private IEnumerable<PortalItem> m_Basemaps;
         /// <summary>
         /// Property holding the list of basemaps to be added to the UI
         /// </summary>
-		public IEnumerable<ArcGISPortalItem> Basemaps
+		public IEnumerable<PortalItem> Basemaps
 		{
 			get { return m_Basemaps; }
 			set
@@ -106,11 +114,11 @@ namespace PortalBrowser.ViewModels
 			}
 		}
 
-		private IEnumerable<ArcGISPortalItem> m_Featured;
+		private IEnumerable<PortalItem> m_Featured;
         /// <summary>
         /// Property holding the list of featured maps to be added to the UI
         /// </summary>
-		public IEnumerable<ArcGISPortalItem> Featured
+		public IEnumerable<PortalItem> Featured
 		{
 			get { return m_Featured; }
 			set
@@ -182,6 +190,6 @@ namespace PortalBrowser.ViewModels
 	public class MapGroup
 	{
 		public string Name { get; set; }
-		public IEnumerable<ArcGISPortalItem> Items { get; set; }
+		public IEnumerable<PortalItem> Items { get; set; }
 	}
 }

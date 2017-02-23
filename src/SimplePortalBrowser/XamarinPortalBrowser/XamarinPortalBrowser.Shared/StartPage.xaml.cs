@@ -28,7 +28,7 @@ namespace XamarinPortalBrowser
                 //MapPage mapPage = new MapPage((MapVM)this.Resources["mapVM"]);
                 this.Navigation.PushAsync(new MapPage(mapVM));
                 if (listView.SelectedItem != null)
-                    mapVM.PortalItem = listView.SelectedItem as ArcGISPortalItem;
+                    mapVM.PortalItem = listView.SelectedItem as PortalItem;
             }
             catch (Exception ex)
             { }

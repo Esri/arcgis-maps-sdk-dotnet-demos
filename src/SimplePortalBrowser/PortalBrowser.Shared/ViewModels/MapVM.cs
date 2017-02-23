@@ -8,9 +8,9 @@ namespace PortalBrowser.ViewModels
     /// </summary>
 	public class MapVM : BaseViewModel
 	{
-		private ArcGISPortalItem m_portalItem;
+		private PortalItem m_portalItem;
 
-		public ArcGISPortalItem PortalItem
+		public PortalItem PortalItem
 		{
 			get { return m_portalItem; }
 			set { m_portalItem = value; LoadPortalItem(value); OnPropertyChanged("PortalItem"); }
@@ -19,7 +19,7 @@ namespace PortalBrowser.ViewModels
         /// Method runs when a portal item is selected by the user
         /// </summary>
         /// <param name="item">Item selected by user</param>
-		private async void LoadPortalItem(ArcGISPortalItem item)
+		private async void LoadPortalItem(PortalItem item)
 		{
 			try
 			{

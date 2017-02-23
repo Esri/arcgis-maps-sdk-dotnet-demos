@@ -25,33 +25,29 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" FontSize="40"
+            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" FontSize="40"
 					   Style="{StaticResource HeaderTextBlockStyle}"
-					   IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+					   IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="20,10"/>
         </Grid>
 
         <Grid Grid.Row="1" >
             <SemanticZoom>
                 <SemanticZoom.ZoomedInView>
-                    <GridView Padding="116,20,40,46" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
+                    <GridView Padding="20,20,40,46" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
 						ItemsSource="{Binding Source={StaticResource collection}}" 
 					  SelectionMode="None" IsSwipeEnabled="False" 
 					  IsItemClickEnabled="True" ItemClick="GridView_ItemClick">
-                        <GridView.ItemsPanel>
+                        <!--<GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                        </GridView.ItemsPanel>-->
 
                         <GridView.ItemTemplate>
                             <DataTemplate>

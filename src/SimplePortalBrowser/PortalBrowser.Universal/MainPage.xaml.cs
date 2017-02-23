@@ -17,7 +17,7 @@ namespace PortalBrowser
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = (e.ClickedItem as ArcGISPortalItem);
+            var item = (e.ClickedItem as PortalItem);
             base.Frame.Navigate(typeof(MapPage), item);
         }
     }

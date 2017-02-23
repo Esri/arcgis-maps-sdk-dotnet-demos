@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns:vm="using:PortalBrowser.ViewModels"
-	xmlns:esri="using:Esri.ArcGISRuntime.UI">
+	xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls">
     <Page.Resources>
         <vm:MapVM x:Key="mapVM" />
     </Page.Resources>
@@ -20,25 +20,15 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Click="GoBack"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>
 
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding PortalItem.Title}" Style="{StaticResource HeaderTextBlockStyle}"
-					   IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" />
+					   IsHitTestVisible="false" TextWrapping="NoWrap" Margin="20,10" VerticalAlignment="Center" />
         </Grid>
 
         <esri:MapView Grid.Row="1"
