@@ -22,12 +22,12 @@ namespace OfficeLocator
             if (System.IO.Directory.Exists(path))
                 return;
             var portal = await Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync().ConfigureAwait(false);
-            var item = await Esri.ArcGISRuntime.Portal.ArcGISPortalItem.CreateAsync(portal, itemId).ConfigureAwait(false);
+            var item = await Esri.ArcGISRuntime.Portal.PortalItem.CreateAsync(portal, itemId).ConfigureAwait(false);
             
             progress?.Invoke("Initiating download...");
             var tempFile = Path.GetTempFileName();
             progress?.Invoke("Downloading data...");
-            using (var s = await item.GetItemDataAsync().ConfigureAwait(false))
+            using (var s = await item.GetDataAsync().ConfigureAwait(false))
             {
                 using (var f = File.Create(tempFile))
                 {

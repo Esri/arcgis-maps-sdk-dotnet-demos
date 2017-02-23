@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:esri="using:Esri.ArcGISRuntime"
     xmlns:esriUI="using:Esri.ArcGISRuntime.UI"
+    xmlns:esriCtrls="using:Esri.ArcGISRuntime.UI.Controls"
 	xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
 	xmlns:data="using:Esri.ArcGISRuntime.Data"
 	xmlns:symb="using:Esri.ArcGISRuntime.Symbology"
@@ -20,14 +21,14 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-        <esriUI:MapView x:Name="CampusView" Background="White"
+        <esriCtrls:MapView x:Name="CampusView" Background="White"
 						Map="{x:Bind VM.Map, Mode=OneWay}" 
 						GraphicsOverlays="{x:Bind VM.Overlays}" 
 						Grid.Row="1" Grid.RowSpan="2" >
-            <esriUI:MapView.BackgroundGrid>
+            <esriCtrls:MapView.BackgroundGrid>
                 <esriUI:BackgroundGrid Color="White" GridLineColor="Transparent" />
-            </esriUI:MapView.BackgroundGrid>
-        </esriUI:MapView>
+            </esriCtrls:MapView.BackgroundGrid>
+        </esriCtrls:MapView>
 
         <!-- If you want a 3D view of the campus which also helps to to better 
              visualize floor changes, replace the above MapView with this SceneView -->

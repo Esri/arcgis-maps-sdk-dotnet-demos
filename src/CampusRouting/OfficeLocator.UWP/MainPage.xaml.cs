@@ -31,6 +31,22 @@ namespace OfficeLocator.UWP
             await VM.LoadAsync();
             loadingStatus.Visibility = Visibility.Collapsed;
             VM.RequestViewpoint += VM_RequestViewpoint;
+            MapViewModel.OnError += MapViewModel_OnError;
+        }
+
+        private Windows.Foundation.IAsyncOperation<Windows.UI.Popups.IUICommand> currentDialogTask;
+        private void MapViewModel_OnError(object sender, string message)
+        {
+            var _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+            {
+                if (currentDialogTask != null)
+                {
+                    await currentDialogTask;
+                }
+                currentDialogTask = new Windows.UI.Popups.MessageDialog(message).ShowAsync();
+                await currentDialogTask;
+                currentDialogTask = null;
+            });
         }
 
         public MapViewModel VM { get; } = new MapViewModel();

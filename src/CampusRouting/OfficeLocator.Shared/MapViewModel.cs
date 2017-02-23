@@ -19,6 +19,12 @@ namespace OfficeLocator
 {
     public class MapViewModel : INotifyPropertyChanged
     {
+        public static event EventHandler<string> OnError;
+
+        internal static void RaiseErrorMessage(string message)
+        {
+            OnError?.Invoke(null, message);
+        }
         public MapViewModel()
 		{
 			Overlays.Add(new GraphicsOverlay() { Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Colors.CornflowerBlue, 5)) });
@@ -50,8 +56,8 @@ namespace OfficeLocator
             UpdateLoadStatus("Initializing map...");
             GeocodeHelper.Initialize();
 #if NETFX_CORE
-			var a = await PictureMarkerSymbol.CreateAsync(new Uri("ms-appx:///MarkerA.png"));
-			var b = await PictureMarkerSymbol.CreateAsync(new Uri("ms-appx:///MarkerB.png"));
+			var a = new PictureMarkerSymbol(new Uri("ms-appx:///MarkerA.png"));
+			var b = new PictureMarkerSymbol(new Uri("ms-appx:///MarkerB.png"));
 			a.Width = a.Height = b.Width = b.Height = 20;
 #else
             var a = new SimpleMarkerSymbol() { Color = Colors.Red, Size = 20 };
@@ -226,6 +232,10 @@ namespace OfficeLocator
                 ZoomToData();
             }
             RouteUpdated?.Invoke(this, EventArgs.Empty);
+            if (route1 == null && route2 == null)
+            {
+                MapViewModel.RaiseErrorMessage("No possible route found");
+            }
 		}
 
         private void ZoomToData()

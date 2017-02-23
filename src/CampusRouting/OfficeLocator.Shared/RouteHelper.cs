@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Tasks.Geocoding;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 
 namespace OfficeLocator
 {
@@ -27,9 +26,9 @@ namespace OfficeLocator
 
 		public static async Task<Route> RouteAsync(MapPoint from, MapPoint to, bool reduceOutside)
 		{
-			var router = await InitRouterAsync().ConfigureAwait(false);
+            var router = await InitRouterAsync().ConfigureAwait(false);
 			var languages = router.RouteTaskInfo.SupportedLanguages.ToArray();
-			var parameters = await router.GenerateDefaultParametersAsync();
+			var parameters = await router.CreateDefaultParametersAsync();
 			var lang = router.RouteTaskInfo.SupportedLanguages.Where(l => l.ToLower().StartsWith("en")).FirstOrDefault() ?? parameters.DirectionsLanguage;
 			parameters.DirectionsLanguage = lang;
 			parameters.SetStops(new Stop[] { new Stop(from), new Stop(to) });
@@ -45,8 +44,9 @@ namespace OfficeLocator
 			}
 			catch(System.Exception ex)
 			{
+                // If a possible route couldn't found, an error is thrown here
 				System.Diagnostics.Debug.Write(ex.Message + "\n" + ex.StackTrace);
-				return null;
+                return null;
 			}
 		}
 	}

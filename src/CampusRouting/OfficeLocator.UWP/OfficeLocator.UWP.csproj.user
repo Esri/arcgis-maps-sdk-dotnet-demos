@@ -5,7 +5,7 @@
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
     <DeviceId>F554226E-1E47-460D-B76A-338418AD356B</DeviceId>
     <UseEmulator>false</UseEmulator>
-    <UseSimulator>true</UseSimulator>
+    <UseSimulator>false</UseSimulator>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
