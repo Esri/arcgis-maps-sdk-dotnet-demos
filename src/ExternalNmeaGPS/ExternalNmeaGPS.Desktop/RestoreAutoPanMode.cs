@@ -1,7 +1,8 @@
-﻿using Esri.ArcGISRuntime.Controls;
-using Esri.ArcGISRuntime.Location;
+﻿using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.UI.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 #if NETFX_CORE
@@ -66,7 +67,7 @@ namespace ExternalNmeaGPS
 			if (m_mapView != null && m_mapView.LocationDisplay != null)
 			{
 				if (!double.IsNaN(RestoreScale))
-					m_mapView.ZoomToScaleAsync(RestoreScale);
+					m_mapView.SetViewpointScaleAsync(RestoreScale);
 				m_mapView.LocationDisplay.AutoPanMode = this.PanMode;
 			}
 		}
@@ -77,13 +78,13 @@ namespace ExternalNmeaGPS
 			if (m_mapView != null && m_mapView != mv)
 				throw new InvalidOperationException("RestoreAutoPanMode can only be assigned to one mapview");
 			m_mapView = mv;
-			m_mapView.PropertyChanged += m_mapView_PropertyChanged;
+			(m_mapView as INotifyPropertyChanged).PropertyChanged += m_mapView_PropertyChanged;
 		}
 
 
 		internal void DetachFromMapView(MapView mv)
 		{
-			m_mapView.PropertyChanged -= m_mapView_PropertyChanged;
+			(m_mapView as INotifyPropertyChanged).PropertyChanged -= m_mapView_PropertyChanged;
 			m_mapView = null;
 		}
 
@@ -112,7 +113,7 @@ namespace ExternalNmeaGPS
 		public int DelayInSeconds { get; set; }
 
 
-		public AutoPanMode PanMode { get; set; }
+		public Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode PanMode { get; set; }
 
 		public double RestoreScale { get; set; }
 
