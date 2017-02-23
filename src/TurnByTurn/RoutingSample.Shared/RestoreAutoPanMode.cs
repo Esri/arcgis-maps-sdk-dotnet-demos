@@ -1,5 +1,7 @@
-﻿using Esri.ArcGISRuntime.Controls;
+﻿
 using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -66,20 +68,20 @@ namespace RoutingSample
 			if (m_mapView != null && m_mapView != mv)
 				throw new InvalidOperationException("RestoreAutoPanMode can only be assigned to one mapview");
 			m_mapView = mv;
-			m_mapView.PropertyChanged += m_mapView_PropertyChanged;
-		}
+            m_mapView.NavigationCompleted += M_mapView_NavigationCompleted;
+        }
 
 		internal void DetachFromMapView(MapView mv)
 		{
-			m_mapView.PropertyChanged -= m_mapView_PropertyChanged;
+            m_mapView.NavigationCompleted -= M_mapView_NavigationCompleted;
 			m_mapView = null;
 		}
 
-		private void m_mapView_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
+        private void M_mapView_NavigationCompleted(object sender, EventArgs e)
+        {
 			//If user stopped navigating and we're not in the correct autopan mode,
 			//restore autopan after the set delay.
-			if(IsEnabled && e.PropertyName == "IsNavigating")
+			if(IsEnabled && !m_mapView.IsNavigating)
 			{
 				if(m_mapView.LocationDisplay != null && 
 					m_mapView.LocationDisplay.AutoPanMode != PanMode)
@@ -96,7 +98,7 @@ namespace RoutingSample
 
 		public int DelayInSeconds { get; set; }
 
-		public AutoPanMode PanMode { get; set; }	
+		public LocationDisplayAutoPanMode PanMode { get; set; }	
 	
 		public static RestoreAutoPanMode GetRestoreAutoPanSettings(DependencyObject obj)
 		{

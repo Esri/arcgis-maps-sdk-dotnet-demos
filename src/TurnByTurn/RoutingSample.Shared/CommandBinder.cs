@@ -1,5 +1,7 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Controls;
+using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +51,7 @@ namespace RoutingSample
 				MapView mapView = d as MapView;
 				if (e.NewValue is Viewpoint)
 				{
-					mapView.SetView((Viewpoint)e.NewValue);
+					mapView.SetViewpoint((Viewpoint)e.NewValue);
 				}
 			}
 		}

@@ -1,38 +1,41 @@
-﻿using Esri.ArcGISRuntime.Portal;
-using Esri.ArcGISRuntime.WebMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Portal;
 
 namespace PortalBrowser.ViewModels
 {
+    /// <summary>
+    /// Map View Model that handles all logic related to the map object
+    /// </summary>
 	public class MapVM : BaseViewModel
 	{
-		private ArcGISPortalItem m_portalItem;
+		private PortalItem m_portalItem;
 
-		public ArcGISPortalItem PortalItem
+		public PortalItem PortalItem
 		{
 			get { return m_portalItem; }
 			set { m_portalItem = value; LoadPortalItem(value); OnPropertyChanged("PortalItem"); }
 		}
-
-		private async void LoadPortalItem(ArcGISPortalItem item)
+        /// <summary>
+        /// Method runs when a portal item is selected by the user
+        /// </summary>
+        /// <param name="item">Item selected by user</param>
+		private async void LoadPortalItem(PortalItem item)
 		{
 			try
 			{
 				if (item == null)
-					WebMapVM = null;
+                    Map = null;
 				else
 				{
-					StatusMessage = "Loading Webmap...";
-					IsLoadingWebMap = true;
-					var webmap = await WebMap.FromPortalItemAsync(item);
-					WebMapVM = await WebMapViewModel.LoadAsync(webmap, item.ArcGISPortal);
-					IsLoadingWebMap = false;
-					StatusMessage = "";
-				}
+                    StatusMessage = "Loading Webmap...";
+                    IsLoadingWebMap = true;
+                    // Create a new map from the portal item and load it
+                    Map = new Map(item);
+                    await Map.LoadAsync();
+                    Map = Map;
+                    IsLoadingWebMap = false;
+                    StatusMessage = "";
+                }
 			}
 			catch (System.Exception ex)
 			{
@@ -41,20 +44,28 @@ namespace PortalBrowser.ViewModels
 			}
 		}
 
-		private WebMapViewModel m_WebMapVM;
+		private Map m_Map;
 
-		public WebMapViewModel WebMapVM
-		{
-			get { return m_WebMapVM; }
+        /// <summary>
+        /// Property holding the map item used by the MapView
+        /// </summary>
+		public Map Map
+        {
+			get { return m_Map; }
 			set
 			{
-				m_WebMapVM = value;
-				OnPropertyChanged("WebMapVM");
+                if (m_Map != value)
+                {
+                    m_Map = value;
+                    OnPropertyChanged("Map");
+                }
 			}
 		}
 
 		private string m_StatusMessage;
-
+        /// <summary>
+        /// Status message to inform user or loading progress
+        /// </summary>
 		public string StatusMessage
 		{
 			get { return m_StatusMessage; }
@@ -62,12 +73,13 @@ namespace PortalBrowser.ViewModels
 			{
 				m_StatusMessage = value;
 				OnPropertyChanged("StatusMessage");
-				System.Diagnostics.Debug.WriteLine(value);
 			}
 		}
 
 		private bool m_IsLoadingWebMap = true;
-
+        /// <summary>
+        /// Boolean to reflect whether the map has finished loading
+        /// </summary>
 		public bool IsLoadingWebMap
 		{
 			get { return m_IsLoadingWebMap; }

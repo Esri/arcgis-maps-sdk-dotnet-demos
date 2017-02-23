@@ -6,8 +6,9 @@
 		ResizeMode="CanResizeWithGrip"
 		xmlns:vm="clr-namespace:PortalBrowser.ViewModels" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
 		>
-	<Window.Resources>
-		<vm:PortalVM x:Key="portalVM" />
+    <!-- Resources to be used by the control-->
+    <Window.Resources>
+        <vm:PortalVM x:Key="portalVM" />
 		<vm:MapVM x:Key="mapVM" />
 		<DataTemplate x:Key="mapItemsTemplate">
 			<Grid  Width="125">
@@ -82,11 +83,8 @@
 				   Grid.Column="1" Grid.Row="1" FontSize="24"
 				   HorizontalAlignment="Center" />
 		<Grid Grid.Column="2" Grid.Row="2" DataContext="{StaticResource mapVM}" >
-			<esri:MapView LocationDisplay="{x:Null}" 
-						  Map="{Binding WebMapVM.Map}"
-						  MinScale="{Binding WebMapVM.RecommendedMinScale}"
-						  MaxScale="{Binding WebMapVM.RecommendedMaxScale}"						  
-						  />
+            <esri:MapView x:Name="MyMapView"
+                          Map="{Binding Map}"/>
 		</Grid>
 		
 	</Grid>

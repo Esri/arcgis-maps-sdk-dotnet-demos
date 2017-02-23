@@ -1,152 +1,124 @@
 ﻿<Window x:Class="LocalNetworkSample.Desktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
-		xmlns:local="clr-namespace:LocalNetworkSample"
-		xmlns:localCtrls="clr-namespace:LocalNetworkSample.Controls"
-		xmlns:common="clr-namespace:LocalNetworkSample.Common"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:local="clr-namespace:LocalNetworkSample"
+        xmlns:localCtrls="clr-namespace:LocalNetworkSample.Controls"
+        xmlns:common="clr-namespace:LocalNetworkSample.Common"
         Title="ArcGIS Runtime SDK for .NET - Network Sample" Height="400" Width="800">
-	<Window.Resources>
-		<common:BooleanToVisibilityConverter x:Key="boolToViz" />
+    <Window.Resources>
+        <common:BooleanToVisibilityConverter x:Key="boolToViz" />
 
-		<local:MainPageVM x:Key="vm">
-			<local:MainPageVM.Map>
-				<esri:Map>
-					<esri:Map.InitialViewpoint>
-						<esri:ViewpointExtent XMin="-13044883" YMin="3853913" XMax="-13039791" YMax="3857887" SpatialReferenceID="102100" />
-					</esri:Map.InitialViewpoint>
+        <local:MainPageVM x:Key="vm">
+            <local:MainPageVM.GraphicsOverlays>
+                <esri:GraphicsOverlayCollection>
+                    <esri:GraphicsOverlay>
+                        <esri:GraphicsOverlay.Renderer>
+                            <esri:SimpleRenderer Label="PolygonBarriers">
+                                <esri:SimpleFillSymbol Color="#55FF0000" />
+                            </esri:SimpleRenderer>
+                        </esri:GraphicsOverlay.Renderer>
+                    </esri:GraphicsOverlay>
+                    <esri:GraphicsOverlay>
+                        <esri:GraphicsOverlay.Renderer>
+                            <esri:SimpleRenderer Label="PolylineBarriers">
+                                <esri:SimpleLineSymbol Color="Red" Width="5" />
+                            </esri:SimpleRenderer>
+                        </esri:GraphicsOverlay.Renderer>
+                    </esri:GraphicsOverlay>
+                    <esri:GraphicsOverlay>
+                        <esri:GraphicsOverlay.Renderer>
+                            <esri:SimpleRenderer Label="PointBarriers">
+                                <esri:SimpleMarkerSymbol Color="Red" Size="12" />
+                            </esri:SimpleRenderer>
+                        </esri:GraphicsOverlay.Renderer>
+                    </esri:GraphicsOverlay>
 
-					<esri:ArcGISTiledMapServiceLayer DisplayName="Imagery"
-						ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
+                    <esri:GraphicsOverlay>
+                        <esri:GraphicsOverlay.Renderer>
+                            <esri:SimpleRenderer Label="route">
+                                <esri:SimpleLineSymbol Style="Solid" Color="CornflowerBlue" Width="5" />
+                            </esri:SimpleRenderer>
+                        </esri:GraphicsOverlay.Renderer>
+                    </esri:GraphicsOverlay>
 
-					<esri:GroupLayer ID="Barriers">
-						<esri:GraphicsLayer ID="PolygonBarriers" >
-							<esri:GraphicsLayer.Renderer>
-								<esri:SimpleRenderer>
-									<esri:CompositeSymbol>
-										<esri:SimpleFillSymbol Color="#55FF0000" />
-									</esri:CompositeSymbol>
-								</esri:SimpleRenderer>
-							</esri:GraphicsLayer.Renderer>
-						</esri:GraphicsLayer>
-						<esri:GraphicsLayer ID="PolylineBarriers" >
-							<esri:GraphicsLayer.Renderer>
-								<esri:SimpleRenderer>
-									<esri:CompositeSymbol>
-										<esri:SimpleLineSymbol Color="Red" Width="5" />
-									</esri:CompositeSymbol>
-								</esri:SimpleRenderer>
-							</esri:GraphicsLayer.Renderer>
-						</esri:GraphicsLayer>
-						<esri:GraphicsLayer ID="PointBarriers" >
-							<esri:GraphicsLayer.Renderer>
-								<esri:SimpleRenderer>
-									<esri:CompositeSymbol>
-										<esri:SimpleMarkerSymbol Color="Red" Size="12" />
-									</esri:CompositeSymbol>
-								</esri:SimpleRenderer>
-							</esri:GraphicsLayer.Renderer>
-						</esri:GraphicsLayer>
-					</esri:GroupLayer>
-					
-				</esri:Map>
-			</local:MainPageVM.Map>
-			<local:MainPageVM.GraphicsOverlays>
-				<esri:GraphicsOverlayCollection>
-					<esri:GraphicsOverlay ID="route" >
-						<esri:GraphicsOverlay.Renderer>
-							<esri:SimpleRenderer>
-								<esri:CompositeSymbol>
-									<esri:SimpleLineSymbol Color="White" Width="7" />
-									<esri:SimpleLineSymbol Color="CornflowerBlue" Width="5" />
-								</esri:CompositeSymbol>
-							</esri:SimpleRenderer>
-						</esri:GraphicsOverlay.Renderer>
-					</esri:GraphicsOverlay>
+                    <esri:GraphicsOverlay>
+                        <esri:GraphicsOverlay.Renderer>
+                            <esri:SimpleRenderer Label="geocode">
+                                <esri:SimpleMarkerSymbol Size="10" >
+                                    <esri:SimpleMarkerSymbol.Outline>
+                                        <esri:SimpleLineSymbol Width="2" Color="White" />
+                                    </esri:SimpleMarkerSymbol.Outline>
+                                </esri:SimpleMarkerSymbol>
+                            </esri:SimpleRenderer>
+                        </esri:GraphicsOverlay.Renderer>
+                    </esri:GraphicsOverlay>
+                </esri:GraphicsOverlayCollection>
+            </local:MainPageVM.GraphicsOverlays>
+        </local:MainPageVM>
+    </Window.Resources>
 
-					<esri:GraphicsOverlay ID="geocode" >
-						<esri:GraphicsOverlay.Renderer>
-							<esri:SimpleRenderer>
-								<esri:CompositeSymbol>
-									<esri:SimpleMarkerSymbol Color="Coral" Size="20" />
-									<esri:SimpleMarkerSymbol Size="10" >
-										<esri:SimpleMarkerSymbol.Outline>
-											<esri:SimpleLineSymbol Width="2" Color="White" />
-										</esri:SimpleMarkerSymbol.Outline>
-									</esri:SimpleMarkerSymbol>
-									<esri:SimpleMarkerSymbol Color="Black" Size="4" />
-								</esri:CompositeSymbol>
-							</esri:SimpleRenderer>
-						</esri:GraphicsOverlay.Renderer>
-					</esri:GraphicsOverlay>
-				</esri:GraphicsOverlayCollection>
-			</local:MainPageVM.GraphicsOverlays>
-		</local:MainPageVM>
-	</Window.Resources>
+    <Grid DataContext="{StaticResource vm}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-	<Grid DataContext="{StaticResource vm}">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="300" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
+        <esri:MapView x:Name="mapview" Grid.Column="1"
+                      MouseMove="mapview_PointerMoved"
+                      Map="{Binding Map}" 
+                      GraphicsOverlays="{Binding GraphicsOverlays}" />
 
-		<esri:MapView x:Name="mapview" Grid.Column="1"
-					  MouseMove="mapview_PointerMoved"
-					  Map="{Binding Map}" 
-					  GraphicsOverlays="{Binding GraphicsOverlays}"
-					  Editor="{Binding Editor}"
-					  LocationDisplay="{Binding LocationDisplay}" />
-
-		<TabControl SelectedIndex="{Binding CurrentTabItem, Mode=TwoWay}">
-			<TabItem Header="Geocode">
-				<TextBlock Text="{Binding ReverseGeocodeResult}" FontSize="18"  Margin="10"/>
-			</TabItem>
-			<TabItem Header="Routing">
-				<ItemsControl ItemsSource="{Binding RouteDirections}" Margin="10">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<localCtrls:RouteDirectionView RouteDirection="{Binding}" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</TabItem>
-			<TabItem Header="Barriers">
-				<StackPanel Margin="10">
-					<Button Content="Add Point Barrier" Command="{Binding AddPointBarrierCommand}" />
-					<Button Content="Add Polyline Barrier" Command="{Binding AddPolylineBarrierCommand}" />
-					<Button Content="Add Polygon Barrier" Command="{Binding AddPolygonBarrierCommand}" />
-					<Button Content="Clear Barriers" Command="{Binding ClearBarriersCommand}" />
-				</StackPanel>
-			</TabItem>
-			<TabItem Header="Settings">
-				<StackPanel>
-					<CheckBox Content="Use Online Service"  IsChecked="{Binding UseOnlineService, Mode=TwoWay}" FontSize="18" />
-					<TextBlock Text="Optimize for:" />
-					<ComboBox ItemsSource="{Binding NetworkDescription.CostAttributes}" SelectedItem="{Binding SelectedCostAttribute, Mode=TwoWay}">
-						<ComboBox.ItemTemplate>
-							<DataTemplate>
-								<TextBlock Text="{Binding AttributeName}" />
-							</DataTemplate>
-						</ComboBox.ItemTemplate>
-					</ComboBox>
-				</StackPanel>
-			</TabItem>
-			<TabItem Header="About">
-				<TextBlock TextWrapping="Wrap" Margin="10">
-					<TextBlock.Inlines>
-						<Bold>ArcGIS Runtime Routing and Geocoder sample</Bold>
-						<LineBreak />
-						<LineBreak />
-						<Run>Select the first two tabs to perform geocoding and routing to the mouse location within the area of San Diego.</Run>
-						<LineBreak />
-						<LineBreak />
-						<Run>Use the "Barriers" tab to set up road blocks for the route calculation.</Run>
-						<LineBreak />
-						<LineBreak />
-						<Run>Use the "Settings" tab to switch between online and offline routing and geocoding. Note: The online geocoder uses the world geocoder service and works for most of the world.</Run>
-					</TextBlock.Inlines>
-				</TextBlock>
-			</TabItem>
-		</TabControl>
-	</Grid>
+        <TabControl SelectedIndex="{Binding CurrentTabItem, Mode=TwoWay}">
+            <TabItem Header="Geocode">
+                <TextBlock Text="{Binding ReverseGeocodeResult}" FontSize="18"  Margin="10"/>
+            </TabItem>
+            <TabItem Header="Routing">
+                <ItemsControl ItemsSource="{Binding RouteDirections}" Margin="10">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <localCtrls:RouteDirectionView RouteDirection="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </TabItem>
+            <TabItem Header="Barriers">
+                <StackPanel Margin="10">
+                    <Button Content="Add Point Barrier" Command="{Binding AddPointBarrierCommand}" />
+                    <Button Content="Add Polyline Barrier" Command="{Binding AddPolylineBarrierCommand}" />
+                    <Button Content="Add Polygon Barrier" Command="{Binding AddPolygonBarrierCommand}" />
+                    <Button Content="Clear Barriers" Command="{Binding ClearBarriersCommand}" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Settings">
+                <StackPanel>
+                    <CheckBox Content="Use Online Service"  IsChecked="{Binding UseOnlineService, Mode=TwoWay}" FontSize="18" />
+                    <TextBlock Text="Optimize for:" />
+                    <ComboBox ItemsSource="{Binding RouteTaskInfo.CostAttributes.Keys}" SelectedItem="{Binding SelectedCostAttributeName, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="About">
+                <TextBlock TextWrapping="Wrap" Margin="10">
+                    <TextBlock.Inlines>
+                        <Bold>ArcGIS Runtime Routing and Geocoder sample</Bold>
+                        <LineBreak />
+                        <LineBreak />
+                        <Run>Select the first two tabs to perform geocoding and routing to the mouse location within the area of San Diego.</Run>
+                        <LineBreak />
+                        <LineBreak />
+                        <Run>Use the "Barriers" tab to set up road blocks for the route calculation.</Run>
+                        <LineBreak />
+                        <LineBreak />
+                        <Run>Use the "Settings" tab to switch between online and offline routing and geocoding. Note: The online geocoder uses the world geocoder service and works for most of the world.</Run>
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>

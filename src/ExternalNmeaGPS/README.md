@@ -1,6 +1,6 @@
 Demo: Using an External GPS Device
 =======================
-Required version: ArcGIS Runtime SDK 10.2.4 for .NET
+Required version: ArcGIS Runtime SDK 100.0 for .NET
 
 Sample app that shows how to use the [NmeaParser](https://github.com/dotMorten/NmeaParser) library to parse NMEA GPS message from a file or serial port, and use it in a custom LocationProvider to drive the map's LocationDisplay. 
 

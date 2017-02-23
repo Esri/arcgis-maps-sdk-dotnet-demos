@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView
+        android:background="#FF099688"
+        android:textColor="#FFFFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        Text="Esri Campus"
+        android:textSize="20dp"
+        android:text="Esri Campus"
+        android:padding="20dp"
+        android:textStyle="bold" />
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gridLayout1"
+        android:rowCount="2"
+        android:background="#FF099688"
+        android:columnCount="3">
+        <ImageView
+            android:src="@drawable/MarkerA"
+            android:id="@+id/imageViewA"
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@+id/FromInput"
+            android:layout_alignTop="@+id/FromInput" />
+        <AutoCompleteTextView
+            android:layout_width="fill_parent"
+            android:id="@+id/FromInput"
+            android:hint="from"
+            android:layout_toRightOf="@+id/imageViewA"
+            android:layout_toLeftOf="@+id/imageScanQR"
+            android:layout_alignParentTop="True"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+        <ImageView
+            android:src="@drawable/ScanQR_White"
+            android:id="@+id/imageScanQR"
+            android:layout_height="25dp"
+            android:layout_width="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="3dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/FromInput"
+            android:layout_alignTop="@+id/FromInput" />
+        <ImageView
+            android:src="@drawable/MarkerB"
+            android:id="@+id/imageViewB"
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@+id/ToInput"
+            android:layout_alignTop="@+id/ToInput" />
+        <AutoCompleteTextView
+            android:layout_width="fill_parent"
+            android:id="@+id/ToInput"
+            android:hint="to"
+            android:layout_toRightOf="@+id/imageViewB"
+            android:layout_toLeftOf="@+id/imageScanQR"
+            android:layout_below="@+id/FromInput"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/Calendar"
+            android:id="@+id/imageScanQR"
+            android:layout_height="25dp"
+            android:layout_width="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="3dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/ToInput"
+            android:layout_alignTop="@+id/ToInput" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:columnCount="1"
+        android:rowCount="1">
+      <Esri.ArcGISRuntime.UI.MapView
+          android:layout_height="fill_parent"
+          android:layout_width="fill_parent"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentRight="true"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentTop="true"
+          android:id="@+id/CampusView"
+          android:layout_marginBottom="0.0dp"
+          android:layout_alignWithParentIfMissing="true" />
+        <TextView
+            android:text="Loading data..."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/downloadDataStatus"
+            android:textColor="#FF636363"
+            android:textStyle="bold"
+            android:layout_gravity="right"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:gravity="center" />
+        <GridLayout
+            android:background="#ffffffff"
+            android:id="@+id/WalkTimePanel"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="#ffffffff"
+            android:padding="10dp"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:visibility="visible">
+            <TextView
+                android:text="Walk time"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF099688"
+                android:textStyle="bold"
+                android:textSize="25dp" />
+            <TextView
+                android:text="Alternate route"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF636363"
+                android:textStyle="bold"
+                android:textSize="20dp" />
+            <TextView
+                android:text="0:00"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewWalkTime"
+                android:textColor="#FF099688"
+                android:textStyle="bold"
+                android:layout_gravity="right"
+                android:textSize="25dp" />
+            <TextView
+                android:text="0:00"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewWalkTimeAlt"
+                android:textColor="#FF636363"
+                android:textStyle="bold"
+                android:layout_gravity="right"
+                android:textSize="20dp" />
+        </GridLayout>
+    </RelativeLayout>
+</LinearLayout>

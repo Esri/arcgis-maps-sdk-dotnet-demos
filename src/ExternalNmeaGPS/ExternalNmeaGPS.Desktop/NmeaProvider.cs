@@ -1,11 +1,11 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using System;
+using System.Threading.Tasks;
 
 namespace ExternalNmeaGPS
 {
-	public class NmeaLocationProvider : Esri.ArcGISRuntime.Location.ILocationProvider
+	public class NmeaLocationProvider : Esri.ArcGISRuntime.Location.LocationDataSource
 	{
-		public event EventHandler<Esri.ArcGISRuntime.Location.LocationInfo> LocationChanged;
 		private NmeaParser.NmeaDevice device;
 		double m_Accuracy = double.NaN;
 
@@ -25,28 +25,22 @@ namespace ExternalNmeaGPS
 			else if (message is NmeaParser.Nmea.Gps.Gprmc)
 			{
 				var rmc = (NmeaParser.Nmea.Gps.Gprmc)message;
-				if(rmc.Active && LocationChanged != null)
+				if(rmc.Active)
 				{
-					LocationChanged(this, new Esri.ArcGISRuntime.Location.LocationInfo()
-					{
-						Course = rmc.Course,
-						Speed = rmc.Speed,
-						HorizontalAccuracy = m_Accuracy,
-						Location = new Esri.ArcGISRuntime.Geometry.MapPoint(rmc.Longitude, rmc.Latitude, SpatialReferences.Wgs84)
-					});
+                    base.UpdateLocation(new Esri.ArcGISRuntime.Location.Location(new Esri.ArcGISRuntime.Geometry.MapPoint(rmc.Longitude, rmc.Latitude, SpatialReferences.Wgs84), m_Accuracy, rmc.Speed, rmc.Course, false));
 				}
 			}
 		}
 
-		public System.Threading.Tasks.Task StartAsync()
-		{
-			return this.device.OpenAsync();
-		}
+        protected override Task OnStartAsync()
+        {
+            return this.device.OpenAsync();
+        }
 
-		public System.Threading.Tasks.Task StopAsync()
-		{
-			m_Accuracy = double.NaN;
-			return this.device.CloseAsync();
-		}
-	}
+        protected override Task OnStopAsync()
+        {
+            m_Accuracy = double.NaN;
+            return this.device.CloseAsync();
+        }
+    }
 }

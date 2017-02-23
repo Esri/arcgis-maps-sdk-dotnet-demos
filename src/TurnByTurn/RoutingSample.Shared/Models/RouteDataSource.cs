@@ -1,111 +1,77 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Layers;
-using Esri.ArcGISRuntime.Symbology;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
+using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-#if NETFX_CORE
-using Windows.UI;
-#else
-using System.Windows.Media;
-#endif
 
 namespace RoutingSample
 {
-	/// <summary>
-	/// Data source that wraps a route result and based on a location exposes properties
-	/// like next turn, distance, etc
-	/// </summary>
-	public class RouteDataSource : ModelBase
-	{
-		private readonly RouteResult m_route;
+    /// <summary>
+    /// Data source that wraps a route result and based on a location exposes properties
+    /// like next turn, distance, etc
+    /// </summary>
+    public class RouteDataSource : ModelBase
+    {
+        private readonly RouteResult m_route;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RouteDataSource"/> class.
-		/// </summary>
-		/// <param name="route">The route.</param>
-		public RouteDataSource(RouteResult route)
-		{
-			m_route = route;
-			if (IsDesignMode) //Design time data
-			{
-				DistanceToDestination = 1000;
-				DistanceToWaypoint = 500;
-				TimeToWaypoint = new TimeSpan(1, 2, 3);
-				TimeToDestination = new TimeSpan(2, 3, 4);
-				NextManeuver = "Turn right onto Main St.";
-			}
-			else
-			{
-				InitializeRoute();
-			}
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RouteDataSource"/> class.
+        /// </summary>
+        /// <param name="route">The route.</param>
+        public RouteDataSource(RouteResult route)
+        {
+            m_route = route;
+            if (IsDesignMode) //Design time data
+            {
+                DistanceToDestination = 1000;
+                DistanceToWaypoint = 500;
+                TimeToWaypoint = new TimeSpan(1, 2, 3);
+                TimeToDestination = new TimeSpan(2, 3, 4);
+                NextManeuver = "Turn right onto Main St.";
+            }
+        }
 
-		public IList<Graphic> Maneuvers { get; private set; }
+        public string NextManeuver { get; private set; }
+        public MapPoint WaypointLocation { get; private set; }
 
-		public IList<Graphic> RouteLines { get; private set; }
+        public double DistanceToDestination { get; private set; }
 
-		public string NextManeuver { get; private set; }
-		public MapPoint WaypointLocation { get; private set; }
+        public string MilesToDestination
+        {
+            get { return MetersToMilesFeet(DistanceToDestination); }
+        }
 
-		public double DistanceToDestination { get; private set; }
+        public TimeSpan TimeToDestination { get; private set; }
 
-		public string MilesToDestination
-		{
-			get { return MetersToMilesFeet(DistanceToDestination); }
-		}
+        public TimeSpan TimeToWaypoint { get; private set; }
 
-		public TimeSpan TimeToDestination { get; private set; }
+        public double DistanceToWaypoint { get; private set; }
 
-		public TimeSpan TimeToWaypoint { get; private set; }
+        public string MilesToWaypoint
+        {
+            get { return MetersToMilesFeet(DistanceToWaypoint); }
+        }
 
-		public double DistanceToWaypoint { get; private set; }
+        public MapPoint SnappedLocation { get; private set; }
 
-		public string MilesToWaypoint
-		{
-			get { return MetersToMilesFeet(DistanceToWaypoint); }
-		}
+        public Uri ManeuverImage { get; private set; }
 
-		public MapPoint SnappedLocation { get; private set; }
+        private string MetersToMilesFeet(double distance)
+        {
 
-		public Uri ManeuverImage { get; private set; }
-
-		private string MetersToMilesFeet(double distance)
-		{
-
-			var miles = LinearUnits.Miles.ConvertFromMeters(distance);
-			if (miles >= 10)
-				return string.Format("{0:0} mi", miles);
-			if (miles >= 1)
-				return string.Format("{0:0.0} mi", miles);
-			else if (miles >= .25)
-				return string.Format("{0:0.00} mi", miles);
-			else //less than .25mi
-				return string.Format("{0:0} ft", LinearUnits.Feet.ConvertFromMeters(distance));
-		}
-
-		private void InitializeRoute()
-		{
-			var routeLines = new ObservableCollection<Graphic>();
-			var maneuvers = new ObservableCollection<Graphic>();
-			foreach (var directions in m_route.Routes)
-			{
-				routeLines.Add(new Graphic() { Geometry = CombineParts(directions.RouteFeature.Geometry as Polyline) });
-				var turns = (from a in directions.RouteDirections select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
-				foreach (var m in turns)
-				{
-					maneuvers.Add(new Graphic() { Geometry = m });
-				}
-			}
-			RouteLines = routeLines;
-			Maneuvers = maneuvers;
-		}
-
+            var miles = LinearUnits.Miles.FromMeters(distance);
+            if (miles >= 10)
+                return string.Format("{0:0} mi", miles);
+            if (miles >= 1)
+                return string.Format("{0:0.0} mi", miles);
+            else if (miles >= .25)
+                return string.Format("{0:0.00} mi", miles);
+            else //less than .25mi
+                return string.Format("{0:0} ft", LinearUnits.Feet.FromMeters(distance));
+        }
+        
 		/// <summary>
 		/// Call this to set your current location and update directions based on that.
 		/// </summary>
@@ -117,45 +83,45 @@ namespace RoutingSample
 						"DistanceToDestination", "DistanceToWaypoint", "TimeToDestination",
 						"MilesToDestination", "MilesToWaypoint", 
 					});
-			RouteDirection closest = null;
+			DirectionManeuver closest = null;
 			double distance = double.NaN;
 			MapPoint snappedLocation = null;
 			Route direction = null;
 			// Find the route part that we are currently on by snapping to each segment and see which one is the closest
 			foreach (var dir in m_route.Routes)
 			{
-				var closestCandidate = (from a in dir.RouteDirections
+				var closestCandidate = (from a in dir.DirectionManeuvers
 										where a.Geometry is Polyline
 										select new { Direction = a, Proximity = GeometryEngine.NearestCoordinate(a.Geometry, location) }).OrderBy(b => b.Proximity.Distance).FirstOrDefault();
 				if (double.IsNaN(distance) || distance < closestCandidate.Proximity.Distance)
 				{
 					distance = closestCandidate.Proximity.Distance;
 					closest = closestCandidate.Direction;
-					snappedLocation = closestCandidate.Proximity.Point;
+					snappedLocation = closestCandidate.Proximity.Coordinate;
 					direction = dir;
 				}
 			}
 			if (closest != null)
 			{
-				var directions = direction.RouteDirections.ToList();
+				var directions = direction.DirectionManeuvers.ToList();
 				var idx = directions.IndexOf(closest);
 				if (idx < directions.Count)
 				{
-					RouteDirection next = directions[idx + 1];
+					DirectionManeuver next = directions[idx + 1];
 
 					//calculate how much is left of current route segment
 					var segment = closest.Geometry as Polyline;
 					var proximity = GeometryEngine.NearestVertex(segment, snappedLocation);
 					double frac = 1 - GetFractionAlongLine(segment, proximity, snappedLocation);
-					TimeSpan timeLeft = new TimeSpan((long)(closest.Time.Ticks * frac));
-					double segmentLengthLeft = (Convert.ToDouble(closest.GetLength(LinearUnits.Meters))) * frac;
+					TimeSpan timeLeft = new TimeSpan((long)(closest.Duration.Ticks * frac));
+					double segmentLengthLeft = (Convert.ToDouble(closest.Length)) * frac;
 					//Sum up the time and lengths for the remaining route segments
 					TimeSpan totalTimeLeft = timeLeft;
 					double totallength = segmentLengthLeft;
 					for (int i = idx + 1; i < directions.Count; i++)
 					{
-						totalTimeLeft += directions[i].Time;
-						totallength += directions[i].GetLength(LinearUnits.Meters);
+						totalTimeLeft += directions[i].Duration;
+						totallength += directions[i].Length;
 					}
 
 					//Update properties
@@ -176,22 +142,11 @@ namespace RoutingSample
 						ManeuverImage = maneuverUri;
 						propertyNames.Add("ManeuverImage");
 					}
-					NextManeuver = next.Text;
+					NextManeuver = next.DirectionText;
 
 					RaisePropertiesChanged(propertyNames);
 				}
 			}
-		}
-
-		private static Polyline CombineParts(Polyline line)
-		{
-			List<MapPoint> vertices = new List<MapPoint>();
-			foreach(var part in line.Parts.GetPartsAsPoints())
-			{
-				foreach (var p in part)
-					vertices.Add(p);
-			}
-			return new Polyline(vertices, line.SpatialReference);
 		}
 		
 		// calculates how far down a line a certain point on the line is located as a value from 0..1
@@ -200,18 +155,18 @@ namespace RoutingSample
 			double distance1 = 0;
 			double distance2 = 0;
 			int pointIndex = proximity.PointIndex;
-			int vertexCount = segment.Parts.GetPartsAsPoints().First().Count();
-			var vertexPoint = segment.Parts.GetPartsAsPoints().ElementAt(proximity.PartIndex).ElementAt(pointIndex);
+			int vertexCount = segment.Parts.Select(p => p.Points).First().Count();
+			var vertexPoint = segment.Parts.Select(p => p.Points).ElementAt(proximity.PartIndex).ElementAt(pointIndex);
 			MapPoint previousPoint;
 			int onSegmentIndex = 0;
 			//Detect which line segment we currently are on
 			if (pointIndex == 0) //Snapped to first vertex
 				onSegmentIndex = 0;
 			else if (pointIndex == vertexCount - 1) //Snapped to last vertex
-				onSegmentIndex = segment.Parts.GetPartsAsPoints().First().Count() - 2;
+				onSegmentIndex = segment.Parts.Select(p => p.Points).First().Count() - 2;
 			else
 			{
-				MapPoint nextPoint = segment.Parts.GetPartsAsPoints().First().ElementAt(pointIndex + 1);
+				MapPoint nextPoint = segment.Parts.Select(p => p.Points).First().ElementAt(pointIndex + 1);
 				var d1 = GeometryEngine.Distance(vertexPoint, nextPoint);
 				var d2 = GeometryEngine.Distance(location, nextPoint);
 				if (d1 < d2)
@@ -219,20 +174,20 @@ namespace RoutingSample
 				else
 					onSegmentIndex = pointIndex;
 			}
-			previousPoint = segment.Parts.GetPartsAsPoints().First().First();
+			previousPoint = segment.Parts.First().Points.First();
 			for (int j = 1; j < onSegmentIndex + 1; j++)
 			{
-				MapPoint point = segment.Parts.GetPartsAsPoints().First().ElementAt(j);
+				MapPoint point = segment.Parts.Select(p => p.Points).First().ElementAt(j);
 				distance1 += GeometryEngine.Distance(previousPoint, point);
 				previousPoint = point;
 			}
 			distance1 += GeometryEngine.Distance(previousPoint, location);
-			previousPoint = segment.Parts.GetPartsAsPoints().First().ElementAt(onSegmentIndex + 1);
+			previousPoint = segment.Parts.Select(p => p.Points).First().ElementAt(onSegmentIndex + 1);
 			distance2 = GeometryEngine.Distance(location, previousPoint);
 			previousPoint = vertexPoint;
 			for (int j = onSegmentIndex + 2; j < segment.Parts[0].Count; j++)
 			{
-				MapPoint point = segment.Parts.GetPartsAsPoints().First().ElementAt(j);
+				MapPoint point = segment.Parts.Select(p => p.Points).First().ElementAt(j);
 				distance2 += GeometryEngine.Distance(previousPoint, point);
 				previousPoint = point;
 			}

@@ -9,13 +9,7 @@
     <Import_RootNamespace>WinAPIDemo.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Common\BaseValueConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanNegationConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BoolToVisibility.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MapVM.cs">

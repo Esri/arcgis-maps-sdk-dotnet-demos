@@ -4,6 +4,7 @@
 		xmlns:local="clr-namespace:ExternalNmeaGPS"
 		xmlns:ctrls="clr-namespace:ExternalNmeaGPS.Controls"
 		xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        
         Title="GPS Parser Sample" Height="350" Width="525">
 	<Grid>
 		<Grid.RowDefinitions>
@@ -18,7 +19,8 @@
 		
 		<Menu Grid.Row="0" Grid.ColumnSpan="2">
 			<MenuItem Header="File" >
-			</MenuItem>
+                <MenuItem Header="Exit" Click="MenuItemFileExit_Click" />
+            </MenuItem>
 			<MenuItem Header="NMEA Messages" Click="MenuItemShowMessages_Click" />
 			<MenuItem Header="Sky view" Click="MenuItemShowSkyView_Click" />
 		</Menu>
@@ -28,10 +30,15 @@
 				<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" RestoreScale="5000" />
 			</local:RestoreAutoPanMode.RestoreAutoPanSettings>
 			<esri:Map>
-				<esri:ArcGISTiledMapServiceLayer
-				ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-				<esri:GraphicsLayer />
+                <esri:Map.Basemap>
+                    <esri:Basemap>
+                        <esri:ArcGISTiledLayer Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
+                    </esri:Basemap>
+                </esri:Map.Basemap>
 			</esri:Map>
+            <esri:MapView.GraphicsOverlays>
+                <esri:GraphicsOverlay />
+            </esri:MapView.GraphicsOverlays>
 		</esri:MapView>
 		
 		<Expander Header="Settings" HorizontalAlignment="Left" 

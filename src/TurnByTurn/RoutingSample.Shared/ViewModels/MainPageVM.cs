@@ -1,13 +1,18 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Symbology;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
+using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
+#if NETFX_CORE
+using Windows.UI;
+#else
+using System.Windows.Media;
+#endif
 
 namespace RoutingSample.ViewModels
 {
@@ -22,9 +27,10 @@ namespace RoutingSample.ViewModels
 		private bool firstLocation = true;
 		private RouteDataSource m_routeDataSource;
 		private bool m_IsCalculatingRoute;
-		private Esri.ArcGISRuntime.Controls.Viewpoint m_ViewpointRequested;
+		private Viewpoint m_ViewpointRequested;
 		private string m_RouteCalculationErrorMessage;
 		private LocationDisplay m_locationDisplay;
+        private GraphicsOverlayCollection m_resultGraphicsOverlays;
 		#endregion
 
 		/// <summary>
@@ -36,7 +42,20 @@ namespace RoutingSample.ViewModels
 				Route = new RouteDataSource(null);
 		}
 
-		#region ViewModel Properties
+        #region ViewModel Properties
+
+        private Map m_Map;
+        public Map Map
+        {
+            get
+            {
+                if(m_Map == null)
+                {
+                    m_Map = new Map(Basemap.CreateNavigationVector());
+                }
+                return m_Map;
+            }
+        }
 
 		/// <summary>
 		/// Gets or sets the address to route to. Setting this recalculates the route
@@ -68,9 +87,9 @@ namespace RoutingSample.ViewModels
 				if (m_locationDisplay != null)
 				{
 					if(value != null)
-						m_locationDisplay.AutoPanMode = AutoPanMode.Navigation;
+						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 					else
-						m_locationDisplay.AutoPanMode = AutoPanMode.Off;
+						m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Off;
 				}
 			}
 		}
@@ -104,7 +123,7 @@ namespace RoutingSample.ViewModels
 		/// <summary>
 		/// Used for requesting an extent for the mapView to ZoomTo
 		/// </summary>
-		public Esri.ArcGISRuntime.Controls.Viewpoint ViewpointRequested
+		public Viewpoint ViewpointRequested
 		{
 			get { return m_ViewpointRequested; }
 			private set
@@ -112,34 +131,76 @@ namespace RoutingSample.ViewModels
 				m_ViewpointRequested = value;
 				RaisePropertyChanged("ViewpointRequested");
 			}
-		}
+        }
 
-		/// <summary>
-		/// The current location display used for displaying location on the mapView
-		/// </summary>
-		public LocationDisplay LocationDisplay
+        /// <summary>
+        /// The current location display used for displaying location on the mapView
+        /// </summary>
+        public LocationDisplay LocationDisplay
+        {
+            get { return m_locationDisplay; }
+            set
+            {
+                if (m_locationDisplay != null)
+                    m_locationDisplay.PropertyChanged -= LocationDisplay_PropertyChanged;
+                m_locationDisplay = value;
+                if(m_locationDisplay != null)
+                {                    
+                    m_locationDisplay.PropertyChanged += LocationDisplay_PropertyChanged;
+                    m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
+                    m_locationDisplay.IsEnabled = true;
+                }
+                RaisePropertyChanged("LocationDisplay");
+            }
+        }
+
+        /// <summary>
+        /// The collection of <see cref="GraphicsOverlay"/> which holds graphic result of RouteTask.
+        /// </summary>
+        public GraphicsOverlayCollection ResultGraphicsOverlays
+        {
+            get
+            {
+                if (m_resultGraphicsOverlays == null)
+                {
+                    m_resultGraphicsOverlays = new GraphicsOverlayCollection();
+                    if (m_resultGraphicsOverlays != null)
+                    {
+                        m_resultGraphicsOverlays.Add(new GraphicsOverlay()
+                        {
+                            Renderer = new SimpleRenderer()
+                            {
+                                Symbol = new SimpleLineSymbol()
+                                {
+                                    Width = 10,
+                                    Color = Color.FromArgb(75, 50, 50, 255)
+                                }
+                            }
+                        });
+                        m_resultGraphicsOverlays.Add(new GraphicsOverlay()
+                        {
+                            Renderer = new SimpleRenderer()
+                            {
+                                Symbol = new SimpleLineSymbol()
+                                {
+                                    Width = 10,
+                                    Color = Colors.Black
+                                }
+                            }
+                        });
+                    }
+                }
+                return m_resultGraphicsOverlays;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private async void GenerateRoute(string address)
 		{
-			get
-			{
-				if (m_locationDisplay == null)
-				{
-					m_locationDisplay = new LocationDisplay();
-					m_locationDisplay.PropertyChanged += LocationDisplay_PropertyChanged;
-					m_locationDisplay.IsEnabled = true;
-					if (Route != null)
-						m_locationDisplay.AutoPanMode = AutoPanMode.Navigation;
-				}
-				return m_locationDisplay;
-			}
-		}
-
-		#endregion
-
-		#region Methods
-
-		private async void GenerateRoute(string address)
-		{
-			if (!string.IsNullOrWhiteSpace(address) && LocationDisplay != null && LocationDisplay.CurrentLocation != null)
+			if (!string.IsNullOrWhiteSpace(address) && LocationDisplay != null && LocationDisplay.Location != null)
 			{
 				if (m_routeTaskCancellationToken != null)
 					m_routeTaskCancellationToken.Cancel();
@@ -149,17 +210,19 @@ namespace RoutingSample.ViewModels
 					m_routeTaskCancellationToken = new CancellationTokenSource();
 					IsCalculatingRoute = true;
 					var result = await new Models.RouteService().GetRoute(
-						address, LocationDisplay.CurrentLocation.Location, 
+						address, LocationDisplay.Location.Position, 
 						m_routeTaskCancellationToken.Token);
 
 					m_routeTaskCancellationToken = null;
 					Route = new RouteDataSource(result);
-					Route.SetCurrentLocation(LocationDisplay.CurrentLocation.Location);
+                    InitializeRoute(result.Routes);
+					Route.SetCurrentLocation(LocationDisplay.Location.Position);
 #if DEBUG
 					// When debugging use a simulator for the generated route
-					LocationDisplay.LocationProvider = new RouteLocationSimulator(result);
+					LocationDisplay.DataSource = new RouteLocationSimulator(result);
+                    LocationDisplay.IsEnabled = true;
 #endif
-					LocationDisplay.AutoPanMode = AutoPanMode.Navigation;
+					LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 				}
 				catch (OperationCanceledException)
 				{
@@ -167,6 +230,10 @@ namespace RoutingSample.ViewModels
 				}
 				catch (System.Exception ex)
 				{
+                    if(ex.Message == "Address not found")
+                    {
+                        return;
+                    }
 					RouteCalculationErrorMessage = ex.Message;
 				}
 				finally
@@ -176,21 +243,49 @@ namespace RoutingSample.ViewModels
 			}
 		}
 
-		//When location changes, push this location to the route datasource
-		private void LocationDisplay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void InitializeRoute(IReadOnlyList<Route> routes)
+        {
+            if (routes == null)
+                return;
+            var routeLines = ResultGraphicsOverlays[0];
+            var maneuvers = ResultGraphicsOverlays[1];
+            foreach (var directions in routes)
+            {
+                routeLines.Graphics.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
+                var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.First().Points.First());
+                foreach (var m in turns)
+                {
+                    maneuvers.Graphics.Add(new Graphic() { Geometry = m });
+                }
+            }
+        }
+        
+        private static Polyline CombineParts(Polyline line)
+        {
+            List<MapPoint> vertices = new List<MapPoint>();
+            foreach (var part in line.Parts.Select(p=>p.Points))
+            {
+                foreach (var p in part)
+                    vertices.Add(p);
+            }
+            return new Polyline(vertices, line.SpatialReference);
+        }
+
+        //When location changes, push this location to the route datasource
+        private void LocationDisplay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == "CurrentLocation")
+			if (e.PropertyName == "Location")
 			{
-				if (LocationDisplay.CurrentLocation != null && !LocationDisplay.CurrentLocation.Location.IsEmpty)
+				if (LocationDisplay.Location != null && LocationDisplay.Location.Position != null &&  !LocationDisplay.Location.Position.IsEmpty)
 				{
 					if (Route != null)
-						Route.SetCurrentLocation(LocationDisplay.CurrentLocation.Location);
+						Route.SetCurrentLocation(LocationDisplay.Location.Position);
 					if (firstLocation)
 					{
-						var accuracy = double.IsNaN(LocationDisplay.CurrentLocation.HorizontalAccuracy) ? 0 :
-							LocationDisplay.CurrentLocation.HorizontalAccuracy;
-						ViewpointRequested = new Esri.ArcGISRuntime.Controls.Viewpoint(
-							GeometryEngine.GeodesicBuffer(LocationDisplay.CurrentLocation.Location, accuracy + 500, LinearUnits.Meters)
+						var accuracy = double.IsNaN(LocationDisplay.Location.HorizontalAccuracy) ? 0 :
+							LocationDisplay.Location.HorizontalAccuracy;
+						ViewpointRequested = new Viewpoint(
+							GeometryEngine.BufferGeodetic(LocationDisplay.Location.Position, accuracy + 500, LinearUnits.Meters)
 						);
 						firstLocation = false;
 						if (Route == null && m_routeTaskCancellationToken == null && !string.IsNullOrWhiteSpace(RouteToAddress)) //calculate route now

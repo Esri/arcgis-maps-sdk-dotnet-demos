@@ -33,11 +33,11 @@
 		<!--StatusBar-->
 		<StatusBar Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" DataContext="{Binding LocationDisplay}"	 >
 			<StatusBarItem  >
-				<TextBlock Text="{Binding CurrentLocation.Speed, StringFormat={}Speed: {0} kph}" />
+                <TextBlock Text="{Binding Location.Velocity, StringFormat={}Speed: {0} kph}" />
 			</StatusBarItem>
 			<Separator Opacity=".5"/>
 			<StatusBarItem  >
-				<TextBlock Text="{Binding CurrentLocation.Course, StringFormat={}Heading: {0:0}}" />
+				<TextBlock Text="{Binding Location.Course, StringFormat={}Heading: {0:0}}" />
 			</StatusBarItem>
 		</StatusBar>
 
@@ -77,33 +77,25 @@
         </StackPanel>
 
         <Grid x:Name="MapPanel" Grid.Column="1" Grid.Row="1">
-            <esri:MapView LocationDisplay="{Binding LocationDisplay}"
-					  local:CommandBinder.RequestView="{Binding ViewpointRequested}" >
+            <esri:MapView x:Name="MyMapView" Map="{Binding Map}"
+                          local:CommandBinder.RequestView="{Binding ViewpointRequested}"
+                          GraphicsOverlays="{Binding ResultGraphicsOverlays}">
 				<local:RestoreAutoPanMode.RestoreAutoPanSettings>
 					<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
 				</local:RestoreAutoPanMode.RestoreAutoPanSettings>
-				<esri:Map>
-					<esri:ArcGISTiledMapServiceLayer
-					ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
-
-					<esri:GraphicsLayer GraphicsSource="{Binding Route.RouteLines, Source={StaticResource viewmodel}}">
-						<esri:GraphicsLayer.Renderer>
-							<esri:SimpleRenderer>
-								<esri:SimpleLineSymbol Width="10" Color="#BE3232FF" />
-							</esri:SimpleRenderer>
-						</esri:GraphicsLayer.Renderer>
-					</esri:GraphicsLayer>
-					
-					<esri:GraphicsLayer GraphicsSource="{Binding Route.Maneuvers, Source={StaticResource viewmodel}}">
-						<esri:GraphicsLayer.Renderer>
-							<esri:SimpleRenderer>
-								<esri:SimpleMarkerSymbol Size="10" Color="Black" />
-							</esri:SimpleRenderer>
-						</esri:GraphicsLayer.Renderer>
-					</esri:GraphicsLayer>
-				</esri:Map>
-			</esri:MapView>
-        </Grid>
-
+                <!--Overlay used to show next maneuver on top of the map-->
+                <esri:MapView.Overlays>
+                    <esri:OverlayItemsControl>
+                        <Grid esri:MapView.ViewOverlayAnchor="{Binding Route.WaypointLocation}" DataContext="{StaticResource viewmodel}"
+								VerticalAlignment="Top" Margin="0,0,0,5" >
+                            <Path Data="M0,0 L0,3 1,4 2,3 2,0 0,0"
+									  Fill="#55000000" Stretch="Fill" />
+                            <Image Source="{Binding Route.ManeuverImage}" 
+									   Height="50" Margin="2,2,2,15" />
+                        </Grid>
+                    </esri:OverlayItemsControl>
+                </esri:MapView.Overlays>
+            </esri:MapView>
+        </Grid>        
     </Grid>
 </Window>

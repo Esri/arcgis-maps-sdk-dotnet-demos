@@ -1,6 +1,6 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace RoutingSample
 	/// <summary>
 	/// Location simulator that takes a route result and simulates driving down the route
 	/// </summary>
-	public class RouteLocationSimulator : ILocationProvider
+	public class RouteLocationSimulator : LocationDataSource
 	{
 		private DispatcherTimer timer;
 		private RouteResult m_route;
@@ -40,13 +40,13 @@ namespace RoutingSample
 			timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
 			if (startPoint == null)
 			{
-				startPoint = (route.Routes.First().RouteFeature.Geometry as Polyline).Parts.GetPartsAsPoints().First().First();
+				startPoint = (route.Routes.First().RouteGeometry as Polyline).Parts.First().Points.First();
 			}
 			timer.Tick += timer_Tick;
 			Speed = 50;
 			directionIndex = 0;
 			lineLength = 0;
-			drivePath = route.Routes.First().RouteFeature.Geometry as Polyline;
+			drivePath = route.Routes.First().RouteGeometry as Polyline;
 		}
 
 		/// <summary>
@@ -76,56 +76,42 @@ namespace RoutingSample
 			while (course < 0) course += 360;
 			while (course > 360) course -= 360;
 
-			if (LocationChanged != null)
-			{
-				 LocationChanged(this, new LocationInfo()
-				{
-					Course = course,
-					Speed = Speed,
-					Location = new MapPoint(lon, lat, SpatialReferences.Wgs84),
-					HorizontalAccuracy = 0.001
-				});
-			}
+            base.UpdateLocation(new Location(new MapPoint(lon, lat, SpatialReferences.Wgs84), 0.001, Speed, course, false));
 		}
+        
+        /// <summary>
+        /// Starts the location provider.
+        /// </summary>
+        /// <returns>
+        /// Task
+        /// </returns>
+        protected override Task OnStartAsync()
+        {
+            timer.Start();
+            return Task.FromResult(true);
+        }
 
-		/// <summary>
-		/// Raised when the location provider has a new location.
-		/// </summary>
-		public event EventHandler<LocationInfo> LocationChanged;
+        /// <summary>
+        /// Stops the location provider.
+        /// </summary>
+        /// <returns>
+        /// Task
+        /// </returns>
+        protected override Task OnStopAsync()
+        {
+            timer.Stop();
+            return Task.FromResult(true);
+        }
 
-		/// <summary>
-		/// Starts the location provider.
-		/// </summary>
-		/// <returns>
-		/// Task
-		/// </returns>
-		public Task StartAsync()
-		{
-			timer.Start();
-			return Task.FromResult(true);
-		}
+        #region Some funky geodesic trigonometry here...
 
-		/// <summary>
-		/// Stops the location provider.
-		/// </summary>
-		/// <returns>
-		/// Task
-		/// </returns>
-		public Task StopAsync()
-		{
-			timer.Stop();
-			return Task.FromResult(true);
-		}
-
-		#region Some funky geodesic trigonometry here...
-
-		/// <summary>
-		/// Gets a point a certain distance down a polyline
-		/// </summary>
-		/// <param name="dist">Distance in meters along the line</param>
-		/// <param name="course"></param>
-		/// <returns></returns>
-		private double[] PointAlongLine(double dist, out double course)
+        /// <summary>
+        /// Gets a point a certain distance down a polyline
+        /// </summary>
+        /// <param name="dist">Distance in meters along the line</param>
+        /// <param name="course"></param>
+        /// <returns></returns>
+        private double[] PointAlongLine(double dist, out double course)
 		{
 			double accDist = 0;
 			course = double.NaN;
@@ -136,14 +122,14 @@ namespace RoutingSample
 				if (directionIndex >= m_route.Routes.Count)
 					directionIndex = 0;
 				currDir = m_route.Routes[directionIndex];
-				lineLength = GeometryEngine.GeodesicLength(currDir.RouteFeature.Geometry);
+				lineLength = GeometryEngine.LengthGeodetic(currDir.RouteGeometry);
 				totalDistance = 0;
-				drivePath = currDir.RouteFeature.Geometry as Polyline;
+				drivePath = currDir.RouteGeometry as Polyline;
 				course = 0; dist = 0;
 			}
 			//else
 			{
-				var parts = drivePath.Parts.GetPartsAsPoints().ToList();
+				var parts = drivePath.Parts.Select(p => p.Points).ToList();
 				for (int j = 0; j < parts.Count; j++)
 				{
 					var part = parts[j].ToList();
@@ -153,8 +139,9 @@ namespace RoutingSample
 						var p2 = part[i + 1];
 						if (p1.X == p2.X && p2.Y == p2.Y)
 							continue;
-						double distToWaypoint = GeometryEngine.GeodesicDistance(p1, p2, LinearUnits.Meters);
-						if (dist < accDist + distToWaypoint)
+                        var result = GeometryEngine.DistanceGeodetic(p1, p2, LinearUnits.Meters, AngularUnits.Degrees, GeodeticCurveType.Geodesic);
+                        double distToWaypoint = result.Distance;
+                        if (dist < accDist + distToWaypoint)
 						{
 							var distAlongSegment = dist - accDist;
 							double fraction = distAlongSegment / distToWaypoint;

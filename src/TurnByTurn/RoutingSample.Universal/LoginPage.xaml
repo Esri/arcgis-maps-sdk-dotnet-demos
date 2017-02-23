@@ -1,0 +1,31 @@
+﻿<Page
+    x:Class="RoutingSample.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" >
+        <TextBlock Text="This sample requires an ArcGIS Online Subscription in order to use the Global Routing Service."
+                   HorizontalAlignment="Center" Margin="20" />
+
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Background="CornflowerBlue" Padding="20" RequestedTheme="Dark">
+            <!-- Login with ArcGIS Online to use http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="Title" Text="ArcGIS Online Sign In" FontWeight="Bold" FontSize="18" Grid.ColumnSpan="2"/>
+            <TextBlock x:Name="LoginStatus" Grid.Row="1" Grid.ColumnSpan="2"/>
+            <TextBlock Text="Username" Grid.Row="2" Margin="0,10,5,10" />
+            <TextBox x:Name="Username" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" RequestedTheme="Light"/>
+            <TextBlock Text="Password" Grid.Row="3" Margin="0,10,5,10" />
+            <PasswordBox x:Name="Password" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" RequestedTheme="Light" />
+            <Button Content="Sign In" Grid.Row="4" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Click="OnSignIn_Click" Margin="0,10,0,0"/>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,6 +1,6 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Layers;
 using Esri.ArcGISRuntime.Symbology;
+using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,8 +41,8 @@ namespace ExternalNmeaGPS
 
 		private void LoadDevice(NmeaParser.NmeaDevice device)
 		{
-			if (mapView.LocationDisplay.LocationProvider != null)
-				mapView.LocationDisplay.LocationProvider.LocationChanged -= LocationProvider_LocationChanged;
+			if (mapView.LocationDisplay.DataSource != null)
+				mapView.LocationDisplay.DataSource.LocationChanged -= LocationProvider_LocationChanged;
 			if (currentNmeaDevice != null)
 			{
 				currentNmeaDevice.MessageReceived -= device_MessageReceived;
@@ -50,19 +50,19 @@ namespace ExternalNmeaGPS
 
 			currentNmeaDevice = device;
 			currentNmeaDevice.MessageReceived += device_MessageReceived;
-			mapView.LocationDisplay.LocationProvider = new NmeaLocationProvider(currentNmeaDevice);
+			mapView.LocationDisplay.DataSource = new NmeaLocationProvider(currentNmeaDevice);
 			mapView.LocationDisplay.IsEnabled = true;
-			mapView.LocationDisplay.LocationProvider.LocationChanged += LocationProvider_LocationChanged;
+			mapView.LocationDisplay.DataSource.LocationChanged += LocationProvider_LocationChanged;
 		}
 
-		private void LocationProvider_LocationChanged(object sender, Esri.ArcGISRuntime.Location.LocationInfo e)
+		private void LocationProvider_LocationChanged(object sender, Esri.ArcGISRuntime.Location.Location e)
 		{
 			Dispatcher.BeginInvoke((Action)delegate()
 			{
 				//Zoom in on first location fix
-				mapView.LocationDisplay.LocationProvider.LocationChanged -= LocationProvider_LocationChanged;
-				mapView.SetView(e.Location, 5000);
-				mapView.LocationDisplay.AutoPanMode = Esri.ArcGISRuntime.Location.AutoPanMode.Navigation;
+				mapView.LocationDisplay.DataSource.LocationChanged -= LocationProvider_LocationChanged;
+				mapView.SetViewpointCenterAsync(e.Position, 5000);
+				mapView.LocationDisplay.AutoPanMode = Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode.Navigation;
 			});
 		}
 		
@@ -97,7 +97,7 @@ namespace ExternalNmeaGPS
 		{
 			if(PortsList.SelectedItem != null)
 			{
-				mapView.Map.Layers.OfType<GraphicsLayer>().First().Graphics.Clear();
+				mapView.GraphicsOverlays.First().Graphics.Clear();
 				var port = new System.IO.Ports.SerialPort((string)PortsList.SelectedItem, int.Parse(BaudRate.Text));
 				var device = new NmeaParser.SerialPortDevice(port);
 				currentNmeaFile = null;
@@ -112,7 +112,7 @@ namespace ExternalNmeaGPS
 			if(result.HasValue && result.Value)
 			{
 				currentNmeaFile = dialog.FileName;
-				mapView.Map.Layers.OfType<GraphicsLayer>().First().Graphics.Clear();
+                mapView.GraphicsOverlays.First().Graphics.Clear();
 				var device = new NmeaParser.NmeaFileDevice(currentNmeaFile, 50);
 				LoadDevice(device);
 				SelectedFileName.Text = new System.IO.FileInfo(currentNmeaFile).Name;
@@ -126,7 +126,7 @@ namespace ExternalNmeaGPS
 
 		private void LoadEntireNmeaTrack(string filename)
 		{
-			var layer = mapView.Map.Layers.OfType<GraphicsLayer>().First();
+			var layer = mapView.GraphicsOverlays.First();
 			layer.Graphics.Clear();
 			if (currentNmeaFile == null)
 				return;
@@ -157,9 +157,12 @@ namespace ExternalNmeaGPS
 			var symbol = new CompositeSymbol();
 			symbol.Symbols.Add(linesymbol);
 			symbol.Symbols.Add(new SimpleMarkerSymbol() { Size = 5, Color = Colors.Black });
-
-			Esri.ArcGISRuntime.Layers.Graphic g = new Esri.ArcGISRuntime.Layers.Graphic(pline, symbol);
-			layer.Graphics.Add(g);
+			layer.Graphics.Add(new Graphic(pline, symbol));
 		}
-	}
+
+        private void MenuItemFileExit_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Shutdown();
+        }
+    }
 }
