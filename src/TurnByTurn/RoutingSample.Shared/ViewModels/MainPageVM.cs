@@ -2,7 +2,7 @@
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,20 @@ namespace RoutingSample.ViewModels
 				Route = new RouteDataSource(null);
 		}
 
-		#region ViewModel Properties
+        #region ViewModel Properties
+
+        private Map m_Map;
+        public Map Map
+        {
+            get
+            {
+                if(m_Map == null)
+                {
+                    m_Map = new Map(Basemap.CreateNavigationVector());
+                }
+                return m_Map;
+            }
+        }
 
 		/// <summary>
 		/// Gets or sets the address to route to. Setting this recalculates the route
@@ -135,7 +148,7 @@ namespace RoutingSample.ViewModels
                 {                    
                     m_locationDisplay.PropertyChanged += LocationDisplay_PropertyChanged;
                     m_locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
-                    m_locationDisplay.Start();
+                    m_locationDisplay.IsEnabled = true;
                 }
                 RaisePropertyChanged("LocationDisplay");
             }
@@ -207,7 +220,7 @@ namespace RoutingSample.ViewModels
 #if DEBUG
 					// When debugging use a simulator for the generated route
 					LocationDisplay.DataSource = new RouteLocationSimulator(result);
-                    LocationDisplay.Start();
+                    LocationDisplay.IsEnabled = true;
 #endif
 					LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 				}
@@ -217,6 +230,10 @@ namespace RoutingSample.ViewModels
 				}
 				catch (System.Exception ex)
 				{
+                    if(ex.Message == "Address not found")
+                    {
+                        return;
+                    }
 					RouteCalculationErrorMessage = ex.Message;
 				}
 				finally
@@ -235,7 +252,7 @@ namespace RoutingSample.ViewModels
             foreach (var directions in routes)
             {
                 routeLines.Graphics.Add(new Graphic() { Geometry = CombineParts(directions.RouteGeometry as Polyline) });
-                var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.GetPartsAsPoints().First().First());
+                var turns = (from a in directions.DirectionManeuvers select a.Geometry).OfType<Polyline>().Select(line => line.Parts.First().Points.First());
                 foreach (var m in turns)
                 {
                     maneuvers.Graphics.Add(new Graphic() { Geometry = m });
@@ -246,7 +263,7 @@ namespace RoutingSample.ViewModels
         private static Polyline CombineParts(Polyline line)
         {
             List<MapPoint> vertices = new List<MapPoint>();
-            foreach (var part in line.Parts.GetPartsAsPoints())
+            foreach (var part in line.Parts.Select(p=>p.Points))
             {
                 foreach (var p in part)
                     vertices.Add(p);
@@ -268,7 +285,7 @@ namespace RoutingSample.ViewModels
 						var accuracy = double.IsNaN(LocationDisplay.Location.HorizontalAccuracy) ? 0 :
 							LocationDisplay.Location.HorizontalAccuracy;
 						ViewpointRequested = new Viewpoint(
-							GeometryEngine.BufferGeodesic(LocationDisplay.Location.Position, accuracy + 500, LinearUnits.Meters)
+							GeometryEngine.BufferGeodetic(LocationDisplay.Location.Position, accuracy + 500, LinearUnits.Meters)
 						);
 						firstLocation = false;
 						if (Route == null && m_routeTaskCancellationToken == null && !string.IsNullOrWhiteSpace(RouteToAddress)) //calculate route now

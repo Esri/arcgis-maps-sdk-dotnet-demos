@@ -1,5 +1,5 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace RoutingSample
         private string MetersToMilesFeet(double distance)
         {
 
-            var miles = LinearUnits.Miles.ConvertFromMeters(distance);
+            var miles = LinearUnits.Miles.FromMeters(distance);
             if (miles >= 10)
                 return string.Format("{0:0} mi", miles);
             if (miles >= 1)
@@ -69,7 +69,7 @@ namespace RoutingSample
             else if (miles >= .25)
                 return string.Format("{0:0.00} mi", miles);
             else //less than .25mi
-                return string.Format("{0:0} ft", LinearUnits.Feet.ConvertFromMeters(distance));
+                return string.Format("{0:0} ft", LinearUnits.Feet.FromMeters(distance));
         }
         
 		/// <summary>
@@ -97,7 +97,7 @@ namespace RoutingSample
 				{
 					distance = closestCandidate.Proximity.Distance;
 					closest = closestCandidate.Direction;
-					snappedLocation = closestCandidate.Proximity.Point;
+					snappedLocation = closestCandidate.Proximity.Coordinate;
 					direction = dir;
 				}
 			}
@@ -155,18 +155,18 @@ namespace RoutingSample
 			double distance1 = 0;
 			double distance2 = 0;
 			int pointIndex = proximity.PointIndex;
-			int vertexCount = segment.Parts.GetPartsAsPoints().First().Count();
-			var vertexPoint = segment.Parts.GetPartsAsPoints().ElementAt(proximity.PartIndex).ElementAt(pointIndex);
+			int vertexCount = segment.Parts.Select(p => p.Points).First().Count();
+			var vertexPoint = segment.Parts.Select(p => p.Points).ElementAt(proximity.PartIndex).ElementAt(pointIndex);
 			MapPoint previousPoint;
 			int onSegmentIndex = 0;
 			//Detect which line segment we currently are on
 			if (pointIndex == 0) //Snapped to first vertex
 				onSegmentIndex = 0;
 			else if (pointIndex == vertexCount - 1) //Snapped to last vertex
-				onSegmentIndex = segment.Parts.GetPartsAsPoints().First().Count() - 2;
+				onSegmentIndex = segment.Parts.Select(p => p.Points).First().Count() - 2;
 			else
 			{
-				MapPoint nextPoint = segment.Parts.GetPartsAsPoints().First().ElementAt(pointIndex + 1);
+				MapPoint nextPoint = segment.Parts.Select(p => p.Points).First().ElementAt(pointIndex + 1);
 				var d1 = GeometryEngine.Distance(vertexPoint, nextPoint);
 				var d2 = GeometryEngine.Distance(location, nextPoint);
 				if (d1 < d2)
@@ -174,20 +174,20 @@ namespace RoutingSample
 				else
 					onSegmentIndex = pointIndex;
 			}
-			previousPoint = segment.Parts.GetPartsAsPoints().First().First();
+			previousPoint = segment.Parts.First().Points.First();
 			for (int j = 1; j < onSegmentIndex + 1; j++)
 			{
-				MapPoint point = segment.Parts.GetPartsAsPoints().First().ElementAt(j);
+				MapPoint point = segment.Parts.Select(p => p.Points).First().ElementAt(j);
 				distance1 += GeometryEngine.Distance(previousPoint, point);
 				previousPoint = point;
 			}
 			distance1 += GeometryEngine.Distance(previousPoint, location);
-			previousPoint = segment.Parts.GetPartsAsPoints().First().ElementAt(onSegmentIndex + 1);
+			previousPoint = segment.Parts.Select(p => p.Points).First().ElementAt(onSegmentIndex + 1);
 			distance2 = GeometryEngine.Distance(location, previousPoint);
 			previousPoint = vertexPoint;
 			for (int j = onSegmentIndex + 2; j < segment.Parts[0].Count; j++)
 			{
-				MapPoint point = segment.Parts.GetPartsAsPoints().First().ElementAt(j);
+				MapPoint point = segment.Parts.Select(p => p.Points).First().ElementAt(j);
 				distance2 += GeometryEngine.Distance(previousPoint, point);
 				previousPoint = point;
 			}

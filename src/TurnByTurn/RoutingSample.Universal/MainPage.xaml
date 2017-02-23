@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:RoutingSample"
 	xmlns:esri="using:Esri.ArcGISRuntime.UI"
+	xmlns:esriCtrls="using:Esri.ArcGISRuntime.UI.Controls"
 	xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
 	xmlns:symbology="using:Esri.ArcGISRuntime.Symbology"
 	xmlns:vm="using:RoutingSample.ViewModels">
@@ -47,30 +48,26 @@
 
         <Grid Grid.Row="1">
             <Grid x:Uid="MapPanel" Grid.Column="1" >
-                <esri:MapView x:Name="MyMapView"
+                <esriCtrls:MapView x:Name="MyMapView" Map="{Binding Map}"
                               local:CommandBinder.RequestView="{Binding ViewpointRequested}" 
                               GraphicsOverlays="{Binding ResultGraphicsOverlays, Mode=OneWay}">
                     <!--Restores the map pan mode after interacting with the map-->
                     <local:RestoreAutoPanMode.RestoreAutoPanSettings>
                         <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
                     </local:RestoreAutoPanMode.RestoreAutoPanSettings>
-                    <mapping:Map>
-                        <mapping:ArcGISTiledLayer
-                            Source="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
-                    </mapping:Map>
                     <!--Overlay used to show next maneuver on top of the map-->
-                    <esri:MapView.Overlays>
-                        <esri:OverlayItemsControl>
-                            <Grid esri:MapView.ViewOverlayAnchor="{Binding Route.WaypointLocation}"
+                    <esriCtrls:MapView.Overlays>
+                        <esriCtrls:OverlayItemsControl>
+                            <Grid esriCtrls:MapView.ViewOverlayAnchor="{Binding Route.WaypointLocation}" DataContext="{StaticResource viewmodel}"
 								VerticalAlignment="Top" Margin="0,0,0,5" >
                                 <Path Data="M0,0 L0,3 1,4 2,3 2,0 0,0"
 									  Fill="#55000000" Stretch="Fill" />
                                 <Image Source="{Binding Route.ManeuverImage}" 
 									   Height="50" Margin="2,2,2,15" />
                             </Grid>
-                        </esri:OverlayItemsControl>
-                    </esri:MapView.Overlays>
-                </esri:MapView>
+                        </esriCtrls:OverlayItemsControl>
+                    </esriCtrls:MapView.Overlays>
+                </esriCtrls:MapView>
             </Grid>
 
             <Border Margin="20" HorizontalAlignment="Right" VerticalAlignment="Top"

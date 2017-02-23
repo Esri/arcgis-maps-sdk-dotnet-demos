@@ -1,6 +1,7 @@
 ﻿
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -80,7 +81,7 @@ namespace RoutingSample
         {
 			//If user stopped navigating and we're not in the correct autopan mode,
 			//restore autopan after the set delay.
-			if(IsEnabled && m_mapView.IsNavigating)
+			if(IsEnabled && !m_mapView.IsNavigating)
 			{
 				if(m_mapView.LocationDisplay != null && 
 					m_mapView.LocationDisplay.AutoPanMode != PanMode)

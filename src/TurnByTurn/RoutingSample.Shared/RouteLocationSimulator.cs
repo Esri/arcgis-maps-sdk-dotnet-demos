@@ -1,6 +1,6 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace RoutingSample
 			timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
 			if (startPoint == null)
 			{
-				startPoint = (route.Routes.First().RouteGeometry as Polyline).Parts.GetPartsAsPoints().First().First();
+				startPoint = (route.Routes.First().RouteGeometry as Polyline).Parts.First().Points.First();
 			}
 			timer.Tick += timer_Tick;
 			Speed = 50;
@@ -122,14 +122,14 @@ namespace RoutingSample
 				if (directionIndex >= m_route.Routes.Count)
 					directionIndex = 0;
 				currDir = m_route.Routes[directionIndex];
-				lineLength = GeometryEngine.LengthGeodesic(currDir.RouteGeometry);
+				lineLength = GeometryEngine.LengthGeodetic(currDir.RouteGeometry);
 				totalDistance = 0;
 				drivePath = currDir.RouteGeometry as Polyline;
 				course = 0; dist = 0;
 			}
 			//else
 			{
-				var parts = drivePath.Parts.GetPartsAsPoints().ToList();
+				var parts = drivePath.Parts.Select(p => p.Points).ToList();
 				for (int j = 0; j < parts.Count; j++)
 				{
 					var part = parts[j].ToList();
@@ -139,7 +139,7 @@ namespace RoutingSample
 						var p2 = part[i + 1];
 						if (p1.X == p2.X && p2.Y == p2.Y)
 							continue;
-                        var result = GeometryEngine.DistanceGeodesic(p1, p2, LinearUnits.Meters, AngularUnits.Degrees, GeodeticCurveType.Geodesic);
+                        var result = GeometryEngine.DistanceGeodetic(p1, p2, LinearUnits.Meters, AngularUnits.Degrees, GeodeticCurveType.Geodesic);
                         double distToWaypoint = result.Distance;
                         if (dist < accDist + distToWaypoint)
 						{

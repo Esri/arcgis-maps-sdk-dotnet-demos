@@ -12,7 +12,6 @@ namespace RoutingSample.Desktop
         public LoginWindow()
         {
             InitializeComponent();
-            MessageBox.Show("This sample requires ArcGIS Online Subscription in order to use Global Routing Service.", this.Title.Text, MessageBoxButton.OK, MessageBoxImage.Information);
         }
         
         int loginAttempts = 0;

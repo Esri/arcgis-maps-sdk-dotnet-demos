@@ -11,18 +11,13 @@ namespace RoutingSample
 {
     public sealed partial class LoginPage : Page
     {
+        private int loginAttempts = 0;
+
         public LoginPage()
         {
             this.InitializeComponent();
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            await new MessageDialog("This sample requires ArcGIS Online Subscription in order to use Global Routing Service.", this.Title.Text).ShowAsync();
-        }
-
-        int loginAttempts = 0;
         private async void OnSignIn_Click(object sender, RoutedEventArgs e)
         {
             LoginStatus.Text = "Signing in...";

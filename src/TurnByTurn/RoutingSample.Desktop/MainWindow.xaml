@@ -33,11 +33,11 @@
 		<!--StatusBar-->
 		<StatusBar Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" DataContext="{Binding LocationDisplay}"	 >
 			<StatusBarItem  >
-				<TextBlock Text="{Binding CurrentLocation.Speed, StringFormat={}Speed: {0} kph}" />
+                <TextBlock Text="{Binding Location.Velocity, StringFormat={}Speed: {0} kph}" />
 			</StatusBarItem>
 			<Separator Opacity=".5"/>
 			<StatusBarItem  >
-				<TextBlock Text="{Binding CurrentLocation.Course, StringFormat={}Heading: {0:0}}" />
+				<TextBlock Text="{Binding Location.Course, StringFormat={}Heading: {0:0}}" />
 			</StatusBarItem>
 		</StatusBar>
 
@@ -77,18 +77,25 @@
         </StackPanel>
 
         <Grid x:Name="MapPanel" Grid.Column="1" Grid.Row="1">
-            <esri:MapView x:Name="MyMapView" 
+            <esri:MapView x:Name="MyMapView" Map="{Binding Map}"
                           local:CommandBinder.RequestView="{Binding ViewpointRequested}"
                           GraphicsOverlays="{Binding ResultGraphicsOverlays}">
 				<local:RestoreAutoPanMode.RestoreAutoPanSettings>
 					<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
 				</local:RestoreAutoPanMode.RestoreAutoPanSettings>
-				<esri:Map>
-					<esri:ArcGISTiledLayer
-					Source="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
-
-				</esri:Map>
-			</esri:MapView>
+                <!--Overlay used to show next maneuver on top of the map-->
+                <esri:MapView.Overlays>
+                    <esri:OverlayItemsControl>
+                        <Grid esri:MapView.ViewOverlayAnchor="{Binding Route.WaypointLocation}" DataContext="{StaticResource viewmodel}"
+								VerticalAlignment="Top" Margin="0,0,0,5" >
+                            <Path Data="M0,0 L0,3 1,4 2,3 2,0 0,0"
+									  Fill="#55000000" Stretch="Fill" />
+                            <Image Source="{Binding Route.ManeuverImage}" 
+									   Height="50" Margin="2,2,2,15" />
+                        </Grid>
+                    </esri:OverlayItemsControl>
+                </esri:MapView.Overlays>
+            </esri:MapView>
         </Grid>        
     </Grid>
 </Window>

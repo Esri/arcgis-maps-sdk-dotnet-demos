@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Tasks.Geocoding;
 using Esri.ArcGISRuntime.Security;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 
 namespace RoutingSample.Models
 {
@@ -19,6 +19,7 @@ namespace RoutingSample.Models
 		private const string routeService = "http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
         
         private readonly Credential credential;
+
 		public RouteService()
         {
             credential = AuthenticationManager.Current.FindCredential(new Uri("http://www.arcgis.com/sharing/rest"));
@@ -61,18 +62,34 @@ namespace RoutingSample.Models
             
 			string svc = routeService;
 
-			//Calculate route
-			RouteTask task = await RouteTask.CreateAsync(new Uri(svc), credential).ConfigureAwait(false);
-            
-			var parameters = await task.GenerateDefaultParametersAsync().ConfigureAwait(false);
-            parameters.SetStops(stopList);
-			parameters.ReturnStops = true;
-            parameters.ReturnDirections = true; 
-            parameters.RouteShapeType = RouteShapeType.TrueShapeWithMeasures;
-			parameters.OutputSpatialReference = SpatialReferences.Wgs84;
-			parameters.DirectionsDistanceUnits = DirectionsDistanceTextUnits.Metric;
-            parameters.LocalStartTime = DateTime.Now;
-            return await task.SolveRouteAsync(parameters);
+            try
+            {
+                //Calculate route
+                RouteTask task = await RouteTask.CreateAsync(new Uri(svc), credential).ConfigureAwait(false);
+
+                var parameters = await task.CreateDefaultParametersAsync().ConfigureAwait(false);
+                parameters.SetStops(stopList);
+                parameters.ReturnStops = true;
+                parameters.ReturnDirections = true;
+                parameters.RouteShapeType = RouteShapeType.TrueShapeWithMeasures;
+                parameters.OutputSpatialReference = SpatialReferences.Wgs84;
+                parameters.DirectionsDistanceUnits = Esri.ArcGISRuntime.UnitSystem.Metric;
+                parameters.StartTime = DateTime.UtcNow;
+                return await task.SolveRouteAsync(parameters);
+            }
+            catch(System.Exception ex)
+            {
+                if(ex is Esri.ArcGISRuntime.Http.ArcGISWebException)
+                {
+                    var webex = (Esri.ArcGISRuntime.Http.ArcGISWebException)ex;
+                    if (webex.Details.FirstOrDefault()?.Contains("Unlocated") == true)
+                    {
+                        //This occurs if the server couldn't find a route to the location
+                        return null;
+                    }
+                }
+                throw;
+            }
 		}
     }
 }
