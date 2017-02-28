@@ -96,10 +96,10 @@
   <Import Project="..\OfficeLocator.Shared\OfficeLocator.Shared.projitems" Label="Shared" />
   <!-- Trick to make Content files compile as AndroidAsset -->
   <ItemGroup>
-    <AndroidAsset Include="C:\devtopia\mort5161\EsriCampusApp\src\OfficeLocator.Shared\MarkerA.png">
+    <AndroidAsset Include="..\OfficeLocator.Shared\MarkerA.png">
       <Link>Assets\MarkerA.png</Link>
     </AndroidAsset>
-    <AndroidAsset Include="C:\devtopia\mort5161\EsriCampusApp\src\OfficeLocator.Shared\MarkerB.png">
+    <AndroidAsset Include="..\OfficeLocator.Shared\MarkerB.png">
       <Link>Assets\MarkerB.png</Link>
     </AndroidAsset>
   </ItemGroup>
