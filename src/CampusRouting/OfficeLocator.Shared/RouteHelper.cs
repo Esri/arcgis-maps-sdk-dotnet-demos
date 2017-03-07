@@ -18,7 +18,7 @@ namespace OfficeLocator
 		{
 			if(initializeTask == null)
 			{
-				string path = System.IO.Path.Combine(MapViewModel.GetDataFolder(), "Network/IndoorNavigation.geodatabase");
+				string path = System.IO.Path.Combine(MapViewModel.GetDataFolder(), "Network", "IndoorNavigation.geodatabase");
 				initializeTask = RouteTask.CreateAsync(path, "Transportation_ND");				
 			}
 			return initializeTask;
