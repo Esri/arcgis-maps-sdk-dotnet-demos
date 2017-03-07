@@ -347,10 +347,8 @@ namespace OfficeLocator
             var appDataFolder =
 #if NETFX_CORE
                 Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-#elif __ANDROID__
+#elif __ANDROID__ || __IOS__
                 System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-#elif __IOS__
-                "Library/";
 #endif
             return Path.Combine(appDataFolder, "CampusData");
         }
