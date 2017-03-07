@@ -52,7 +52,14 @@ namespace OfficeLocator
         /// <returns></returns>
         public async Task LoadAsync()
         {
-            await ProvisionDataAsync();
+            try
+            {
+                await ProvisionDataAsync();
+            }
+            catch(System.Exception ex)
+            {
+                UpdateLoadStatus("Failed to provision data:\n" + ex.Message);
+            }
             UpdateLoadStatus("Initializing map...");
             GeocodeHelper.Initialize();
 #if NETFX_CORE

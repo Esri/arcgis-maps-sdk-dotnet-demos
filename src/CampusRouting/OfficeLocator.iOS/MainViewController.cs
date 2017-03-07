@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using UIKit;
 using System.Linq;
+using Esri.ArcGISRuntime.UI.Controls;
 
 namespace OfficeLocator.iOS
 {
@@ -257,9 +258,9 @@ namespace OfficeLocator.iOS
 				_busyView.Hidden = true;
 		}
 
-		private void MapView_DrawStatusChanged(object sender, DrawStatus e)
+		private void MapView_DrawStatusChanged(object sender, DrawStatusChangedEventArgs e)
 		{
-			if (e == DrawStatus.Completed && !_mapViewModel.IsBusy && !_mapView.IsNavigating)
+			if (e.Status == DrawStatus.Completed && !_mapViewModel.IsBusy && !_mapView.IsNavigating)
 				_busyView.Hidden = true;
 		}
 

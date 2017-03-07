@@ -21,7 +21,7 @@ namespace OfficeLocator
         {
             if (System.IO.Directory.Exists(path))
                 return;
-            var portal = await Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync().ConfigureAwait(false);
+            var portal = await Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync(new Uri("https://www.arcgis.com/sharing/rest")).ConfigureAwait(false);
             var item = await Esri.ArcGISRuntime.Portal.PortalItem.CreateAsync(portal, itemId).ConfigureAwait(false);
             
             progress?.Invoke("Initiating download...");
