@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="ServiceRequestsSample.AddCommentPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ServiceRequestsSample"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:toolkit="using:Esri.ArcGISRuntime.Toolkit.Controls"
+	xmlns:converters="using:ServiceRequestsSample.Converters"
+	mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Page.Transitions>
+		<TransitionCollection>
+			<NavigationThemeTransition>
+				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
+					<SlideNavigationTransitionInfo/>
+				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
+			</NavigationThemeTransition>
+		</TransitionCollection>
+	</Page.Transitions>
+
+	<Page.Resources>
+		<converters:DateTimeConverter x:Key="DateTimeConv"/>
+		<DataTemplate x:Key="DateTimeTemplate">
+			<DatePicker Date="{Binding Value, Mode=TwoWay, 
+									Converter={StaticResource DateTimeConv}}"/>
+		</DataTemplate>
+	</Page.Resources>
+	
+	<Page.BottomAppBar>
+		<CommandBar>
+			<AppBarButton x:Name="saveBtn"
+						  Label="Save"
+						  Icon="Save"
+						  Click="Save_Click"/>
+			<AppBarButton Label="Cancel" 
+						  Icon="Cancel"
+						  Click="Cancel_Click" />
+		</CommandBar>
+	</Page.BottomAppBar>
+
+	<Grid>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<Grid Background="{StaticResource PhoneAccentBrush}">
+				<TextBlock Text="CREATE COMMENT" Foreground="White"
+						   Margin="5" FontSize="20"/>
+			</Grid>
+
+			<toolkit:FeatureDataForm	
+					x:Name="MyDataForm"
+					Grid.Row="1"
+					BorderThickness="0"
+					Margin="0,-5,0,0"
+					Background="Transparent"
+					ApplyCompleted="MyDataForm_ApplyCompleted"
+					DateTimeTemplate="{StaticResource DateTimeTemplate}"/>
+		</Grid>
+	</Grid>
+</Page>
