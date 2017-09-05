@@ -2,7 +2,7 @@ Demo: Turn-by-Turn Routing
 =======================
 Required version: ArcGIS Runtime SDK 100.0 for .NET
 
-Sample app that shows how to write a turn-by-turn routing application using the [ArcGIS Runtime SDK for Windows Store, Windows Phone and Windows Desktop (WPF) apps](https://developers.arcgis.com/net/). The app uses MVVM patterns and shares the services, models and viewmodels between all platforms through a shared project, but uses individual views tailored for the experience on the specific device.
+Sample app that shows how to write a turn-by-turn routing application using the [ArcGIS Runtime SDK for.NET](https://developers.arcgis.com/net/). The app uses MVVM patterns and shares the services, models and viewmodels between all platforms through a shared project, but uses individual views tailored for the experience on the specific device.
 
 When the app is run in debug mode, it uses a [`Route Location Simulator`](RoutingSample.Shared/RouteLocationSimulator.cs) to simulate driving from your current location to the destination entered. When running the app in release mode, the system's built-in location driver is used.
 
