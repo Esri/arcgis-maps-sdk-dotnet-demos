@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalBrowser.Desktop", "PortalBrowser.Desktop\PortalBrowser.Desktop.csproj", "{99373650-6B2B-4B49-BC63-ABD88456BCEA}"
 EndProject
@@ -137,6 +137,7 @@ Global
 		{FF9B7751-CEE8-43F0-B6E5-7FAD1F0C3D2B}.AppStore|x86.Deploy.0 = Release|x86
 		{FF9B7751-CEE8-43F0-B6E5-7FAD1F0C3D2B}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{FF9B7751-CEE8-43F0-B6E5-7FAD1F0C3D2B}.Debug|Any CPU.Build.0 = Debug|x86
+		{FF9B7751-CEE8-43F0-B6E5-7FAD1F0C3D2B}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{FF9B7751-CEE8-43F0-B6E5-7FAD1F0C3D2B}.Debug|ARM.ActiveCfg = Debug|ARM
 		{FF9B7751-CEE8-43F0-B6E5-7FAD1F0C3D2B}.Debug|ARM.Build.0 = Debug|ARM
 		{FF9B7751-CEE8-43F0-B6E5-7FAD1F0C3D2B}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -178,6 +179,7 @@ Global
 		{5EFE5D2B-B523-4B52-88F1-A3372EEACC3F}.AppStore|x64.ActiveCfg = AppStore|iPhone
 		{5EFE5D2B-B523-4B52-88F1-A3372EEACC3F}.AppStore|x86.ActiveCfg = AppStore|iPhone
 		{5EFE5D2B-B523-4B52-88F1-A3372EEACC3F}.Debug|Any CPU.ActiveCfg = Debug|iPhone
+		{5EFE5D2B-B523-4B52-88F1-A3372EEACC3F}.Debug|Any CPU.Build.0 = Debug|iPhone
 		{5EFE5D2B-B523-4B52-88F1-A3372EEACC3F}.Debug|ARM.ActiveCfg = Debug|iPhone
 		{5EFE5D2B-B523-4B52-88F1-A3372EEACC3F}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{5EFE5D2B-B523-4B52-88F1-A3372EEACC3F}.Debug|iPhone.Build.0 = Debug|iPhone
@@ -303,6 +305,7 @@ Global
 		{7900E170-FCF2-4507-A769-CC8E833557C7}.AppStore|x86.Deploy.0 = Release|x86
 		{7900E170-FCF2-4507-A769-CC8E833557C7}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{7900E170-FCF2-4507-A769-CC8E833557C7}.Debug|Any CPU.Build.0 = Debug|x86
+		{7900E170-FCF2-4507-A769-CC8E833557C7}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{7900E170-FCF2-4507-A769-CC8E833557C7}.Debug|ARM.ActiveCfg = Debug|ARM
 		{7900E170-FCF2-4507-A769-CC8E833557C7}.Debug|ARM.Build.0 = Debug|ARM
 		{7900E170-FCF2-4507-A769-CC8E833557C7}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -330,5 +333,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A112B2A-28A6-4BAE-8828-2F750BDCB740}
 	EndGlobalSection
 EndGlobal

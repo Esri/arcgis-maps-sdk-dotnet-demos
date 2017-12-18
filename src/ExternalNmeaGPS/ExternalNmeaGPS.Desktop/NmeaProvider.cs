@@ -7,7 +7,7 @@ namespace ExternalNmeaGPS
 	public class NmeaLocationProvider : Esri.ArcGISRuntime.Location.LocationDataSource
 	{
 		private NmeaParser.NmeaDevice device;
-		double m_Accuracy = double.NaN;
+		double m_Accuracy = 0;
 
 		public NmeaLocationProvider(NmeaParser.NmeaDevice device)
 		{
