@@ -10,6 +10,7 @@ This project contains source code for native Windows Desktop, Store, and Phone a
 * [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
 * [`Esri Campus Routing`](src/CampusRouting) - A cross-platform (Xamarin) sample demonstrating indoor geocoding and routing for a campus running on Windows Universap, Android and iOS.
 * [`Electronic Navigation Charts (ENC)`](src/HydrographicsSample) - Demonstrates how to work with and render ENC data using the Hydrographics package.
+* [`GeoEvent Server Streaming Service`](src/GeoEventServerSample) - Demonstrates how to stream data from ArcGIS GeoEvent Server and render them on the map.
 
 ### Demos (v10.2.x)
 
