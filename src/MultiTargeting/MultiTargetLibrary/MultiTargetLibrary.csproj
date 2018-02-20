@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Frameworks this project should support -->
+    <TargetFrameworks>xamarinios10;uap10.0;monoandroid60;net461</TargetFrameworks>
+    <Title>ArcGIS Runtime Multi Targeting project</Title>
+    <Description>Demonstrates how to create a single package that targes multiple platforms</Description>
+    <PackageTags>Esri ArcGIS Runtime GIS maps map mapping location spatial 3D iOS Android UWP Xamarin.Forms Xamarin Mobile toolkit</PackageTags>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <!-- Work around MSBuild bug when building from comandline: https://github.com/Microsoft/msbuild/issues/2274 -->
+    <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
+  </PropertyGroup>
+
+  <!--Framework specific properties-->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+    <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
+  </PropertyGroup>
+  
+  <!-- Framework specific items -->
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.7" />
+    <PackageReference Include="Esri.ArcGISRuntime.UWP" Version="100.2.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'monoandroid60'">
+    <PackageReference Include="Esri.ArcGISRuntime.Xamarin.Android" Version="100.2.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'xamarinios10'">
+    <PackageReference Include="Esri.ArcGISRuntime.Xamarin.iOS" Version="100.2.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="100.2.1" />
+  </ItemGroup>
+  
+  <!-- Items for app frameworks -->
+  <ItemGroup>
+    <!-- This package resolves some multi targeting issues -->
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+
+</Project>
