@@ -20,22 +20,14 @@
   </PropertyGroup>
   
   <!-- Framework specific items -->
-
   <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.7" />
-    <PackageReference Include="Esri.ArcGISRuntime.UWP" Version="100.2.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'monoandroid60'">
-    <PackageReference Include="Esri.ArcGISRuntime.Xamarin.Android" Version="100.2.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'xamarinios10'">
-    <PackageReference Include="Esri.ArcGISRuntime.Xamarin.iOS" Version="100.2.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="100.2.1" />
+  <ItemGroup>
+    <PackageReference Include="Esri.ArcGISRuntime" Version="100.2.1">
+      <PrivateAssets>none</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   
   <!-- Items for app frameworks -->

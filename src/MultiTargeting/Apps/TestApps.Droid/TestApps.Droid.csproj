@@ -50,9 +50,6 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-     <PackageReference Include="Esri.ArcGISRuntime.Xamarin.Android">
-      <Version>100.2.1</Version>
-    </PackageReference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
