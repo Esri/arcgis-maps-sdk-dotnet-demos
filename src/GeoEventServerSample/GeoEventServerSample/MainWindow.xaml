@@ -9,11 +9,14 @@
         Title="Streaming Service - GeoEvent Server" Height="700" Width="1000">
     <Grid>
 
-        <esri:MapView x:Name="mapView" GeoViewTapped="mapView_GeoViewTapped" />
+        <esri:MapView x:Name="mapView" GeoViewTapped="mapView_GeoViewTapped" Map="{Binding Map}" GraphicsOverlays="{Binding Overlays}" />
 
         <Border Margin="20" Background="#D0CFD3" BorderBrush="#007AC2" BorderThickness="2" CornerRadius="5" Padding="20" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel>
-                <TextBlock x:Name="StatusText" Text="Initializing..." Foreground="#007AC2" FontWeight="Black" FontSize="16" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Vehicle count: " Foreground="#007AC2" FontWeight="Black" FontSize="16" />
+                    <TextBlock Text="{Binding VehicleCount}" Foreground="#007AC2" FontWeight="Black" FontSize="16" Margin="5,0,0,0" />
+                </StackPanel>
                 <ItemsControl x:Name="attributeView">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
