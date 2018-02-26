@@ -7,12 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-#if NETFX_CORE
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
-#elif !__ANDROID__ && !__IOS__
-using System.Windows.Media.Animation;
-#endif
 
 namespace GeoEventServerSample.Animations
 {
@@ -44,8 +38,8 @@ namespace GeoEventServerSample.Animations
                  },
                 onStart: null,
                 onEnd: () => graphic.Geometry = newLocation,
-                 repeat: false,
-                 easing: null // new QuadraticEase() { EasingMode = EasingMode.EaseInOut }
+                repeat: false,
+                easing: new QuadraticEase() { EasingMode = EasingMode.EaseInOut }
             );
         }
     }

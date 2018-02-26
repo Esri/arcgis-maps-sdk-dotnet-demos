@@ -1,5 +1,4 @@
-﻿#if __ANDROID__ || __IOS__
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -30,6 +29,7 @@ namespace GeoEventServerSample.Animations
             }
 
         }
+
         protected abstract double EasingImplementation(double normalizedTime);
     }
 
@@ -41,4 +41,3 @@ namespace GeoEventServerSample.Animations
         }
     }
 }
-#endif

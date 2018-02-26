@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-#if NETFX_CORE
-using Windows.UI.Xaml.Media.Animation;
-#elif !__ANDROID__ && !__IOS__
-using System.Windows.Media.Animation;
-#endif
 
 namespace GeoEventServerSample.Animations
 {
@@ -78,9 +73,7 @@ namespace GeoEventServerSample.Animations
                         normalizedTime = elapsed.TotalMilliseconds / _duration.TotalMilliseconds;
                     else
                         normalizedTime = 1 - (elapsed - _duration).TotalMilliseconds / _duration.TotalMilliseconds;
-                    if(_easing == null)
-                        _easing = new QuadraticEase() { EasingMode = EasingMode.EaseInOut };
-                    //if (_easing != null)
+                    if (_easing != null)
                         normalizedTime = _easing.Ease(normalizedTime);
                     _onPulse?.Invoke(normalizedTime);
                 }

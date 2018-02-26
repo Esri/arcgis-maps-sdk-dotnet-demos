@@ -52,11 +52,14 @@ namespace GeoEventServerSample
 #elif __IOS__
             action();
 #else 
-            if (System.Windows.Application.Current.Dispatcher.CheckAccess())
+            var dispatcher = System.Windows.Application.Current.Dispatcher;
+            if (dispatcher == null || dispatcher.HasShutdownStarted || dispatcher.HasShutdownFinished)
+                return; // Occurs during shutdown
+            if (dispatcher.CheckAccess())
                 action();
             else
             {
-                System.Windows.Application.Current.Dispatcher.Invoke(action);
+                dispatcher.Invoke(action);
             }
 #endif
         }
