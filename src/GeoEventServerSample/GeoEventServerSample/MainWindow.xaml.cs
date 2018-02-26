@@ -32,49 +32,11 @@ namespace GeoEventServerSample
         public MainWindow()
         {
             InitializeComponent();
-            mapView.Map = new Map(Basemap.CreateLightGrayCanvasVector())
-            {
-                InitialViewpoint = new Viewpoint(new Envelope(-13234206.5948101, 3983021, -13093018, 4075286, SpatialReferences.WebMercator))
-            };
-            LoadService(StreamServiceUri);
+            DataContext = VM = new MapViewModel();
         }
 
-        private async void LoadService(string uri)
-        {
-            var client = await StreamServiceClient.CreateAsync(new Uri(uri));
-            client.FeatureTimeout = TimeSpan.FromMinutes(5); // Removes any features that hasn't reported back in over 5 minutes
-            client.OnUpdate += Client_OnUpdate;
-
-            // Create overlay for rendering updates
-            var si = typeof(LocationDisplay).Assembly.GetManifestResourceStream("Esri.ArcGISRuntime.Esri.ArcGISRuntime.LocationDisplayCourse.scale-200.png");
-            var ri = await RuntimeImage.FromStreamAsync(si);
-            PictureMarkerSymbol vehicleSymbol = new PictureMarkerSymbol(ri) { Width = 25, Height = 25 };
-            var overlay = new Esri.ArcGISRuntime.UI.GraphicsOverlay()
-            {
-                Renderer = new SimpleRenderer(vehicleSymbol),
-                SceneProperties = new LayerSceneProperties(SurfacePlacement.Absolute) //In case we use it in 3D and have Z values
-            };
-            var headingField = client.ServiceInfo.Fields.Where(f => f.Name.ToLower() == "heading").Select(f => f.Name).FirstOrDefault();
-            if (!string.IsNullOrEmpty(headingField))
-            {
-                overlay.Renderer.RotationExpression = $"[{headingField}]";
-                overlay.Renderer.SceneProperties.HeadingExpression = $"[{headingField}]";
-            }
-            mapView.GraphicsOverlays.Add(overlay);
-            client.Overlay = overlay;
-
-            // Connect
-            await client.ConnectAsync();
-        }
-
-        private void Client_OnUpdate(object sender, string e)
-        {
-            if(e == "Add" || e == "Remove")
-            {
-                Dispatcher.Invoke(() => StatusText.Text = "Vehicle count: " + (sender as StreamServiceClient).VehicleCount.ToString());
-            }
-        }
-
+        public MapViewModel VM { get; }
+        
         private async void mapView_GeoViewTapped(object sender, Esri.ArcGISRuntime.UI.Controls.GeoViewInputEventArgs e)
         {
             var r = await mapView.IdentifyGraphicsOverlayAsync(mapView.GraphicsOverlays[0], e.Position, 1, false);
