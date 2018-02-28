@@ -50,7 +50,11 @@ namespace GeoEventServerSample
             {
                 VehicleCount = (sender as StreamServiceClient).VehicleCount;
                 RunOnUIThread(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VehicleCount))));
-                //Dispatcher.Invoke(() => StatusText.Text = "Vehicle count: " + (sender as StreamServiceClient).VehicleCount.ToString());
+            }
+            else if(e == "MessagesPerSecond")
+            {
+                StreamInfo = $"{(sender as StreamServiceClient).MessagesPerSecond.ToString("0.0")} messages/second";
+                RunOnUIThread(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StreamInfo))));
             }
         }
 
@@ -64,7 +68,15 @@ namespace GeoEventServerSample
                 var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => action());
             }
 #elif __ANDROID__
-            RunOnUIThread(action);
+            if (Android.OS.Looper.MainLooper.IsCurrentThread)
+                action();
+            else
+            {
+                using (var h = new Android.OS.Handler(Android.OS.Looper.MainLooper))
+                {
+                    h.Post(action);
+                }
+            }
 #elif __IOS__
             action();
 #else 
@@ -82,8 +94,12 @@ namespace GeoEventServerSample
 
         public int VehicleCount { get; private set; }
         
+        public string StreamInfo { get; private set; }
+        
         private async void LoadService(string uri)
         {
+            StreamInfo = "Initializing stream...";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StreamInfo)));
             var client = await StreamServiceClient.CreateAsync(new Uri(uri));
             client.FeatureTimeout = TimeSpan.FromMinutes(5); // Removes any features that hasn't reported back in over 5 minutes
             client.OnUpdate += Client_OnUpdate;
@@ -108,6 +124,8 @@ namespace GeoEventServerSample
 
             // Connect
             await client.ConnectAsync();
+            StreamInfo = "Connected";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StreamInfo)));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

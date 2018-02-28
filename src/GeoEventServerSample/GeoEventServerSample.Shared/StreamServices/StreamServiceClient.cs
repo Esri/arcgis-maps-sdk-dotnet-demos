@@ -71,6 +71,12 @@ namespace GeoEventServerSample.StreamServices
         /// Number of features currently tracked
         /// </summary>
         public int VehicleCount => _vehicles.Count;
+
+        /// <summary>
+        /// Gets an estimate of messages generated pr second.
+        /// </summary>
+        public double MessagesPerSecond { get; private set; }
+
         /// <summary>
         /// Gets or sets the overlay to render the features in
         /// </summary>
@@ -153,15 +159,6 @@ namespace GeoEventServerSample.StreamServices
                     ServiceInfo = StreamServerInfo.FromJson(serviceJson);
                 }
             }
-#if __ANDROID__
-            catch(Javax.Net.Ssl.SSLException ex)
-            {
-                var s = ex.Message;
-                var st = ex.StackTrace;
-                var ix = ex.InnerException;
-                throw;
-            }
-#endif
             catch (System.Exception ex)
             {
                 throw;
@@ -178,22 +175,25 @@ namespace GeoEventServerSample.StreamServices
             foreach (var f in from p in ServiceInfo.Fields select new KeyValuePair<string, FieldInfo>(p.Name, p))
                 fields[f.Key] = f.Value;
             DateTimeOffset lastStaleCheck = DateTimeOffset.Now;
+            int messageCount = 0;
+            DateTimeOffset messageCountReset = DateTimeOffset.Now;
             while (IsConnected)
             {
                 var result = await socket.ReceiveAsync(buffer, CancellationToken.None).ConfigureAwait(false);
                 if (!IsConnected) break;
+                messageCount++;
                 using (var ms = new MemoryStream(buff, 0, result.Count))
                 {
                     FeatureMessage p;
                     try
                     {
-#if __IOS__
+#if __IOS__ || __ANDROID__
                         p = FeatureMessage.FromJson(Encoding.UTF8.GetString(buff, 0, result.Count));
 #else
                         p = FeatureMessage.FromJson(ms);
 #endif
                     }
-                    catch(System.Exception ex)
+                    catch (System.Exception)
                     {
                         Debug.WriteLine("Failed to parse message: " + Encoding.UTF8.GetString(buff, 0, result.Count));
                         continue;
@@ -209,7 +209,7 @@ namespace GeoEventServerSample.StreamServices
                             p.Attributes[pair.Key] = Convert.ToDouble(pair.Value);
                         }
                         if (fields.ContainsKey(pair.Key) && fields[pair.Key].Type == "esriFieldTypeDate" && pair.Value != null)
-                            p.Attributes[pair.Key] = DateTimeOffset.FromUnixTimeMilliseconds((long)pair.Value);
+                            p.Attributes[pair.Key] = DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(pair.Value));
                     }
                     if (p.Attributes.ContainsKey(idAttributeField))
                     {
@@ -240,11 +240,19 @@ namespace GeoEventServerSample.StreamServices
                         }
                     }
                 }
-
+                DateTimeOffset now = DateTimeOffset.Now;
+                double timeSinceCountReset = (now - messageCountReset).TotalSeconds;
+                if (timeSinceCountReset > 10 && messageCount > 10)
+                {
+                    MessagesPerSecond = messageCount / timeSinceCountReset;
+                    OnUpdate?.Invoke(this, "MessagesPerSecond");
+                    messageCount = 0;
+                    messageCountReset = now;
+                }
                 //Check if any features has gone stale and remove them
                 if (FeatureTimeout < TimeSpan.MaxValue)
                 {
-                    DateTimeOffset timeoutDate = DateTimeOffset.Now - FeatureTimeout;
+                    DateTimeOffset timeoutDate = now - FeatureTimeout;
                     if (DateTimeOffset.Now - lastStaleCheck > TimeSpan.FromSeconds(10))
                     {
                         var timeField = ServiceInfo.TimeInfo?.StartTimeField;

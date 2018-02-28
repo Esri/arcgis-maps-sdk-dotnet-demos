@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
   <Esri.ArcGISRuntime.UI.MapView
      android:id="@+id/MyMapView"
        android:layout_width="fill_parent"
        android:layout_height="fill_parent" />
-</LinearLayout>
+
+  <LinearLayout
+   android:layout_gravity="center_horizontal|top"
+   android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:padding="12dip"
+   android:background="#AA000000"
+   android:orientation="vertical">
+      <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textColor="#ffffffff"   
+       android:id="@+id/VehicleCount" />
+    <TextView
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:textColor="#ffffffff"
+     android:id="@+id/StatusText" />
+  </LinearLayout>
+</FrameLayout>

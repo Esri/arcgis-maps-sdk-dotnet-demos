@@ -18,6 +18,7 @@ using Esri.ArcGISRuntime.Tasks;
 using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.UI.Controls;
 using Javax.Net.Ssl;
+using Android.Widget;
 
 namespace GeoEventServerSample.Droid
 {
@@ -45,12 +46,19 @@ namespace GeoEventServerSample.Droid
 
         private void MapViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Update the map view with the view model's new map
             if (e.PropertyName == nameof(MapViewModel.Map) && _mapView != null)
+            {
                 _mapView.Map = _mapViewModel.Map;
+            }
             else if(e.PropertyName == nameof(MapViewModel.VehicleCount))
             {
-                // TODO
+                var tv = FindViewById<TextView>(Resource.Id.VehicleCount);
+                tv.Text = "Vehicle count: " + ((MapViewModel)sender).VehicleCount.ToString();
+            }
+            else if (e.PropertyName == nameof(MapViewModel.StreamInfo))
+            {
+                var tv = FindViewById<TextView>(Resource.Id.StatusText);
+                tv.Text = ((MapViewModel)sender).StreamInfo;
             }
         }
     }

@@ -28,7 +28,7 @@ namespace GeoEventServerSample.StreamServices
     public class FeatureMessage
     {
         private static DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(FeatureMessage), new DataContractJsonSerializerSettings() { UseSimpleDictionaryFormat = true });
-#if __IOS__
+#if __IOS__ || __ANDROID__
         public static FeatureMessage FromJson(string json)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<FeatureMessage>(json);

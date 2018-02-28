@@ -53,12 +53,28 @@ namespace GeoEventServerSample.Animations
         private static void StartAnimationLoop()
         {
 #if __ANDROID__
+            Action init = () =>
+            {
             if (timeAnimator == null)
             {
-                timeAnimator = new Android.Animation.TimeAnimator();
-                timeAnimator.Update += (s,e) => OnFrameEvent(TimeSpan.FromMilliseconds(e.Animation.CurrentPlayTime));
+                    timeAnimator = new Android.Animation.TimeAnimator()
+                    {
+                        RepeatCount = Android.Animation.ValueAnimator.Infinite
+                    };
+                    timeAnimator.Time += (s, e) => OnFrameEvent(TimeSpan.FromMilliseconds(e.TotalTime));
             }
-            timeAnimator.Start();
+                timeAnimator.CurrentPlayTime = 0;
+                timeAnimator.Start();
+            };
+            if (Android.OS.Looper.MainLooper.IsCurrentThread)
+                init();
+            else
+            {
+                using (var h = new Android.OS.Handler(Android.OS.Looper.MainLooper))
+                {
+                    h.Post(init);
+                }
+            }
 #elif __IOS__
             if (_displayLink == null)
             {
@@ -70,20 +86,28 @@ namespace GeoEventServerSample.Animations
                 CompositionTarget.Rendering += CompositionTargetRendering;
             else
             {
-                var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, StartAnimationLoop);
+                var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompositionTarget.Rendering += CompositionTargetRendering);
             }
 #else
             if (System.Windows.Application.Current.Dispatcher.CheckAccess())
                 CompositionTarget.Rendering += CompositionTargetRendering;
             else
-                System.Windows.Application.Current.Dispatcher.Invoke(StartAnimationLoop);
+                System.Windows.Application.Current.Dispatcher.Invoke(()=> CompositionTarget.Rendering += CompositionTargetRendering);
 #endif
         }
 
         private static void StopAnimationLoop()
         {
 #if __ANDROID__
-            timeAnimator?.Cancel();
+            if (Android.OS.Looper.MainLooper.IsCurrentThread)
+                timeAnimator?.Cancel();
+            else
+            {
+                using (var h = new Android.OS.Handler(Android.OS.Looper.MainLooper))
+                {
+                    h.Post(() => timeAnimator?.Cancel());
+                }
+            }
 #elif __IOS__
             _displayLink?.Invalidate();
             _displayLink = null;
@@ -92,13 +116,13 @@ namespace GeoEventServerSample.Animations
                 CompositionTarget.Rendering -= CompositionTargetRendering;
             else
             {
-                var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, StartAnimationLoop);
+                var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompositionTarget.Rendering -= CompositionTargetRendering);
             }
 #else
             if (System.Windows.Application.Current.Dispatcher.CheckAccess())
                 CompositionTarget.Rendering -= CompositionTargetRendering;
             else
-                System.Windows.Application.Current.Dispatcher.Invoke(StopAnimationLoop);
+                System.Windows.Application.Current.Dispatcher.Invoke(() => CompositionTarget.Rendering -= CompositionTargetRendering);
 #endif
         }
 
@@ -114,6 +138,7 @@ namespace GeoEventServerSample.Animations
             AnimationHandle[] a = null;
             lock (animationsLock)
                 a = animations.ToArray();
+            int count = 0;
             foreach (var handle in a)
             {
                 if (handle.IsDiposed)
@@ -124,9 +149,10 @@ namespace GeoEventServerSample.Animations
                 else
                 {
                     handle.Pulse(renderingTime);
+                    count++;
                 }
             }
-            if (a.Length == 0)
+            if (count == 0)
                 StopAnimationLoop();
         }
 
