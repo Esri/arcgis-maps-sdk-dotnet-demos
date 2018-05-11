@@ -10,7 +10,7 @@ This sample was used in [Working with maps online and offline](https://www.youtu
 ![Screenshot](Screenshot_2.png)
 
 ## Preplanned workflow
-![Screenshot](Screenshot_2.png)
+![Screenshot](Screenshot_3.png)
 
 [](Esri Tags: ArcGIS API UWP Offline On-demand Preplanned C# CSharp)
 [](Esri Language: DotNet)
