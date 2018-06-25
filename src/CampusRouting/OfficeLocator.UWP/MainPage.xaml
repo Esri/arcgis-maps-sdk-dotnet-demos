@@ -25,11 +25,7 @@
         <esriCtrls:MapView x:Name="CampusView" Background="White"
 						Map="{x:Bind VM.Map, Mode=OneWay}" 
 						GraphicsOverlays="{x:Bind VM.Overlays}" 
-						Grid.Row="1" Grid.RowSpan="2" >
-            <esriCtrls:MapView.BackgroundGrid>
-                <esriUI:BackgroundGrid Color="White" GridLineColor="Transparent" />
-            </esriCtrls:MapView.BackgroundGrid>
-        </esriCtrls:MapView>
+						Grid.Row="1" Grid.RowSpan="2" />
 
         <!-- If you want a 3D view of the campus which also helps to to better 
              visualize floor changes, replace the above MapView with this SceneView -->

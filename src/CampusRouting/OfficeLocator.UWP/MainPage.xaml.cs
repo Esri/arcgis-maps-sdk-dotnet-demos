@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -17,6 +18,8 @@ namespace OfficeLocator.UWP
         public MainPage()
         {
 			this.InitializeComponent();
+            VM = new MapViewModel(RunOnUIThread);
+            CampusView.BackgroundGrid = new Esri.ArcGISRuntime.UI.BackgroundGrid() { Color = Color.White, GridLineColor = Color.Transparent };
 		}
 
         // Most of the logic by the app is handled by the shared MainViewModel class.
@@ -49,7 +52,19 @@ namespace OfficeLocator.UWP
             });
         }
 
-        public MapViewModel VM { get; } = new MapViewModel();
+        public MapViewModel VM { get; }
+
+        private void RunOnUIThread(Action action)
+        {
+            if (!Dispatcher.HasThreadAccess)
+            {
+                var _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => action());
+            }
+            else
+            {
+                action();
+            }
+        }
 
         private void VM_RequestViewpoint(object sender, Esri.ArcGISRuntime.Mapping.Viewpoint viewpoint)
 		{

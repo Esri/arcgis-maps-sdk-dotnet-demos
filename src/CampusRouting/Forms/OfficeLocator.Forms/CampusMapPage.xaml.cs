@@ -16,7 +16,7 @@ namespace OfficeLocator.Forms
             InitializeComponent();
 		}
 
-        public MapViewModel VM { get; } = new MapViewModel();
+        public MapViewModel VM { get; } = new MapViewModel(Xamarin.Forms.Device.BeginInvokeOnMainThread);
 
         protected async override void OnAppearing()
         {            

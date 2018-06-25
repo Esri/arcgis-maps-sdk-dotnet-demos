@@ -3,33 +3,29 @@ using Esri.ArcGISRuntime.Mapping;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.IO;
-#if NETFX_CORE
-using Windows.UI;
-#endif
-#if __ANDROID__ || __IOS__
-using System.Drawing;
-using Colors = System.Drawing.Color;
-#endif
 using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Geometry;
 using System.Runtime.CompilerServices;
+using System.Drawing;
 
 namespace OfficeLocator
 {
     public class MapViewModel : INotifyPropertyChanged
     {
         public static event EventHandler<string> OnError;
-
+        private Action<Action> RunOnUIThreadAction;
         internal static void RaiseErrorMessage(string message)
         {
             OnError?.Invoke(null, message);
         }
-        public MapViewModel()
+        public MapViewModel(Action<Action> runOnUIThreadAction)
 		{
-			Overlays.Add(new GraphicsOverlay() { Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Colors.CornflowerBlue, 5)) });
+            RunOnUIThreadAction = runOnUIThreadAction;
+
+            Overlays.Add(new GraphicsOverlay() { Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.CornflowerBlue, 5)) });
             Overlays[0].SceneProperties.SurfacePlacement = SurfacePlacement.Relative;
-			Overlays.Add(new GraphicsOverlay() { Renderer = new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Circle, Colors.Red, 15)) });
+			Overlays.Add(new GraphicsOverlay() { Renderer = new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Circle, Color.Red, 15)) });
             Overlays[1].SceneProperties.SurfacePlacement = SurfacePlacement.Relative;
 		}
 
@@ -62,14 +58,18 @@ namespace OfficeLocator
             }
             UpdateLoadStatus("Initializing map...");
             GeocodeHelper.Initialize();
-#if NETFX_CORE
-			var a = new PictureMarkerSymbol(new Uri("ms-appx:///MarkerA.png"));
-			var b = new PictureMarkerSymbol(new Uri("ms-appx:///MarkerB.png"));
-			a.Width = a.Height = b.Width = b.Height = 20;
-#else
-            var a = new SimpleMarkerSymbol() { Color = Colors.Red, Size = 20 };
-            var b = new SimpleMarkerSymbol() { Color = Colors.Green, Size = 20 };
-#endif
+
+            PictureMarkerSymbol a;
+            PictureMarkerSymbol b;
+            using (var markera = typeof(MapViewModel).Assembly.GetManifestResourceStream("OfficeLocator.Core.MarkerA.png"))
+            {
+                a = new PictureMarkerSymbol(await RuntimeImage.FromStreamAsync(markera)) { Width = 20, Height = 20 };
+            }
+            using (var markerb = typeof(MapViewModel).Assembly.GetManifestResourceStream("OfficeLocator.Core.MarkerB.png"))
+            {
+                b = new PictureMarkerSymbol(await RuntimeImage.FromStreamAsync(markerb)) { Width = 20, Height = 20 };
+            }
+
             Overlays[1].Graphics.Add(new Graphic() { Symbol = a }); //From
             Overlays[1].Graphics.Add(new Graphic() { Symbol = b }); //To
             try
@@ -108,9 +108,6 @@ namespace OfficeLocator
                 MinScale = 30000
             };
 
-#if __ANDROID__ //workaround for current maxscale bug 
-            Map.MaxScale = 300;
-#endif
             await Map.LoadAsync();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Map)));
         }
@@ -224,7 +221,7 @@ namespace OfficeLocator
 			var route2 = await t2;
 			if (route2 != null)
 			{
-				Overlays[0].Graphics.Insert(0, new Graphic(route2.RouteGeometry) { Symbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, Colors.Black, 2) });
+				Overlays[0].Graphics.Insert(0, new Graphic(route2.RouteGeometry) { Symbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, Color.Black, 2) });
                 WalkTimeAlt = route2.TotalTime.ToString("m\\:ss");
 				WalkDistanceAlt = route1.TotalLength.ToString("0") + " m";
 				OnPropertyChanged(nameof(WalkTimeAlt));
@@ -325,17 +322,9 @@ namespace OfficeLocator
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-#if NETFX_CORE
-            if (!Dispatcher.HasThreadAccess)
-            {
-                var _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => OnPropertyChanged(propertyName));
-            }
-            else
-#endif
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            RunOnUIThreadAction(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));          
         }
 
         /// <summary>
@@ -344,12 +333,7 @@ namespace OfficeLocator
         /// <returns></returns>
         internal static string GetDataFolder()
         {
-            var appDataFolder =
-#if NETFX_CORE
-                Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-#elif __ANDROID__ || __IOS__
-                System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-#endif
+            var appDataFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
             return Path.Combine(appDataFolder, "CampusData");
         }
 
