@@ -247,12 +247,12 @@ namespace OfficeLocator
             if (HasRoute)
             {
                 //Zoom to the route with a bit of a buffer around it
-                RequestViewpoint?.Invoke(this, new Viewpoint(GeometryEngine.Buffer(Overlays[0].Extent, Math.Max(Overlays[0].Extent.Width, Overlays[0].Extent.Height) * .5)));
+                RequestViewpoint?.Invoke(this, new Viewpoint(GeometryEngine.Buffer(Overlays[0].Extent, Math.Max(Overlays[0].Extent.Width, Overlays[0].Extent.Height) * .25)));
             }
             else if (Overlays[1].Graphics[0].Geometry != null && Overlays[1].Graphics[1].Geometry != null)
             {
                 //Zoom to the two geocoded locations
-                RequestViewpoint?.Invoke(this, new Viewpoint(GeometryEngine.Buffer(Overlays[1].Extent, Math.Max(Overlays[1].Extent.Width, Overlays[1].Extent.Height) * .5)));
+                RequestViewpoint?.Invoke(this, new Viewpoint(GeometryEngine.Buffer(Overlays[1].Extent, Math.Max(Overlays[1].Extent.Width, Overlays[1].Extent.Height) * .25)));
             }
             else if (Overlays[1].Graphics[0].Geometry != null)
             {
