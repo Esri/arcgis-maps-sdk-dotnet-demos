@@ -41,39 +41,7 @@ namespace OfficeLocator
 
         private static async Task UnpackData(string zipFile, string folder)
         {
-#if NETFX_CORE
-            using (var zipStream = File.OpenRead(zipFile))
-            {
-                using (var archive = new System.IO.Compression.ZipArchive(zipStream, System.IO.Compression.ZipArchiveMode.Read))
-                {
-                    Action<DirectoryInfo> createDir = null;
-                    createDir = (s) =>
-                    {
-                        System.Diagnostics.Debug.WriteLine(s.FullName);
-                        if (Directory.Exists(s.FullName)) return;
-                        if (!Directory.Exists(s.Parent.FullName))
-                            createDir(s.Parent);
-                        Directory.CreateDirectory(s.FullName);
-                    };
-                    foreach (var entry in archive.Entries)
-                    {
-                        if (entry.FullName.EndsWith("/")) continue;
-                        var fileInfo = new System.IO.FileInfo(Path.Combine(folder, entry.FullName));
-                        System.Diagnostics.Debug.WriteLine("Unzipping " + fileInfo.FullName);
-                        createDir(fileInfo.Directory);
-                        using (var fileStream = File.Create(fileInfo.FullName))
-                        {
-                            using (var entryStream = entry.Open())
-                            {
-                                await entryStream.CopyToAsync(fileStream).ConfigureAwait(false);
-                            }
-                        }
-                    }
-                }
-            }
-#elif __ANDROID__ || __IOS__
             await Task.Run(() => System.IO.Compression.ZipFile.ExtractToDirectory(zipFile, folder));
-#endif
         }
     }
 }

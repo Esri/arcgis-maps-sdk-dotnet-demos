@@ -122,7 +122,7 @@ namespace OfficeLocator.iOS
 				yOffset += controlHeight + spacing;
 
 				// Initialize view-model
-				_mapViewModel = new MapViewModel();
+				_mapViewModel = new MapViewModel((a)=>a());
 				await _mapViewModel.LoadAsync();
 				_mapViewModel.RequestViewpoint += MapViewModel_RequestViewpoint;
 				_mapViewModel.PropertyChanged += MapViewModel_PropertyChanged;

@@ -21,10 +21,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchSdkVersion>9.3</MtouchSdkVersion>
+    <MtouchSdkVersion>
+    </MtouchSdkVersion>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
     <MtouchUseLlvm>False</MtouchUseLlvm>
@@ -142,9 +143,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.Xamarin.iOS">
-      <Version>100.2.1</Version>
+      <Version>100.3.0</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="..\OfficeLocator.Shared\OfficeLocator.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\OfficeLocator.Core\OfficeLocator.Core.csproj">
+      <Project>{60b30232-6edd-4f0e-9a89-9d473f66278d}</Project>
+      <Name>OfficeLocator.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
