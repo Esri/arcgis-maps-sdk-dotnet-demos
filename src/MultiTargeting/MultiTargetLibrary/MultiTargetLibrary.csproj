@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <!-- Frameworks this project should support -->
-    <TargetFrameworks>xamarinios10;uap10.0;monoandroid60;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;xamarinios10;uap10.0.16299;monoandroid60;net461</TargetFrameworks>
     <Title>ArcGIS Runtime Multi Targeting project</Title>
     <Description>Demonstrates how to create a single package that targes multiple platforms</Description>
     <PackageTags>Esri ArcGIS Runtime GIS maps map mapping location spatial 3D iOS Android UWP Xamarin.Forms Xamarin Mobile toolkit</PackageTags>
@@ -13,19 +13,19 @@
   </PropertyGroup>
 
   <!--Framework specific properties-->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0.16299'">
     <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
   
   <!-- Framework specific items -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.7" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0.16299'">
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esri.ArcGISRuntime" Version="100.2.1">
+    <PackageReference Include="Esri.ArcGISRuntime" Version="100.3.0">
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
   </ItemGroup>
@@ -33,7 +33,7 @@
   <!-- Items for app frameworks -->
   <ItemGroup>
     <!-- This package resolves some multi targeting issues -->
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.1" PrivateAssets="all" />
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4" PrivateAssets="all" />
   </ItemGroup>
 
   
