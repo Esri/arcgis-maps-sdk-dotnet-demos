@@ -74,7 +74,7 @@ namespace OfflineWorkflowsSample
                 // it's id. ArcGISPortal is required to define which portal
                 // is used. Remember to hook authentication if needed
                 var webmapItem = await PortalItem.CreateAsync(
-                    _portal, "7d30900e1e9848159e272284e07e3cab");
+                    _portal, "acc027394bc84c2fb04d1ed317aac674");
 
                 // Construct map from the item. Remember to load map if you 
                 // need to access map before setting it to the MapView

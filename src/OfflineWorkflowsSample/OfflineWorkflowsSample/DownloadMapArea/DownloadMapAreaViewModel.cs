@@ -252,7 +252,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
                 // Load map from portal
                 var webmapItem = await PortalItem.CreateAsync(
-                    _portal, "7d30900e1e9848159e272284e07e3cab");
+                    _portal, "acc027394bc84c2fb04d1ed317aac674");
                 Map = new Map(webmapItem);
                 await Map.LoadAsync();
 

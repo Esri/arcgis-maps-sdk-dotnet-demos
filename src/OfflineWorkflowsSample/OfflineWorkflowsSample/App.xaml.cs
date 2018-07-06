@@ -52,8 +52,9 @@ namespace OfflineWorkflowsSample
             {
                 // Initialize the ArcGIS Runtime before any components are created.
                 ArcGISRuntimeEnvironment.SetLicense(LicenseKey, ExtensionLicenseKeys);
-                ArcGISRuntimeEnvironment.Initialize();
+                
             }
+            ArcGISRuntimeEnvironment.Initialize();
 
             UnhandledException += App_UnhandledException;
 

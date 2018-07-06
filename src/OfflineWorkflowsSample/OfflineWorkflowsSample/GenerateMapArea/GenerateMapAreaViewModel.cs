@@ -207,7 +207,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 IsBusyText = "Loading map...";
 
                 // Create webmap and assign it to the map
-                var webmapItem = await PortalItem.CreateAsync(_portal, "7d30900e1e9848159e272284e07e3cab");
+                var webmapItem = await PortalItem.CreateAsync(_portal, "acc027394bc84c2fb04d1ed317aac674");
                 Map = new Map(webmapItem);
                 await Map.LoadAsync();
 

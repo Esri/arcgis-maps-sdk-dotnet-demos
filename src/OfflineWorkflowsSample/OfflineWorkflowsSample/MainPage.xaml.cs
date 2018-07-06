@@ -27,11 +27,11 @@ namespace OfflineWorkflowsSample
 	public sealed partial class MainPage : Page, IDialogService
 	{
 		public MainPage()
-		{
-			this.InitializeComponent();
-            DataContext = ViewModel;
+		{            
+            this.InitializeComponent();
             // Using view service approach with the dialog service to abstract messages from ViewModels
             ViewModel = new MainViewModel(this as IDialogService);
+            DataContext = ViewModel;
         }
 
         /// <summary>
