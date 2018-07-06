@@ -1,6 +1,7 @@
 ﻿using Esri.ArcGISRuntime;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,7 +26,7 @@ namespace OfflineWorkflowsSample
     {
         #region license information
 
-        private const string LicenseKey = "runtimeadvanced,1000,rud549870138,16-oct-2018,8SF4LNBHPDK9YYEHJ013";
+        private const string LicenseKey = "ADD_LICENSE_KEY";
         private List<string> ExtensionLicenseKeys = new List<string>
         {
         };
@@ -41,9 +42,18 @@ namespace OfflineWorkflowsSample
             // Deployed applications must be licensed at the Lite level or greater. 
             // See https://developers.arcgis.com/licensing for further details.
 
-            // Initialize the ArcGIS Runtime before any components are created.
-            ArcGISRuntimeEnvironment.SetLicense(LicenseKey, ExtensionLicenseKeys);
-            ArcGISRuntimeEnvironment.Initialize();
+            if (LicenseKey == "ADD_LICENSE_KEY")
+            {
+                Debug.WriteLine("");
+                Debug.WriteLine("Please add the license on App.cs file");
+                Debug.WriteLine("");
+            }
+            else
+            {
+                // Initialize the ArcGIS Runtime before any components are created.
+                ArcGISRuntimeEnvironment.SetLicense(LicenseKey, ExtensionLicenseKeys);
+                ArcGISRuntimeEnvironment.Initialize();
+            }
 
             UnhandledException += App_UnhandledException;
 

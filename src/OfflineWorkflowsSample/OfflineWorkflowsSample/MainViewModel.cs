@@ -22,10 +22,12 @@ namespace OfflineWorkflowsSample
         private const string Password = "MyPassword";
         #endregion //Setup
 
+        private IDialogService _dialogService = null;
         private ArcGISPortal _portal = null;
 
-        public MainViewModel()
+        public MainViewModel(IDialogService dialogService)
         {
+            _dialogService = dialogService;
             AuthenticationManager.Current.ChallengeHandler = new ChallengeHandler(CreateKnownCredentials);
             Initialize();
         }
@@ -55,6 +57,13 @@ namespace OfflineWorkflowsSample
         {
             try
             {
+                // If username and password aren't set, show message so that we remember
+                if (UserName == "MyUserName" || Password == "MyPassword")
+                {
+                    await _dialogService.ShowMessageAsync("Please add username and password in MainViewModel");
+                    return;
+                }
+
                 // Authenticate direclty against defined portal and fetch user information
                 UserProfile = await AuthenticateAndLoadUserProfileAsync();
 
@@ -74,8 +83,9 @@ namespace OfflineWorkflowsSample
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
                 // handle nicely, pretty please!
+                Debug.WriteLine(ex);
+                await _dialogService.ShowMessageAsync(ex.Message);
             }
         }
 

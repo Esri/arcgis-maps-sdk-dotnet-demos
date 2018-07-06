@@ -103,6 +103,7 @@
       <DependentUpon>GenerateMapAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="GenerateMapArea\GenerateMapAreaViewModel.cs" />
+    <Compile Include="Infrastructure\IDialogService.cs" />
     <Compile Include="Infrastructure\BaseViewModel.cs" />
     <Compile Include="Infrastructure\ColorHelper.cs" />
     <Compile Include="Infrastructure\Converter\BoolToVisibilityConverter.cs" />
