@@ -1,6 +1,6 @@
 Demo: Esri Campus Routing
 =======================
-Required version: ArcGIS Runtime SDK for .NET 100.3.0
+Required version: ArcGIS Runtime SDK for .NET 100.4.0
 
 This cross-platform sample demonstrates offline* indoor geocoding and routing for a campus.
 
