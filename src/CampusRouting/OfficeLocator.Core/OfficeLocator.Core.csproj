@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esri.ArcGISRuntime" Version="100.3.0">
+    <PackageReference Include="Esri.ArcGISRuntime" Version="100.4.0">
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
   </ItemGroup>
