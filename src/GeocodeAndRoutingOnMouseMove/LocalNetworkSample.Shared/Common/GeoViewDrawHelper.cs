@@ -1,16 +1,12 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Controls;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-#if NETFX_CORE
-using Windows.UI;
-#else
-using System.Windows.Media;
-#endif
+using System.Drawing;
 
 namespace LocalNetworkSample.Common
 {
@@ -21,7 +17,7 @@ namespace LocalNetworkSample.Common
     {
         #region Default draw symbols
         //Symbol used by DrawPointAsync while moving the mouse
-        private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = Colors.Blue, Size = 12, Style = SimpleMarkerSymbolStyle.Circle };
+        private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = Color.Blue, Size = 12, Style = SimpleMarkerSymbolStyle.Circle };
 
         //Symbol used by DrawPolylineAsync	
         private static LineSymbol DefaultLineSymbol = new SimpleLineSymbol()
@@ -33,7 +29,7 @@ namespace LocalNetworkSample.Common
         //Symbol used by DrawPolygonAsync
         private static FillSymbol DefaultFillSymbol = new SimpleFillSymbol()
         {
-            Outline = new SimpleLineSymbol() { Width = 2, Color = Colors.Black },
+            Outline = new SimpleLineSymbol() { Width = 2, Color = Color.Black },
             Color = Color.FromArgb(100, 0, 0, 255)
         };
 

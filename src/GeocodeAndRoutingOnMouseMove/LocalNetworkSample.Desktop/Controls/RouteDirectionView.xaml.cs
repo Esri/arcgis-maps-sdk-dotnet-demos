@@ -1,19 +1,7 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LocalNetworkSample.Controls
 {
@@ -52,14 +40,14 @@ namespace LocalNetworkSample.Controls
             }
             LayoutRoot.Visibility = Visibility.Visible;
             LayoutRoot.DataContext = direction;
-            var d = LinearUnits.Miles.ConvertFromMeters(direction.Length);
+            var d = LinearUnits.Miles.ConvertTo(LinearUnits.Meters, direction.Length);
             if (d == 0)
                 distance.Text = "";
             else if (d >= .25)
                 distance.Text = d.ToString("0.0 mi");
             else
             {
-                d = LinearUnits.Yards.ConvertFromMeters(direction.Length);
+                d = LinearUnits.Yards.ConvertTo(LinearUnits.Meters, direction.Length);
                 distance.Text = d.ToString("0 yd");
             }
             if (direction.Duration.TotalHours >= 1)

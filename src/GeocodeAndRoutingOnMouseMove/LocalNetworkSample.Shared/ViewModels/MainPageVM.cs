@@ -1,10 +1,10 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Tasks.Geocoding;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Controls;
 using LocalNetworkSample.Common;
 using System;
 using System.Collections.Generic;
@@ -154,7 +154,7 @@ namespace LocalNetworkSample
                 if (route == null)
                     route = GetRouter();
                 var l = route.IsCompleted ? route.Result : await route;
-                var param = await l.GenerateDefaultParametersAsync();
+                var param = await l.CreateDefaultParametersAsync();
 
                 param.SetStops(new Stop[] { new Stop(from), new Stop(location) });
                 if (SelectedCostAttributeName != null) //Set what to optimize for
@@ -207,7 +207,7 @@ namespace LocalNetworkSample
                 var l = route.IsCompleted ? route.Result : await route;
 
                 m_RouteTaskInfo = l.RouteTaskInfo;
-                var param = await l.GenerateDefaultParametersAsync();
+                var param = await l.CreateDefaultParametersAsync();
                 OnPropertyChanged("RouteTaskInfo");
                 SelectedCostAttributeName = m_RouteTaskInfo.CostAttributes
                     .Where(ca => ca.Key == param.TravelMode.ImpedanceAttributeName)

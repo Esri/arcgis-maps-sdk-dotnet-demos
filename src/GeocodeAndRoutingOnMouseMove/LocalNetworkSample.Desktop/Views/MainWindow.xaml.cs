@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Esri.ArcGISRuntime.UI.Controls;
+using System.Windows;
 using System.Windows.Input;
 
 namespace LocalNetworkSample.Desktop
@@ -20,7 +21,7 @@ namespace LocalNetworkSample.Desktop
 
         private void mapview_PointerMoved(object sender, MouseEventArgs e)
         {
-            var mapview = (Esri.ArcGISRuntime.UI.MapView)sender;
+            var mapview = (MapView)sender;
             var vm = (MainPageVM)mapview.DataContext;
             vm.UpdateMouseLocation(mapview.ScreenToLocation(e.GetPosition(mapview)));
         }
