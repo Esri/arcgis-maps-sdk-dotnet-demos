@@ -28,18 +28,11 @@
           Grid.Row="1" Grid.RowSpan="2" />-->
 
         <StackLayout x:Name="loadingStatus" VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="1" Grid.RowSpan="2" >
-            <Label Text="{Binding LoadStatus, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="18" >
-                <Label.TextColor>
-                    <OnPlatform x:TypeArguments="Color" Android="White" />
-                </Label.TextColor>
-            </Label>
+            <Label Text="{Binding LoadStatus, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="18" />
             <ActivityIndicator IsRunning="True" />
         </StackLayout>
 
-        <Grid x:Name="Header" SizeChanged="OnHeaderSizeChanged">
-            <Grid.BackgroundColor>
-                <OnPlatform x:TypeArguments="Color" Default="#AAFFFFFF" Android="#AA333333" />
-            </Grid.BackgroundColor>
+        <Grid x:Name="Header" SizeChanged="OnHeaderSizeChanged" BackgroundColor="#AAFFFFFF">
             <Grid Padding="10,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -61,7 +54,7 @@
                                       IsEnabled="{Binding VM.IsLoaded, Mode=OneWay}"
                                       QuerySubmitted="search_QuerySubmitted"
             					      TextChanged="search_TextChanged" 
-            					      SuggestionChosen="search_SuggestionChosen" />
+                                      SuggestionChosen="search_SuggestionChosen" />
 
                 <dm:AutoSuggestBox x:Name="searchFrom" VerticalOptions="Start" Grid.Column="1" Grid.Row="2" PlaceholderText="From"
                                       IsEnabled="{Binding VM.IsLoaded, Mode=OneWay}"
@@ -69,15 +62,11 @@
             					      TextChanged="search_TextChanged" 
             					      SuggestionChosen="search_SuggestionChosen" />
 
-
             </Grid>
             <BoxView HeightRequest="1" BackgroundColor="Black" VerticalOptions="End" HorizontalOptions="Fill" />
         </Grid>
 
-        <Frame Grid.Row="2" x:Name="RouteDetails" SizeChanged="OnHeaderSizeChanged" Padding="0">
-            <Frame.BackgroundColor>
-                <OnPlatform x:TypeArguments="Color" Default="#AAFFFFFF" Android="#AA333333" />
-            </Frame.BackgroundColor>
+        <Frame Grid.Row="2" x:Name="RouteDetails" SizeChanged="OnHeaderSizeChanged" Padding="0" BackgroundColor="#AAFFFFFF">
             <Grid>                
                 <Grid Padding="10">
                     <Grid.ColumnDefinitions>

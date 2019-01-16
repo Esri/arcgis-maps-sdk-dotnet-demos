@@ -18,7 +18,8 @@ namespace OfficeLocator.Forms
         private void OnHeaderSizeChanged(object sender, EventArgs e)
         {
             //Update insets so the areas behind the header and footer are taken into account when zooming to the route
-            CampusView.ViewInsets = new Thickness(0, Header.Height, 0, RouteDetails.Height);
+            if(!loadingStatus.IsVisible)
+                CampusView.ViewInsets = new Thickness(0, Header.Height, 0, Math.Max(0, RouteDetails.Height));
         }
 
         public MapViewModel VM { get; } = new MapViewModel(Xamarin.Forms.Device.BeginInvokeOnMainThread);
@@ -30,6 +31,7 @@ namespace OfficeLocator.Forms
             VM.RequestViewpoint += VM_RequestViewpoint;
             await VM.LoadAsync();
             loadingStatus.IsVisible = false;
+            OnHeaderSizeChanged(null, null);
         }
 
         private void VM_RequestViewpoint(object sender, Esri.ArcGISRuntime.Mapping.Viewpoint viewpoint)
