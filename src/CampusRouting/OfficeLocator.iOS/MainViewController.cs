@@ -29,8 +29,9 @@ namespace OfficeLocator.iOS
 		UIView _busyView;
 		UIActivityIndicatorView _busyIndicator;
 		UILabel _busyLabel;
+        UILabel _statusLabel;
 
-		public MainViewController() : base()
+        public MainViewController() : base()
 		{
 		}
 
@@ -121,27 +122,23 @@ namespace OfficeLocator.iOS
 
 				yOffset += controlHeight + spacing;
 
-				// Initialize view-model
-				_mapViewModel = new MapViewModel((a)=>a());
-				await _mapViewModel.LoadAsync();
-				_mapViewModel.RequestViewpoint += MapViewModel_RequestViewpoint;
-				_mapViewModel.PropertyChanged += MapViewModel_PropertyChanged;
-
-				// Initialize map view
-				_mapView = new MapView()
+                _mapViewModel = new MapViewModel((a) => BeginInvokeOnMainThread(a));
+                _mapViewModel.RequestViewpoint += MapViewModel_RequestViewpoint;
+                _mapViewModel.PropertyChanged += MapViewModel_PropertyChanged;
+                // Initialize map view
+                _mapView = new MapView()
 				{
-					Map = _mapViewModel.Map,
 					GraphicsOverlays = _mapViewModel.Overlays,
 					Frame = new CGRect(0, yOffset, viewWidth, viewHeight - yOffset)
 				};
 				_mapView.DrawStatusChanged += MapView_DrawStatusChanged;
 				_mapView.NavigationCompleted += MapView_NavigationCompleted;
-				View.AddSubview(_mapView);
+                View.AddSubview(_mapView);
 
-				// --- Auto-complete drop-downs ---
+                // --- Auto-complete drop-downs ---
 
-				// Add table-view for auto-complete entries for "from" field
-				_fromAutoCompleteTableView = new UITableView()
+                // Add table-view for auto-complete entries for "from" field
+                _fromAutoCompleteTableView = new UITableView()
 				{
 					Frame = new CGRect(textFieldOffset, _fromTextField.Frame.Bottom, textFieldWidth, controlHeight),
 					Hidden = true
@@ -245,8 +242,23 @@ namespace OfficeLocator.iOS
 				_busyView.AddSubview(_busyLabel);
 
 				View.AddSubview(_busyView);
-			}
-			catch (Exception ex)
+
+                _statusLabel = new UILabel()
+                {
+                    TextColor = cfBlueUIColor,
+                    Font = UIFont.BoldSystemFontOfSize(14),
+                    Hidden = true,
+                    TextAlignment = UITextAlignment.Center,
+                    Frame = new CGRect(0, 0, viewWidth, viewHeight)
+                };
+                View.AddSubview(_statusLabel);
+
+                // Initialize view-model
+                await _mapViewModel.LoadAsync();
+                _mapView.LocationDisplay.IsEnabled = true;
+
+            }
+            catch (Exception ex)
 			{
 				Debug.WriteLine($"{ex.Message}\n{ex.StackTrace}");
 			}
@@ -266,27 +278,35 @@ namespace OfficeLocator.iOS
 
 		private void MapViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(MapViewModel.HasRoute))
-			{
-				if (_mapViewModel.HasRoute)
-				{
-					_walkTime.Text = _mapViewModel.WalkTime;
-					_walkTimeAlt.Text = _mapViewModel.WalkTimeAlt;
-					_routeDetailsView.Hidden = false;
-				}
-				else
-				{
-					_routeDetailsView.Hidden = true;
-				}
-			}
-			else if (e.PropertyName == nameof(MapViewModel.IsBusy))
-			{
-				if (_mapViewModel.IsBusy)
-					_busyView.Hidden = false;
-			}
+            if (e.PropertyName == nameof(MapViewModel.HasRoute))
+            {
+                if (_mapViewModel.HasRoute)
+                {
+                    _walkTime.Text = _mapViewModel.WalkTime;
+                    _walkTimeAlt.Text = _mapViewModel.WalkTimeAlt;
+                    _routeDetailsView.Hidden = false;
+                }
+                else
+                {
+                    _routeDetailsView.Hidden = true;
+                }
+            }
+            else if (e.PropertyName == nameof(MapViewModel.IsBusy))
+            {
+                _busyView.Hidden = !_mapViewModel.IsBusy;
+            }
+            else if (e.PropertyName == nameof(MapViewModel.LoadStatus))
+            {
+                _statusLabel.Hidden = string.IsNullOrEmpty(_mapViewModel.LoadStatus);
+                _statusLabel.Text = _mapViewModel.LoadStatus;
+            }
+            else if (e.PropertyName == nameof(MapViewModel.Map))
+            {
+                _mapView.Map = _mapViewModel.Map;
+            }
 		}
 
-		private void MapViewModel_RequestViewpoint(object sender, Viewpoint viewpoint)
+        private void MapViewModel_RequestViewpoint(object sender, Viewpoint viewpoint)
 		{
 			var envelope = viewpoint.TargetGeometry.Extent;
 			if (envelope.Height > 0)

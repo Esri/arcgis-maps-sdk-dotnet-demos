@@ -32,6 +32,7 @@ namespace OfficeLocator.Forms
             await VM.LoadAsync();
             loadingStatus.IsVisible = false;
             OnHeaderSizeChanged(null, null);
+            CampusView.LocationDisplay.IsEnabled = true;
         }
 
         private void VM_RequestViewpoint(object sender, Esri.ArcGISRuntime.Mapping.Viewpoint viewpoint)

@@ -48,5 +48,7 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>This app needs access location when open.</string>
 </dict>
 </plist>
