@@ -18,6 +18,7 @@
     <PackageReference Include="Esri.ArcGISRuntime" Version="100.4.0">
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
   </ItemGroup>
 
 </Project>

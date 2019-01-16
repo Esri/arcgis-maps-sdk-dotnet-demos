@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Settings;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 #if NETFX_CORE
@@ -21,19 +22,37 @@ namespace OfficeLocator
         {
             if (System.IO.Directory.Exists(path))
                 return;
-            var portal = await Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync(new Uri("https://www.arcgis.com/sharing/rest")).ConfigureAwait(false);
-            var item = await Esri.ArcGISRuntime.Portal.PortalItem.CreateAsync(portal, itemId).ConfigureAwait(false);
-            
-            progress?.Invoke("Initiating download...");
-            var tempFile = Path.GetTempFileName();
-            progress?.Invoke("Downloading data...");
-            using (var s = await item.GetDataAsync().ConfigureAwait(false))
+            DownloadManager.FileDownloadTask task = null;
+            string tempFile = null;
+            if (AppSettings.Contains("DataDownloadTask"))
             {
-                using (var f = File.Create(tempFile))
+                var previousTask = DownloadManager.FileDownloadTask.FromJson(AppSettings.GetValueOrDefault("DataDownloadTask", string.Empty));
+                if (previousTask.IsResumable)
                 {
-                    await s.CopyToAsync(f).ConfigureAwait(false);
+                    task = previousTask;
+                    tempFile = task.Filename;
                 }
             }
+            if(task == null)
+            {
+                progress?.Invoke("Fetching offline data info...");
+                var portal = await Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync(new Uri("https://www.arcgis.com/sharing/rest")).ConfigureAwait(false);
+                var item = await Esri.ArcGISRuntime.Portal.PortalItem.CreateAsync(portal, itemId).ConfigureAwait(false);
+
+                progress?.Invoke("Initiating download...");
+                tempFile = Path.GetTempFileName();
+                task = await DownloadManager.FileDownloadTask.StartDownload(tempFile, item);
+                string downloadTask = task.ToJson();
+                AppSettings.AddOrUpdateValue("DataDownloadTask", task.ToJson());
+            }
+            progress?.Invoke("Downloading data...");
+
+            task.Progress += (s, e) =>
+            {
+                progress?.Invoke("Downloading data " + (e.HasPercentage ? e.Percentage.ToString()+"%" : e.TotalBytes/1024 + " kb..."));
+            };
+            await task.DownloadAsync();
+            AppSettings.Remove("DataDownloadTask");
             progress?.Invoke("Unpacking data...");
             await UnpackData(tempFile, path);
             progress?.Invoke("Complete");
@@ -43,5 +62,8 @@ namespace OfficeLocator
         {
             await Task.Run(() => System.IO.Compression.ZipFile.ExtractToDirectory(zipFile, folder));
         }
+
+        private static Plugin.Settings.Abstractions.ISettings AppSettings => CrossSettings.Current;
+
     }
 }
