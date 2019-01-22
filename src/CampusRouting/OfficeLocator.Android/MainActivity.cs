@@ -55,8 +55,8 @@ namespace OfficeLocator
             // Try going to Resources\layout\Main.axml and change the MapView to a SceneView to enable a 3D view of the campus
             MapView mapView = campusView as MapView;
             SceneView sceneView = campusView as SceneView;
-
-            VM = new MapViewModel();
+            
+            VM = new MapViewModel(RunOnUiThread);
 			VM.RequestViewpoint += VM_RequestViewpoint;
 			VM.RouteUpdated += VM_RouteUpdated;
             VM.PropertyChanged += VM_PropertyChanged;
@@ -72,6 +72,7 @@ namespace OfficeLocator
                     mapView.BackgroundGrid.Color = System.Drawing.Color.FromArgb(255, 255, 255);
                     mapView.BackgroundGrid.GridLineWidth = 0;
                     mapView.Map = VM.Map;
+                    mapView.LocationDisplay.IsEnabled = true;
                 }
                 else if (sceneView != null)
                 {

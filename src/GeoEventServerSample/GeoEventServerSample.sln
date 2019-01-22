@@ -184,7 +184,8 @@ Global
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.AppStore|x64.ActiveCfg = AppStore|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.AppStore|x86.ActiveCfg = AppStore|iPhoneSimulator
-		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|Any CPU.ActiveCfg = Debug|iPhone
+		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|ARM.ActiveCfg = Debug|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|iPhone.Build.0 = Debug|iPhone
@@ -192,6 +193,7 @@ Global
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|x64.ActiveCfg = Debug|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|x86.ActiveCfg = Debug|iPhoneSimulator
+		{9A08424B-A9B5-411B-988C-026D869B00F4}.Debug|x86.Build.0 = Debug|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Release|Any CPU.ActiveCfg = Release|iPhone
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Release|ARM.ActiveCfg = Release|iPhoneSimulator
 		{9A08424B-A9B5-411B-988C-026D869B00F4}.Release|iPhone.ActiveCfg = Release|iPhone
@@ -237,6 +239,8 @@ Global
 		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.AppStore|x86.Build.0 = Release|x86
 		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.AppStore|x86.Deploy.0 = Release|x86
 		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.Debug|Any CPU.Build.0 = Debug|x86
+		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.Debug|ARM.ActiveCfg = Debug|ARM
 		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.Debug|ARM.Build.0 = Debug|ARM
 		{8EF20EA3-50D8-4ED0-A219-E644600B44D8}.Debug|ARM.Deploy.0 = Debug|ARM

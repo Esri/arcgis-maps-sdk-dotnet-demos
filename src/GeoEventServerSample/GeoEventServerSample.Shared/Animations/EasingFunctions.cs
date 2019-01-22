@@ -31,21 +31,17 @@ namespace GeoEventServerSample.Animations
 
         public double Ease(double normalizedTime)
         {
-            if (EasingMode == EasingMode.EaseOut)
+            switch (EasingMode)
             {
+                case EasingMode.EaseOut:
                 return 1 - EasingImplementation(1 - normalizedTime);
-            }
-            else if (EasingMode == EasingMode.EaseInOut)
-            {
-                if (normalizedTime < .5)
-                    return EasingImplementation(normalizedTime * 2.0) * 0.5;
-                else
-                    return (1.0 - EasingImplementation((1.0 - normalizedTime) * 2.0)) * 0.5 + 0.5;
-            }
-            else // if (EasingMode == EasingMode.EaseIn)
-            {
+                case EasingMode.EaseIn:
                 return EasingImplementation(normalizedTime);
+                case EasingMode.EaseInOut:
+                default:
+                    return (normalizedTime < 0.5) ? EasingImplementation(normalizedTime * 2) * 0.5 : (1 - EasingImplementation((1 - normalizedTime) * 2)) * 0.5 + 0.5;
             }
+
         }
 
         protected abstract double EasingImplementation(double normalizedTime);

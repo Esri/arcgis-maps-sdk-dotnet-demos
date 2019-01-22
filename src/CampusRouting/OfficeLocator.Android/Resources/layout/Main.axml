@@ -87,7 +87,7 @@
         android:layout_width="fill_parent"
         android:columnCount="1"
         android:rowCount="1">
-      <Esri.ArcGISRuntime.UI.MapView
+      <Esri.ArcGISRuntime.UI.Controls.MapView
           android:layout_height="fill_parent"
           android:layout_width="fill_parent"
           android:layout_alignParentLeft="true"

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MarkerA.png" />
+    <None Remove="MarkerB.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="MarkerA.png" />
+    <EmbeddedResource Include="MarkerB.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Esri.ArcGISRuntime" Version="100.4.0">
+      <PrivateAssets>none</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+  </ItemGroup>
+
+</Project>
