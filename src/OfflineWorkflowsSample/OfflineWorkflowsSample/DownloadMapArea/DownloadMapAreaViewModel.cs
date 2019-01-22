@@ -9,10 +9,10 @@ using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using Windows.UI;
 
 namespace OfflineWorkflowsSample.DownloadMapArea
 {
@@ -32,8 +32,8 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 {
                     Symbol = new SimpleFillSymbol(
                       SimpleFillSymbolStyle.Solid,
-                      Infrastructure.ColorHelper.GetSolidColorBrush("#4C080808").Color,
-                      new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Colors.Yellow, 1))
+                      Color.FromArgb(0x4C, 0x08, 0x08, 0x08),
+                      new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.Yellow, 1))
                 }
             };
 
@@ -219,7 +219,6 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
         private async void UpdateMap()
         {
-            _areasOverlay.SelectionColor = Colors.Red;
             _areasOverlay.ClearSelection();
             var selectedGraphic = _areasOverlay.Graphics.FirstOrDefault(x => x.Attributes["Name"].ToString() == SelectedMapArea.Title);
             if (selectedGraphic != null)
