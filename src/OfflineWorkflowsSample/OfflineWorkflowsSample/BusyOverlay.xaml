@@ -1,0 +1,24 @@
+﻿<UserControl
+    x:Class="OfflineWorkflowSample.BusyOverlay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="using:OfflineWorkflowsSample.Infrastructure.Converter">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid Background="#66080808"
+          Visibility="{Binding IsBusy, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1">
+            <TextBlock Foreground="White" FontSize="30" HorizontalAlignment="Center">
+                <Run Text="{Binding IsBusyText, Mode=OneWay}" />
+                <Run Text="{Binding ProgressPercentage, Mode=OneWay}" />
+            </TextBlock>
+            <ProgressBar Margin="10" Height="10" Foreground="White" Width="200" IsIndeterminate="True" />
+        </StackPanel>
+    </Grid>
+</UserControl>

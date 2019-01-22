@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="OfflineWorkflowSample.MapWithTools"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Esri.ArcGISRuntime.UI.Controls"
+    xmlns:viewServices="using:OfflineWorkflowsSample.Infrastructure.ViewServices"
+    xmlns:controls1="using:Esri.ArcGISRuntime.Toolkit.UI.Controls">
+
+    <Grid>
+        <controls:MapView x:Name="MyMapView" Map="{Binding Map}"
+                      viewServices:MapViewService.ViewService="{Binding MapViewService}" />
+        <controls1:Compass x:Name="compass" Heading="{x:Bind MyMapView.MapRotation, Mode=OneWay}" Height="40"
+                             Width="40"
+                             Margin="20,30" Tapped="Compass_Tapped" AutoHide="False" VerticalAlignment="Bottom"
+                             HorizontalAlignment="Right" />
+        <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <AppBarButton Icon="ZoomIn" Label="Zoom in" IsCompact="True" Height="48"
+                          Command="{Binding ZoomInCommand}" />
+            <AppBarButton Icon="Home" Label="Full extent" Grid.Row="1" IsCompact="True" Height="48"
+                          Command="{Binding ResetViewPointCommand}" />
+            <AppBarButton Icon="ZoomOut" Label="Zoom out" Grid.Row="2" IsCompact="True" Height="48"
+                          Command="{Binding ZoomOutCommand}" />
+        </Grid>
+        <controls1:ScaleLine MapScale="{x:Bind MyMapView.MapScale, Mode=OneWay}" Grid.Row="1"
+                               HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />
+    </Grid>
+</UserControl>

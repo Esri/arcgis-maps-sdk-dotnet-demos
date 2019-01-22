@@ -15,11 +15,11 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace OfflineWorkflowsSample.DownloadMapArea
+namespace OfflineWorkflowSample
 {
-    public sealed partial class DownloadMapAreaView : UserControl
+    public sealed partial class CustomAppTitleBar : UserControl
     {
-        public DownloadMapAreaView()
+        public CustomAppTitleBar()
         {
             this.InitializeComponent();
         }

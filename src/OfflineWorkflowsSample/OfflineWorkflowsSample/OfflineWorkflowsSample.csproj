@@ -95,6 +95,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BusyOverlay.xaml.cs">
+      <DependentUpon>BusyOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomAppTitleBar.xaml.cs">
+      <DependentUpon>CustomAppTitleBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DownloadMapArea\DownloadMapAreaView.xaml.cs">
       <DependentUpon>DownloadMapAreaView.xaml</DependentUpon>
     </Compile>
@@ -113,10 +119,19 @@
     <Compile Include="Infrastructure\ViewService\MapViewService.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventHelper.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventListener.cs" />
+    <Compile Include="LegendView.xaml.cs">
+      <DependentUpon>LegendView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="MapWithTools.xaml.cs">
+      <DependentUpon>MapWithTools.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\MapAreaModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -186,6 +201,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="BusyOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomAppTitleBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DownloadMapArea\DownloadMapAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -194,9 +217,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LegendView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MapWithTools.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

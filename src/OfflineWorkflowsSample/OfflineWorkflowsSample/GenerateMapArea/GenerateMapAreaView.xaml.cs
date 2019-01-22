@@ -9,11 +9,5 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         {
             InitializeComponent();
         }
-
-        private async void Compass_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            // When tapping the compass, reset the rotation
-            await MyMapView.SetViewpointRotationAsync(0);
-        }
     }
 }

@@ -1,54 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Esri.ArcGISRuntime.Data;
-using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.UI;
-using Esri.ArcGISRuntime.UI.Controls;
-using Windows.UI.Popups;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace OfflineWorkflowsSample
 {
-	/// <summary>
-	/// A map page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class MainPage : Page, IDialogService
+    /// <summary>
+    /// A map page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class MainPage : Page, IDialogService
 	{
 		public MainPage()
 		{            
             this.InitializeComponent();
-            // Using view service approach with the dialog service to abstract messages from ViewModels
-            ViewModel = new MainViewModel(this as IDialogService);
-            DataContext = ViewModel;
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            var vm = (MainViewModel)e.Parameter;
+            await vm.Initialize();
+
+            ViewModel = vm;
+            this.DataContext = ViewModel;
         }
 
         /// <summary>
         /// Gets the view-model that provides mapping capabilities to the view
         /// </summary>
-        public MainViewModel ViewModel { get; } 
-
-        private async void Compass_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            // When tapping the compass, reset the rotation
-            await MyMapView.SetViewpointRotationAsync(0);
-            await ShowMessageAsync("test");
-        }
+        private MainViewModel ViewModel { get; set; }
 
         public async Task ShowMessageAsync(string message)
         {
-
             var messageDialog = new MessageDialog(message);
             await messageDialog.ShowAsync();
         }

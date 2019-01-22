@@ -17,9 +17,9 @@ namespace OfflineWorkflowsSample
     public class MainViewModel : BaseViewModel
     {
         #region Setup
-        private const string PortalUrl = "https://www.arcgis.com/sharing/rest";
-        private const string UserName = "MyUserName";
-        private const string Password = "MyPassword";
+        public string PortalUrl { get; set; }= "https://www.arcgis.com/sharing/rest";
+        public string UserName { get; set; }= "MyUserName";
+        public string Password { get; set; } = "";
         #endregion //Setup
 
         private IDialogService _dialogService = null;
@@ -29,7 +29,6 @@ namespace OfflineWorkflowsSample
         {
             _dialogService = dialogService;
             AuthenticationManager.Current.ChallengeHandler = new ChallengeHandler(CreateKnownCredentials);
-            Initialize();
         }
 
         private UserProfileModel _userProfile;
@@ -53,20 +52,23 @@ namespace OfflineWorkflowsSample
             set { SetProperty(ref _downloadMapAreaViewModel, value); }
         }
 
-        private async void Initialize()
+        public async Task ConfigurePortal()
+        {
+            // If username and password aren't set, show message so that we remember
+            if (UserName == "MyUserName")
+            {
+                await _dialogService.ShowMessageAsync("Please add username and password in MainViewModel");
+                return;
+            }
+
+            // Authenticate directly against defined portal and fetch user information
+            UserProfile = await AuthenticateAndLoadUserProfileAsync();
+        }
+        
+        public async Task Initialize()
         {
             try
             {
-                // If username and password aren't set, show message so that we remember
-                if (UserName == "MyUserName" || Password == "MyPassword")
-                {
-                    await _dialogService.ShowMessageAsync("Please add username and password in MainViewModel");
-                    return;
-                }
-
-                // Authenticate direclty against defined portal and fetch user information
-                UserProfile = await AuthenticateAndLoadUserProfileAsync();
-
                 GenerateMapAreaViewModel = new GenerateMapAreaViewModel(_portal);
                 DownloadMapAreaViewModel = new DownloadMapAreaViewModel(_portal);
 
