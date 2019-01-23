@@ -14,6 +14,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using OfflineWorkflowsSample.Infrastructure.ViewServices;
 
 namespace OfflineWorkflowsSample.DownloadMapArea
 {
@@ -50,6 +51,8 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             _syncMapAreaCommand = new DelegateCommand<string>(SyncMapArea, CanSyncMapArea);
             Initialize();
         }
+
+        public override MapViewService MapViewService => _mainVM.MapViewService;
 
         private async void DownloadMapArea()
         {

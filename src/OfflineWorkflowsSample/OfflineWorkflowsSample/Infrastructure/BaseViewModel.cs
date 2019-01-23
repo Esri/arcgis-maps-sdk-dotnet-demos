@@ -65,7 +65,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         /// <summary>
         /// Gets the view service that provides access to the MapView
         /// </summary>
-        public MapViewService MapViewService
+        public virtual MapViewService MapViewService
         {
             get
             {

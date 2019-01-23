@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using OfflineWorkflowsSample.Infrastructure.ViewServices;
 
 namespace OfflineWorkflowsSample.GenerateMapArea
 {
@@ -34,6 +35,8 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             _navigateToMapAreaCommand = new DelegateCommand(NavigateToMapArea);
             Initialize();
         }
+
+        public override MapViewService MapViewService => _mainVM.MapViewService;
 
         private async void NavigateToMapArea()
         {
