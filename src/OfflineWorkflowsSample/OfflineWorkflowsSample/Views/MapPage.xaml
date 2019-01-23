@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="OfflineWorkflowSample.Views.MapPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OfflineWorkflowSample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
+    xmlns:downloadMapArea="using:OfflineWorkflowsSample.DownloadMapArea"
+    xmlns:generateMapArea="using:OfflineWorkflowsSample.GenerateMapArea"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!-- Title bar -->
+            <RowDefinition Height="Auto" /> <!-- user profile -->
+            <RowDefinition Height="Auto" /> <!-- Header row -->
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <offlineWorkflowSample:CustomAppTitleBar Grid.Row="0" />
+        <Grid Grid.Row="1" Background="{ThemeResource SystemControlAccentDark2AcrylicElementAccentDark2MediumHighBrush}">
+            <local:UserProfileView HorizontalAlignment="Right" 
+                                   VerticalAlignment="Center" 
+                                   Margin="0,5,5,5"
+                                   DataContext="{Binding}"/>
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <TextBlock 
+                    Foreground="White"
+                    TextAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{Binding Map.Item.Title}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Stretch">
+                <Button Content="Take offline" 
+                        Height="40"
+                        Click="ButtonBase_OnClick"
+                        Margin="5,0,0,0"/>
+            </StackPanel>
+        </Grid><!-- Map header row -->
+        <SplitView x:Name="DownloadControlsSplitView" PanePlacement="Right" Grid.Row="3">
+            <SplitView.Pane>
+                <Pivot>
+                    <PivotItem Header="On-demand">
+                        <generateMapArea:GenerateMapAreaView DataContext="{Binding GenerateMapAreaViewModel}" />
+                    </PivotItem>
+                    <PivotItem Header="Preplanned">
+                        <downloadMapArea:DownloadMapAreaView DataContext="{Binding DownloadMapAreaViewModel}" />
+                    </PivotItem>
+                </Pivot>
+            </SplitView.Pane>
+            <offlineWorkflowSample:MapWithTools />
+        </SplitView>
+        <offlineWorkflowSample:BusyOverlay DataContext="{Binding}" Grid.Row="3" />
+    </Grid>
+</Page>

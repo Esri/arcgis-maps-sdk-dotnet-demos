@@ -95,20 +95,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BusyOverlay.xaml.cs">
+    <Compile Include="Controls\BusyOverlay.xaml.cs">
       <DependentUpon>BusyOverlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomAppTitleBar.xaml.cs">
+    <Compile Include="Controls\CustomAppTitleBar.xaml.cs">
       <DependentUpon>CustomAppTitleBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DownloadMapArea\DownloadMapAreaView.xaml.cs">
+    <Compile Include="Views\DownloadMapAreaView.xaml.cs">
       <DependentUpon>DownloadMapAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DownloadMapArea\DownloadMapAreaViewModel.cs" />
-    <Compile Include="GenerateMapArea\GenerateMapAreaView.xaml.cs">
+    <Compile Include="ViewModels\DownloadMapAreaViewModel.cs" />
+    <Compile Include="Views\GenerateMapAreaView.xaml.cs">
       <DependentUpon>GenerateMapAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GenerateMapArea\GenerateMapAreaViewModel.cs" />
+    <Compile Include="ViewModels\GenerateMapAreaViewModel.cs" />
     <Compile Include="Infrastructure\IDialogService.cs" />
     <Compile Include="Infrastructure\BaseViewModel.cs" />
     <Compile Include="Infrastructure\ColorHelper.cs" />
@@ -119,32 +119,38 @@
     <Compile Include="Infrastructure\ViewService\MapViewService.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventHelper.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventListener.cs" />
-    <Compile Include="ItemListingGridView.xaml.cs">
+    <Compile Include="Controls\ItemListingGridView.xaml.cs">
       <DependentUpon>ItemListingGridView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LegendView.xaml.cs">
+    <Compile Include="Controls\LegendView.xaml.cs">
       <DependentUpon>LegendView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginPage.xaml.cs">
+    <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="MapWithTools.xaml.cs">
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Controls\MapWithTools.xaml.cs">
       <DependentUpon>MapWithTools.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MapAreaModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
-    <Compile Include="OfflineMapForm.xaml.cs">
+    <Compile Include="Views\MapPage.xaml.cs">
+      <DependentUpon>MapPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OfflineMapForm.xaml.cs">
       <DependentUpon>OfflineMapForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PortalBrowser.xaml.cs">
+    <Compile Include="Views\PortalBrowser.xaml.cs">
       <DependentUpon>PortalBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PortalViewModel.cs" />
+    <Compile Include="ViewModels\PortalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\UserProfileView.xaml.cs">
+      <DependentUpon>UserProfileView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -211,47 +217,55 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="BusyOverlay.xaml">
+    <Page Include="Controls\BusyOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomAppTitleBar.xaml">
+    <Page Include="Controls\CustomAppTitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DownloadMapArea\DownloadMapAreaView.xaml">
+    <Page Include="Views\DownloadMapAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GenerateMapArea\GenerateMapAreaView.xaml">
+    <Page Include="Views\GenerateMapAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ItemListingGridView.xaml">
+    <Page Include="Controls\ItemListingGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LegendView.xaml">
+    <Page Include="Controls\LegendView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginPage.xaml">
+    <Page Include="Views\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MapWithTools.xaml">
+    <Page Include="Controls\MapWithTools.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OfflineMapForm.xaml">
+    <Page Include="Views\MapPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PortalBrowser.xaml">
+    <Page Include="Views\OfflineMapForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PortalBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -272,7 +286,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Placeholders\" />
-    <Folder Include="Map\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

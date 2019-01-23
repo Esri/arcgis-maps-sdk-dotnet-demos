@@ -9,17 +9,10 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <ListView ItemsSource="{Binding Items}" SelectionChanged="ItemSelected">
-        <ListView.ItemContainerStyle>
-            <Style TargetType="ListViewItem">
-                <Setter Property="Padding" Value="0" />
-                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                <Setter Property="Margin" Value="0,0,0,5" />
-            </Style>
-        </ListView.ItemContainerStyle>
-        <ListView.ItemTemplate>
+    <GridView ItemsSource="{Binding Items}" SelectionChanged="ItemSelected">
+        <GridView.ItemTemplate>
             <DataTemplate>
-                <Grid HorizontalAlignment="Stretch">
+                <Grid Width="200" Height="200">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -34,6 +27,6 @@
                     </Grid>
                 </Grid>
             </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+        </GridView.ItemTemplate>
+    </GridView>
 </UserControl>

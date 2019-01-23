@@ -98,9 +98,6 @@
                     </PivotItem>
                 </Pivot>
             </SplitView.Pane>
-            <offlineWorkflowSample:MapWithTools DataContext="{Binding}" />
         </SplitView>
-        <!-- Busy overlay -->
-        <offlineWorkflowSample:BusyOverlay DataContext="{Binding}" />
     </Grid>
 </UserControl>

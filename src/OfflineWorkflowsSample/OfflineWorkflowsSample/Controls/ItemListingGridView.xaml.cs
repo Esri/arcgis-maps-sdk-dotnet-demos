@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
 using OfflineWorkflowsSample;
+using OfflineWorkflowSample.Views;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 

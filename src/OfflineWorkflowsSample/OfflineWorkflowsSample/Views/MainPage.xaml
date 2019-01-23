@@ -5,6 +5,7 @@
     xmlns:generateMapArea="using:OfflineWorkflowsSample.GenerateMapArea"
     xmlns:downloadMapArea="using:OfflineWorkflowsSample.DownloadMapArea"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
+    xmlns:views="using:OfflineWorkflowSample.Views"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}">
     <Page.Resources>
         <Style TargetType="Pivot">
@@ -25,28 +26,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MaxWidth="300" />
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <offlineWorkflowSample:PortalBrowser Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
                                                  Margin="10"
                                                  DataContext="{Binding}"/>
-            <TextBlock Text="{Binding Map.Item.Title}"
-                       Grid.Row="0" Grid.Column="1"
-                       TextAlignment="Center"
-                       Style="{StaticResource SubtitleTextBlockStyle}"/>
-            <offlineWorkflowSample:OfflineMapForm Grid.Row="1" Grid.Column="1" 
-                                                  DataContext="{Binding}" />
         </Grid>
         <!-- User profile -->
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,5" Grid.Row="1">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=UserProfile.FullName}"
-                           VerticalAlignment="Center" />
-                <PersonPicture ProfilePicture="{Binding Path=UserProfile.ThumbnailUrl}"
-                               DisplayName="{Binding Path=UserProfile.FullName}"
-                               Height="25" Margin="5,0,0,0" />
-            </StackPanel>
-        </Grid>
+        <views:UserProfileView HorizontalAlignment="Right" 
+                               VerticalAlignment="Top" 
+                               Margin="0,5,5,5" 
+                               Grid.Row="1"
+                               DataContext="{Binding}"/>
+
     </Grid>
 </Page>

@@ -4,6 +4,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.Mapping;
+using OfflineWorkflowSample.Views;
 
 namespace OfflineWorkflowsSample
 {
@@ -42,6 +43,7 @@ namespace OfflineWorkflowsSample
         public void ShowMapItem(Map map)
         {
             ViewModel.Map = map;
+            Frame.Navigate(typeof(MapPage), ViewModel);
         }
     }
 }

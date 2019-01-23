@@ -10,7 +10,7 @@
         <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
         <!-- Using padding columns instead of Margin ensures that the background
                  paints the area under the caption control buttons (for transparent buttons). -->
-        <Image Source="Assets/Square44x44Logo.png"
+        <Image Source="../Assets/Square44x44Logo.png"
                HorizontalAlignment="Left"
                VerticalAlignment="Center"
                Width="20" Height="20" Margin="8" />
