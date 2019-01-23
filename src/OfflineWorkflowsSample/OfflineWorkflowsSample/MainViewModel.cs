@@ -11,14 +11,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
+using OfflineWorkflowSample;
 
 namespace OfflineWorkflowsSample
 {
     public class MainViewModel : BaseViewModel
     {
         #region Setup
-        public string PortalUrl { get; set; }= "https://www.arcgis.com/sharing/rest";
-        public string UserName { get; set; }= "MyUserName";
+        public string PortalUrl { get; set; }= "https://nathancastle.maps.arcgis.com/sharing/rest";
+        public string UserName { get; set; }= "nathancastle";
         public string Password { get; set; } = "";
         #endregion //Setup
 
@@ -52,6 +53,16 @@ namespace OfflineWorkflowsSample
             set { SetProperty(ref _downloadMapAreaViewModel, value); }
         }
 
+        private PortalViewModel _portalViewModel;
+
+        public PortalViewModel PortalViewModel
+        {
+            get => _portalViewModel;
+            set => SetProperty(ref _portalViewModel, value);
+        }
+
+        public ArcGISPortal Portal => _portal;
+
         public async Task ConfigurePortal()
         {
             // If username and password aren't set, show message so that we remember
@@ -71,6 +82,7 @@ namespace OfflineWorkflowsSample
             {
                 GenerateMapAreaViewModel = new GenerateMapAreaViewModel(_portal);
                 DownloadMapAreaViewModel = new DownloadMapAreaViewModel(_portal);
+                PortalViewModel = await PortalViewModel.GetRootVM(_portal, true, true);
 
                 // Create portal item that points to the webmap by 
                 // it's id. ArcGISPortal is required to define which portal

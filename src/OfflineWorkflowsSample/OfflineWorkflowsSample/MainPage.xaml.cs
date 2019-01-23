@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Esri.ArcGISRuntime.Mapping;
 
 namespace OfflineWorkflowsSample
 {
@@ -36,6 +37,11 @@ namespace OfflineWorkflowsSample
         {
             var messageDialog = new MessageDialog(message);
             await messageDialog.ShowAsync();
+        }
+
+        public void ShowMapItem(Map map)
+        {
+            ViewModel.Map = map;
         }
     }
 }

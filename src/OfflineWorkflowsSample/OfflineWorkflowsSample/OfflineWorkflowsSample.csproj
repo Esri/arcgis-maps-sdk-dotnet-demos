@@ -119,6 +119,9 @@
     <Compile Include="Infrastructure\ViewService\MapViewService.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventHelper.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventListener.cs" />
+    <Compile Include="ItemListingGridView.xaml.cs">
+      <DependentUpon>ItemListingGridView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LegendView.xaml.cs">
       <DependentUpon>LegendView.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,13 @@
     </Compile>
     <Compile Include="Models\MapAreaModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
+    <Compile Include="OfflineMapForm.xaml.cs">
+      <DependentUpon>OfflineMapForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PortalBrowser.xaml.cs">
+      <DependentUpon>PortalBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PortalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +227,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ItemListingGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LegendView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +244,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MapWithTools.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OfflineMapForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PortalBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

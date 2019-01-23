@@ -19,39 +19,25 @@
         </Grid.RowDefinitions>
         <!-- Title bar -->
         <offlineWorkflowSample:CustomAppTitleBar Grid.Row="0" />
-        <!-- Map controls pivot -->
-        <Pivot Grid.RowSpan="2" Grid.Row="1">
-            <PivotItem Header="Online">
-                <PivotItem.Content>
-                    <Grid>
-                        <SplitView IsPaneOpen="True" DisplayMode="Inline">
-                            <SplitView.Pane>
-                                <Pivot>
-                                    <PivotItem Header="Legend" Background="Transparent">
-                                        <offlineWorkflowSample:LegendView DataContext="{Binding}" />
-                                    </PivotItem>
-                                </Pivot>
-                            </SplitView.Pane>
-                            <offlineWorkflowSample:MapWithTools DataContext="{Binding}" />
-                        </SplitView>
-                    </Grid>
-                </PivotItem.Content>
-            </PivotItem>
-            <PivotItem Header="On-demand">
-                <PivotItem.Content>
-                    <Grid>
-                        <generateMapArea:GenerateMapAreaView DataContext="{Binding GenerateMapAreaViewModel}" />
-                    </Grid>
-                </PivotItem.Content>
-            </PivotItem>
-            <PivotItem Header="Preplanned">
-                <PivotItem.Content>
-                    <Grid>
-                        <downloadMapArea:DownloadMapAreaView DataContext="{Binding DownloadMapAreaViewModel}" />
-                    </Grid>
-                </PivotItem.Content>
-            </PivotItem>
-        </Pivot>
+        <Grid Grid.RowSpan="2" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MaxWidth="300" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <offlineWorkflowSample:PortalBrowser Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                                 Margin="10"
+                                                 DataContext="{Binding}"/>
+            <TextBlock Text="{Binding Map.Item.Title}"
+                       Grid.Row="0" Grid.Column="1"
+                       TextAlignment="Center"
+                       Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <offlineWorkflowSample:OfflineMapForm Grid.Row="1" Grid.Column="1" 
+                                                  DataContext="{Binding}" />
+        </Grid>
         <!-- User profile -->
         <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,5" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
