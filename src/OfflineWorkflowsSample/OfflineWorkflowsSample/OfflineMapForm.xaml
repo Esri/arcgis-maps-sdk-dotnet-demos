@@ -9,16 +9,7 @@
         <PivotItem Header="Online">
             <PivotItem.Content>
                 <Grid>
-                    <SplitView IsPaneOpen="True" DisplayMode="Inline">
-                        <SplitView.Pane>
-                            <Pivot>
-                                <PivotItem Header="Legend" Background="Transparent">
-                                    <local:LegendView DataContext="{Binding}" />
-                                </PivotItem>
-                            </Pivot>
-                        </SplitView.Pane>
                         <local:MapWithTools DataContext="{Binding}" />
-                    </SplitView>
                 </Grid>
             </PivotItem.Content>
         </PivotItem>

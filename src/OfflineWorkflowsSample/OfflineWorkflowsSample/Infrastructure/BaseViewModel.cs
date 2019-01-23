@@ -77,7 +77,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private Map _map;
-        public Map Map
+        public virtual Map Map
         {
             get { return _map; }
             set { SetProperty(ref _map, value); }

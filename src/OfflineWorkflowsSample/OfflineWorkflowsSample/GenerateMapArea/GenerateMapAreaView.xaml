@@ -51,9 +51,6 @@
                             </StackPanel>
                         </Grid>
                     </PivotItem>
-                    <PivotItem Header="Legend">
-                        <offlineWorkflowSample:LegendView DataContext="{Binding}" />
-                    </PivotItem>
                 </Pivot>
             </SplitView.Pane>
             <offlineWorkflowSample:MapWithTools DataContext="{Binding}" />

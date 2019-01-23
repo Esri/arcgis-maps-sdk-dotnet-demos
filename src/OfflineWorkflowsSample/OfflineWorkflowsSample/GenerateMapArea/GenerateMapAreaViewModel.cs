@@ -23,10 +23,13 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         private DelegateCommand _generateMapAreaCommand;
         private DelegateCommand _navigateToMapAreaCommand;
         private GenerateOfflineMapJob _job;
+        private MainViewModel _mainVM;
+        public override Map Map => _mainVM.Map;
 
-        public GenerateMapAreaViewModel(ArcGISPortal portal)
+        public GenerateMapAreaViewModel(MainViewModel parent)
         {
-            _portal = portal ?? throw new ArgumentNullException(nameof(portal));
+            _portal = parent.Portal ?? throw new ArgumentNullException(nameof(parent));
+            _mainVM = parent;
             _generateMapAreaCommand = new DelegateCommand(GenerateMapArea);
             _navigateToMapAreaCommand = new DelegateCommand(NavigateToMapArea);
             Initialize();
@@ -177,39 +180,34 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         {
             if (!IncludeBasemap)
             {
-                foreach (var basemapLayer in Map.Basemap.BaseLayers)
+                foreach (var basemapLayer in _mainVM.Map.Basemap.BaseLayers)
                 {
                     basemapLayer.IsVisible = false;
                 }
-                foreach (var referenceLayer in Map.Basemap.ReferenceLayers)
+                foreach (var referenceLayer in _mainVM.Map.Basemap.ReferenceLayers)
                 {
                     referenceLayer.IsVisible = false;
                 }
             }
             else
             {
-                foreach (var basemapLayer in Map.Basemap.BaseLayers)
+                foreach (var basemapLayer in _mainVM.Map.Basemap.BaseLayers)
                 {
                     basemapLayer.IsVisible = true;
                 }
-                foreach (var referenceLayer in Map.Basemap.ReferenceLayers)
+                foreach (var referenceLayer in _mainVM.Map.Basemap.ReferenceLayers)
                 {
                     referenceLayer.IsVisible = true;
                 }
             }
         }
         
-        private async void Initialize()
+        private void Initialize()
         {
             try
             {
                 IsBusy = true;
                 IsBusyText = "Loading map...";
-
-                // Create webmap and assign it to the map
-                var webmapItem = await PortalItem.CreateAsync(_portal, "acc027394bc84c2fb04d1ed317aac674");
-                Map = new Map(webmapItem);
-                await Map.LoadAsync();
 
                 // Set the scale information to the UI
                 var basemapLayer = Map.AllLayers.OfType<ArcGISTiledLayer>().FirstOrDefault();

@@ -4,29 +4,45 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Esri.ArcGISRuntime.UI.Controls"
     xmlns:viewServices="using:OfflineWorkflowsSample.Infrastructure.ViewServices"
-    xmlns:controls1="using:Esri.ArcGISRuntime.Toolkit.UI.Controls">
+    xmlns:controls1="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
+    xmlns:offlineWorkflowSample="using:OfflineWorkflowSample">
 
-    <Grid>
-        <controls:MapView x:Name="MyMapView" Map="{Binding Map}"
-                      viewServices:MapViewService.ViewService="{Binding MapViewService}" />
-        <controls1:Compass x:Name="compass" Heading="{x:Bind MyMapView.MapRotation, Mode=OneWay}" Height="40"
-                             Width="40"
-                             Margin="20,30" Tapped="Compass_Tapped" AutoHide="False" VerticalAlignment="Bottom"
-                             HorizontalAlignment="Right" />
-        <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <AppBarButton Icon="ZoomIn" Label="Zoom in" IsCompact="True" Height="48"
-                          Command="{Binding ZoomInCommand}" />
-            <AppBarButton Icon="Home" Label="Full extent" Grid.Row="1" IsCompact="True" Height="48"
-                          Command="{Binding ResetViewPointCommand}" />
-            <AppBarButton Icon="ZoomOut" Label="Zoom out" Grid.Row="2" IsCompact="True" Height="48"
-                          Command="{Binding ZoomOutCommand}" />
+    <SplitView x:Name="MapLegendSplitView" DisplayMode="Inline">
+        <SplitView.Pane>
+            <ScrollViewer>
+                <StackPanel Padding="5">
+                    <TextBlock Text="Legend" 
+                               Style="{StaticResource SubheaderTextBlockStyle}" />
+                    <offlineWorkflowSample:LegendView DataContext="{Binding}" />
+                </StackPanel>
+            </ScrollViewer>
+            
+        </SplitView.Pane>
+        <Grid>
+            <controls:MapView x:Name="MyMapView" Map="{Binding Map}"
+                              viewServices:MapViewService.ViewService="{Binding MapViewService}" />
+            <controls1:Compass x:Name="compass" Heading="{x:Bind MyMapView.MapRotation, Mode=OneWay}" Height="40"
+                               Width="40"
+                               Margin="20,30" Tapped="Compass_Tapped" AutoHide="False" VerticalAlignment="Bottom"
+                               HorizontalAlignment="Right" />
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <AppBarButton Icon="AllApps" Grid.Row="0" Label="Legend" IsCompact="True" Height="48"
+                              Click="MenuButtonClicked" />
+                <AppBarButton Icon="ZoomIn" Grid.Row="1" Label="Zoom in" IsCompact="True" Height="48"
+                              Command="{Binding ZoomInCommand}" />
+                <AppBarButton Icon="Home" Label="Full extent" Grid.Row="2" IsCompact="True" Height="48"
+                              Command="{Binding ResetViewPointCommand}" />
+                <AppBarButton Icon="ZoomOut" Label="Zoom out" Grid.Row="3" IsCompact="True" Height="48"
+                              Command="{Binding ZoomOutCommand}" />
+            </Grid>
+            <controls1:ScaleLine MapScale="{x:Bind MyMapView.MapScale, Mode=OneWay}" Grid.Row="1"
+                                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />
         </Grid>
-        <controls1:ScaleLine MapScale="{x:Bind MyMapView.MapScale, Mode=OneWay}" Grid.Row="1"
-                               HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />
-    </Grid>
+    </SplitView>
 </UserControl>

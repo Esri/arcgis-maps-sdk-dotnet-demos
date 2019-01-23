@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Esri.ArcGISRuntime.Toolkit.UI.Controls">
     <Grid>
-        <ScrollViewer Margin="5,0">
             <ItemsControl ItemsSource="{Binding Map.OperationalLayers, Mode=OneWay}"
                           Margin="10">
                 <ItemsControl.ItemTemplate>
@@ -16,6 +15,5 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </ScrollViewer>
     </Grid>
 </UserControl>

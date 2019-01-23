@@ -80,9 +80,7 @@ namespace OfflineWorkflowsSample
         {
             try
             {
-                GenerateMapAreaViewModel = new GenerateMapAreaViewModel(_portal);
-                DownloadMapAreaViewModel = new DownloadMapAreaViewModel(_portal);
-                PortalViewModel = await PortalViewModel.GetRootVM(_portal, true, true);
+               
 
                 // Create portal item that points to the webmap by 
                 // it's id. ArcGISPortal is required to define which portal
@@ -94,6 +92,10 @@ namespace OfflineWorkflowsSample
                 // need to access map before setting it to the MapView
                 Map = new Map(webmapItem);
                 await Map.LoadAsync();
+
+                GenerateMapAreaViewModel = new GenerateMapAreaViewModel(this);
+                DownloadMapAreaViewModel = new DownloadMapAreaViewModel(this);
+                PortalViewModel = await PortalViewModel.GetRootVM(_portal, true, true);
             }
             catch (Exception ex)
             {

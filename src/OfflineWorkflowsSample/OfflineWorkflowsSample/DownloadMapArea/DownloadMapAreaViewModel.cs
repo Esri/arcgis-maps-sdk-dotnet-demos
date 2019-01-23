@@ -8,6 +8,7 @@ using OfflineWorkflowsSample.Models;
 using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -22,10 +23,13 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         private GraphicsOverlay _areasOverlay;
         private DelegateCommand _downloadMapAreaCommand;
         private DelegateCommand<string> _syncMapAreaCommand;
+        private MainViewModel _mainVM;
+        public override Map Map => _mainVM.Map;
 
-        public DownloadMapAreaViewModel(ArcGISPortal portal)
+        public DownloadMapAreaViewModel(MainViewModel parent)
         {
-            _portal = portal ?? throw new ArgumentNullException(nameof(portal));
+            _portal = parent.Portal ?? throw new ArgumentNullException(nameof(parent));
+            _mainVM = parent;
             _areasOverlay = new GraphicsOverlay()
             {
                 Renderer = new SimpleRenderer()
@@ -240,8 +244,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             get { return _inOnlineMode; }
             set { SetProperty(ref _inOnlineMode, value); }
         }
-
-
+        
         private async void Initialize()
         {
             try     
@@ -250,9 +253,6 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 IsBusyText = "Loading map...";
 
                 // Load map from portal
-                var webmapItem = await PortalItem.CreateAsync(
-                    _portal, "acc027394bc84c2fb04d1ed317aac674");
-                Map = new Map(webmapItem);
                 await Map.LoadAsync();
 
                 // Create new task to 
