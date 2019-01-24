@@ -48,7 +48,7 @@ namespace OfflineWorkflowSample
         {
             // Navigate to the main page, passing the view model as an argument.
             Frame rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(MainPage), new MainViewModel(this, ViewModel));
+            rootFrame.Navigate(typeof(MainPage), ViewModel);
         }
 
         private void Entry_Keydown(object sender, KeyRoutedEventArgs e)

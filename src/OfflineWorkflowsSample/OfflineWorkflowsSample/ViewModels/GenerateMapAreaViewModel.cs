@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using OfflineWorkflowsSample.Infrastructure.ViewServices;
 
@@ -51,7 +52,6 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             _mainVM = parent;
             _generateMapAreaCommand = new DelegateCommand(GenerateMapArea);
             _navigateToMapAreaCommand = new DelegateCommand(NavigateToMapArea);
-            Initialize();
         }
 
         public override MapViewService MapViewService => _mainVM.MapViewService;
@@ -64,6 +64,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             }
             catch (Exception ex)
             {
+                _mainVM.ShowMessage(ex.Message);
             }
         }
 
@@ -84,7 +85,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 if (!Directory.Exists(offlineDataFolder))
                     Directory.CreateDirectory(offlineDataFolder);
 
-                // Get area of intereste as a envelope from the map view
+                // Get area of interest as a envelope from the map view
                 var areaOfInterest = 
                     MapViewService.GetCurrentViewpoint(ViewpointType.BoundingGeometry)
                         .TargetGeometry as Envelope;
@@ -124,7 +125,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             }
             catch (Exception ex)
             {
-                throw;
+                _mainVM.ShowMessage(ex.Message);
             }
             finally
             {
@@ -223,12 +224,14 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             }
         }
         
-        private void Initialize()
+        public async Task Initialize()
         {
             try
             {
                 IsBusy = true;
                 IsBusyText = "Loading map...";
+
+                await Map.LoadAsync();
 
                 // Set the scale information to the UI
                 var basemapLayer = Map.AllLayers.OfType<ArcGISTiledLayer>().FirstOrDefault();
@@ -246,6 +249,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             }
             catch (Exception ex)
             {
+                _mainVM.ShowMessage(ex.Message);
             }
             finally
             {

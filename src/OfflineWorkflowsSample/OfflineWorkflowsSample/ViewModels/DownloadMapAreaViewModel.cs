@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using OfflineWorkflowsSample.Infrastructure.ViewServices;
 
@@ -67,7 +68,6 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             GraphicsOverlays = graphicsOverlays;
             _downloadMapAreaCommand = new DelegateCommand(DownloadMapArea, CanDownloadMapArea);
             _syncMapAreaCommand = new DelegateCommand<string>(SyncMapArea, CanSyncMapArea);
-            Initialize();
         }
 
         public override MapViewService MapViewService => _mainVM.MapViewService;
@@ -127,7 +127,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             }
             catch (Exception ex)
             {
-                throw;
+                _mainVM.ShowMessage(ex.Message);
             }
             finally
             {
@@ -201,8 +201,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             }
             catch (Exception ex)
             {
-                // handle nicely
-                throw;
+                _mainVM.ShowMessage(ex.Message);
             }
             finally
             {
@@ -266,9 +265,9 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             set { SetProperty(ref _inOnlineMode, value); }
         }
         
-        private async void Initialize()
+        public async Task Initialize()
         {
-            try     
+            try
             {
                 IsBusy = true;
                 IsBusyText = "Loading map...";
@@ -278,7 +277,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
                 // Create new task to 
                 var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
-                
+
                 // Get list of areas
                 var preplannedMapAreas = await offlineMapTask.GetPreplannedMapAreasAsync();
 
@@ -295,13 +294,15 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
                     _areasOverlay.Graphics.Add(graphic);
                 }
-
-                IsBusy = false;
-                IsBusyText = string.Empty;
             }
             catch (Exception ex)
             {
-                // Handle
+                _mainVM.ShowMessage(ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+                IsBusyText = string.Empty;
             }
         }
     }

@@ -2,10 +2,9 @@
     x:Class="OfflineWorkflowsSample.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:generateMapArea="using:OfflineWorkflowsSample.GenerateMapArea"
-    xmlns:downloadMapArea="using:OfflineWorkflowsSample.DownloadMapArea"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:views="using:OfflineWorkflowSample.Views"
+    xmlns:offlineWorkflowsSample="using:OfflineWorkflowsSample"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}">
     <Page.Resources>
         <Style TargetType="Pivot">
@@ -26,8 +25,9 @@
                 </ListView>
             </StackPanel>
         </DataTemplate>
+        <offlineWorkflowsSample:MainViewModel x:Key="ViewModel" />
     </Page.Resources>
-    <Grid>
+    <Grid DataContext="{StaticResource ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

@@ -4,6 +4,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.Mapping;
+using OfflineWorkflowSample.ViewModels;
 using OfflineWorkflowSample.Views;
 
 namespace OfflineWorkflowsSample
@@ -22,17 +23,11 @@ namespace OfflineWorkflowsSample
         {
             base.OnNavigatedTo(e);
 
-            var vm = (MainViewModel)e.Parameter;
-            await vm.Initialize();
-
-            ViewModel = vm;
-            this.DataContext = ViewModel;
+            LoginViewModel vm = (LoginViewModel)e.Parameter;
+            await ViewModel.Initialize(vm.Portal, vm.UserProfile, this);
         }
 
-        /// <summary>
-        /// Gets the view-model that provides mapping capabilities to the view
-        /// </summary>
-        private MainViewModel ViewModel { get; set; }
+        private MainViewModel ViewModel => (MainViewModel)Resources["ViewModel"];
 
         public async Task ShowMessageAsync(string message)
         {
@@ -42,7 +37,7 @@ namespace OfflineWorkflowsSample
 
         public void ShowMapItem(Map map)
         {
-            ViewModel.Map = map;
+            ViewModel.SelectMap(map);
             Frame.Navigate(typeof(MapPage), ViewModel);
         }
     }

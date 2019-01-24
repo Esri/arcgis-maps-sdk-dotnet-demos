@@ -23,8 +23,9 @@ namespace OfflineWorkflowsSample.Infrastructure
                 if (Map.InitialViewpoint != null)
                     await MapViewService.SetViewpointAsync(Map.InitialViewpoint);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                // ignored
             }
         }
 
@@ -41,8 +42,9 @@ namespace OfflineWorkflowsSample.Infrastructure
                 var currentScale = MapViewService.MapScale;
                 await MapViewService.SetViewpointScaleAsync(currentScale * 0.5);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                // ignored
             }
         }
 
@@ -56,8 +58,9 @@ namespace OfflineWorkflowsSample.Infrastructure
                 var currentScale = MapViewService.MapScale;
                 await MapViewService.SetViewpointScaleAsync(currentScale * 1.5);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                // Ignored
             }
         }
 
@@ -86,8 +89,8 @@ namespace OfflineWorkflowsSample.Infrastructure
         private bool _isBusy;
         public virtual bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         private string _isBusyText;
