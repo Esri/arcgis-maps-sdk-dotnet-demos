@@ -25,7 +25,25 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         private DelegateCommand _downloadMapAreaCommand;
         private DelegateCommand<string> _syncMapAreaCommand;
         private MainViewModel _mainVM;
-        public override Map Map => _mainVM.Map;
+        public override Map Map
+        {
+            get => _mainVM.Map;
+            set => _mainVM.Map = value;
+        }
+
+        public override bool IsBusy { get => _mainVM.IsBusy;
+            set { _mainVM.IsBusy = value; }
+        }
+        public override string IsBusyText
+        {
+            get => _mainVM.IsBusyText;
+            set { _mainVM.IsBusyText = value; }
+        }
+        public override string ProgressPercentage
+        {
+            get => _mainVM.ProgressPercentage;
+            set { _mainVM.ProgressPercentage = value; }
+        }
 
         public DownloadMapAreaViewModel(MainViewModel parent)
         {

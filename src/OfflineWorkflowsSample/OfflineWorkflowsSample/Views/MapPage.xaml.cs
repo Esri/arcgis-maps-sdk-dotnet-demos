@@ -35,7 +35,6 @@ namespace OfflineWorkflowSample.Views
             base.OnNavigatedTo(e);
 
             var vm = (MainViewModel)e.Parameter;
-            await vm.Initialize();
 
             ViewModel = vm;
             this.DataContext = ViewModel;

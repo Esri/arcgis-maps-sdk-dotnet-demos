@@ -12,10 +12,10 @@
     <GridView ItemsSource="{Binding Items}" SelectionChanged="ItemSelected">
         <GridView.ItemTemplate>
             <DataTemplate>
-                <Grid Width="200" Height="200">
+                <Grid Width="250" Height="250">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <Image Stretch="UniformToFill" Grid.RowSpan="2">
                         <Image.Source>
@@ -23,7 +23,7 @@
                         </Image.Source>
                     </Image>
                     <Grid Grid.Row="1" Background="{ThemeResource SystemControlAccentDark2AcrylicElementAccentDark2MediumHighBrush}">
-                        <TextBlock Padding="10" Text="{Binding Path=Title}" Foreground="White" TextWrapping="Wrap" FontSize="24"></TextBlock>
+                        <TextBlock Padding="10" Text="{Binding Path=Title}" Foreground="White" TextWrapping="Wrap" FontSize="24" />
                     </Grid>
                 </Grid>
             </DataTemplate>

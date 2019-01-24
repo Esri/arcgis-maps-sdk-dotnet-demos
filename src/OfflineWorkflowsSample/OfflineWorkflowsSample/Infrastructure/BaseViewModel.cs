@@ -84,21 +84,21 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private bool _isBusy;
-        public bool IsBusy
+        public virtual bool IsBusy
         {
             get { return _isBusy; }
             set { SetProperty(ref _isBusy, value); }
         }
 
         private string _isBusyText;
-        public string IsBusyText
+        public virtual string IsBusyText
         {
             get { return _isBusyText; }
             set { SetProperty(ref _isBusyText, value); }
         }
 
         private string _progressPercentage;
-        public string ProgressPercentage
+        public virtual string ProgressPercentage
         {
             get { return _progressPercentage; }
             set { SetProperty(ref _progressPercentage, value); }

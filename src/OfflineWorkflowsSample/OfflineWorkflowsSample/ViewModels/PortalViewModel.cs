@@ -9,15 +9,18 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using Esri.ArcGISRuntime.Portal;
 using OfflineWorkflowsSample.Infrastructure;
+using Prism.Windows.Mvvm;
 
 namespace OfflineWorkflowSample
 {
-    public class PortalViewModel : BaseViewModel
+    public class PortalViewModel : ViewModelBase
     {
         private PortalItem _selectedItem;
         public string Title { get; set; }
         public IEnumerable<PortalItem> Items { get; set; }
         public IList<PortalViewModel> Groups { get; set; } = new List<PortalViewModel>();
+        public IEnumerable<PortalItem> Featured { get; set; }
+        public PortalViewModel MyContent { get; set; }
         public ArcGISPortal Portal { get; set; }
 
 
@@ -57,16 +60,20 @@ namespace OfflineWorkflowSample
                 PortalViewModel myContentModel = new PortalViewModel();
                 myContentModel.Portal = portal;
                 myContentModel.Title = "My Content";
-                myContentModel.Items = result.Items;
+                myContentModel.Items = result.Items.Where(item => item.Type == PortalItemType.WebMap);
                 myContentModel.Groups = new ObservableCollection<PortalViewModel>();
                 foreach (var folder in result.Folders)
                 {
                     var items = await portal.User.GetContentAsync(folder.FolderId);
                     items = items.Where(item => item.Type == PortalItemType.WebMap);
+                    if (!items.Any())
+                    {
+                        continue;
+                    }
                     myContentModel.Groups.Add(new PortalViewModel(folder, items));
                 }
 
-                return myContentModel;
+                resultModel.MyContent = myContentModel;
             }
 
             if (hasMyGroups)
@@ -75,12 +82,19 @@ namespace OfflineWorkflowSample
                 foreach (var item in portal.User.Groups)
                 {
                     PortalQueryParameters parameters = PortalQueryParameters.CreateForItemsOfTypeInGroup(PortalItemType.WebMap, item.GroupId);
-                    var itemResults = portal.FindItemsAsync(parameters);
-                    PortalViewModel groupModel = new PortalViewModel(item, itemResults.Result.Results);
+                    var itemResults = await portal.FindItemsAsync(parameters);
+                    if (!itemResults.Results.Any())
+                    {
+                        continue;
+                    }
+                    PortalViewModel groupModel = new PortalViewModel(item, itemResults.Results);
                     resultModel.Groups.Add(groupModel);
                 }
             }
 
+            // Populate featured
+            resultModel.Featured = await portal.GetFeaturedItemsAsync();
+            resultModel.Featured = resultModel.Featured.Where(item => item.Type == PortalItemType.WebMap);
             return resultModel;
         }
     }
