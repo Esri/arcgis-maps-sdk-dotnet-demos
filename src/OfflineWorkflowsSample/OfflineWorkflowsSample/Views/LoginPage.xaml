@@ -5,19 +5,17 @@
     xmlns:local="using:OfflineWorkflowSample"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:OfflineWorkflowSample.ViewModels"
     mc:Ignorable="d">
     <Page.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White" />
-        </Style>
         <Style x:Key="LoginLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextAlignment" Value="Right" />
-            <Setter Property="Foreground" Value="White" />
         </Style>
+        <viewModels:LoginViewModel x:Key="ViewModel" />
     </Page.Resources>
 
-    <Grid Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
+    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}" DataContext="{StaticResource ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -26,44 +24,51 @@
         <Grid Grid.Row="1">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
                         Orientation="Vertical">
-                <TextBlock Text="Log in"
+                <TextBlock Text="ArcGIS Maps Offline"
                            Style="{StaticResource HeaderTextBlockStyle}"
                            TextAlignment="Center"
-                           Margin="20"/>
-                        <Grid ColumnSpacing="5" RowSpacing="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="250" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="Portal:"
-                                       Grid.Row="0" Grid.Column="0"
-                                       Style="{StaticResource LoginLabelStyle}" />
-                            <TextBlock Text="Username:"
-                                       Grid.Row="1" Grid.Column="0"
-                                       Style="{StaticResource LoginLabelStyle}" />
-                            <TextBlock Text="Password:"
-                                       Grid.Row="2" Grid.Column="0"
-                                       Style="{StaticResource LoginLabelStyle}" />
-                            <TextBox Text="{Binding PortalUrl, Mode=TwoWay}"
-                                     Grid.Row="0" Grid.Column="1" />
-                            <TextBox Text="{Binding UserName, Mode=TwoWay}"
-                                     IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
-                                     Grid.Row="1" Grid.Column="1" />
-                            <PasswordBox Password="{Binding Password, Mode=TwoWay}"
-                                         Grid.Row="2" Grid.Column="1"
-                                         KeyDown="Entry_Keydown"/>
-                            <Button Content="Log in"
-                                    Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                                    Click="Login_Clicked"
-                                    HorizontalAlignment="Stretch" />
-                        </Grid>
-                
+                           Margin="20" />
+                    <Button Content="Sign in with ArcGIS Online" 
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding LoginWithOAuthCommand}"/>
+                    <Button Content="Sign in with ArcGIS Enterprise" 
+                            HorizontalAlignment="Stretch"
+                            Margin="0,5,0,5"
+                            Command="{Binding ShowCredentialFormCommand}"/>
+                <Grid ColumnSpacing="5" RowSpacing="5" Visibility="{Binding IsCredentialsOpen}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Portal:"
+                               Grid.Row="0" Grid.Column="0"
+                               Style="{StaticResource LoginLabelStyle}" />
+                    <TextBlock Text="Username:"
+                               Grid.Row="1" Grid.Column="0"
+                               Style="{StaticResource LoginLabelStyle}" />
+                    <TextBlock Text="Password:"
+                               Grid.Row="2" Grid.Column="0"
+                               Style="{StaticResource LoginLabelStyle}" />
+                    <TextBox Text="{Binding PortalUrl, Mode=TwoWay}"
+                             Grid.Row="0" Grid.Column="1" />
+                    <TextBox Text="{Binding UserName, Mode=TwoWay}"
+                             IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
+                             Grid.Row="1" Grid.Column="1" />
+                    <PasswordBox Password="{Binding Password, Mode=TwoWay}"
+                                 Grid.Row="2" Grid.Column="1"
+                                 KeyDown="Entry_Keydown" />
+                    <Button Content="Log in"
+                            Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                            Command="{Binding LoginWithCredsCommand}"
+                            HorizontalAlignment="Stretch" />
+                </Grid>
+
             </StackPanel>
         </Grid>
     </Grid>

@@ -12,24 +12,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 using OfflineWorkflowSample;
+using OfflineWorkflowSample.ViewModels;
 
 namespace OfflineWorkflowsSample
 {
     public class MainViewModel : BaseViewModel
     {
-        #region Setup
-        public string PortalUrl { get; set; }= "https://nathancastle.maps.arcgis.com/sharing/rest";
-        public string UserName { get; set; }= "nathancastle";
-        public string Password { get; set; } = "";
-        #endregion //Setup
+        private IDialogService _dialogService;
+        private ArcGISPortal _portal;
 
-        private IDialogService _dialogService = null;
-        private ArcGISPortal _portal = null;
-
-        public MainViewModel(IDialogService dialogService)
+        public MainViewModel(IDialogService dialogService, LoginViewModel login)
         {
             _dialogService = dialogService;
-            AuthenticationManager.Current.ChallengeHandler = new ChallengeHandler(CreateKnownCredentials);
+            UserProfile = login.UserProfile;
+            _portal = login.Portal;
         }
 
         private UserProfileModel _userProfile;
@@ -63,19 +59,6 @@ namespace OfflineWorkflowsSample
 
         public ArcGISPortal Portal => _portal;
 
-        public async Task ConfigurePortal()
-        {
-            // If username and password aren't set, show message so that we remember
-            if (UserName == "MyUserName")
-            {
-                await _dialogService.ShowMessageAsync("Please add username and password in MainViewModel");
-                return;
-            }
-
-            // Authenticate directly against defined portal and fetch user information
-            UserProfile = await AuthenticateAndLoadUserProfileAsync();
-        }
-        
         public async Task Initialize()
         {
             try
@@ -103,63 +86,6 @@ namespace OfflineWorkflowsSample
                 Debug.WriteLine(ex);
                 await _dialogService.ShowMessageAsync(ex.Message);
             }
-        }
-
-        private async Task<UserProfileModel> AuthenticateAndLoadUserProfileAsync()
-        {
-            // Generate credentials to ArcGIS Online
-            var credentials = await AuthenticationManager.Current.GenerateCredentialAsync(
-              new Uri(PortalUrl), UserName, Password);
-
-            _portal = await ArcGISPortal.CreateAsync(
-                new Uri(PortalUrl), credentials, CancellationToken.None);
-
-            // Store credentials to authentication manager
-            if (!AuthenticationManager.Current.Credentials.Contains(credentials))
-                AuthenticationManager.Current.AddCredential(credentials);
-
-            var currentUser = _portal.User;
-
-            BitmapImage profilePicture = null;
-            if (currentUser.ThumbnailUri != null)
-                profilePicture = new BitmapImage(currentUser.ThumbnailUri);
-            else
-                profilePicture = null;
-
-            var userProfile = new UserProfileModel()
-            {
-                Username = currentUser.UserName,
-                FullName = currentUser.FullName,
-                ProfilePicture = profilePicture
-            };
-
-            return userProfile;
-        }
-
-        private async Task<Credential> CreateKnownCredentials(CredentialRequestInfo info)
-        {
-            // If this isn't the expected resource, the credential will stay null
-            Credential knownCredential = null;
-
-            try
-            {
-                // Create a credential for this resource
-                knownCredential = await AuthenticationManager.Current.GenerateCredentialAsync
-                                        (info.ServiceUri,
-                                         UserName,
-                                         Password,
-                                         info.GenerateTokenOptions);
-
-            }
-            catch (Exception ex)
-            {
-                // Report error accessing a secured resource
-                Debug.WriteLine(ex);
-                throw;
-            }
-
-            // Return the credential
-            return knownCredential;
         }
     }
 }
