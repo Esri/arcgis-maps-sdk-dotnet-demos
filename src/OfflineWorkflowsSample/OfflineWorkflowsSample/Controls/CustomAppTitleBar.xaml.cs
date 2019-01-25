@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -26,6 +28,7 @@ namespace OfflineWorkflowSample
         {
             this.InitializeComponent();
             Window.Current.SetTitleBar(DraggablePart);
+            ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
             DataContext = this;
         }
 
