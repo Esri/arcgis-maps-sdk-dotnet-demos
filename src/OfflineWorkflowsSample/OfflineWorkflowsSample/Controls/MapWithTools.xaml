@@ -6,11 +6,13 @@
     xmlns:viewServices="using:OfflineWorkflowsSample.Infrastructure.ViewServices"
     xmlns:controls1="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
-    xmlns:mapping="using:Esri.ArcGISRuntime.Mapping">
+    xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
+    xmlns:converters="using:OfflineWorkflowSample.Converters">
     <UserControl.Resources>
         <DataTemplate x:Key="LayerItemTemplate" x:DataType="mapping:Layer">
             <TextBlock Text="{Binding Name}" />
         </DataTemplate>
+        <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
     </UserControl.Resources>
     <SplitView x:Name="MapLegendSplitView" 
                DisplayMode="Overlay"
@@ -21,14 +23,13 @@
                     <StackPanel>
                         <TextBlock Text="{Binding Map.Item.Title}"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
-                        <Image Margin="5">
-                            <Image.Source>
-                                <BitmapImage UriSource="{Binding Path=Map.Item.ThumbnailUri}" />
-                            </Image.Source>
-                        </Image>
+                        <Image Margin="5" Source="{Binding Map.Item, Converter={StaticResource ItemToImageSourceConverter}}" />
                         <TextBlock Text="{Binding Map.Item.Description}"
                                    Style="{StaticResource BodyTextBlockStyle}"
                                    TextWrapping="Wrap"/>
+                        <Button Content="Open in ArcGIS Online" 
+                                HorizontalAlignment="Stretch"
+                                Click="OpenInAgol_Clicked" />
                     </StackPanel>
                 </PivotItem>
                 <PivotItem Header="Legend">
