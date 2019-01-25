@@ -1,17 +1,32 @@
-﻿using Windows.UI.Xaml;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace OfflineWorkflowSample
 {
-    public sealed partial class CustomAppTitleBar : UserControl
+    public sealed partial class CustomAppTitleBar : UserControl, INotifyPropertyChanged
     {
+        private string _title = "ArcGIS Maps Offline";
+
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Page _containingPage;
         public CustomAppTitleBar()
         {
             this.InitializeComponent();
             Window.Current.SetTitleBar(DraggablePart);
+            DataContext = this;
         }
 
         public void EnableBackButton(Page containingPage)
@@ -26,6 +41,13 @@ namespace OfflineWorkflowSample
             {
                 _containingPage.Frame.GoBack();
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

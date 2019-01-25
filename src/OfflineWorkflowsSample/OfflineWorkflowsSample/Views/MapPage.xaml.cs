@@ -28,6 +28,8 @@ namespace OfflineWorkflowSample.Views
 
             ViewModel = vm;
             this.DataContext = ViewModel;
+            
+            TitleBar.Title = ViewModel.Map.Item.Title;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

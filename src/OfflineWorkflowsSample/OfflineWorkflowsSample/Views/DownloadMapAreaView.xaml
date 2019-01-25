@@ -5,8 +5,6 @@
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample">
 
     <Grid>
-        <SplitView IsPaneOpen="True" DisplayMode="Inline">
-            <SplitView.Pane>
                 <Pivot>
                     <PivotItem Header="Take offline" IsEnabled="{Binding InOnlineMode, Mode=OneWay}">
                         <ScrollViewer>
@@ -97,7 +95,5 @@
                         </StackPanel>
                     </PivotItem>
                 </Pivot>
-            </SplitView.Pane>
-        </SplitView>
     </Grid>
 </UserControl>

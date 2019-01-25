@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Portal;
+using OfflineWorkflowSample.ViewModels;
+using OfflineWorkflowSample.Views;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowSample.ViewModels;
-using OfflineWorkflowSample.Views;
 
 namespace OfflineWorkflowsSample
 {

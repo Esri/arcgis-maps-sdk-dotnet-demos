@@ -14,6 +14,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="BackButton" Grid.Column="0"
                 Style="{StaticResource NavigationBackButtonSmallStyle}"
@@ -23,12 +24,13 @@
                Grid.Column="1"
                HorizontalAlignment="Left"
                VerticalAlignment="Center"
-               Width="20" Height="20" Margin="8" />
+               Width="30" Height="30" Margin="4" />
         <StackPanel x:Name="DraggablePart" 
                     HorizontalAlignment="Stretch" 
                     Background="Transparent"
                     Grid.Column="2">
-            <TextBlock Text="ArcGIS Runtime Offline Experience"
+            <TextBlock Text="{Binding Title}"
+                       HorizontalTextAlignment="Center"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Margin="0,8,0,0" />
         </StackPanel>

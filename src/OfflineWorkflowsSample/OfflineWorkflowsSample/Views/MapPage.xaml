@@ -15,30 +15,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- Title bar -->
             <RowDefinition Height="Auto" /> <!-- user profile -->
-            <RowDefinition Height="Auto" /> <!-- Header row -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <offlineWorkflowSample:CustomAppTitleBar x:Name="TitleBar" Grid.Row="0" />
-        <Grid Grid.Row="1" Background="{ThemeResource SystemControlAccentDark2AcrylicElementAccentDark2MediumHighBrush}">
-            <local:UserProfileView HorizontalAlignment="Right" 
-                                   VerticalAlignment="Center" 
-                                   Margin="0,5,5,5"
-                                   DataContext="{Binding}"/>
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <TextBlock 
-                    Foreground="White"
-                    TextAlignment="Center"
-                    VerticalAlignment="Center"
-                    Text="{Binding Map.Item.Title}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Stretch">
-                <Button Content="Take offline" 
-                        Height="40"
-                        Click="ButtonBase_OnClick"
-                        Margin="5,0,0,0"/>
-            </StackPanel>
-        </Grid><!-- Map header row -->
-        <SplitView x:Name="DownloadControlsSplitView" PanePlacement="Right" Grid.Row="3">
+        <SplitView x:Name="DownloadControlsSplitView"
+                   IsPaneOpen="True" DisplayMode="Inline"
+                   PanePlacement="Right" Grid.Row="2">
             <SplitView.Pane>
                 <Pivot>
                     <PivotItem Header="On-demand">

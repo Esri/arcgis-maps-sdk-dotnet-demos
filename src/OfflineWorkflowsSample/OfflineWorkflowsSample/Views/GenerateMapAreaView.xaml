@@ -7,9 +7,8 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
-        <SplitView IsPaneOpen="True" DisplayMode="Inline">
-            <SplitView.Pane>
-                <Pivot>
+
+                <Pivot Background="Transparent">
                     <PivotItem Header="Take offline" IsEnabled="{Binding InOnlineMode, Mode=OneWay}">
                         <Grid Margin="5,0">
                             <StackPanel Margin="10">
@@ -50,7 +49,5 @@
                         </Grid>
                     </PivotItem>
                 </Pivot>
-            </SplitView.Pane>
-        </SplitView>
     </Grid>
 </UserControl>
