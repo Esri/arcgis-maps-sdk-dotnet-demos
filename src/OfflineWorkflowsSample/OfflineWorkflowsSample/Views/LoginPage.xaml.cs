@@ -24,7 +24,7 @@ namespace OfflineWorkflowSample
         {
             this.InitializeComponent();
             ExtendAcrylicIntoTitleBar();
-
+            ViewModel.DialogService = this;
             ViewModel.CompletedLogin += sender => Login();
         }
 
@@ -54,9 +54,9 @@ namespace OfflineWorkflowSample
         private void Entry_Keydown(object sender, KeyRoutedEventArgs e)
         {
             // Allow log in with enter key.
-            if (e.Key == VirtualKey.Enter)
+            if (e.Key == VirtualKey.Enter && ViewModel.LoginWithCredsCommand.CanExecute(null))
             {
-                Login();
+                ViewModel.LoginWithCredsCommand.Execute(null);
             }
         }
     }

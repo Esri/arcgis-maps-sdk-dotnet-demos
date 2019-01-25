@@ -38,30 +38,34 @@
         <Pivot Grid.Row="1" x:Name="PrimaryPivot">
             
             <PivotItem Header="Offline maps">
-                <ScrollViewer>
-                    <StackPanel>
-                    </StackPanel>
-                </ScrollViewer>
+                <GridView ItemsSource="{Binding OfflineMapsViewModel.Items}"
+                          ItemTemplate="{StaticResource PortalItemTemplate}"
+                          SelectionChanged="OfflineMapSelected"/>
             </PivotItem>
-            <PivotItem Header="Featured">
+            <PivotItem Header="Featured" 
+                       Visibility="{Binding PortalViewModel.HasFeaturedItems}">
                 <StackPanel>
-                    <ListView ItemsSource="{Binding PortalViewModel.Featured}"
-                              ItemTemplate="{StaticResource PortalBrowserTemplate}"/>
+                    <GridView ItemsSource="{Binding PortalViewModel.Featured}" 
+                              ItemTemplate="{StaticResource PortalItemTemplate}" />
                 </StackPanel>
             </PivotItem>
             <PivotItem Header="My content">
                 <StackPanel>
-                    <offlineWorkflowSample:ItemListingGridView DataContext="{Binding PortalViewModel.MyContent}" />
-                    <Pivot ItemsSource="{Binding PortalViewModel.MyContent.Groups}"
-                           ItemTemplate="{StaticResource PortalBrowserTemplate}">
-                        <Pivot.HeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Title}" />
-                            </DataTemplate>
-                        </Pivot.HeaderTemplate>
-                    </Pivot>
+                    <ScrollViewer>
+                        <StackPanel>
+                            <offlineWorkflowSample:ItemListingGridView DataContext="{Binding PortalViewModel.MyContent}" />
+                            <Pivot ItemsSource="{Binding PortalViewModel.MyContent.Groups}"
+                                   ItemTemplate="{StaticResource PortalBrowserTemplate}">
+                                <Pivot.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Title}" />
+                                    </DataTemplate>
+                                </Pivot.HeaderTemplate>
+                            </Pivot>
+                        </StackPanel>
+                    
+                    </ScrollViewer>
                 </StackPanel>
-                
                 
             </PivotItem>
             <PivotItem Header="My Groups">

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using Esri.ArcGISRuntime.Http;
 
 namespace OfflineWorkflowSample.ViewModels
 {
@@ -26,7 +27,7 @@ namespace OfflineWorkflowSample.ViewModels
 
         #region command pattern
 
-        private IDialogService _dialogService = null;
+        public IDialogService DialogService = null;
         private readonly DelegateCommand _loginWithCredsCommand;
         public ICommand LoginWithCredsCommand => _loginWithCredsCommand;
         private readonly DelegateCommand _loginWithOAuthCommand;
@@ -95,14 +96,18 @@ namespace OfflineWorkflowSample.ViewModels
         private void StartCredentialAuth()
         {
             IsCredentialsOpen = true;
-            AuthenticationManager.Current.ChallengeHandler = new ChallengeHandler(CreateCredentialsFromFormAsync);
         }
 
         private bool CanDoFormLogin() => !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
 
         private async void DoLogin()
         {
-            UserProfile = await AuthenticateAndLoadProfile();
+            Portal = await AuthenticateAndCreatePortal();
+            if (Portal == null)
+            {
+                return;
+            }
+            UserProfile = GetProfile();
             RaiseLoggedIn();
         }
 
@@ -123,27 +128,36 @@ namespace OfflineWorkflowSample.ViewModels
             return userProfile;
         }
 
-        private async Task<UserProfileModel> AuthenticateAndLoadProfile()
+        private async Task<ArcGISPortal> AuthenticateAndCreatePortal()
         {
-            // Authenticate
-            Credential cred;
-            if (IsCredentialsOpen)
+            try
             {
-                cred = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri(PortalUrl), UserName, Password);
-            }
-            else
-            {
-                cred = await GetOAuthCredentials();
-            }
-
-            if (!AuthenticationManager.Current.Credentials.Contains(cred))
+                // Authenticate
+                Credential cred;
+                if (IsCredentialsOpen)
+                {
+                    AuthenticationManager.Current.ChallengeHandler = new ChallengeHandler(CreateCredentialsFromFormAsync);
+                    cred = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri(PortalUrl), UserName, Password);
+                }
+                else
+                {
+                    cred = await GetOAuthCredentials();
+                }
                 AuthenticationManager.Current.AddCredential(cred);
 
-            // Create the portal with authentication info
-            Portal = await ArcGISPortal.CreateAsync(cred.ServiceUri, cred);
-
-            // Populate the user profile and return it.
-            return GetProfile();
+                // Create the portal with authentication info
+                return await ArcGISPortal.CreateAsync(cred.ServiceUri, cred);
+            }
+            catch (ArcGISWebException e)
+            {
+                await DialogService.ShowMessageAsync($"Couldn't log in - {e.Message}");
+                return null;
+            }
+            catch (OperationCanceledException e)
+            {
+                await DialogService.ShowMessageAsync($"Log in canceled");
+                return null;
+            }
         }
 
         private async Task<Credential> GetOAuthCredentials()

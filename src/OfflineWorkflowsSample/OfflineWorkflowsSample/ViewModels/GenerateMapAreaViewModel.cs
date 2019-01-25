@@ -20,7 +20,6 @@ namespace OfflineWorkflowsSample.GenerateMapArea
     {
         private const string EnvelopeToTakeOffline = "{\"xmin\":-9811025.6479785144,\"ymin\":5127976.7933954755,\"xmax\":-9809970.6486553717,\"ymax\":5128752.6489288369,\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}}";
 
-        private readonly ArcGISPortal _portal;
         private IReadOnlyList<LevelOfDetail> _levelsOfDetail;
         private DelegateCommand _generateMapAreaCommand;
         private DelegateCommand _navigateToMapAreaCommand;
@@ -48,7 +47,6 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
         public GenerateMapAreaViewModel(MainViewModel parent)
         {
-            _portal = parent.Portal ?? throw new ArgumentNullException(nameof(parent));
             _mainVM = parent;
             _generateMapAreaCommand = new DelegateCommand(GenerateMapArea);
             _navigateToMapAreaCommand = new DelegateCommand(NavigateToMapArea);
@@ -75,8 +73,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 IsBusy = true;
                 IsBusyText = "Generating an offline map...";
 
-                var offlineDataFolder = Path.Combine(OfflineDataStorageHelper.GetDataFolder(),
-                     "OnDemandAreas", Map.Item.ItemId + DateTime.Now.Millisecond.ToString());
+                var offlineDataFolder = OfflineDataStorageHelper.GetDataFolderForMap(Map);
                 
                 // If temporary data folder exists remove it
                 if (Directory.Exists(offlineDataFolder))
@@ -117,7 +114,6 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                     foreach (var tableError in results.TableErrors)
                         Debug.WriteLine($"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}");
                 }
-
                 // Step 5 : Use results
                 Map = results.OfflineMap;
 

@@ -8,7 +8,6 @@ using OfflineWorkflowsSample.Models;
 using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -79,8 +78,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 IsBusy = true;
                 IsBusyText = "Downloading selected area...";
 
-                var offlineDataFolder = Path.Combine(OfflineDataStorageHelper.GetDataFolder(),
-                     "PreplannedMapAreas", Map.Item.ItemId);
+                var offlineDataFolder = Path.Combine(OfflineDataStorageHelper.GetDataFolderForMap(Map));
 
                 // If temporary data folder exists remove it
                 if (Directory.Exists(offlineDataFolder))

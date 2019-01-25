@@ -39,6 +39,14 @@ namespace OfflineWorkflowsSample
             set { SetProperty(ref _downloadMapAreaViewModel, value); }
         }
 
+        private OfflineMapsViewModel _offlineMapViewModel = new OfflineMapsViewModel();
+
+        public OfflineMapsViewModel OfflineMapsViewModel
+        {
+            get => _offlineMapViewModel;
+            set => SetProperty(ref _offlineMapViewModel, value);
+        }
+
         private PortalViewModel _portalViewModel;
 
         public PortalViewModel PortalViewModel
@@ -57,6 +65,7 @@ namespace OfflineWorkflowsSample
             try
             {
                 PortalViewModel = await PortalViewModel.GetRootVM(_portal, true, true);
+                await OfflineMapsViewModel.Initialize();
             }
             catch (Exception ex)
             {

@@ -19,10 +19,18 @@ namespace OfflineWorkflowSample
         public string Title { get; set; }
         public IEnumerable<PortalItem> Items { get; set; }
         public IList<PortalViewModel> Groups { get; set; } = new List<PortalViewModel>();
-        public IEnumerable<PortalItem> Featured { get; set; }
+        private IEnumerable<PortalItem> _featured;
+
+        public IEnumerable<PortalItem> Featured
+        {
+            get => _featured;
+            set => SetProperty(ref _featured, value);
+        }
+
         public PortalViewModel MyContent { get; set; }
         public ArcGISPortal Portal { get; set; }
 
+        public bool HasFeaturedItems => Featured.Any();
 
         public PortalItem SelectedItem
         {
@@ -30,18 +38,18 @@ namespace OfflineWorkflowSample
             set => SetProperty(ref _selectedItem, value);
         }
 
-        public PortalViewModel()
+        private PortalViewModel()
         {
         }
 
-        public PortalViewModel(PortalFolder folder, IEnumerable<PortalItem> items)
+        private PortalViewModel(PortalFolder folder, IEnumerable<PortalItem> items)
         {
             this.Portal = folder.Portal;
             this.Title = folder.Title;
             this.Items = items;
         }
 
-        public PortalViewModel(PortalGroup group, IEnumerable<PortalItem> items)
+        private PortalViewModel(PortalGroup group, IEnumerable<PortalItem> items)
         {
             this.Portal = group.Portal;
             this.Title = group.Title;
@@ -70,6 +78,7 @@ namespace OfflineWorkflowSample
                     {
                         continue;
                     }
+
                     myContentModel.Groups.Add(new PortalViewModel(folder, items));
                 }
 
@@ -87,14 +96,14 @@ namespace OfflineWorkflowSample
                     {
                         continue;
                     }
+
                     PortalViewModel groupModel = new PortalViewModel(item, itemResults.Results);
                     resultModel.Groups.Add(groupModel);
                 }
             }
 
             // Populate featured
-            resultModel.Featured = await portal.GetFeaturedItemsAsync();
-            resultModel.Featured = resultModel.Featured.Where(item => item.Type == PortalItemType.WebMap);
+            resultModel.Featured = (await portal.GetFeaturedItemsAsync()).Where(item => item.Type == PortalItemType.WebMap);
             return resultModel;
         }
     }

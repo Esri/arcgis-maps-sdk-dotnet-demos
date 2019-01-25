@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Portal;
 using OfflineWorkflowSample.ViewModels;
 using OfflineWorkflowSample.Views;
 
@@ -39,6 +41,16 @@ namespace OfflineWorkflowsSample
         {
             ViewModel.SelectMap(map);
             Frame.Navigate(typeof(MapPage), ViewModel);
+        }
+
+        private void OfflineMapSelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Any())
+            {
+                Item selectedItem = e.AddedItems.First() as Item;
+                Map selectedMap = ViewModel.OfflineMapsViewModel.MapItems[selectedItem];
+                ShowMapItem(selectedMap);
+            }
         }
     }
 }

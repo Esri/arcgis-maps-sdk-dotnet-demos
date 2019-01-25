@@ -102,6 +102,7 @@
       <DependentUpon>CustomAppTitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\OfflineMapsViewModel.cs" />
     <Compile Include="Views\DownloadMapAreaView.xaml.cs">
       <DependentUpon>DownloadMapAreaView.xaml</DependentUpon>
     </Compile>

@@ -4,5 +4,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:OfflineWorkflowsSample"
     RequestedTheme="Light">
-   
+   <Application.Resources>
+       <DataTemplate x:Name="PortalItemTemplate" x:Key="PortalItemTemplate">
+           <Grid Width="250" Height="250">
+               <Grid.RowDefinitions>
+                   <RowDefinition Height="*" />
+                   <RowDefinition Height="auto" />
+               </Grid.RowDefinitions>
+               <Image Stretch="UniformToFill" Grid.RowSpan="2">
+                   <Image.Source>
+                       <BitmapImage UriSource="{Binding Path=ThumbnailUri}" />
+                   </Image.Source>
+               </Image>
+               <Grid Grid.Row="1" Background="{ThemeResource SystemControlAccentDark2AcrylicElementAccentDark2MediumHighBrush}">
+                   <TextBlock Padding="10" Text="{Binding Path=Title}" Foreground="White" TextWrapping="Wrap" FontSize="24" />
+               </Grid>
+           </Grid>
+       </DataTemplate>
+   </Application.Resources>
 </Application>

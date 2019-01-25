@@ -1,4 +1,7 @@
-﻿namespace OfflineWorkflowsSample.Infrastructure
+﻿using System.IO;
+using Esri.ArcGISRuntime.Mapping;
+
+namespace OfflineWorkflowsSample.Infrastructure
 {
     public class OfflineDataStorageHelper
     {
@@ -11,6 +14,11 @@
             appDataFolder = System.IO.Directory.GetCurrentDirectory();
 #endif
             return appDataFolder;
+        }
+
+        internal static string GetDataFolderForMap(Map map)
+        {
+            return Path.Combine(GetDataFolder(), map.Item.ItemId);
         }
     }
 }
