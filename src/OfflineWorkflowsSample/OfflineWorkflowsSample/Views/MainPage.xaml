@@ -30,30 +30,31 @@
     <Grid DataContext="{StaticResource ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Title bar -->
         <offlineWorkflowSample:CustomAppTitleBar Grid.Row="0" />
         <Pivot Grid.Row="1" x:Name="PrimaryPivot">
             
             <PivotItem Header="Offline maps">
-                <GridView ItemsSource="{Binding OfflineMapsViewModel.Items}"
-                          ItemTemplate="{StaticResource PortalItemTemplate}"
-                          SelectionChanged="OfflineMapSelected"/>
+                <ScrollViewer>
+                    <GridView ItemsSource="{Binding OfflineMapsViewModel.Items}"
+                              ItemTemplate="{StaticResource PortalItemTemplate}"
+                              SelectionChanged="OfflineMapSelected"/>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem Header="Featured" 
                        Visibility="{Binding PortalViewModel.HasFeaturedItems}">
-                <StackPanel>
+                <ScrollViewer>
                     <GridView ItemsSource="{Binding PortalViewModel.Featured}" 
                               ItemTemplate="{StaticResource PortalItemTemplate}" />
-                </StackPanel>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem Header="My content">
-                <StackPanel>
                     <ScrollViewer>
                         <StackPanel>
-                            <offlineWorkflowSample:ItemListingGridView DataContext="{Binding PortalViewModel.MyContent}" />
+                            <offlineWorkflowSample:ItemListingGridView 
+                                DataContext="{Binding PortalViewModel.MyContent}"/>
                             <Pivot ItemsSource="{Binding PortalViewModel.MyContent.Groups}"
                                    ItemTemplate="{StaticResource PortalBrowserTemplate}">
                                 <Pivot.HeaderTemplate>
@@ -63,10 +64,7 @@
                                 </Pivot.HeaderTemplate>
                             </Pivot>
                         </StackPanel>
-                    
                     </ScrollViewer>
-                </StackPanel>
-                
             </PivotItem>
             <PivotItem Header="My Groups">
                         <Pivot ItemsSource="{Binding PortalViewModel.Groups}"
