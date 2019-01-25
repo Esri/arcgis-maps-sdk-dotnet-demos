@@ -33,7 +33,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Title bar -->
-        <offlineWorkflowSample:CustomAppTitleBar Grid.Row="0" />
+        <offlineWorkflowSample:CustomAppTitleBar x:Name="TitleBar" 
+                                                 Grid.Row="0" />
         <Pivot Grid.Row="1" x:Name="PrimaryPivot">
             
             <PivotItem Header="Offline maps">
@@ -66,7 +67,7 @@
                         </StackPanel>
                     </ScrollViewer>
             </PivotItem>
-            <PivotItem Header="My groups">
+            <PivotItem Header="My groups" >
                         <Pivot ItemsSource="{Binding PortalViewModel.Groups}"
                                   ItemTemplate="{StaticResource PortalBrowserTemplate}">
                             <Pivot.HeaderTemplate>

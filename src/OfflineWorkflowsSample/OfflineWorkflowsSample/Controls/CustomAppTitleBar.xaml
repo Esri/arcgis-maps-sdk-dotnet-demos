@@ -6,16 +6,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <StackPanel x:Name="AppTitleBar" Background="Transparent" Orientation="Horizontal">
+    <Grid x:Name="AppTitleBar" Background="Transparent" HorizontalAlignment="Stretch">
         <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
         <!-- Using padding columns instead of Margin ensures that the background
                  paints the area under the caption control buttons (for transparent buttons). -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Button x:Name="BackButton" Grid.Column="0"
+                Style="{StaticResource NavigationBackButtonSmallStyle}"
+                Visibility="Collapsed"
+                Click="BackButton_OnClick"/>
         <Image Source="../Assets/Square44x44Logo.png"
+               Grid.Column="1"
                HorizontalAlignment="Left"
                VerticalAlignment="Center"
                Width="20" Height="20" Margin="8" />
-        <TextBlock Text="ArcGIS Runtime Offline Experience"
-                   Style="{StaticResource CaptionTextBlockStyle}"
-                   Margin="0,8,0,0" />
-    </StackPanel>
+        <StackPanel x:Name="DraggablePart" 
+                    HorizontalAlignment="Stretch" 
+                    Background="Transparent"
+                    Grid.Column="2">
+            <TextBlock Text="ArcGIS Runtime Offline Experience"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Margin="0,8,0,0" />
+        </StackPanel>
+    </Grid>
 </UserControl>

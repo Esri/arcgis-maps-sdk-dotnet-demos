@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" /> <!-- Header row -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <offlineWorkflowSample:CustomAppTitleBar Grid.Row="0" />
+        <offlineWorkflowSample:CustomAppTitleBar x:Name="TitleBar" Grid.Row="0" />
         <Grid Grid.Row="1" Background="{ThemeResource SystemControlAccentDark2AcrylicElementAccentDark2MediumHighBrush}">
             <local:UserProfileView HorizontalAlignment="Right" 
                                    VerticalAlignment="Center" 
