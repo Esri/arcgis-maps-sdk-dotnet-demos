@@ -40,7 +40,7 @@ namespace OfflineWorkflowSample.ViewModels
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Ignored - not a valid map package
                 }

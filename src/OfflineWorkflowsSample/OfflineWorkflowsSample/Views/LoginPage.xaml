@@ -28,14 +28,7 @@
                            Style="{StaticResource HeaderTextBlockStyle}"
                            TextAlignment="Center"
                            Margin="20" />
-                    <Button Content="Sign in with ArcGIS Online" 
-                            HorizontalAlignment="Stretch"
-                            Command="{Binding LoginWithOAuthCommand}"/>
-                    <Button Content="Sign in with ArcGIS Enterprise" 
-                            HorizontalAlignment="Stretch"
-                            Margin="0,5,0,5"
-                            Command="{Binding ShowCredentialFormCommand}"/>
-                <Grid ColumnSpacing="5" RowSpacing="5" Visibility="{Binding IsCredentialsOpen}">
+                <Grid ColumnSpacing="5" RowSpacing="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -49,24 +42,16 @@
                     <TextBlock Text="Portal:"
                                Grid.Row="0" Grid.Column="0"
                                Style="{StaticResource LoginLabelStyle}" />
-                    <TextBlock Text="Username:"
-                               Grid.Row="1" Grid.Column="0"
-                               Style="{StaticResource LoginLabelStyle}" />
-                    <TextBlock Text="Password:"
-                               Grid.Row="2" Grid.Column="0"
-                               Style="{StaticResource LoginLabelStyle}" />
-                    <TextBox Text="{Binding PortalUrl, Mode=TwoWay}"
-                             Grid.Row="0" Grid.Column="1" />
-                    <TextBox Text="{Binding UserName, Mode=TwoWay}"
-                             IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
-                             Grid.Row="1" Grid.Column="1" />
-                    <PasswordBox Password="{Binding Password, Mode=TwoWay}"
-                                 Grid.Row="2" Grid.Column="1"
-                                 KeyDown="Entry_Keydown" />
-                    <Button Content="Log in"
-                            Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                            Command="{Binding LoginWithCredsCommand}"
-                            HorizontalAlignment="Stretch" />
+                    <TextBox Text="{Binding PortalUrl}"
+                             Grid.Row="0" Grid.Column="1"/>
+                    <Button Content="Sign in with OAuth"
+                            Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding LoginWithOAuthCommand}"/>
+                    <Button Content="Sign in with token challenge" 
+                            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding LoginWithoutOAuthCommand}"/>
                 </Grid>
 
             </StackPanel>

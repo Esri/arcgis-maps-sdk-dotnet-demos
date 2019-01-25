@@ -3,13 +3,11 @@ using OfflineWorkflowsSample;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
-using Windows.System;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -49,15 +47,6 @@ namespace OfflineWorkflowSample
             // Navigate to the main page, passing the view model as an argument.
             Frame rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(MainPage), ViewModel);
-        }
-
-        private void Entry_Keydown(object sender, KeyRoutedEventArgs e)
-        {
-            // Allow log in with enter key.
-            if (e.Key == VirtualKey.Enter && ViewModel.LoginWithCredsCommand.CanExecute(null))
-            {
-                ViewModel.LoginWithCredsCommand.Execute(null);
-            }
         }
     }
 }

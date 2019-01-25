@@ -105,15 +105,22 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
                 // Step 4 : Run the job and wait the results
                 var results = await _job.GetResultAsync();
-                       
+
                 if (results.HasErrors)
                 {
+                    string errorString = "";
                     // If one or more layers fails, layer errors are populated with corresponding errors.
                     foreach (var layerError in results.LayerErrors)
-                        Debug.WriteLine($"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}");
+                        errorString += $"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}\n";
                     foreach (var tableError in results.TableErrors)
-                        Debug.WriteLine($"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}");
+                        errorString += $"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}\n";
+                    _mainVM.ShowMessage(errorString);
+
+                    // Delete the unfinished map.
+                    Directory.Delete(offlineDataFolder, true);
+                    return;
                 }
+                
                 // Step 5 : Use results
                 Map = results.OfflineMap;
 

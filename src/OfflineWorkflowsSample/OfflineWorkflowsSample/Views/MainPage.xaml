@@ -66,7 +66,7 @@
                         </StackPanel>
                     </ScrollViewer>
             </PivotItem>
-            <PivotItem Header="My Groups">
+            <PivotItem Header="My groups">
                         <Pivot ItemsSource="{Binding PortalViewModel.Groups}"
                                   ItemTemplate="{StaticResource PortalBrowserTemplate}">
                             <Pivot.HeaderTemplate>
