@@ -7,6 +7,7 @@
     RequestedTheme="Light">
    <Application.Resources>
        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+       <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
        <DataTemplate x:Name="PortalItemTemplate" x:Key="PortalItemTemplate">
            <Border Background="White" 
                    BorderThickness="1" 
@@ -24,11 +25,8 @@
                        <ColumnDefinition Width="*" />
                    </Grid.ColumnDefinitions>
                    <Image Stretch="UniformToFill"
-                          Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
-                       <Image.Source>
-                           <BitmapImage UriSource="{Binding Path=ThumbnailUri}" />
-                       </Image.Source>
-                   </Image>
+                          Grid.Column="0" Grid.Row="0" Grid.RowSpan="4"
+                          Source="{Binding Converter={StaticResource ItemToImageSourceConverter}}" />
                    <TextBlock Text="{Binding Title}"
                               Grid.Row="0" Grid.Column="1"
                               Margin="0,5,0,0"
