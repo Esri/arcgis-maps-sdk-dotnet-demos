@@ -197,8 +197,11 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
         private void UpdateScales()
         {
-            SelectedMinimumScale = _levelsOfDetail.First().Scale.ToString("F0");
-            SelectedMaximumScale = _levelsOfDetail[SelectedLevelOfDetail].Scale.ToString("F0");
+            if (_levelsOfDetail.Any())
+            {
+                SelectedMinimumScale = _levelsOfDetail.First().Scale.ToString("F0");
+                SelectedMaximumScale = _levelsOfDetail[SelectedLevelOfDetail].Scale.ToString("F0");
+            }
         }
 
         private void UpdateMap()
@@ -236,17 +239,29 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
                 await Map.LoadAsync();
 
-                // Set the scale information to the UI
-                var basemapLayer = Map.AllLayers.OfType<ArcGISTiledLayer>().FirstOrDefault();
-                if (basemapLayer != null)
-                    _levelsOfDetail = basemapLayer.ServiceInfo.TileInfo.LevelsOfDetail;
-                else
+                if (Map.Item is LocalItem)
                 {
-                    var vectorBasemapLayer = Map.AllLayers.OfType<ArcGISVectorTiledLayer>().First();
-                    _levelsOfDetail = vectorBasemapLayer.SourceInfo.LevelsOfDetail;
+                    InOnlineMode = true;
                 }
 
-                MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
+                try
+                {
+                    // Set the scale information to the UI
+                    var basemapLayer = Map.AllLayers.OfType<ArcGISTiledLayer>().FirstOrDefault();
+                    if (basemapLayer != null)
+                        _levelsOfDetail = basemapLayer.ServiceInfo.TileInfo.LevelsOfDetail;
+                    else
+                    {
+                        var vectorBasemapLayer = Map.AllLayers.OfType<ArcGISVectorTiledLayer>().First();
+                        _levelsOfDetail = vectorBasemapLayer.SourceInfo.LevelsOfDetail;
+                    }
+                    MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
+                }
+                catch (Exception)
+                {
+                    _levelsOfDetail = new List<LevelOfDetail>();
+                }
+                
                 SelectedLevelOfDetail = 17;
 
             }

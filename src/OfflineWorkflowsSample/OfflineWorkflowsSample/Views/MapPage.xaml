@@ -20,6 +20,7 @@
         <offlineWorkflowSample:CustomAppTitleBar x:Name="TitleBar" Grid.Row="0" />
         <SplitView x:Name="DownloadControlsSplitView"
                    IsPaneOpen="True" DisplayMode="Inline"
+                   PaneBackground="{ThemeResource SystemControlAcrylicWindowBrush}"
                    PanePlacement="Right" Grid.Row="2">
             <SplitView.Pane>
                 <Pivot>

@@ -50,6 +50,7 @@ namespace OfflineWorkflowsSample
                 Item selectedItem = e.AddedItems.First() as Item;
                 Map selectedMap = ViewModel.OfflineMapsViewModel.MapItems[selectedItem];
                 ShowMapItem(selectedMap);
+
             }
         }
     }

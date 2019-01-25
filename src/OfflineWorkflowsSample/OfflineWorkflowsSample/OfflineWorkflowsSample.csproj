@@ -101,6 +101,7 @@
     <Compile Include="Controls\CustomAppTitleBar.xaml.cs">
       <DependentUpon>CustomAppTitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\OfflineMapsViewModel.cs" />
     <Compile Include="Views\DownloadMapAreaView.xaml.cs">
@@ -281,7 +282,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Placeholders\" />
-    <Folder Include="Converters\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

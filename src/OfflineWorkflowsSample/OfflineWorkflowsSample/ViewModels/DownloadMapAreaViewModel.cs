@@ -273,24 +273,32 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 // Load map from portal
                 await Map.LoadAsync();
 
-                // Create new task to 
-                var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
-
-                // Get list of areas
-                var preplannedMapAreas = await offlineMapTask.GetPreplannedMapAreasAsync();
-
-                // Create UI from the areas
-                foreach (var preplannedMapArea in preplannedMapAreas.OrderBy(x => x.PortalItem.Title))
+                if (Map.Item is LocalItem)
                 {
-                    // Load area to get the metadata 
-                    await preplannedMapArea.LoadAsync();
-                    // Using a custom model for easier visualization
-                    var model = new MapAreaModel(preplannedMapArea);
-                    MapAreas.Add(model);
-                    // Graphic that shows the area in the map
-                    var graphic = new Graphic(preplannedMapArea.AreaOfInterest);
-                    graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
-                    _areasOverlay.Graphics.Add(graphic);
+                    InOnlineMode = true;
+                }
+                else
+                {
+                    
+                    // Create new task to 
+                    var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
+
+                    // Get list of areas
+                    var preplannedMapAreas = await offlineMapTask.GetPreplannedMapAreasAsync();
+
+                    // Create UI from the areas
+                    foreach (var preplannedMapArea in preplannedMapAreas.OrderBy(x => x.PortalItem.Title))
+                    {
+                        // Load area to get the metadata 
+                        await preplannedMapArea.LoadAsync();
+                        // Using a custom model for easier visualization
+                        var model = new MapAreaModel(preplannedMapArea);
+                        MapAreas.Add(model);
+                        // Graphic that shows the area in the map
+                        var graphic = new Graphic(preplannedMapArea.AreaOfInterest);
+                        graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
+                        _areasOverlay.Graphics.Add(graphic);
+                    }
                 }
             }
             catch (Exception ex)
