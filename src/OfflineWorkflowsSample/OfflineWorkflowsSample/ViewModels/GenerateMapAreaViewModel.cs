@@ -12,6 +12,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Storage;
+using Windows.System;
 using OfflineWorkflowsSample.Infrastructure.ViewServices;
 
 namespace OfflineWorkflowsSample.GenerateMapArea
@@ -23,6 +25,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         private IReadOnlyList<LevelOfDetail> _levelsOfDetail;
         private DelegateCommand _generateMapAreaCommand;
         private DelegateCommand _navigateToMapAreaCommand;
+        private DelegateCommand _openMapFileCommand;
         private GenerateOfflineMapJob _job;
         private MainViewModel _mainVM;
         public override Map Map
@@ -50,6 +53,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             _mainVM = parent;
             _generateMapAreaCommand = new DelegateCommand(GenerateMapArea);
             _navigateToMapAreaCommand = new DelegateCommand(NavigateToMapArea);
+            _openMapFileCommand = new DelegateCommand(RevealInExplorer, () => !InOnlineMode);
         }
 
         public override MapViewService MapViewService => _mainVM.MapViewService;
@@ -115,16 +119,13 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                     foreach (var tableError in results.TableErrors)
                         errorString += $"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}\n";
                     _mainVM.ShowMessage(errorString);
-
-                    // Delete the unfinished map.
-                    Directory.Delete(offlineDataFolder, true);
-                    return;
                 }
                 
                 // Step 5 : Use results
                 Map = results.OfflineMap;
 
                 InOnlineMode = false;
+                _openMapFileCommand.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -151,7 +152,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
         public ICommand GenerateMapAreaCommand => _generateMapAreaCommand;
         public ICommand NavigateToMapAreaCommand => _navigateToMapAreaCommand;
-
+        public ICommand OpenMapFileCommand => _openMapFileCommand;
 
         private bool _includeBasemap = true;
         public bool IncludeBasemap
@@ -273,6 +274,22 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             {
                 IsBusy = false;
                 IsBusyText = string.Empty;
+            }
+        }
+
+        private async void RevealInExplorer()
+        {
+            try
+            {
+                string path = OfflineDataStorageHelper.GetDataFolder();
+                path = Path.Combine(path, ((LocalItem) Map.Item).OriginalPortalItemId);
+                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(path);
+                await Launcher.LaunchFolderAsync(folder);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                _mainVM.ShowMessage($"Couldn't open folder - {e.Message}");
             }
         }
     }

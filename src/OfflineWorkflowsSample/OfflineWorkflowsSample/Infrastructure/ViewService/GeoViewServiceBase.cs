@@ -316,5 +316,9 @@ namespace OfflineWorkflowsSample.Infrastructure.ViewServices
         /// <param name="definition">The callout definition.</param>
         public void ShowCalloutForGeoElement(GeoElement element, Point tapPosition, CalloutDefinition definition)
             => GetView().ShowCalloutForGeoElement(element, tapPosition, definition);
+
+        public void AddGraphicsOverlay(GraphicsOverlay overlay) => GetView().GraphicsOverlays.Add(overlay);
+
+        public void ClearOverlays() => GetView().GraphicsOverlays.Clear();
     }
 }

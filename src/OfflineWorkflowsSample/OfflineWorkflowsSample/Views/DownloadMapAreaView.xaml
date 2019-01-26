@@ -19,12 +19,13 @@
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
                                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="Padding" Value="0" />
+                                            <Setter Property="Margin" Value="0,5,0,0" />
                                         </Style>
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid BorderBrush="{ThemeResource ToggleSwitchFillOn}" BorderThickness="1"
-                                                  Margin="5">
+                                            <Grid BorderBrush="{ThemeResource ToggleSwitchFillOn}" BorderThickness="1">
                                                 <Grid ColumnSpacing="5">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="100" />
@@ -34,14 +35,14 @@
                                                            Width="100" Height="100"
                                                            Stretch="UniformToFill" />
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="{Binding Title}" FontSize="18"
+                                                        <TextBlock Text="{Binding Title}"
                                                                    Margin="10,5,10,5"
-                                                                   Style="{StaticResource SubtitleTextBlockStyle}" />
-                                                        <TextBlock Text="{Binding Snippet}" FontSize="13"
+                                                                   Style="{StaticResource BodyTextBlockStyle}" />
+                                                        <TextBlock Text="{Binding Snippet}"
                                                                    TextWrapping="Wrap"
                                                                    VerticalAlignment="Top"
                                                                    TextTrimming="CharacterEllipsis"
-                                                                   Style="{StaticResource BodyTextBlockStyle}" />
+                                                                   Style="{StaticResource CaptionTextBlockStyle}" />
                                                     </StackPanel>
                                                 </Grid>
                                             </Grid>

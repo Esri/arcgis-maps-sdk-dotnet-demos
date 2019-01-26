@@ -7,6 +7,7 @@ using OfflineWorkflowsSample.Infrastructure;
 using OfflineWorkflowsSample.Models;
 using Prism.Commands;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using OfflineWorkflowsSample.Infrastructure.ViewServices;
+using Prism.Windows.Navigation;
 
 namespace OfflineWorkflowsSample.DownloadMapArea
 {
@@ -60,11 +62,6 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 }
             };
 
-            var graphicsOverlays = new GraphicsOverlayCollection()
-                        {
-                           _areasOverlay
-                        };
-            GraphicsOverlays = graphicsOverlays;
             _downloadMapAreaCommand = new DelegateCommand(DownloadMapArea, CanDownloadMapArea);
             _syncMapAreaCommand = new DelegateCommand<string>(SyncMapArea, CanSyncMapArea);
         }
@@ -299,7 +296,11 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                         graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
                         _areasOverlay.Graphics.Add(graphic);
                     }
+
+                    // Show the overlays on the map.
+                    _mainVM.MapViewService.AddGraphicsOverlay(_areasOverlay);
                 }
+                
             }
             catch (Exception ex)
             {
@@ -310,6 +311,14 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 IsBusy = false;
                 IsBusyText = string.Empty;
             }
+        }
+
+        public override void OnNavigatingFrom(NavigatingFromEventArgs e, Dictionary<string, object> viewModelState, bool suspending)
+        {
+            base.OnNavigatingFrom(e, viewModelState, suspending);
+
+            // Hide the extent overlays when navigating away.
+            _mainVM.MapViewService.ClearOverlays();
         }
     }
 }

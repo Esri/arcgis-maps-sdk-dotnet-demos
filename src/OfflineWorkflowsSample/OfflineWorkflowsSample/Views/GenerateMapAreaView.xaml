@@ -9,7 +9,7 @@
     <Grid>
 
                 <Pivot Background="Transparent">
-                    <PivotItem Header="Take offline" IsEnabled="{Binding InOnlineMode, Mode=OneWay}">
+                    <PivotItem Header="Take offline">
                         <Grid Margin="5,0">
                             <StackPanel Margin="10">
                                 <TextBlock Text="1. Select area to take offline"
@@ -17,6 +17,7 @@
                                 <Button Content="Zoom to area" Grid.Row="2"
                                         Command="{Binding NavigateToMapAreaCommand}"
                                         Margin="10,10" HorizontalAlignment="Stretch"
+                                        IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
                                         Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
 
                                 <TextBlock Text="2. Define scale range for the offline map"
@@ -30,21 +31,29 @@
                                 <Slider TickFrequency="1"
                                         Value="{Binding SelectedLevelOfDetail, Mode=TwoWay}"
                                         Maximum="{Binding MaximumLevelOfDetail, Mode=OneWay}"
+                                        IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
                                         Minimum="0" />
                                 <TextBlock Text="3. Define other parameters"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <ToggleSwitch Header="Include basemap" IsOn="{Binding IncludeBasemap, Mode=TwoWay}" />
-                                <ToggleSwitch Header="Include attachments"
-                                              IsOn="{Binding IncludeAttachments, Mode=TwoWay}" />
+                                <ToggleSwitch Header="Include basemap" 
+                                              IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
+                                              IsOn="{Binding IncludeBasemap, Mode=TwoWay}" />
                                 <TextBlock Text="4. Generate offline map"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
                                 <Button Content="Generate area"
                                         Command="{Binding GenerateMapAreaCommand}"
+                                        IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
                                         Margin="10,5" HorizontalAlignment="Stretch"
                                         Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
 
-                                <TextBlock Text="Open downloaded map"
+                                <TextBlock Text="5. Open downloaded map"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
+                                <TextBlock Text="Curious? See the package in local storage."
+                                           TextWrapping="Wrap"/>
+                                <Button Content="Reveal in File Explorer"
+                                        Command="{Binding OpenMapFileCommand}"
+                                        Margin="10,5" HorizontalAlignment="Stretch"
+                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
                             </StackPanel>
                         </Grid>
                     </PivotItem>

@@ -39,19 +39,19 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Portal:"
-                               Grid.Row="0" Grid.Column="0"
-                               Style="{StaticResource LoginLabelStyle}" />
-                    <TextBox Text="{Binding PortalUrl}"
-                             Grid.Row="0" Grid.Column="1"/>
-                    <Button Content="Sign in with OAuth"
+                    <Button Content="Sign in to ArcGIS Online"
+                            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding LogInToPortalCommand}"/>
+                    <Button Content="Sign in to Enterprise" 
                             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                             HorizontalAlignment="Stretch"
-                            Command="{Binding LoginWithOAuthCommand}"/>
-                    <Button Content="Sign in with token challenge" 
-                            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                            Command="{Binding ShowEnterpriseFormCommand}"/>
+                    <TextBox Text="{Binding PortalUrl, Mode=TwoWay}" Grid.Row="2" Visibility="{Binding PortalFormIsOpen}"/>
+                    <Button Content="Continue" Grid.Row="2" Grid.Column="1"
+                            Visibility="{Binding PortalFormIsOpen}"
                             HorizontalAlignment="Stretch"
-                            Command="{Binding LoginWithoutOAuthCommand}"/>
+                            Command="{Binding LogInToEnterpriseCommand}"/>
                 </Grid>
 
             </StackPanel>

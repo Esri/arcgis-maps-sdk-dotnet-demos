@@ -68,7 +68,7 @@ namespace OfflineWorkflowSample
                 PortalViewModel myContentModel = new PortalViewModel();
                 myContentModel.Portal = portal;
                 myContentModel.Title = "My Content";
-                myContentModel.Items = result.Items.Where(item => item.Type == PortalItemType.WebMap);
+                myContentModel.Items = result.Items.Where(item => item.Type == PortalItemType.WebMap && item.TypeKeywords.Contains("Offline"));
                 myContentModel.Groups = new ObservableCollection<PortalViewModel>();
                 foreach (var folder in result.Folders)
                 {
@@ -92,12 +92,13 @@ namespace OfflineWorkflowSample
                 {
                     PortalQueryParameters parameters = PortalQueryParameters.CreateForItemsOfTypeInGroup(PortalItemType.WebMap, item.GroupId);
                     var itemResults = await portal.FindItemsAsync(parameters);
-                    if (!itemResults.Results.Any())
+                    var filteredResults = itemResults.Results.Where(resultItem => resultItem.TypeKeywords.Contains("Offline")).ToList();
+                    if (!filteredResults.Any())
                     {
                         continue;
                     }
 
-                    PortalViewModel groupModel = new PortalViewModel(item, itemResults.Results);
+                    PortalViewModel groupModel = new PortalViewModel(item, filteredResults);
                     resultModel.Groups.Add(groupModel);
                 }
             }

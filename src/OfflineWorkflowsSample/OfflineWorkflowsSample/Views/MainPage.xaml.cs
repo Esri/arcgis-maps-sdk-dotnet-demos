@@ -48,9 +48,20 @@ namespace OfflineWorkflowsSample
             if (e.AddedItems.Any())
             {
                 Item selectedItem = e.AddedItems.First() as Item;
+                // Creation of maps from local items isn't supported,
+                // so the maps and their items are stored in a dictionary for easy lookup
                 Map selectedMap = ViewModel.OfflineMapsViewModel.MapItems[selectedItem];
                 ShowMapItem(selectedMap);
+            }
+        }
 
+        private void FeaturedMapSelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Any())
+            {
+                Item selectedItem = e.AddedItems.First() as Item;
+                Map selectedMap = new Map(selectedItem);
+                ShowMapItem(selectedMap);
             }
         }
     }

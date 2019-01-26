@@ -7,6 +7,7 @@ using Prism.Commands;
 using Prism.Windows.Mvvm;
 using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Media.Imaging;
@@ -16,16 +17,20 @@ namespace OfflineWorkflowSample.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         #region OAuth constants
-        private const string AppClientId = @"lgAdHkYZYlwwfAhC";
+        // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
+        private const string AppClientId = "collectorwindowsstore";
         private const string ClientSecret = "";
-        private const string OAuthRedirectUrl = @"my-ags-app://auth";
+        private const string OAuthRedirectUrl = @"urn:ietf:wg:oauth:2.0:oob";
+        private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
         #endregion OAuth constants
 
         #region command pattern
-        private readonly DelegateCommand _loginWithOAuthCommand;
-        public ICommand LoginWithOAuthCommand => _loginWithOAuthCommand;
-        private readonly DelegateCommand _loginWithoutOAuthCommand;
-        public ICommand LoginWithoutOAuthCommand => _loginWithoutOAuthCommand;
+        private readonly DelegateCommand _logInToPortalCommand;
+        public ICommand LogInToPortalCommand => _logInToPortalCommand;
+        private readonly DelegateCommand _logInToEnterpriseCommand;
+        public ICommand LogInToEnterpriseCommand => _logInToEnterpriseCommand;
+        private readonly DelegateCommand _showEnterpriseFormCommand;
+        public ICommand ShowEnterpriseFormCommand => _showEnterpriseFormCommand;
 
         #endregion command pattern
 
@@ -33,7 +38,7 @@ namespace OfflineWorkflowSample.ViewModels
         
         public ArcGISPortal Portal { get; set; }
 
-        private string _portalUrl = "https://www.arcgis.com/sharing/rest";
+        private string _portalUrl = ArcGISOnlinePortalUrl;
 
         public string PortalUrl
         {
@@ -43,25 +48,35 @@ namespace OfflineWorkflowSample.ViewModels
 
         public UserProfileModel UserProfile { get; set; }
 
-        public LoginViewModel()
+        private bool _portalFormOpen = false;
+
+        public bool PortalFormIsOpen
         {
-            _loginWithOAuthCommand = new DelegateCommand(StartOAuth);
-            _loginWithoutOAuthCommand = new DelegateCommand(StartCredentialAuth);
+            get => _portalFormOpen;
+            set => SetProperty(ref _portalFormOpen, value);
         }
 
-        private void StartOAuth()
+        public LoginViewModel()
         {
-            ConfigureOAuth();
+            _logInToPortalCommand = new DelegateCommand(LoginToAGOL);
+            _logInToEnterpriseCommand = new DelegateCommand(LoginToEnterprise);
+            _showEnterpriseFormCommand = new DelegateCommand(ShowPortalForm);
+        }
+
+        private void LoginToAGOL()
+        {
+            _portalUrl = ArcGISOnlinePortalUrl;
             DoLogin();
         }
 
-        private void StartCredentialAuth()
+        private void LoginToEnterprise()
         {
             DoLogin();
         }
 
         private async void DoLogin()
         {
+            ConfigureOAuth();
             Portal = await AuthenticateAndCreatePortal();
             if (Portal == null)
             {
@@ -71,6 +86,11 @@ namespace OfflineWorkflowSample.ViewModels
             RaiseLoggedIn();
         }
 
+        private void ShowPortalForm()
+        {
+            PortalFormIsOpen = !PortalFormIsOpen;
+        }
+        
         private UserProfileModel GetProfile()
         {
             var currentUser = Portal.User;
@@ -106,6 +126,13 @@ namespace OfflineWorkflowSample.ViewModels
                 await DialogService.ShowMessageAsync($"Couldn't log in - {e.Message}");
                 return null;
             }
+            catch (HttpRequestException e)
+            {
+                await DialogService.ShowMessageAsync(
+                    "Couldn't log in - this app isn't registered with the selected portal.\n" +
+                    "https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/accessing-arcgis-online-services/");
+                return null;
+            }
             catch (OperationCanceledException)
             {
                 await DialogService.ShowMessageAsync($"Log in canceled");
@@ -120,20 +147,23 @@ namespace OfflineWorkflowSample.ViewModels
             {
                 ServerUri = new Uri(_portalUrl),
                 TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit,
+                
                 OAuthClientInfo = new OAuthClientInfo
                 {
                     ClientId = AppClientId,
                     RedirectUri = new Uri(OAuthRedirectUrl)
                 }
+                
             };
-
+            
             // If a client secret has been configured, set the authentication type to OAuthAuthorizationCode.
             if (!String.IsNullOrEmpty(ClientSecret))
             {
                 // Use OAuthAuthorizationCode if you need a refresh token (and have specified a valid client secret).
-                serverInfo.TokenAuthenticationType = TokenAuthenticationType.OAuthAuthorizationCode;
+                serverInfo.TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit;
                 serverInfo.OAuthClientInfo.ClientSecret = ClientSecret;
             }
+            
 
             // Register this server with AuthenticationManager.
             AuthenticationManager.Current.RegisterServer(serverInfo);
@@ -146,7 +176,6 @@ namespace OfflineWorkflowSample.ViewModels
         {
             // ChallengeHandler function for AuthenticationManager that will be called whenever a secured resource is accessed.
             Credential credential = null;
-
             try
             {
                 // AuthenticationManager will handle challenging the user for credentials.

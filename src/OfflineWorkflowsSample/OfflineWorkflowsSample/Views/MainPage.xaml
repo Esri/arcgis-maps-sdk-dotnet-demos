@@ -48,7 +48,8 @@
                        Visibility="{Binding PortalViewModel.HasFeaturedItems}">
                 <ScrollViewer>
                     <GridView ItemsSource="{Binding PortalViewModel.Featured}" 
-                              ItemTemplate="{StaticResource PortalItemTemplate}" />
+                              ItemTemplate="{StaticResource PortalItemTemplate}"
+                              SelectionChanged="FeaturedMapSelected"/>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem Header="My content">
