@@ -27,118 +27,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         private IReadOnlyList<LevelOfDetail> _levelsOfDetail;
         private GenerateOfflineMapJob _job;
 
-        #region Properties
-
-        private Map _map;
-        private bool _includeBasemap = true;
-        private int _maximumLevelOfDetail;
-        private string _selectedMaximumScale;
-        private string _selectedMinimumScale;
-        private int _selectedLevelOfDetail;
-
-        public Map Map
-        {
-            get => _map;
-            set
-            {
-                if (_map != value)
-                {
-                    SetProperty(ref _map, value);
-                    RaisePropertyChanged(nameof(IsMapOnline));
-                    RaiseMapChanged();
-                    RefreshCommands();
-                }
-            }
-        }
-
-        public bool IncludeBasemap
-        {
-            get => _includeBasemap;
-            set
-            {
-                SetProperty(ref _includeBasemap, value);
-                ToggleIncludeBasemap();
-            }
-        }
-        
-        public int MaximumLevelOfDetail
-        {
-            get => _maximumLevelOfDetail;
-            set => SetProperty(ref _maximumLevelOfDetail, value);
-        }
-        
-        public string SelectedMaximumScale
-        {
-            get => _selectedMaximumScale;
-            set => SetProperty(ref _selectedMaximumScale, value);
-        }
-        
-        public string SelectedMinimumScale
-        {
-            get => _selectedMinimumScale;
-            set => SetProperty(ref _selectedMinimumScale, value);
-        }
-        
-        public int SelectedLevelOfDetail
-        {
-            get => _selectedLevelOfDetail;
-            set
-            {
-                SetProperty(ref _selectedLevelOfDetail, value);
-                UpdateScales();
-            }
-        }
-        
-        public bool IsMapOnline
-        {
-            get => _map.Item is PortalItem;
-        }
-
-        #endregion Properties
-
         #region Sample code
-        public async Task Initialize(Map map, IWindowService windowService, MapViewService mapViewService)
-        {
-            _windowService = windowService;
-            _mapViewService = mapViewService;
-            Map = map;
-            try
-            {
-                _windowService.SetBusyMessage("Loading map...");
-                _windowService.SetBusy(true);
-
-                await Map.LoadAsync();
-
-                try
-                {
-                    // Set the scale information to the UI
-                    var basemapLayer = Map.AllLayers.OfType<ArcGISTiledLayer>().FirstOrDefault();
-                    if (basemapLayer != null)
-                        _levelsOfDetail = basemapLayer.ServiceInfo.TileInfo.LevelsOfDetail;
-                    else
-                    {
-                        var vectorBasemapLayer = Map.AllLayers.OfType<ArcGISVectorTiledLayer>().First();
-                        _levelsOfDetail = vectorBasemapLayer.SourceInfo.LevelsOfDetail;
-                    }
-
-                    MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
-                }
-                catch (Exception)
-                {
-                    _levelsOfDetail = new List<LevelOfDetail>();
-                }
-
-                SelectedLevelOfDetail = 17;
-            }
-            catch (Exception ex)
-            {
-                await _windowService.ShowAlertAsync(ex.Message, "Couldn't load map.");
-            }
-            finally
-            {
-                _windowService.SetBusy(false);
-            }
-        }
 
         private async void GenerateMapArea()
         {
@@ -208,6 +97,76 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
         #endregion Sample code
 
+        #region Properties
+
+        private Map _map;
+        private bool _includeBasemap = true;
+        private int _maximumLevelOfDetail;
+        private string _selectedMaximumScale;
+        private string _selectedMinimumScale;
+        private int _selectedLevelOfDetail;
+
+        public Map Map
+        {
+            get => _map;
+            set
+            {
+                if (_map != value)
+                {
+                    SetProperty(ref _map, value);
+                    RaisePropertyChanged(nameof(IsMapOnline));
+                    RaiseMapChanged();
+                    RefreshCommands();
+                }
+            }
+        }
+
+        public bool IncludeBasemap
+        {
+            get => _includeBasemap;
+            set
+            {
+                SetProperty(ref _includeBasemap, value);
+                ToggleIncludeBasemap();
+            }
+        }
+        
+        public int MaximumLevelOfDetail
+        {
+            get => _maximumLevelOfDetail;
+            set => SetProperty(ref _maximumLevelOfDetail, value);
+        }
+        
+        public string SelectedMaximumScale
+        {
+            get => _selectedMaximumScale;
+            set => SetProperty(ref _selectedMaximumScale, value);
+        }
+        
+        public string SelectedMinimumScale
+        {
+            get => _selectedMinimumScale;
+            set => SetProperty(ref _selectedMinimumScale, value);
+        }
+        
+        public int SelectedLevelOfDetail
+        {
+            get => _selectedLevelOfDetail;
+            set
+            {
+                SetProperty(ref _selectedLevelOfDetail, value);
+                UpdateScales();
+            }
+        }
+        
+        public bool IsMapOnline
+        {
+            get => _map.Item is PortalItem;
+        }
+
+        #endregion Properties
+        
+
         #region Misc. Overhead
 
         private IWindowService _windowService;
@@ -218,6 +177,49 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             _generateMapAreaCommand = new DelegateCommand(GenerateMapArea, () => IsMapOnline);
             _navigateToMapAreaCommand = new DelegateCommand(NavigateToMapArea, () => IsMapOnline);
             _openMapFileCommand = new DelegateCommand(RevealInExplorer, () => !IsMapOnline);
+        }
+
+        public async Task Initialize(Map map, IWindowService windowService, MapViewService mapViewService)
+        {
+            _windowService = windowService;
+            _mapViewService = mapViewService;
+            Map = map;
+            try
+            {
+                _windowService.SetBusyMessage("Loading map...");
+                _windowService.SetBusy(true);
+
+                await Map.LoadAsync();
+
+                try
+                {
+                    // Set the scale information to the UI
+                    var basemapLayer = Map.AllLayers.OfType<ArcGISTiledLayer>().FirstOrDefault();
+                    if (basemapLayer != null)
+                        _levelsOfDetail = basemapLayer.ServiceInfo.TileInfo.LevelsOfDetail;
+                    else
+                    {
+                        var vectorBasemapLayer = Map.AllLayers.OfType<ArcGISVectorTiledLayer>().First();
+                        _levelsOfDetail = vectorBasemapLayer.SourceInfo.LevelsOfDetail;
+                    }
+
+                    MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
+                }
+                catch (Exception)
+                {
+                    _levelsOfDetail = new List<LevelOfDetail>();
+                }
+
+                SelectedLevelOfDetail = 17;
+            }
+            catch (Exception ex)
+            {
+                await _windowService.ShowAlertAsync(ex.Message, "Couldn't load map.");
+            }
+            finally
+            {
+                _windowService.SetBusy(false);
+            }
         }
         
         private void ToggleIncludeBasemap()

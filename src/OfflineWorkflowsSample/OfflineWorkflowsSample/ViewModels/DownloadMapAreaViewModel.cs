@@ -25,11 +25,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 {
     public class DownloadMapAreaViewModel : ViewModelBase
     {
-        private GraphicsOverlay _areasOverlay;
-        private IWindowService _windowService;
-        private MapViewService _mapViewService;
-        
-        #region Preplanned map area code
+        #region Sample code
         
         private async Task ConfigureMap()
         {
@@ -217,7 +213,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             }
         }
 
-        #endregion Preplanned map area code
+        #endregion Sample code
 
         #region properties
 
@@ -265,6 +261,10 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         #endregion properties
 
         #region  Misc. Overhead
+
+        private GraphicsOverlay _areasOverlay;
+        private IWindowService _windowService;
+        private MapViewService _mapViewService;
 
         public DownloadMapAreaViewModel()
         {
