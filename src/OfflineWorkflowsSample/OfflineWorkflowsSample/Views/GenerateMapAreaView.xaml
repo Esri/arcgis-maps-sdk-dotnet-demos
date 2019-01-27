@@ -7,54 +7,48 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
-
-                <Pivot Background="Transparent">
-                    <PivotItem Header="Take offline">
-                        <Grid Margin="5,0">
-                            <StackPanel Margin="10">
-                                <TextBlock Text="1. Select area to take offline"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <Button Content="Zoom to area" Grid.Row="2"
-                                        Command="{Binding NavigateToMapAreaCommand}"
-                                        Margin="10,10" HorizontalAlignment="Stretch"
-                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-
-                                <TextBlock Text="2. Define scale range for the offline map"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <TextBlock TextWrapping="Wrap">
-                                    <Run Text="Selected scale range: &#x0a;" />
-                                    <Run Text="{Binding SelectedMinimumScale, Mode=OneWay}" />
-                                    <Run Text=" - " />
-                                    <Run Text="{Binding SelectedMaximumScale, Mode=OneWay}" />
-                                </TextBlock>
-                                <Slider TickFrequency="1"
-                                        Value="{Binding SelectedLevelOfDetail, Mode=TwoWay}"
-                                        Maximum="{Binding MaximumLevelOfDetail, Mode=OneWay}"
-                                        IsEnabled="{Binding IsMapOnline, Mode=OneWay}"
-                                        Minimum="0" />
-                                <TextBlock Text="3. Define other parameters"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <ToggleSwitch Header="Include basemap" 
-                                              IsEnabled="{Binding IsMapOnline, Mode=OneWay}"
-                                              IsOn="{Binding IncludeBasemap, Mode=TwoWay}" />
-                                <TextBlock Text="4. Generate offline map"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <Button Content="Generate area"
-                                        Command="{Binding GenerateMapAreaCommand}"
-                                        Margin="10,5" HorizontalAlignment="Stretch"
-                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-
-                                <TextBlock Text="5. Open downloaded map"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <TextBlock Text="Curious? See the package in local storage."
-                                           TextWrapping="Wrap"/>
-                                <Button Content="Reveal in File Explorer"
-                                        Command="{Binding OpenMapFileCommand}"
-                                        Margin="10,5" HorizontalAlignment="Stretch"
-                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-                            </StackPanel>
-                        </Grid>
-                    </PivotItem>
-                </Pivot>
+        <Pivot Background="Transparent">
+            <PivotItem Header="Take offline">
+                <Grid >
+                    <StackPanel>
+                        <TextBlock Text="1. Select area to take offline"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <Button Content="Zoom to area" Grid.Row="2"
+                                Command="{Binding NavigateToMapAreaCommand}"
+                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="2. Define scale range for the offline map"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock TextWrapping="Wrap">
+                            <Run Text="Selected scale range: &#x0a;" />
+                            <Run Text="{Binding SelectedMinimumScale, Mode=OneWay}" />
+                            <Run Text=" - " />
+                            <Run Text="{Binding SelectedMaximumScale, Mode=OneWay}" />
+                        </TextBlock>
+                        <Slider TickFrequency="1"
+                                Value="{Binding SelectedLevelOfDetail, Mode=TwoWay}"
+                                Maximum="{Binding MaximumLevelOfDetail, Mode=OneWay}"
+                                IsEnabled="{Binding IsMapOnline, Mode=OneWay}"
+                                Minimum="0" />
+                        <TextBlock Text="3. Define other parameters"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <ToggleSwitch Header="Include basemap"
+                                      IsEnabled="{Binding IsMapOnline, Mode=OneWay}"
+                                      IsOn="{Binding IncludeBasemap, Mode=TwoWay}" />
+                        <TextBlock Text="4. Generate offline map"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <Button Content="Generate area"
+                                Command="{Binding GenerateMapAreaCommand}"
+                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="5. Open downloaded map"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock Text="Curious? See the package in local storage."
+                                   Style="{StaticResource BodyTextBlockStyle}" />
+                        <Button Content="Reveal in File Explorer"
+                                Command="{Binding OpenMapFileCommand}"
+                                Style="{StaticResource ButtonStyle}" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </UserControl>

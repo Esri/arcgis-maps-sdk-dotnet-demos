@@ -1,107 +1,98 @@
 ﻿<UserControl
     x:Class="OfflineWorkflowsSample.DownloadMapArea.DownloadMapAreaView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:offlineWorkflowSample="using:OfflineWorkflowSample">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
-                <Pivot>
-                    <PivotItem Header="Take offline" IsEnabled="{Binding InOnlineMode, Mode=OneWay}">
-                        <ScrollViewer>
-                            <StackPanel Margin="15,0">
-
-                                <TextBlock Text="1. Query map areas"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <Button Content="Query areas"
-                                        Command="{Binding QueryMapAreasCommand}"
-                                        HorizontalAlignment="Stretch"
-                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-                                <TextBlock Text="2. Select map area for download"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <ListView ItemsSource="{Binding MapAreas, Mode=OneWay}"
-                                          IsEnabled="{Binding IsMapOnline}"
-                                          SelectedItem="{Binding SelectedMapArea,Mode=TwoWay}">
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                            <Setter Property="Padding" Value="0" />
-                                            <Setter Property="Margin" Value="0,5,0,0" />
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid BorderBrush="{ThemeResource ToggleSwitchFillOn}" BorderThickness="1">
-                                                <Grid ColumnSpacing="5">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="100" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Image Source="{Binding Thumbnail}"
-                                                           Width="100" Height="100"
-                                                           Stretch="UniformToFill" />
-                                                    <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="{Binding Title}"
-                                                                   Margin="10,5,10,5"
-                                                                   Style="{StaticResource BodyTextBlockStyle}" />
-                                                        <TextBlock Text="{Binding Snippet}"
-                                                                   TextWrapping="Wrap"
-                                                                   VerticalAlignment="Top"
-                                                                   TextTrimming="CharacterEllipsis"
-                                                                   Style="{StaticResource CaptionTextBlockStyle}" />
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-
-                                <TextBlock Text="3. Download selected area"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <Button Content="Download area"
-                                        Command="{Binding DownloadMapAreaCommand}"
-                                        HorizontalAlignment="Stretch"
-                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-                                <TextBlock Text="4. Open downloaded map"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                                <TextBlock Text="Curious? See the package in local storage."
-                                           TextWrapping="Wrap"/>
-                                <Button Content="Reveal in File Explorer"
-                                        Command="{Binding OpenMapFileCommand}"
-                                         HorizontalAlignment="Stretch"
-                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-                            </StackPanel>
-                        </ScrollViewer>
-                    </PivotItem>
-                    <PivotItem Header="Sync">
-                        <StackPanel>
-                            <TextBlock Text="1. Download latest changes"
-                                       Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <TextBlock
-                                Text="When map area is downloaded, you should make sure to pull down any possible changes."
-                                Style="{StaticResource BodyTextBlockStyle}" />
-                            <Button Content="Download changes"
-                                    Command="{Binding SyncMapAreaCommand}" CommandParameter="Download"
-                                    Margin="20,10" HorizontalAlignment="Stretch"
-                                    BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-                            <TextBlock Text="2. Upload local changes"
-                                       Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <TextBlock
-                                Text="When there are edits done locally that you want to push to the service, you can use UPLOAD option."
-                                Style="{StaticResource BodyTextBlockStyle}" />
-                            <Button Content="Upload changes"
-                                    Command="{Binding SyncMapAreaCommand}" CommandParameter="Upload"
-                                    Margin="20,10" HorizontalAlignment="Stretch"
-                                    Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-                            <TextBlock Text="Bi-directional synchronization"
-                                       Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <TextBlock
-                                Text="When there are edits done locally that you want to push to the service, you can use BIDIRECTIONAL option when you want to get the latest changes from the server in a one operation."
-                                Style="{StaticResource BodyTextBlockStyle}" />
-                            <Button Content="Bidirectional"
-                                    Command="{Binding SyncMapAreaCommand}" CommandParameter="Bidirectional"
-                                    Margin="20,10" HorizontalAlignment="Stretch"
-                                    Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
-                        </StackPanel>
-                    </PivotItem>
-                </Pivot>
+        <Pivot>
+            <PivotItem Header="Take offline">
+                <ScrollViewer>
+                    <StackPanel Margin="0">
+                        <TextBlock Text="1. Query map areas"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <Button Content="Query areas"
+                                Command="{Binding QueryMapAreasCommand}"
+                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="2. Select map area for download"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <ListView ItemsSource="{Binding MapAreas, Mode=OneWay}"
+                                  IsEnabled="{Binding IsMapOnline}"
+                                  SelectedItem="{Binding SelectedMapArea,Mode=TwoWay}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0,5,0,0" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid BorderBrush="{ThemeResource ToggleSwitchFillOn}" BorderThickness="1">
+                                        <Grid ColumnSpacing="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="{Binding Thumbnail}"
+                                                   Width="100" Height="100"
+                                                   Stretch="UniformToFill" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding Title}"
+                                                           Margin="10,5,10,5"
+                                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                                <TextBlock Text="{Binding Snippet}"
+                                                           TextWrapping="Wrap"
+                                                           VerticalAlignment="Top"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Style="{StaticResource CaptionTextBlockStyle}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <TextBlock Text="3. Download selected area"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <Button Content="Download area"
+                                Command="{Binding DownloadMapAreaCommand}"
+                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="4. Open downloaded map"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock Text="Curious? See the package in local storage."
+                                   Style="{StaticResource BodyTextBlockStyle}" />
+                        <Button Content="Reveal in File Explorer"
+                                Command="{Binding OpenMapFileCommand}"
+                                Style="{StaticResource ButtonStyle}" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="Sync">
+                <StackPanel>
+                    <TextBlock Text="1. Download latest changes"
+                               Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock
+                        Text="When map area is downloaded, you should make sure to pull down any possible changes."
+                        Style="{StaticResource BodyTextBlockStyle}" />
+                    <Button Content="Download changes"
+                            Command="{Binding SyncMapAreaCommand}" CommandParameter="Download"
+                            Style="{StaticResource ButtonStyle}" />
+                    <TextBlock Text="2. Upload local changes"
+                               Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock
+                        Text="When there are edits done locally that you want to push to the service, you can use UPLOAD option."
+                        Style="{StaticResource BodyTextBlockStyle}" />
+                    <Button Content="Upload changes"
+                            Command="{Binding SyncMapAreaCommand}" CommandParameter="Upload"
+                            Style="{StaticResource ButtonStyle}" />
+                    <TextBlock Text="Bi-directional synchronization"
+                               Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock
+                        Text="When there are edits done locally that you want to push to the service, you can use BIDIRECTIONAL option when you want to get the latest changes from the server in a one operation."
+                        Style="{StaticResource BodyTextBlockStyle}" />
+                    <Button Content="Bidirectional"
+                            Command="{Binding SyncMapAreaCommand}" CommandParameter="Bidirectional"
+                            Style="{StaticResource ButtonStyle}" />
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </UserControl>

@@ -42,5 +42,11 @@
                </Grid>
            </Border>
        </DataTemplate>
+       <Style x:Key="ButtonStyle" TargetType="Button">
+           <Setter Property="HorizontalAlignment" Value="Stretch" />
+           <Setter Property="Background" Value="White" />
+           <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundAccentBrush}" />
+           <Setter Property="Margin" Value="0,5,0,5" />
+       </Style>
    </Application.Resources>
 </Application>

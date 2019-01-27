@@ -126,7 +126,7 @@ namespace OfflineWorkflowSample.ViewModels
                 await WindowService.ShowAlertAsync($"Couldn't log in - {e.Message}");
                 return null;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 await WindowService.ShowAlertAsync(
                     "Couldn't log in - this app isn't registered with the selected portal.\n" +
