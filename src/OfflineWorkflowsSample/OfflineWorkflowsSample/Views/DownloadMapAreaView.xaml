@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample">
-
     <Grid>
                 <Pivot>
                     <PivotItem Header="Take offline" IsEnabled="{Binding InOnlineMode, Mode=OneWay}">
@@ -12,6 +11,10 @@
 
                                 <TextBlock Text="1. Query map areas"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
+                                <Button Content="Query areas"
+                                        Command="{Binding QueryMapAreasCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
                                 <TextBlock Text="2. Select map area for download"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
                                 <ListView ItemsSource="{Binding MapAreas, Mode=OneWay}"
@@ -53,7 +56,6 @@
 
                                 <TextBlock Text="3. Download selected area"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
-
                                 <Button Content="Download area"
                                         Command="{Binding DownloadMapAreaCommand}"
                                         HorizontalAlignment="Stretch"

@@ -31,7 +31,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         
         #region Preplanned map area code
         
-        private async Task ConfigureMapAndAreas()
+        private async Task ConfigureMap()
         {
             _areasOverlay = new GraphicsOverlay()
             {
@@ -46,9 +46,15 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
             // Load map from portal
             await Map.LoadAsync();
+        }
 
-            if (IsMapOnline)
+        private async void QueryMapAreas()
+        {
+            try
             {
+                // Clear existing overlays
+                _mapViewService.ClearOverlays();
+
                 // Create new task to 
                 var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
 
@@ -69,8 +75,17 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     _areasOverlay.Graphics.Add(graphic);
                 }
 
+                if (!preplannedMapAreas.Any())
+                {
+                    await _windowService.ShowAlertAsync("No preplanned map areas available.");
+                }
+
                 // Show the overlays on the map.
                 _mapViewService.AddGraphicsOverlay(_areasOverlay);
+            }
+            catch (Exception ex)
+            {
+                await _windowService.ShowAlertAsync(ex.Message, "Couldn't query map areas");
             }
         }
 
@@ -256,6 +271,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             _downloadMapAreaCommand = new DelegateCommand(DownloadMapArea, CanDownloadMapArea);
             _syncMapAreaCommand = new DelegateCommand<string>(SyncMapArea, CanSyncMapArea);
             _openMapFileCommand = new DelegateCommand(RevealInExplorer, () => !IsMapOnline);
+            _queryMapAreasCommand = new DelegateCommand(QueryMapAreas, () => IsMapOnline);
         }
 
         public async Task Initialize(Map map, IWindowService windowService, MapViewService mapViewService)
@@ -268,7 +284,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 _windowService.SetBusyMessage("Loading map...");
                 _windowService.SetBusy(true);
 
-                await ConfigureMapAndAreas();
+                await ConfigureMap();
             }
             catch (Exception ex)
             {
@@ -319,6 +335,8 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         #endregion Misc. Overhead
         
         #region Commands
+
+        public ICommand QueryMapAreasCommand => _queryMapAreasCommand;
         public ICommand DownloadMapAreaCommand => _downloadMapAreaCommand;
         public ICommand SyncMapAreaCommand => _syncMapAreaCommand;
         public ICommand OpenMapFileCommand => _openMapFileCommand;
@@ -326,12 +344,14 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         private DelegateCommand _downloadMapAreaCommand;
         private DelegateCommand<string> _syncMapAreaCommand;
         private DelegateCommand _openMapFileCommand;
+        private DelegateCommand _queryMapAreasCommand;
 
         private void RefreshCommands()
         {
             _downloadMapAreaCommand.RaiseCanExecuteChanged();
             _syncMapAreaCommand.RaiseCanExecuteChanged();
             _openMapFileCommand.RaiseCanExecuteChanged();
+            _queryMapAreasCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanDownloadMapArea()
