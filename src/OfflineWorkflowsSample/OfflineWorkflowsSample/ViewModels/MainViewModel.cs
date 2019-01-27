@@ -15,8 +15,9 @@ namespace OfflineWorkflowsSample
 {
     public class MainViewModel : BaseViewModel
     {
-        private IDialogService _dialogService;
-        private ArcGISPortal _portal;
+        private IWindowService _windowService;
+
+        public bool IsInitialized { get; set; } = false;
 
         private UserProfileModel _userProfile;
         public UserProfileModel UserProfile
@@ -55,37 +56,48 @@ namespace OfflineWorkflowsSample
             set => SetProperty(ref _portalViewModel, value);
         }
 
-        public ArcGISPortal Portal => _portal;
-
-        public async Task Initialize(ArcGISPortal portal, UserProfileModel userProfile, IDialogService dialogService)
+        public async Task Initialize(ArcGISPortal portal, UserProfileModel userProfile, IWindowService windowService)
         {
             UserProfile = userProfile;
-            _portal = portal;
-            _dialogService = dialogService;
+            _windowService = windowService;
             try
             {
-                PortalViewModel = await PortalViewModel.GetRootVM(_portal, true, true);
+                PortalViewModel = await PortalViewModel.GetRootVM(portal, true, true);
                 await OfflineMapsViewModel.Initialize();
+                IsInitialized = true;
             }
             catch (Exception ex)
             {
                 // handle nicely, pretty please!
                 Debug.WriteLine(ex);
-                await _dialogService.ShowMessageAsync(ex.Message);
+                await _windowService.ShowAlertAsync(ex.Message);
             }
         }
 
         public async void SelectMap(Map map)
         {
             Map = map;
-            GenerateMapAreaViewModel = new GenerateMapAreaViewModel(this);
-            DownloadMapAreaViewModel = new DownloadMapAreaViewModel(this);
-            await Task.WhenAll(GenerateMapAreaViewModel.Initialize(), DownloadMapAreaViewModel.Initialize());
+            GenerateMapAreaViewModel = new GenerateMapAreaViewModel();
+            DownloadMapAreaViewModel = new DownloadMapAreaViewModel();
+
+            GenerateMapAreaViewModel.MapChanged += UpdateMap;
+            DownloadMapAreaViewModel.MapChanged += UpdateMap;
+
+            await Task.WhenAll(
+                GenerateMapAreaViewModel.Initialize(map, _windowService, MapViewService), 
+                DownloadMapAreaViewModel.Initialize(map, _windowService, MapViewService));
+        }
+
+        private void UpdateMap(object sender, Map newMap)
+        {
+            Map = newMap;
+            GenerateMapAreaViewModel.Map = newMap;
+            DownloadMapAreaViewModel.Map = newMap;
         }
 
         public void ShowMessage(string message)
         {
-            _dialogService.ShowMessageAsync(message);
+            _windowService.ShowAlertAsync(message);
         }
     }
 }

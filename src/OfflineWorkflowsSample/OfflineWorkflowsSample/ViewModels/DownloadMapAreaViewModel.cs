@@ -15,65 +15,71 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Storage;
+using Windows.System;
 using OfflineWorkflowsSample.Infrastructure.ViewServices;
+using Prism.Windows.Mvvm;
 using Prism.Windows.Navigation;
 
 namespace OfflineWorkflowsSample.DownloadMapArea
 {
-    public class DownloadMapAreaViewModel : BaseViewModel
+    public class DownloadMapAreaViewModel : ViewModelBase
     {
-        private readonly ArcGISPortal _portal;
         private GraphicsOverlay _areasOverlay;
-        private DelegateCommand _downloadMapAreaCommand;
-        private DelegateCommand<string> _syncMapAreaCommand;
-        private MainViewModel _mainVM;
-        public override Map Map
+        private IWindowService _windowService;
+        private MapViewService _mapViewService;
+        
+        #region Preplanned map area code
+        
+        private async Task ConfigureMapAndAreas()
         {
-            get => _mainVM.Map;
-            set => _mainVM.Map = value;
-        }
-
-        public override bool IsBusy { get => _mainVM.IsBusy;
-            set { _mainVM.IsBusy = value; }
-        }
-        public override string IsBusyText
-        {
-            get => _mainVM.IsBusyText;
-            set { _mainVM.IsBusyText = value; }
-        }
-        public override string ProgressPercentage
-        {
-            get => _mainVM.ProgressPercentage;
-            set { _mainVM.ProgressPercentage = value; }
-        }
-
-        public DownloadMapAreaViewModel(MainViewModel parent)
-        {
-            _portal = parent.Portal ?? throw new ArgumentNullException(nameof(parent));
-            _mainVM = parent;
             _areasOverlay = new GraphicsOverlay()
             {
                 Renderer = new SimpleRenderer()
                 {
                     Symbol = new SimpleFillSymbol(
-                      SimpleFillSymbolStyle.Solid,
-                      Color.FromArgb(0x4C, 0x08, 0x08, 0x08),
-                      new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.Yellow, 1))
+                        SimpleFillSymbolStyle.Solid,
+                        Color.FromArgb(0x4C, 0x08, 0x08, 0x08),
+                        new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.Yellow, 1))
                 }
             };
 
-            _downloadMapAreaCommand = new DelegateCommand(DownloadMapArea, CanDownloadMapArea);
-            _syncMapAreaCommand = new DelegateCommand<string>(SyncMapArea, CanSyncMapArea);
-        }
+            // Load map from portal
+            await Map.LoadAsync();
 
-        public override MapViewService MapViewService => _mainVM.MapViewService;
+            if (IsMapOnline)
+            {
+                // Create new task to 
+                var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
+
+                // Get list of areas
+                var preplannedMapAreas = await offlineMapTask.GetPreplannedMapAreasAsync();
+
+                // Create UI from the areas
+                foreach (var preplannedMapArea in preplannedMapAreas.OrderBy(x => x.PortalItem.Title))
+                {
+                    // Load area to get the metadata 
+                    await preplannedMapArea.LoadAsync();
+                    // Using a custom model for easier visualization
+                    var model = new MapAreaModel(preplannedMapArea);
+                    MapAreas.Add(model);
+                    // Graphic that shows the area in the map
+                    var graphic = new Graphic(preplannedMapArea.AreaOfInterest);
+                    graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
+                    _areasOverlay.Graphics.Add(graphic);
+                }
+
+                // Show the overlays on the map.
+                _mapViewService.AddGraphicsOverlay(_areasOverlay);
+            }
+        }
 
         private async void DownloadMapArea()
         {
             try
             {
-                IsBusy = true;
-                IsBusyText = "Downloading selected area...";
+                _windowService.SetBusyMessage("Downloading selected area...");
+                _windowService.SetBusy(true);
 
                 var offlineDataFolder = Path.Combine(OfflineDataStorageHelper.GetDataFolderForMap(Map));
 
@@ -92,12 +98,13 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 var job = task.DownloadPreplannedOfflineMap(SelectedMapArea.GetArea, offlineDataFolder);
                 job.ProgressChanged += async (s, e) =>
                 {
-                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
                         var generateOfflineMapJob = s as DownloadPreplannedOfflineMapJob;
-                        ProgressPercentage = generateOfflineMapJob.Progress.ToString() + "%";
+                        _windowService.SetBusyMessage($"Downloading offline map... {generateOfflineMapJob.Progress}%");
                     });
                 };
-                
+
                 // Step 3 Run the job and wait the results
                 var results = await job.GetResultAsync();
 
@@ -109,58 +116,47 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     {
                         Debug.WriteLine($"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}");
                     }
+
                     foreach (var tableError in results.TableErrors)
                     {
                         Debug.WriteLine($"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}");
                     }
                 }
+
                 // Step 5 Set offline map to use
                 Map = results.OfflineMap;
-
-                InOnlineMode = false;
                 _areasOverlay.Graphics.Clear();
             }
             catch (Exception ex)
             {
-                _mainVM.ShowMessage(ex.Message);
+                await _windowService.ShowAlertAsync(ex.Message, "Couldn't download map area");
             }
             finally
             {
                 RefreshCommands();
-                IsBusy = false;
-                IsBusyText = string.Empty;
+                _windowService.SetBusy(false);
             }
         }
 
-        private bool CanDownloadMapArea()
-        {
-            if (SelectedMapArea != null)
-                return true;
-            return false;
-        }
-
-        public ICommand DownloadMapAreaCommand => _downloadMapAreaCommand;
-
-        // Sync map area
         private async void SyncMapArea(string parameter)
         {
             try
             {
-                IsBusy = true;
+                _windowService.SetBusy(true);
                 var synchronizationMode = SyncDirection.Bidirectional;
                 switch (parameter)
                 {
                     case "Download":
                         synchronizationMode = SyncDirection.Download;
-                        IsBusyText = "Getting latest updates...";
+                        _windowService.SetBusyMessage("Getting latest updates...");
                         break;
                     case "Upload":
                         synchronizationMode = SyncDirection.Upload;
-                        IsBusyText = "Pushing local changes...";
+                        _windowService.SetBusyMessage("Pushing local changes...");
                         break;
                     default:
                         synchronizationMode = SyncDirection.Bidirectional;
-                        IsBusyText = "Synchronazing features...";
+                        _windowService.SetBusyMessage("Synchronizing features...");
                         break;
                 }
 
@@ -172,13 +168,14 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     SyncDirection = synchronizationMode
                 };
 
-                // Create job that does the work asyncronously
+                // Create job that does the work asynchronously
                 var job = task.SyncOfflineMap(parameters);
                 job.ProgressChanged += async (s, e) =>
                 {
-                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
                         var offlineMapSyncJob = s as OfflineMapSyncJob;
-                        ProgressPercentage = offlineMapSyncJob.Progress.ToString() + "%";
+                        _windowService.SetBusyMessage($"Syncing map area...{offlineMapSyncJob.Progress}%");
                     });
                 };
 
@@ -189,54 +186,101 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     // handle nicely
                 }
 
-                foreach (var message in job.Messages.Select(x =>x.Message))
+                foreach (var message in job.Messages.Select(x => x.Message))
                 {
                     Debug.WriteLine(message);
                 }
             }
             catch (Exception ex)
             {
-                _mainVM.ShowMessage(ex.Message);
+                await _windowService.ShowAlertAsync(ex.Message, "Couldn't sync map area");
             }
             finally
             {
                 RefreshCommands();
-                IsBusy = false;
-                IsBusyText = string.Empty;
+                _windowService.SetBusy(false);
             }
         }
 
-        private bool CanSyncMapArea(string parameter)
-        {
-            if (InOnlineMode == false)
-                return true;
-            return false;
-        }
+        #endregion Preplanned map area code
 
-        public ICommand SyncMapAreaCommand => _syncMapAreaCommand;
+        #region properties
 
-        private GraphicsOverlayCollection _graphicsOverlays;
-        public GraphicsOverlayCollection GraphicsOverlays
-        {
-            get { return _graphicsOverlays; }
-            set { SetProperty(ref _graphicsOverlays, value); }
-        }
-
-        private ObservableCollection<MapAreaModel> _mapAreas = new ObservableCollection<MapAreaModel>();
-        public ObservableCollection<MapAreaModel> MapAreas
-        {
-            get { return _mapAreas; }
-            set { SetProperty(ref _mapAreas, value); }
-        }
-
+        private Map _map;
         private MapAreaModel _selectedMapArea;
+        private ObservableCollection<MapAreaModel> _mapAreas = new ObservableCollection<MapAreaModel>();
+
+        public Map Map
+        {
+            get => _map;
+            set
+            {
+                if (_map != value)
+                {
+                    SetProperty(ref _map, value);
+                    RaisePropertyChanged(nameof(IsMapOnline));
+                    RaiseMapChanged();
+                    RefreshCommands();
+                }
+            }
+        }
+
+        public bool IsMapOnline
+        {
+            get => _map.Item is PortalItem;
+        }
+        
         public MapAreaModel SelectedMapArea
         {
-            get { return _selectedMapArea; }
-            set { SetProperty(ref _selectedMapArea, value); UpdateMap(); RefreshCommands(); }
+            get => _selectedMapArea;
+            set
+            {
+                SetProperty(ref _selectedMapArea, value);
+                ZoomToSelectedMapArea();
+                RefreshCommands();
+            }
+        }
+        
+        public ObservableCollection<MapAreaModel> MapAreas
+        {
+            get => _mapAreas;
+            set => SetProperty(ref _mapAreas, value);
         }
 
-        private async void UpdateMap()
+        #endregion properties
+
+        #region  Misc. Overhead
+
+        public DownloadMapAreaViewModel()
+        {
+            _downloadMapAreaCommand = new DelegateCommand(DownloadMapArea, CanDownloadMapArea);
+            _syncMapAreaCommand = new DelegateCommand<string>(SyncMapArea, CanSyncMapArea);
+            _openMapFileCommand = new DelegateCommand(RevealInExplorer, () => !IsMapOnline);
+        }
+
+        public async Task Initialize(Map map, IWindowService windowService, MapViewService mapViewService)
+        {
+            _windowService = windowService;
+            _mapViewService = mapViewService;
+            Map = map;
+            try
+            {
+                _windowService.SetBusyMessage("Loading map...");
+                _windowService.SetBusy(true);
+
+                await ConfigureMapAndAreas();
+            }
+            catch (Exception ex)
+            {
+                await _windowService.ShowAlertAsync(ex.Message, "Error setting up map areas");
+            }
+            finally
+            {
+                _windowService.SetBusy(false);
+            }
+        }
+        
+        private async void ZoomToSelectedMapArea()
         {
             _areasOverlay.ClearSelection();
             var selectedGraphic = _areasOverlay.Graphics.FirstOrDefault(x => x.Attributes["Name"].ToString() == SelectedMapArea.Title);
@@ -244,72 +288,23 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             {
                 selectedGraphic.IsSelected = true;
             }
-            await MapViewService.SetViewpointGeometryAsync(selectedGraphic.Geometry, 20d);
+
+            await _mapViewService.SetViewpointGeometryAsync(selectedGraphic.Geometry, 20d);
         }
 
-        public void RefreshCommands()
-        {
-            _downloadMapAreaCommand.RaiseCanExecuteChanged();
-            _syncMapAreaCommand.RaiseCanExecuteChanged();
-        }
-
-        private bool _inOnlineMode = true;
-        public bool InOnlineMode
-        {
-            get { return _inOnlineMode; }
-            set { SetProperty(ref _inOnlineMode, value); }
-        }
-        
-        public async Task Initialize()
+        private async void RevealInExplorer()
         {
             try
             {
-                IsBusy = true;
-                IsBusyText = "Loading map...";
-
-                // Load map from portal
-                await Map.LoadAsync();
-
-                if (Map.Item is LocalItem)
-                {
-                    InOnlineMode = true;
-                }
-                else
-                {
-                    
-                    // Create new task to 
-                    var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
-
-                    // Get list of areas
-                    var preplannedMapAreas = await offlineMapTask.GetPreplannedMapAreasAsync();
-
-                    // Create UI from the areas
-                    foreach (var preplannedMapArea in preplannedMapAreas.OrderBy(x => x.PortalItem.Title))
-                    {
-                        // Load area to get the metadata 
-                        await preplannedMapArea.LoadAsync();
-                        // Using a custom model for easier visualization
-                        var model = new MapAreaModel(preplannedMapArea);
-                        MapAreas.Add(model);
-                        // Graphic that shows the area in the map
-                        var graphic = new Graphic(preplannedMapArea.AreaOfInterest);
-                        graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
-                        _areasOverlay.Graphics.Add(graphic);
-                    }
-
-                    // Show the overlays on the map.
-                    _mainVM.MapViewService.AddGraphicsOverlay(_areasOverlay);
-                }
-                
+                string path = OfflineDataStorageHelper.GetDataFolder();
+                path = Path.Combine(path, ((LocalItem) Map.Item).OriginalPortalItemId);
+                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(path);
+                await Launcher.LaunchFolderAsync(folder);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                _mainVM.ShowMessage(ex.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-                IsBusyText = string.Empty;
+                Debug.WriteLine(e);
+                await _windowService.ShowAlertAsync(e.Message, $"Couldn't open folder");
             }
         }
 
@@ -318,7 +313,50 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             base.OnNavigatingFrom(e, viewModelState, suspending);
 
             // Hide the extent overlays when navigating away.
-            _mainVM.MapViewService.ClearOverlays();
+            _mapViewService.ClearOverlays();
         }
+
+        #endregion Misc. Overhead
+        
+        #region Commands
+        public ICommand DownloadMapAreaCommand => _downloadMapAreaCommand;
+        public ICommand SyncMapAreaCommand => _syncMapAreaCommand;
+        public ICommand OpenMapFileCommand => _openMapFileCommand;
+        
+        private DelegateCommand _downloadMapAreaCommand;
+        private DelegateCommand<string> _syncMapAreaCommand;
+        private DelegateCommand _openMapFileCommand;
+
+        private void RefreshCommands()
+        {
+            _downloadMapAreaCommand.RaiseCanExecuteChanged();
+            _syncMapAreaCommand.RaiseCanExecuteChanged();
+            _openMapFileCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CanDownloadMapArea()
+        {
+            return SelectedMapArea != null && IsMapOnline;
+        }
+
+        private bool CanSyncMapArea(string parameter)
+        {
+            return IsMapOnline == false;
+        }
+
+        #endregion Commands
+
+        #region Allow page to update the map
+
+        public delegate void MapChangedHandler(object sender, Map map);
+
+        public event MapChangedHandler MapChanged;
+
+        private void RaiseMapChanged()
+        {
+            MapChanged?.Invoke(this, Map);
+        }
+
+        #endregion Allow page to update the map
     }
 }

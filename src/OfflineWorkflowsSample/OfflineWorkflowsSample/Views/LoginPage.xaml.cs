@@ -18,13 +18,13 @@ namespace OfflineWorkflowSample
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LoginPage : Page, IDialogService
+    public sealed partial class LoginPage : Page, IWindowService
     {
         public LoginPage()
         {
             this.InitializeComponent();
             ExtendAcrylicIntoTitleBar();
-            ViewModel.DialogService = this;
+            ViewModel.WindowService = this;
             ViewModel.CompletedLogin += sender => Login();
         }
 
@@ -38,17 +38,35 @@ namespace OfflineWorkflowSample
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         }
 
-        public async Task ShowMessageAsync(string message)
-        {
-            var messageDialog = new MessageDialog(message);
-            await messageDialog.ShowAsync();
-        }
-
         private void Login()
         {
             // Navigate to the main page, passing the view model as an argument.
             Frame rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(MainPage), ViewModel);
         }
+
+        public async Task ShowAlertAsync(string message)
+        {
+            await ShowAlertAsync(message, "");
+        }
+
+        public async Task ShowAlertAsync(string message, string title)
+        {
+            
+            var messageDialog = new MessageDialog(message, title);
+            await messageDialog.ShowAsync();
+        }
+
+        public void SetBusy(bool isBusy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetBusyMessage(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }

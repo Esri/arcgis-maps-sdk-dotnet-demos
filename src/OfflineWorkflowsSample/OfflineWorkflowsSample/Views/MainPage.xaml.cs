@@ -14,7 +14,7 @@ namespace OfflineWorkflowsSample
     /// <summary>
     /// A map page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page, IDialogService
+    public sealed partial class MainPage : Page, IWindowService
 	{
 		public MainPage()
 		{            
@@ -25,17 +25,14 @@ namespace OfflineWorkflowsSample
         {
             base.OnNavigatedTo(e);
 
-            LoginViewModel vm = (LoginViewModel)e.Parameter;
-            await ViewModel.Initialize(vm.Portal, vm.UserProfile, this);
+            if (!ViewModel.IsInitialized)
+            {
+                LoginViewModel vm = (LoginViewModel)e.Parameter;
+                await ViewModel.Initialize(vm.Portal, vm.UserProfile, this);
+            }
         }
 
         private MainViewModel ViewModel => (MainViewModel)Resources["ViewModel"];
-
-        public async Task ShowMessageAsync(string message)
-        {
-            var messageDialog = new MessageDialog(message);
-            await messageDialog.ShowAsync();
-        }
 
         public void ShowMapItem(Map map)
         {
@@ -63,6 +60,27 @@ namespace OfflineWorkflowsSample
                 Map selectedMap = new Map(selectedItem);
                 ShowMapItem(selectedMap);
             }
+        }
+
+        public async Task ShowAlertAsync(string message)
+        {
+            await ShowAlertAsync(message, "");
+        }
+
+        public async Task ShowAlertAsync(string message, string title)
+        {
+            var messageDialog = new MessageDialog(message, title);
+            await messageDialog.ShowAsync();
+        }
+
+        public void SetBusy(bool isBusy)
+        {
+            ViewModel.IsBusy = isBusy;
+        }
+
+        public void SetBusyMessage(string message)
+        {
+            ViewModel.IsBusyText = message;
         }
     }
 }

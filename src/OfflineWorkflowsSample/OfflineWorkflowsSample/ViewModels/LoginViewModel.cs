@@ -34,7 +34,7 @@ namespace OfflineWorkflowSample.ViewModels
 
         #endregion command pattern
 
-        public IDialogService DialogService = null;
+        public IWindowService WindowService = null;
         
         public ArcGISPortal Portal { get; set; }
 
@@ -123,19 +123,19 @@ namespace OfflineWorkflowSample.ViewModels
             }
             catch (ArcGISWebException e)
             {
-                await DialogService.ShowMessageAsync($"Couldn't log in - {e.Message}");
+                await WindowService.ShowAlertAsync($"Couldn't log in - {e.Message}");
                 return null;
             }
             catch (HttpRequestException e)
             {
-                await DialogService.ShowMessageAsync(
+                await WindowService.ShowAlertAsync(
                     "Couldn't log in - this app isn't registered with the selected portal.\n" +
                     "https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/accessing-arcgis-online-services/");
                 return null;
             }
             catch (OperationCanceledException)
             {
-                await DialogService.ShowMessageAsync($"Log in canceled");
+                await WindowService.ShowAlertAsync($"Log in canceled");
                 return null;
             }
         }

@@ -113,8 +113,8 @@
       <DependentUpon>GenerateMapAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\GenerateMapAreaViewModel.cs" />
-    <Compile Include="Infrastructure\IDialogService.cs" />
-    <Compile Include="Infrastructure\BaseViewModel.cs" />
+    <Compile Include="Infrastructure\IWindowService.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Infrastructure\ColorHelper.cs" />
     <Compile Include="Infrastructure\Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\OfflineDataStorageHelper.cs" />
@@ -149,7 +149,7 @@
     </Compile>
     <Compile Include="ViewModels\PortalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\UserProfileView.xaml.cs">
+    <Compile Include="Controls\UserProfileView.xaml.cs">
       <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -263,7 +263,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserProfileView.xaml">
+    <Page Include="Controls\UserProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

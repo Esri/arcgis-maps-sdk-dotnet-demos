@@ -15,10 +15,9 @@ namespace OfflineWorkflowSample
 {
     public class PortalViewModel : ViewModelBase
     {
-        private PortalItem _selectedItem;
-        public string Title { get; set; }
+        public string Title { get; private set; }
         public IEnumerable<PortalItem> Items { get; set; }
-        public IList<PortalViewModel> Groups { get; set; } = new List<PortalViewModel>();
+        public IList<PortalViewModel> Groups { get; private set; } = new List<PortalViewModel>();
         private IEnumerable<PortalItem> _featured;
 
         public IEnumerable<PortalItem> Featured
@@ -27,20 +26,12 @@ namespace OfflineWorkflowSample
             set => SetProperty(ref _featured, value);
         }
 
-        public PortalViewModel MyContent { get; set; }
+        public PortalViewModel MyContent { get; private set; }
         public ArcGISPortal Portal { get; set; }
 
         public bool HasFeaturedItems => Featured.Any();
 
-        public PortalItem SelectedItem
-        {
-            get => _selectedItem;
-            set => SetProperty(ref _selectedItem, value);
-        }
-
-        private PortalViewModel()
-        {
-        }
+        private PortalViewModel(){}
 
         private PortalViewModel(PortalFolder folder, IEnumerable<PortalItem> items)
         {

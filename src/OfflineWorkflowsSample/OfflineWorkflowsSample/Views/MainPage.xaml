@@ -82,9 +82,8 @@
                 <Grid>
                     <views:UserProfileView HorizontalAlignment="Right" 
                                            VerticalAlignment="Top" 
-                                           Margin="0,5,5,5" 
-                                           Grid.Row="1"
-                                           DataContext="{Binding}"/>
+                                           Margin="0,5,5,5"
+                                           DataContext="{Binding UserProfile}"/>
                 </Grid>
             </Pivot.RightHeader>
         </Pivot>

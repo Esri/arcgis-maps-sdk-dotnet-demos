@@ -17,7 +17,6 @@
                                 <Button Content="Zoom to area" Grid.Row="2"
                                         Command="{Binding NavigateToMapAreaCommand}"
                                         Margin="10,10" HorizontalAlignment="Stretch"
-                                        IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
                                         Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
 
                                 <TextBlock Text="2. Define scale range for the offline map"
@@ -31,18 +30,17 @@
                                 <Slider TickFrequency="1"
                                         Value="{Binding SelectedLevelOfDetail, Mode=TwoWay}"
                                         Maximum="{Binding MaximumLevelOfDetail, Mode=OneWay}"
-                                        IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
+                                        IsEnabled="{Binding IsMapOnline, Mode=OneWay}"
                                         Minimum="0" />
                                 <TextBlock Text="3. Define other parameters"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
                                 <ToggleSwitch Header="Include basemap" 
-                                              IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
+                                              IsEnabled="{Binding IsMapOnline, Mode=OneWay}"
                                               IsOn="{Binding IncludeBasemap, Mode=TwoWay}" />
                                 <TextBlock Text="4. Generate offline map"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
                                 <Button Content="Generate area"
                                         Command="{Binding GenerateMapAreaCommand}"
-                                        IsEnabled="{Binding InOnlineMode, Mode=OneWay}"
                                         Margin="10,5" HorizontalAlignment="Stretch"
                                         Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
 

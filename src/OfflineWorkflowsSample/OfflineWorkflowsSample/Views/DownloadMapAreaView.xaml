@@ -15,6 +15,7 @@
                                 <TextBlock Text="2. Select map area for download"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
                                 <ListView ItemsSource="{Binding MapAreas, Mode=OneWay}"
+                                          IsEnabled="{Binding IsMapOnline}"
                                           SelectedItem="{Binding SelectedMapArea,Mode=TwoWay}">
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
@@ -46,7 +47,6 @@
                                                     </StackPanel>
                                                 </Grid>
                                             </Grid>
-
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
@@ -60,7 +60,12 @@
                                         Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
                                 <TextBlock Text="4. Open downloaded map"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />
-
+                                <TextBlock Text="Curious? See the package in local storage."
+                                           TextWrapping="Wrap"/>
+                                <Button Content="Reveal in File Explorer"
+                                        Command="{Binding OpenMapFileCommand}"
+                                         HorizontalAlignment="Stretch"
+                                        Background="White" BorderBrush="{ThemeResource ToggleSwitchFillOn}" />
                             </StackPanel>
                         </ScrollViewer>
                     </PivotItem>
