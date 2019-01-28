@@ -29,7 +29,7 @@ namespace OfflineWorkflowSample
         public PortalViewModel MyContent { get; private set; }
         public ArcGISPortal Portal { get; set; }
 
-        public bool HasFeaturedItems => Featured.Any();
+        public bool HasFeaturedItems => Featured?.Any() ?? false;
 
         private PortalViewModel(){}
 
@@ -94,8 +94,15 @@ namespace OfflineWorkflowSample
                 }
             }
 
-            // Populate featured
-            resultModel.Featured = (await portal.GetFeaturedItemsAsync()).Where(item => item.Type == PortalItemType.WebMap);
+            try
+            {
+                // Populate featured
+                resultModel.Featured = (await portal.GetFeaturedItemsAsync()).Where(item => item.Type == PortalItemType.WebMap);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
             return resultModel;
         }
     }
