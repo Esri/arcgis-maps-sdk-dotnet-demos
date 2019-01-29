@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="aa820130-5291-4860-9fd2-78bb0b83ccd3" Publisher="CN=antt0000" Version="1.0.0.0" />
+  <Identity Name="16A65A27-1FBE-4F50-9028-5318C4580C3D" Publisher="CN=antt0000" Version="0.1.6.0" />
   <mp:PhoneIdentity PhoneProductId="aa820130-5291-4860-9fd2-78bb0b83ccd3" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>OfflineWorkflowsSample</DisplayName>
-    <PublisherDisplayName>antt0000</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <DisplayName>ArcGIS Runtime Maps Offline</DisplayName>
+    <PublisherDisplayName>Esri, Inc.</PublisherDisplayName>
+    <Logo>Assets\Assets.png</Logo>
   </Properties>
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
@@ -16,6 +16,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="OfflineWorkflowsSample.App">
       <uap:VisualElements DisplayName="Offline Map Task workflows sample" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Demonstrates on-demand and preplanned offline map workflows." BackgroundColor="transparent">
+        <uap:LockScreen Notification="badge" BadgeLogo="Assets\BadgeLogo.png" />
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square310x310Logo" />
