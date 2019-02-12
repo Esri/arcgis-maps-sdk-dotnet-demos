@@ -109,6 +109,7 @@
     <Compile Include="Controls\CustomAppTitleBar.xaml.cs">
       <DependentUpon>CustomAppTitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\ItemToImageSourceConverter.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

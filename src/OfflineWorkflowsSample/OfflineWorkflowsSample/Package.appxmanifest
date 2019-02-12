@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="16A65A27-1FBE-4F50-9028-5318C4580C3D" Publisher="CN=antt0000" Version="0.1.6.0" />
+  <Identity Name="16A65A27-1FBE-4F50-9028-5318C4580C3D" Publisher="CN=antt0000" Version="0.1.7.0" />
   <mp:PhoneIdentity PhoneProductId="aa820130-5291-4860-9fd2-78bb0b83ccd3" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ArcGIS Runtime Maps Offline</DisplayName>

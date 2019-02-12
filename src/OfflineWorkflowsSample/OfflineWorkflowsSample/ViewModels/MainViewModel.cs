@@ -15,11 +15,20 @@ namespace OfflineWorkflowsSample
 {
     public class MainViewModel : BaseViewModel
     {
+        private Map _onlineMap = null;
+
+        public Map OnlineMap
+        {
+            get => _onlineMap;
+            set => SetProperty(ref _onlineMap, value);
+        }
+
         private IWindowService _windowService;
 
         public bool IsInitialized { get; set; } = false;
 
         private UserProfileModel _userProfile;
+
         public UserProfileModel UserProfile
         {
             get { return _userProfile; }
@@ -27,6 +36,7 @@ namespace OfflineWorkflowsSample
         }
 
         private GenerateMapAreaViewModel _generateMapAreaViewModel;
+
         public GenerateMapAreaViewModel GenerateMapAreaViewModel
         {
             get { return _generateMapAreaViewModel; }
@@ -34,6 +44,7 @@ namespace OfflineWorkflowsSample
         }
 
         private DownloadMapAreaViewModel _downloadMapAreaViewModel;
+
         public DownloadMapAreaViewModel DownloadMapAreaViewModel
         {
             get { return _downloadMapAreaViewModel; }
@@ -74,25 +85,71 @@ namespace OfflineWorkflowsSample
             }
         }
 
+        private async void LoadOnlineMapItemForOfflineMap(LocalItem localItem)
+        {
+            try
+            {
+                PortalItem onlineItem = await PortalItem.CreateAsync(PortalViewModel.Portal, localItem.OriginalPortalItemId);
+                OnlineMap = new Map(onlineItem);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         public async void SelectMap(Map map)
         {
+            if (map.Item is PortalItem)
+            {
+                OnlineMap = map;
+            }
+            else if (map.Item is LocalItem localItem)
+            {
+                // It appears navigation fails if this takes too long,
+                // so moved this into its own function that isn't awaited
+                LoadOnlineMapItemForOfflineMap(localItem);
+            }
+
             Map = map;
             GenerateMapAreaViewModel = new GenerateMapAreaViewModel();
             DownloadMapAreaViewModel = new DownloadMapAreaViewModel();
 
+            await Task.WhenAll(
+                GenerateMapAreaViewModel.Initialize(map, _windowService, MapViewService),
+                DownloadMapAreaViewModel.Initialize(map, _windowService, MapViewService));
+
             GenerateMapAreaViewModel.MapChanged += UpdateMap;
             DownloadMapAreaViewModel.MapChanged += UpdateMap;
-
-            await Task.WhenAll(
-                GenerateMapAreaViewModel.Initialize(map, _windowService, MapViewService), 
-                DownloadMapAreaViewModel.Initialize(map, _windowService, MapViewService));
         }
 
         private void UpdateMap(object sender, Map newMap)
         {
-            Map = newMap;
-            GenerateMapAreaViewModel.Map = newMap;
-            DownloadMapAreaViewModel.Map = newMap;
+            if (newMap == null)
+            {
+                Map oldMap = GenerateMapAreaViewModel.Map;
+                Map = OnlineMap;
+                GenerateMapAreaViewModel.Map = Map;
+                DownloadMapAreaViewModel.Map = Map;
+                oldMap.OperationalLayers.Clear();
+                oldMap.Tables.Clear();
+                oldMap = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+            }
+            else
+            {
+                Map = newMap;
+                GenerateMapAreaViewModel.Map = newMap;
+                DownloadMapAreaViewModel.Map = newMap;
+
+                if (newMap.Item is PortalItem)
+                {
+                    OnlineMap = newMap;
+                }
+            }
         }
 
         public void ShowMessage(string message)

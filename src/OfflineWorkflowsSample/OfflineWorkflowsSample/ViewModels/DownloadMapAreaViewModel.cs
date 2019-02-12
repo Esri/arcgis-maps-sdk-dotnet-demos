@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.System;
+using Esri.ArcGISRuntime.Geometry;
 using OfflineWorkflowsSample.Infrastructure.ViewServices;
 using Prism.Windows.Mvvm;
 using Prism.Windows.Navigation;
@@ -29,16 +30,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         
         private async Task ConfigureMap()
         {
-            _areasOverlay = new GraphicsOverlay()
-            {
-                Renderer = new SimpleRenderer()
-                {
-                    Symbol = new SimpleFillSymbol(
-                        SimpleFillSymbolStyle.Solid,
-                        Color.FromArgb(0x4C, 0x08, 0x08, 0x08),
-                        new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.Yellow, 1))
-                }
-            };
+            _areasOverlay = new GraphicsOverlay();
 
             // Load map from portal
             await Map.LoadAsync();
@@ -50,6 +42,9 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             {
                 // Clear existing overlays
                 _mapViewService.ClearOverlays();
+
+                // Clear existing areas (in case user wants to refresh results)
+                MapAreas.Clear();
 
                 // Create new task to 
                 var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
@@ -66,18 +61,26 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     var model = new MapAreaModel(preplannedMapArea);
                     MapAreas.Add(model);
                     // Graphic that shows the area in the map
-                    var graphic = new Graphic(preplannedMapArea.AreaOfInterest);
+                    var graphic = new Graphic(preplannedMapArea.AreaOfInterest, GetSymbolForColor(model.DisplayColor));
                     graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
                     _areasOverlay.Graphics.Add(graphic);
                 }
-
+                
                 if (!preplannedMapAreas.Any())
                 {
                     await _windowService.ShowAlertAsync("No preplanned map areas available.");
                 }
+                else
+                {
+                    // Show the overlays on the map
+                    _mapViewService.AddGraphicsOverlay(_areasOverlay);
 
-                // Show the overlays on the map.
-                _mapViewService.AddGraphicsOverlay(_areasOverlay);
+                    // Zoom to the offline areas
+                    await _mapViewService.SetViewpointGeometryAsync(_areasOverlay.Extent, 20);
+                }
+
+                // Refresh commands
+                RefreshCommands();
             }
             catch (Exception ex)
             {
@@ -91,15 +94,19 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             {
                 _windowService.SetBusyMessage("Downloading selected area...");
                 _windowService.SetBusy(true);
-
                 var offlineDataFolder = Path.Combine(OfflineDataStorageHelper.GetDataFolderForMap(Map));
 
                 // If temporary data folder exists remove it
-                if (Directory.Exists(offlineDataFolder))
-                    Directory.Delete(offlineDataFolder, true);
-                // If temporary data folder doesn't exists, create it
-                if (!Directory.Exists(offlineDataFolder))
-                    Directory.CreateDirectory(offlineDataFolder);
+                try
+                {
+                    if (Directory.Exists(offlineDataFolder))
+                        Directory.Delete(offlineDataFolder, true);
+                }
+                catch (Exception e)
+                {
+                    // If folder can't be deleted, open a new one.
+                    offlineDataFolder = Path.Combine(offlineDataFolder, DateTime.Now.Ticks.ToString());
+                }
 
                 // Step 1 Create task that is used to access map information and download areas
                 var task = await OfflineMapTask.CreateAsync(Map);
@@ -122,16 +129,13 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 // Step 4 Check errors 
                 if (results.HasErrors)
                 {
+                    string errorString = "";
                     // If one or more layers fails, layer errors are populated with corresponding errors.
                     foreach (var layerError in results.LayerErrors)
-                    {
-                        Debug.WriteLine($"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}");
-                    }
-
+                        errorString += $"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}\r\n";
                     foreach (var tableError in results.TableErrors)
-                    {
-                        Debug.WriteLine($"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}");
-                    }
+                        errorString += $"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}\r\n";
+                    OfflineDataStorageHelper.FlushLogToDisk(errorString, Map);
                 }
 
                 // Step 5 Set offline map to use
@@ -213,6 +217,15 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             }
         }
 
+        private async void ZoomToAreas()
+        {
+            // Calculate full extent of all areas.
+            Envelope fullExtent = GeometryEngine.CombineExtents(MapAreas.Select(area => area.GetArea.AreaOfInterest));
+            
+            // Zoom to the areas with a buffer.
+            await _mapViewService.SetViewpointGeometryAsync(fullExtent, 20);
+        }
+
         #endregion Sample code
 
         #region properties
@@ -230,6 +243,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 {
                     SetProperty(ref _map, value);
                     RaisePropertyChanged(nameof(IsMapOnline));
+                    MapAreas.Clear();
                     RaiseMapChanged();
                     RefreshCommands();
                 }
@@ -238,7 +252,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
         public bool IsMapOnline
         {
-            get => _map.Item is PortalItem;
+            get => _map?.Item is PortalItem;
         }
         
         public MapAreaModel SelectedMapArea
@@ -247,7 +261,10 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             set
             {
                 SetProperty(ref _selectedMapArea, value);
-                ZoomToSelectedMapArea();
+                if (value != null)
+                {
+                    ZoomToSelectedMapArea();
+                }
                 RefreshCommands();
             }
         }
@@ -272,6 +289,8 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             _syncMapAreaCommand = new DelegateCommand<string>(SyncMapArea, CanSyncMapArea);
             _openMapFileCommand = new DelegateCommand(RevealInExplorer, () => !IsMapOnline);
             _queryMapAreasCommand = new DelegateCommand(QueryMapAreas, () => IsMapOnline);
+            _zoomToAreasCommand = new DelegateCommand(ZoomToAreas, CanZoomToAreas);
+            _resetMapCommand = new DelegateCommand(() => RaiseMapChanged(true), () => !IsMapOnline);
         }
 
         public async Task Initialize(Map map, IWindowService windowService, MapViewService mapViewService)
@@ -332,6 +351,14 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             _mapViewService.ClearOverlays();
         }
 
+        private SimpleFillSymbol GetSymbolForColor(Color outlineColor)
+        {
+            return new SimpleFillSymbol(
+                SimpleFillSymbolStyle.Solid,
+                Color.FromArgb(0x4C, outlineColor.R, outlineColor.G, outlineColor.B),
+                new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.Yellow, 1));
+        }
+
         #endregion Misc. Overhead
         
         #region Commands
@@ -340,11 +367,15 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         public ICommand DownloadMapAreaCommand => _downloadMapAreaCommand;
         public ICommand SyncMapAreaCommand => _syncMapAreaCommand;
         public ICommand OpenMapFileCommand => _openMapFileCommand;
+        public ICommand ZoomToAreasCommand => _zoomToAreasCommand;
+        public ICommand ResetMapCommand => _resetMapCommand;
         
         private DelegateCommand _downloadMapAreaCommand;
         private DelegateCommand<string> _syncMapAreaCommand;
         private DelegateCommand _openMapFileCommand;
         private DelegateCommand _queryMapAreasCommand;
+        private DelegateCommand _zoomToAreasCommand;
+        private DelegateCommand _resetMapCommand;
 
         private void RefreshCommands()
         {
@@ -352,6 +383,8 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             _syncMapAreaCommand.RaiseCanExecuteChanged();
             _openMapFileCommand.RaiseCanExecuteChanged();
             _queryMapAreasCommand.RaiseCanExecuteChanged();
+            _zoomToAreasCommand.RaiseCanExecuteChanged();
+            _resetMapCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanDownloadMapArea()
@@ -364,6 +397,8 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             return IsMapOnline == false;
         }
 
+        private bool CanZoomToAreas() => MapAreas.Any();
+
         #endregion Commands
 
         #region Allow page to update the map
@@ -372,9 +407,16 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
         public event MapChangedHandler MapChanged;
 
-        private void RaiseMapChanged()
+        private void RaiseMapChanged(bool resetMap = false)
         {
-            MapChanged?.Invoke(this, Map);
+            if (resetMap)
+            {
+                MapChanged?.Invoke(this, null);
+            }
+            else
+            {
+                MapChanged?.Invoke(this, Map);
+            }
         }
 
         #endregion Allow page to update the map

@@ -13,9 +13,8 @@
                     <StackPanel>
                         <TextBlock Text="1. Select area to take offline"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
-                        <Button Content="Zoom to area" Grid.Row="2"
-                                Command="{Binding NavigateToMapAreaCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="Pan and zoom until the area of interest is in view."
+                                   Style="{StaticResource BodyTextBlockStyle}" />
                         <TextBlock Text="2. Define scale range for the offline map"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <TextBlock TextWrapping="Wrap">
@@ -45,6 +44,11 @@
                                    Style="{StaticResource BodyTextBlockStyle}" />
                         <Button Content="Reveal in File Explorer"
                                 Command="{Binding OpenMapFileCommand}"
+                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="6. Do it again"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <Button Content="Reset the map"
+                                Command="{Binding ResetMapCommand}"
                                 Style="{StaticResource ButtonStyle}" />
                     </StackPanel>
                 </Grid>

@@ -68,7 +68,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         /// <summary>
         /// Gets the view service that provides access to the MapView
         /// </summary>
-        public virtual MapViewService MapViewService
+        public MapViewService MapViewService
         {
             get
             {
@@ -80,28 +80,28 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private Map _map;
-        public virtual Map Map
+        public Map Map
         {
             get { return _map; }
             set { SetProperty(ref _map, value); }
         }
 
         private bool _isBusy;
-        public virtual bool IsBusy
+        public bool IsBusy
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
         }
 
         private string _isBusyText;
-        public virtual string IsBusyText
+        public string IsBusyText
         {
             get { return _isBusyText; }
             set { SetProperty(ref _isBusyText, value); }
         }
 
         private string _progressPercentage;
-        public virtual string ProgressPercentage
+        public string ProgressPercentage
         {
             get { return _progressPercentage; }
             set { SetProperty(ref _progressPercentage, value); }

@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,23 @@ namespace OfflineWorkflowsSample.Models
 {
     public class MapAreaModel : BindableBase
     {
+        // Random number generator for getting colors
+        private static Random _rng = new Random();
+        private Color? _displayColor;
+        public Color DisplayColor
+        {
+            get
+            {
+                if (_displayColor == null)
+                {
+                    SetProperty(ref _displayColor, 
+                        Color.FromArgb(_rng.Next(0, 255), _rng.Next(0, 255), _rng.Next(0, 255)));
+                }
+
+                return _displayColor.Value;
+            }
+        }
+
         private PreplannedMapArea _mapArea;
         public MapAreaModel(PreplannedMapArea mapArea)
         {

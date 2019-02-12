@@ -33,14 +33,22 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         {
             try
             {
-                _windowService.SetBusyMessage("Generating an offline map");
+                _windowService.SetBusyMessage("Taking map offline");
                 _windowService.SetBusy(true);
 
                 var offlineDataFolder = OfflineDataStorageHelper.GetDataFolderForMap(Map);
 
                 // If temporary data folder exists remove it
-                if (Directory.Exists(offlineDataFolder))
-                    Directory.Delete(offlineDataFolder, true);
+                try
+                {
+                    if (Directory.Exists(offlineDataFolder))
+                        Directory.Delete(offlineDataFolder, true);
+                }
+                catch (Exception e)
+                {
+                    // If folder can't be deleted, open a new one.
+                    offlineDataFolder = Path.Combine(offlineDataFolder, DateTime.Now.Ticks.ToString());
+                }
                 // If temporary data folder doesn't exists, create it
                 if (!Directory.Exists(offlineDataFolder))
                     Directory.CreateDirectory(offlineDataFolder);
@@ -74,16 +82,16 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                     string errorString = "";
                     // If one or more layers fails, layer errors are populated with corresponding errors.
                     foreach (var layerError in results.LayerErrors)
-                        errorString += $"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}\n";
+                        errorString += $"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}\r\n";
                     foreach (var tableError in results.TableErrors)
-                        errorString += $"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}\n";
-                    await _windowService.ShowAlertAsync(errorString, "There were problems generating the map area");
+                        errorString += $"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}\r\n";
+                    OfflineDataStorageHelper.FlushLogToDisk(errorString, Map);
                 }
 
                 // Step 5 : Use results
                 Map = results.OfflineMap;
 
-                _openMapFileCommand.RaiseCanExecuteChanged();
+                RefreshCommands();
             }
             catch (Exception ex)
             {
@@ -166,7 +174,6 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
         #endregion Properties
         
-
         #region Misc. Overhead
 
         private IWindowService _windowService;
@@ -177,6 +184,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             _generateMapAreaCommand = new DelegateCommand(GenerateMapArea, () => IsMapOnline);
             _navigateToMapAreaCommand = new DelegateCommand(NavigateToMapArea, () => IsMapOnline);
             _openMapFileCommand = new DelegateCommand(RevealInExplorer, () => !IsMapOnline);
+            _resetMapCommand = new DelegateCommand(() => RaiseMapChanged(true), () => !IsMapOnline);
         }
 
         public async Task Initialize(Map map, IWindowService windowService, MapViewService mapViewService)
@@ -311,16 +319,19 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         private DelegateCommand _generateMapAreaCommand;
         private DelegateCommand _navigateToMapAreaCommand;
         private DelegateCommand _openMapFileCommand;
+        private DelegateCommand _resetMapCommand;
 
         public ICommand GenerateMapAreaCommand => _generateMapAreaCommand;
         public ICommand NavigateToMapAreaCommand => _navigateToMapAreaCommand;
         public ICommand OpenMapFileCommand => _openMapFileCommand;
+        public ICommand ResetMapCommand => _resetMapCommand;
 
         private void RefreshCommands()
         {
             _generateMapAreaCommand.RaiseCanExecuteChanged();
             _navigateToMapAreaCommand.RaiseCanExecuteChanged();
             _openMapFileCommand.RaiseCanExecuteChanged();
+            _resetMapCommand.RaiseCanExecuteChanged();
         }
 
         #endregion Commands
@@ -331,9 +342,16 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
         public event MapChangedHandler MapChanged;
 
-        private void RaiseMapChanged()
+        private void RaiseMapChanged(bool resetMap = false)
         {
-            MapChanged?.Invoke(this, Map);
+            if (resetMap)
+            {
+                MapChanged?.Invoke(this, null);
+            }
+            else
+            {
+                MapChanged?.Invoke(this, Map);
+            }
         }
 
         #endregion Allow page to update the map
