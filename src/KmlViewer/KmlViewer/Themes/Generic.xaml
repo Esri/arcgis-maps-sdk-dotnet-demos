@@ -1,0 +1,241 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KmlViewer"
+    xmlns:ctrls="using:KmlViewer.Controls">
+    
+    <Style TargetType="local:SidePanelItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <!--<Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate >
+                    <ContentPresenter HorizontalAlignment="Stretch"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:SidePanelItem">
+                    <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="local:SidePanel">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:SidePanel">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.ColumnSpan="2">
+                                <SymbolIcon Symbol="ShowBcc" 
+                                Margin="15,10"
+                                HorizontalAlignment="Left" />
+                            </Grid>
+
+                            <Grid Background="LightGray" RowSpan="2"  />
+                            <ItemsControl x:Name="sideButtons" Grid.Row="1" Grid.Column="0" Background="LightGray" VerticalAlignment="Stretch">
+                                <ItemsControl.Resources>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Width" Value="50" />
+                                        <Setter Property="MinWidth" Value="0" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="RadioButton">
+                                                    <Grid>
+                                                        <VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CheckStates">
+                                                                <VisualState x:Name="Checked">
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetName="scale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1"
+                                                         Duration="0:0:0.2" />
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="Unchecked" >
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetName="scale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="0"
+                                                         Duration="0:0:0.2" />
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+                                                        <Border Background="White" x:Name="back" Opacity="1" RenderTransformOrigin="1.01,0">
+                                                            <Border.RenderTransform>
+                                                                <ScaleTransform x:Name="scale" ScaleX="0" ScaleY="1" />
+                                                            </Border.RenderTransform>
+                                                        </Border>
+                                                        <ContentPresenter Content="{Binding Content}" Margin="{TemplateBinding Padding}" />
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ItemsControl.Resources>
+                                
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton Content="{Binding Icon}" GroupName="SidePanel"
+                                            IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                            Padding="0,10,0,10"
+                                            />
+                                    </DataTemplate>
+                                                
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <ScrollViewer ZoomMode="Disabled" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto"
+                                            Grid.Column="1" Grid.Row="1"   >
+                                <Border Background="White" Margin="0,0,0,0">
+                                    <ContentPresenter HorizontalAlignment="Stretch"
+                                                Content="{TemplateBinding SelectedItem}" >
+                                        <ContentPresenter.ContentTransitions >
+                                            <TransitionCollection>
+                                                <EntranceThemeTransition />
+                                            </TransitionCollection>
+                                        </ContentPresenter.ContentTransitions>
+                                    </ContentPresenter>
+                            </Border>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="local:BasemapSelector">
+        
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border Background="Gray" Padding="2">
+                        <Border.Resources>
+                        </Border.Resources>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Stretch="UniformToFill" MaxHeight="100">
+                                <Image.Source>
+                                    <BitmapImage UriSource="{Binding (local:BasemapSelector.Thumbnail)}" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="{Binding DisplayName}" Grid.Row="1" HorizontalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <local:TrueToVisibleConverter x:Key="tzConv" />
+    <local:NullOrEmptyToCollapsedConverter x:Key="nullConv" />
+    <ctrls:BindChildrenIfNotHiddenConverter x:Key="ChildFeaturesBinding" />
+    
+    <ControlTemplate x:Key="KmlTreeViewExpandToggleStyle" TargetType="ToggleButton">
+        <Border BorderBrush="White" BorderThickness="2" Width="20" Height="21" Margin="0,3">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CheckStates">
+                    <VisualState x:Name="Checked">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="plus" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unchecked" />
+                    <VisualState x:Name="Indeterminate" />
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Grid Background="Transparent">
+                <Rectangle Width="8" Height="2" Fill="White"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Rectangle Height="8" Width="2" x:Name="plus" Fill="White"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" />
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+    <Style TargetType="ctrls:KmlTreeView">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ctrls:KmlTreeView">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <ToggleButton IsChecked="{Binding KmlFeature.IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                              x:Name="ChildListToggle" Visibility="Collapsed"
+                                VerticalAlignment="Top" Template="{StaticResource KmlTreeViewExpandToggleStyle}" />
+
+                        <StackPanel Grid.Column="1">
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox IsChecked="{Binding KmlFeature.IsVisible, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              x:Name="VisibilityCheckBox" />
+                                    <RadioButton IsChecked="{Binding KmlFeature.IsVisible, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                 x:Name="VisibilityRadioButton"
+                                                 />
+                                    <TextBlock Text="{Binding KmlFeature.Name, RelativeSource={RelativeSource TemplatedParent}}"
+                                               FontFamily="{StaticResource ContentControlThemeFontFamily}"
+                                               FontSize="{StaticResource ControlContentThemeFontSize}"
+                                               VerticalAlignment="Center" Margin="0,0,0,1"
+                                               x:Name="FeatureNameText"
+                                               />
+                                </StackPanel>
+                                <ProgressBar VerticalAlignment="Bottom" IsIndeterminate="True"
+                                         Margin="40,0,0,0" HorizontalAlignment="Stretch"
+                                         Visibility="{Binding IsUpdating, Converter={StaticResource tzConv}, FallbackValue=Collapsed}" />
+                            </Grid>
+
+                            <Grid 
+                                Visibility="{Binding KmlFeature.IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource tzConv}}">
+                                <ItemsControl Visibility="{Binding HasVisibleChildren, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource tzConv}}"
+                                              ItemsSource="{Binding KmlFeature, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ChildFeaturesBinding}}"
+                                              Tag="{TemplateBinding KmlFeature}" x:Name="childList" 
+                                              >
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ctrls:KmlTreeView KmlFeature="{Binding}" 
+                                                    ParentNode="{Binding Tag, ElementName=childList}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </StackPanel>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

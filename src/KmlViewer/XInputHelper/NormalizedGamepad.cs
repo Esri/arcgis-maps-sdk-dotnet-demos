@@ -3,24 +3,24 @@ using System;
 
 namespace XInputHelper
 {
-	/// <summary>
-	/// Handles normalizing gamepad controller values, and adding a tolerance to readings
-	/// </summary>
+    /// <summary>
+    /// Handles normalizing gamepad controller values, and adding a tolerance to readings
+    /// </summary>
     internal class NormalizedGamepad
     {
-		private const float XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE = 7849;
-		private const float XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE = 8689;
-		private const float XINPUT_GAMEPAD_TRIGGER_THRESHOLD = 30;
+        private const float XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE = 7849;
+        private const float XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE = 8689;
+        private const float XINPUT_GAMEPAD_TRIGGER_THRESHOLD = 30;
 
-		private Gamepad pad;
-		/// <summary>
-		/// Initializes a new instance of the <see cref="NormalizedGamepad"/> class.
-		/// </summary>
-		/// <param name="gamepad">The gamepad to get normalized values for.</param>
-		public NormalizedGamepad(Gamepad gamepad)
-		{
-			pad = gamepad;
-		}
+        private Gamepad pad;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NormalizedGamepad"/> class.
+        /// </summary>
+        /// <param name="gamepad">The gamepad to get normalized values for.</param>
+        public NormalizedGamepad(Gamepad gamepad)
+        {
+            pad = gamepad;
+        }
 
         public float LeftThumbXNormalized
         {
@@ -31,13 +31,13 @@ namespace XInputHelper
                 {
                     LX = -LX;
                 }
-				if (LX <= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+                if (LX <= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
                 {
                     LX = 0f;
                 }
                 else
                 {
-					LX = LX - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+                    LX = LX - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
                     LX = LX / (32767f - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
                 }
                 if (pad.LeftThumbX >= 0)
@@ -57,14 +57,14 @@ namespace XInputHelper
                 {
                     LY = -LY;
                 }
-				if (LY <= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+                if (LY <= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
                 {
                     LY = 0f;
                 }
                 else
                 {
-					LY = LY - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
-					LY = LY / (32767f - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
+                    LY = LY - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+                    LY = LY / (32767f - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
                 }
                 if (pad.LeftThumbY >= 0)
                 {
@@ -79,13 +79,13 @@ namespace XInputHelper
             get
             {
                 float t = (float)pad.LeftTrigger;
-				if (t <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+                if (t <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
                 {
                     t = 0f;
                 }
                 else
                 {
-					t = t - XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+                    t = t - XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
                     t = t / (255f - XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
                 }
                 return t;
@@ -101,14 +101,14 @@ namespace XInputHelper
                 {
                     LX = -LX;
                 }
-				if (LX <= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+                if (LX <= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
                 {
                     LX = 0f;
                 }
                 else
                 {
-					LX = LX - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
-					LX = LX / (32767 - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
+                    LX = LX - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+                    LX = LX / (32767 - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
                 }
                 if (pad.RightThumbX >= 0)
                 {
@@ -127,14 +127,14 @@ namespace XInputHelper
                 {
                     LY = -LY;
                 }
-				if (LY <= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+                if (LY <= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
                 {
                     LY = 0f;
                 }
                 else
                 {
-					LY = LY - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
-					LY = LY / (32767 - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE); // 24078f;
+                    LY = LY - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+                    LY = LY / (32767 - XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE); // 24078f;
                 }
                 if (pad.RightThumbY >= 0)
                 {
@@ -149,14 +149,14 @@ namespace XInputHelper
             get
             {
                 float t = (float)pad.RightTrigger;
-				if (t <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+                if (t <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
                 {
                     t = 0f;
                 }
                 else
                 {
-					t = t - XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
-					t = t / (255f - XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
+                    t = t - XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+                    t = t / (255f - XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
                 }
                 return t;
             }
