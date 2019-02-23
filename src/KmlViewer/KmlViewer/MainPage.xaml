@@ -145,8 +145,10 @@
                                             <DataTemplate x:DataType="mapping:KmlLayer">
                                                 <TreeViewItem ItemsSource="{x:Bind Dataset.RootNodes, Mode=OneWay}" Content="{Binding Mode=OneWay}">
                                                     <TreeViewItem.ContentTemplate>
-                                                        <DataTemplate>
-                                                            <CheckBox IsChecked="{Binding IsVisible, Mode=TwoWay}" Content="{Binding Name}" />
+                                                        <DataTemplate x:DataType="mapping:KmlLayer">
+                                                            <CheckBox IsChecked="{Binding IsVisible, Mode=TwoWay}"
+                                                                      ToolTipService.ToolTip="{x:Bind Dataset.Source.OriginalString}"
+                                                                      Content="{Binding Name}" />
                                                         </DataTemplate>
                                                     </TreeViewItem.ContentTemplate>
                                                 </TreeViewItem>

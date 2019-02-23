@@ -95,8 +95,18 @@ namespace KmlViewer
             kmllayers = Scene.OperationalLayers.OfType<KmlLayer>().ToList();
             foreach (var l in kmllayers)
                 Scene.OperationalLayers.Remove(l);
-            Map.OperationalLayers.Add(new KmlLayer(new Uri(path)));
-            Scene.OperationalLayers.Add(new KmlLayer(new Uri(path)));
+            var source = new Uri(path);
+            string name = "";
+            if (source.IsFile)
+                name = new System.IO.FileInfo(source.LocalPath).Name;
+            else
+            {
+                name = source.Segments.Where(s=>s!="/").LastOrDefault();
+                if (name == null)
+                    name = source.Host;
+            }
+            Map.OperationalLayers.Add(new KmlLayer(source) { Name = name });
+            Scene.OperationalLayers.Add(new KmlLayer(source) { Name = name });
             return Layers.Last() as KmlLayer;
         }
 
