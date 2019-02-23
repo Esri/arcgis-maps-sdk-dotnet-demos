@@ -142,7 +142,6 @@
     <Compile Include="JoystickControl.xaml.cs">
       <DependentUpon>JoystickControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="KmlNodeTemplateSelector.cs" />
     <Compile Include="KmlTreeView.xaml.cs">
       <DependentUpon>KmlTreeView.xaml</DependentUpon>
     </Compile>
@@ -151,12 +150,22 @@
     </Compile>
     <Compile Include="MainPageVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableOfContents.xaml.cs">
+      <DependentUpon>TableOfContents.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="KmlViewer_TemporaryKey.pfx" />
+    <Content Include="Icons\group_layer.png" />
+    <Content Include="Icons\kml_folder.png" />
+    <Content Include="Icons\kml_layer.png" />
+    <Content Include="Icons\kml_networklink.png" />
+    <Content Include="Icons\kml_model.png" />
+    <Content Include="Icons\map_service.png" />
+    <Content Include="Icons\scene_layer.png" />
     <Content Include="KmlLogo.png" />
     <Content Include="SampleData\Flight_Maps_UK_Ireland.kmz" />
     <Content Include="SampleData\london_eye.kmz" />
@@ -204,6 +213,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TableOfContents.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

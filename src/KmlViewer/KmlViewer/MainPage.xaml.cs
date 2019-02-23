@@ -223,7 +223,7 @@ namespace KmlViewer
         }
 
         KmlNode highlightedFeature;
-        private void OnFeatureTapped(TreeView sender, TreeViewItemInvokedEventArgs args)
+        private void OnFeatureTapped(object sender, TreeViewItemInvokedEventArgs args)
         {
             var node = args.InvokedItem as KmlNode;
             if (node != null)
