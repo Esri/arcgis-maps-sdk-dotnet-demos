@@ -20,7 +20,7 @@
         <local:TocTemplateSelector x:Key="KmlSelector">
             <local:TocTemplateSelector.KmlLayerTemplate>
                 <DataTemplate x:DataType="mapping:KmlLayer">
-                    <TreeViewItem ItemsSource="{x:Bind Dataset.RootNodes, Mode=OneWay}" Content="{Binding Mode=OneWay}">
+                    <TreeViewItem IsExpanded="True" ItemsSource="{x:Bind Dataset.RootNodes, Mode=OneWay}" Content="{Binding Mode=OneWay}">
                         <TreeViewItem.ContentTemplate>
                             <DataTemplate x:DataType="mapping:KmlLayer">
                                 <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="{x:Bind Dataset.Source.OriginalString}">
