@@ -398,5 +398,57 @@ namespace KmlViewer
         {
             aboutView.Visibility = Windows.UI.Xaml.Visibility.Visible;
         }
+
+        private void TableOfContents_ContextMenuRequested(object sender, ContextMenuRequestedEventArgs e)
+        {
+            if(e.TreeViewNode is KmlNode node)
+            {
+                if(node.Viewpoint != null)
+                {
+                    var item = new MenuFlyoutItem() { Text = "Fly to" };
+                    Camera camera = null;
+                    if (node.Viewpoint.Type == KmlViewpointType.LookAt)
+                        camera = new Camera(node.Viewpoint.Location, node.Viewpoint.Range, node.Viewpoint.Heading, node.Viewpoint.Pitch, node.Viewpoint.Roll);
+                    else
+                        camera = new Camera(node.Viewpoint.Location, node.Viewpoint.Heading, node.Viewpoint.Pitch, node.Viewpoint.Roll);
+                    
+                    item.Click += (s, e2) => sceneView.SetViewpointAsync(new Viewpoint(node.Viewpoint.Location, camera));
+                    e.MenuItems.Add(item);
+                }
+                else if(node is KmlPlacemark kp && kp.Geometry != null)
+                {
+                    var item = new MenuFlyoutItem() { Text = "Fly to" };
+                    item.Click += (s, e2) => sceneView.SetViewpointAsync(new Viewpoint(kp.Geometry));
+                    e.MenuItems.Add(item);
+                }
+            }
+        }
+
+        private void BurgerButton_Toggled(object sender, RoutedEventArgs e)
+        {
+            var ischecked = (sender as ToggleButton).IsChecked.Value;
+            if(ischecked)
+            {
+                splitView.DisplayMode = SplitViewDisplayMode.Inline;
+                splitView.IsPaneOpen = true;
+            }
+            else
+            {
+                splitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+                splitView.IsPaneOpen = false;
+            }
+        }
+
+        private void SidePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (!BurgerButton.IsChecked.Value)
+                splitView.IsPaneOpen = true;
+        }
+
+        private void SidePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (!BurgerButton.IsChecked.Value)
+                splitView.IsPaneOpen = false;
+        }
     }
 }

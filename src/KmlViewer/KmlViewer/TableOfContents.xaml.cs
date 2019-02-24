@@ -40,6 +40,39 @@ namespace KmlViewer
         }
 
         public event EventHandler<TreeViewItemInvokedEventArgs> ItemInvoked;
+
+        private void TreeView_ContextRequested(UIElement sender, ContextRequestedEventArgs e)
+        {
+            var datacontext = (e.OriginalSource as FrameworkElement)?.DataContext;
+            if (datacontext != null && (sender as FrameworkElement).DataContext != datacontext)
+            {
+                var args = new ContextMenuRequestedEventArgs(datacontext);
+                ContextMenuRequested?.Invoke(this, args);
+                if (args.MenuItems != null && args.MenuItems.Count > 0)
+                {
+                    var menu = new MenuFlyout();
+                    foreach (var item in args.MenuItems)
+                        menu.Items.Add(item);
+                    if (e.TryGetPosition(e.OriginalSource as UIElement, out Point p))
+                        menu.ShowAt(e.OriginalSource as UIElement, p);
+                    else
+                        menu.ShowAt(e.OriginalSource as UIElement, new FlyoutShowOptions() { Placement = FlyoutPlacementMode.Auto });
+                    e.Handled = true;
+                }
+            }
+        }
+
+        public event EventHandler<ContextMenuRequestedEventArgs> ContextMenuRequested;
+    }
+
+    public class ContextMenuRequestedEventArgs : EventArgs
+    {
+        internal ContextMenuRequestedEventArgs(object node)
+        {
+            TreeViewNode = node;
+        }
+        public object TreeViewNode { get; }
+        public IList<MenuFlyoutItemBase> MenuItems { get; set; } = new List<MenuFlyoutItemBase>();
     }
 
     public class TocTemplateSelector : DataTemplateSelector
@@ -59,6 +92,8 @@ namespace KmlViewer
                 return KmlFolderTemplate;
             if (item is KmlPlacemark)
                 return KmlPlacemarkTemplate;
+            //if (item is KmlTour)
+            //    return KmlTourTemplate;
             if (item is KmlNode)
                 return KmlNodeTemplate;
             return base.SelectTemplateCore(item);
@@ -70,6 +105,7 @@ namespace KmlViewer
         public DataTemplate KmlPlacemarkTemplate { get; set; }
         public DataTemplate KmlLayerTemplate { get; set; }
         public DataTemplate KmlNodeTemplate { get; set; }
+        public DataTemplate KmlTourTemplate { get; set; }
         public DataTemplate LayerTemplate { get; set; }
     }
 

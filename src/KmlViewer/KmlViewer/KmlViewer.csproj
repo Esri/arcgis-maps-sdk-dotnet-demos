@@ -123,9 +123,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="BasemapSelector.cs" />
-    <Compile Include="CompassHeading.xaml.cs">
-      <DependentUpon>CompassHeading.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\KmlFeatureItemView.cs" />
     <Compile Include="Controls\KmlTreeView.cs" />
     <Compile Include="Controls\SidePanel.cs" />
@@ -191,10 +188,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="AboutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="CompassHeading.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
