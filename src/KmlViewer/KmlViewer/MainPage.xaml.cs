@@ -451,7 +451,7 @@ namespace KmlViewer
                 tourController.Pause();
                 tourController.Reset();
             }
-            else
+            if(tourController.Tour != tour)
             {
                 tourController.Tour = tour;
             }
