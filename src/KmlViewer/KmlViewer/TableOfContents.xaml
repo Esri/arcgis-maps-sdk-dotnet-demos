@@ -95,7 +95,7 @@
             <local:TocTemplateSelector.KmlTourTemplate>
                 <DataTemplate x:DataType="ogc:KmlTour">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Video" />
+                        <SymbolIcon Symbol="Video" Margin="0,0,7,0" />
                         <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center" />
                         <TextBlock Text="{x:Bind TourStatus, Mode=OneWay}" Margin="5,0,0,0"  VerticalAlignment="Center" />
                     </StackPanel>
