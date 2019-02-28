@@ -3,13 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:models="using:OfflineWorkflowsSample.Models">
-    <Grid>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding FullName}"
-                       VerticalAlignment="Center" />
-            <PersonPicture ProfilePicture="{Binding ProfilePicture}"
-                           DisplayName="{Binding FullName}"
-                           Height="25" Margin="5,0,0,0" />
-        </StackPanel>
-    </Grid>
+
+    <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding FullName}"
+                   VerticalAlignment="Center" />
+        <PersonPicture ProfilePicture="{Binding ProfilePicture}"
+                       DisplayName="{Binding FullName}"
+                       Height="25" Margin="5,0,0,0" />
+    </StackPanel>
 </UserControl>

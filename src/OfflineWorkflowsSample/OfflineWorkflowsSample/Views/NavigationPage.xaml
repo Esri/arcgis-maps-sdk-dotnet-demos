@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="OfflineWorkflowSample.Views.NavigationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OfflineWorkflowSample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    <Grid DataContext="{StaticResource MainViewModel}">
+        <Grid.Resources>
+            <SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- Title bar -->
+        <Grid Background="Transparent" 
+              HorizontalAlignment="Stretch" 
+              Grid.Row="0">
+            <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
+            <!-- Using padding columns instead of Margin ensures that the background
+                 paints the area under the caption control buttons (for transparent buttons). -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="../Assets/Square44x44Logo.png"
+                   Grid.Column="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Width="30" Height="30" Margin="4" />
+            <StackPanel x:Name="DraggablePart" 
+                        HorizontalAlignment="Stretch" 
+                        Background="Transparent"
+                        Grid.Column="1">
+                <TextBlock Text="{Binding Title}"
+                           HorizontalTextAlignment="Center"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Margin="0,8,0,0" />
+            </StackPanel>
+        </Grid>
+        <!-- Everything else -->
+        <muxc:NavigationView PaneDisplayMode="Top" 
+                             Grid.Row="1"
+                             Background="Transparent"
+                             ItemInvoked="NavigationView_OnItemInvoked"
+                             IsBackEnabled="{Binding ElementName=ContentFrame,Path=CanGoBack}"
+                             BackRequested="NavigationView_OnBackRequested">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Icon="Download" Content="Local content" Tag="Local" />
+                <muxc:NavigationViewItem Icon="List" Content="My folders" Tag="Folders" />
+                <muxc:NavigationViewItem Icon="World" Content="My groups" Tag="Groups" />
+                <muxc:NavigationViewItem Icon="Find" Content="Search" Tag="Search" />
+            </muxc:NavigationView.MenuItems>
+            <muxc:NavigationView.AutoSuggestBox>
+                <AutoSuggestBox PlaceholderText="Search portal"
+                                MinWidth="175"/>
+            </muxc:NavigationView.AutoSuggestBox>
+            <muxc:NavigationView.PaneFooter>
+                <local:UserProfileView HorizontalAlignment="Right" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,5,5,5"
+                                       DataContext="{Binding UserProfile}"/>
+            </muxc:NavigationView.PaneFooter>
+            <Frame x:Name="ContentFrame" CacheSize="3"  />
+        </muxc:NavigationView>
+    </Grid>
+
+</Page>

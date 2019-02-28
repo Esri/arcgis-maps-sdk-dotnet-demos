@@ -10,6 +10,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.Security;
+using OfflineWorkflowSample.Views;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -18,13 +19,13 @@ namespace OfflineWorkflowSample
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LoginPage : Page, IWindowService
+    public sealed partial class LoginPage : Page
     {
         public LoginPage()
         {
             this.InitializeComponent();
             ExtendAcrylicIntoTitleBar();
-            ViewModel.WindowService = this;
+            ViewModel.WindowService = null;
             ViewModel.CompletedLogin += sender => Login();
         }
 
@@ -42,31 +43,9 @@ namespace OfflineWorkflowSample
         {
             // Navigate to the main page, passing the view model as an argument.
             Frame rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(MainPage), ViewModel);
+            rootFrame.Navigate(typeof(NavigationPage), ViewModel);
+            //rootFrame.Navigate(typeof(NavigationPage), null);
         }
-
-        public async Task ShowAlertAsync(string message)
-        {
-            await ShowAlertAsync(message, "");
-        }
-
-        public async Task ShowAlertAsync(string message, string title)
-        {
-            
-            var messageDialog = new MessageDialog(message, title);
-            await messageDialog.ShowAsync();
-        }
-
-        public void SetBusy(bool isBusy)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetBusyMessage(string message)
-        {
-            throw new NotImplementedException();
-        }
-
         
     }
 }

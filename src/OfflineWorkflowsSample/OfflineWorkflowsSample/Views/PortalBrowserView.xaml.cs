@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -12,18 +14,16 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowsSample;
-using OfflineWorkflowSample.Views;
+using OfflineWorkflowSample.ViewModels;
+using Prism.Windows.Mvvm;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace OfflineWorkflowSample
+namespace OfflineWorkflowSample.Views
 {
-    public sealed partial class ItemListingGridView : UserControl
+    public sealed partial class PortalBrowserView : Page
     {
-        public ItemListingGridView()
+        public PortalBrowserView()
         {
             this.InitializeComponent();
         }

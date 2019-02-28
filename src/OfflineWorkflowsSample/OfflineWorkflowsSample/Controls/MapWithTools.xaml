@@ -20,17 +20,19 @@
         <SplitView.Pane>
             <Pivot>
                 <PivotItem Header="Info">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Map.Item.Title}"
-                                   Style="{StaticResource SubtitleTextBlockStyle}" />
-                        <Image Margin="5" Source="{Binding Map.Item, Converter={StaticResource ItemToImageSourceConverter}}" />
-                        <TextBlock Text="{Binding Map.Item.Description}"
-                                   Style="{StaticResource BodyTextBlockStyle}"
-                                   TextWrapping="Wrap"/>
-                        <Button Content="Open in ArcGIS Online" 
-                                HorizontalAlignment="Stretch"
-                                Click="OpenInAgol_Clicked" />
-                    </StackPanel>
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Item.Title}"
+                                       Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <Image Margin="5" Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
+                            <TextBlock Text="{Binding Item.Description}"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       TextWrapping="Wrap"/>
+                            <Button Content="Open in ArcGIS Online" 
+                                    HorizontalAlignment="Stretch"
+                                    Click="OpenInAgol_Clicked" />
+                        </StackPanel>
+                    </ScrollViewer>
                 </PivotItem>
                 <PivotItem Header="Legend">
                     <offlineWorkflowSample:LegendView DataContext="{Binding}" />
@@ -40,13 +42,13 @@
                         <StackPanel>
                             <TextBlock Text="Operational layers"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{Binding Map.OperationalLayers}" 
+                            <ListView ItemsSource="{Binding OperationalLayers}" 
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
                             <TextBlock Text="Basemap layers"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{Binding Map.Basemap.BaseLayers}" 
+                            <ListView ItemsSource="{Binding Basemap.BaseLayers}" 
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
-                            <ListView ItemsSource="{Binding Map.Basemap.ReferenceLayers}" 
+                            <ListView ItemsSource="{Binding Basemap.ReferenceLayers}" 
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
                         </StackPanel>
                     </ScrollViewer>
@@ -60,7 +62,7 @@
             </Pivot>
         </SplitView.Pane>
         <Grid>
-            <controls:MapView x:Name="MyMapView" Map="{Binding Map}"
+            <controls:MapView x:Name="MyMapView" Map="{Binding}"
                               viewServices:MapViewService.ViewService="{Binding MapViewService}" />
             <controls1:Compass x:Name="compass" Heading="{x:Bind MyMapView.MapRotation, Mode=OneWay}" Height="40"
                                Width="40"

@@ -15,15 +15,27 @@ namespace OfflineWorkflowsSample
 {
     public class MainViewModel : BaseViewModel
     {
-        private Map _onlineMap = null;
+        private Item _selectedItem;
 
-        public Map OnlineMap
+        public Item SelectedItem
         {
-            get => _onlineMap;
-            set => SetProperty(ref _onlineMap, value);
+            get => _selectedItem;
+            set
+            {
+                SetProperty(ref _selectedItem, value);
+                _windowService.NavigateToPageForItem(_selectedItem);
+            }
         }
 
-        private IWindowService _windowService;
+        private string _title = "ArcGIS Maps Offline";
+
+        public string Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
+
+        public IWindowService _windowService;
 
         public bool IsInitialized { get; set; } = false;
 
@@ -33,22 +45,6 @@ namespace OfflineWorkflowsSample
         {
             get { return _userProfile; }
             set { SetProperty(ref _userProfile, value); }
-        }
-
-        private GenerateMapAreaViewModel _generateMapAreaViewModel;
-
-        public GenerateMapAreaViewModel GenerateMapAreaViewModel
-        {
-            get { return _generateMapAreaViewModel; }
-            set { SetProperty(ref _generateMapAreaViewModel, value); }
-        }
-
-        private DownloadMapAreaViewModel _downloadMapAreaViewModel;
-
-        public DownloadMapAreaViewModel DownloadMapAreaViewModel
-        {
-            get { return _downloadMapAreaViewModel; }
-            set { SetProperty(ref _downloadMapAreaViewModel, value); }
         }
 
         private OfflineMapsViewModel _offlineMapViewModel = new OfflineMapsViewModel();
@@ -73,7 +69,8 @@ namespace OfflineWorkflowsSample
             _windowService = windowService;
             try
             {
-                PortalViewModel = await PortalViewModel.GetRootVM(portal, true, true);
+                PortalViewModel = new PortalViewModel();
+                await PortalViewModel.LoadPortalAsync(portal);
                 await OfflineMapsViewModel.Initialize();
                 IsInitialized = true;
             }
@@ -85,72 +82,7 @@ namespace OfflineWorkflowsSample
             }
         }
 
-        private async void LoadOnlineMapItemForOfflineMap(LocalItem localItem)
-        {
-            try
-            {
-                PortalItem onlineItem = await PortalItem.CreateAsync(PortalViewModel.Portal, localItem.OriginalPortalItemId);
-                OnlineMap = new Map(onlineItem);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async void SelectMap(Map map)
-        {
-            if (map.Item is PortalItem)
-            {
-                OnlineMap = map;
-            }
-            else if (map.Item is LocalItem localItem)
-            {
-                // It appears navigation fails if this takes too long,
-                // so moved this into its own function that isn't awaited
-                LoadOnlineMapItemForOfflineMap(localItem);
-            }
-
-            Map = map;
-            GenerateMapAreaViewModel = new GenerateMapAreaViewModel();
-            DownloadMapAreaViewModel = new DownloadMapAreaViewModel();
-
-            await Task.WhenAll(
-                GenerateMapAreaViewModel.Initialize(map, _windowService, MapViewService),
-                DownloadMapAreaViewModel.Initialize(map, _windowService, MapViewService));
-
-            GenerateMapAreaViewModel.MapChanged += UpdateMap;
-            DownloadMapAreaViewModel.MapChanged += UpdateMap;
-        }
-
-        private void UpdateMap(object sender, Map newMap)
-        {
-            if (newMap == null)
-            {
-                Map oldMap = GenerateMapAreaViewModel.Map;
-                Map = OnlineMap;
-                GenerateMapAreaViewModel.Map = Map;
-                DownloadMapAreaViewModel.Map = Map;
-                oldMap.OperationalLayers.Clear();
-                oldMap.Tables.Clear();
-                oldMap = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-            }
-            else
-            {
-                Map = newMap;
-                GenerateMapAreaViewModel.Map = newMap;
-                DownloadMapAreaViewModel.Map = newMap;
-
-                if (newMap.Item is PortalItem)
-                {
-                    OnlineMap = newMap;
-                }
-            }
-        }
+        public OfflineMapViewModel OfflineMapViewModel { get; set; } = new OfflineMapViewModel();
 
         public void ShowMessage(string message)
         {

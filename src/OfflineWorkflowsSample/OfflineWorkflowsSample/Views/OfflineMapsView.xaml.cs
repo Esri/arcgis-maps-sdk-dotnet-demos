@@ -12,18 +12,17 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowsSample;
-using OfflineWorkflowSample.Views;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace OfflineWorkflowSample
+namespace OfflineWorkflowSample.Views
 {
-    public sealed partial class ItemListingGridView : UserControl
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class OfflineMapsView : Page
     {
-        public ItemListingGridView()
+        public OfflineMapsView()
         {
             this.InitializeComponent();
         }

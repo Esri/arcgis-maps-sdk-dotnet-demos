@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Portal;
 
 namespace OfflineWorkflowsSample
 {
@@ -8,5 +10,6 @@ namespace OfflineWorkflowsSample
         Task ShowAlertAsync(string message, string title);
         void SetBusy(bool isBusy);
         void SetBusyMessage(string message);
+        void NavigateToPageForItem(Item item);
     }
 }
