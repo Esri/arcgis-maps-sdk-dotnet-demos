@@ -83,7 +83,7 @@
     <Grid DataContext="{StaticResource vm}">
 
         <SplitView x:Name="splitView" IsPaneOpen="True" 
-                   OpenPaneLength="350" CompactPaneLength="50" DisplayMode="CompactOverlay">
+                   OpenPaneLength="350" CompactPaneLength="50" DisplayMode="Inline">
             <SplitView.Pane>
                 <Grid PointerEntered="SidePanel_PointerEntered"
                       PointerExited="SidePanel_PointerExited">
@@ -200,7 +200,7 @@
                                        Margin="50,-0,0,0" />
 
                     <TextBlock Text="A" FontFamily="Segoe MDL2 Assets" />
-                    <ToggleButton x:Name="BurgerButton" Width="50" Height="40" IsChecked="False" Background="LightGray" Checked="BurgerButton_Toggled" Unchecked="BurgerButton_Toggled">
+                    <ToggleButton x:Name="BurgerButton" Width="50" Height="40" IsChecked="True" Background="LightGray" Checked="BurgerButton_Toggled" Unchecked="BurgerButton_Toggled">
                         <FontIcon Glyph="&#xE700;" HorizontalAlignment="Left" />
                     </ToggleButton>
                     <SymbolIcon VerticalAlignment="Bottom" HorizontalAlignment="Left"
