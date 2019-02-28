@@ -77,7 +77,7 @@ namespace KmlViewer
 
                 m_Scene = value;
                 m_Scene.OperationalLayers.CollectionChanged += Layers_CollectionChanged;
-                //m_Scene.OperationalLayers.OfType<FadeGroupLayer>().First().PropertyChanged += MainPageVM_PropertyChanged;
+                m_Scene.Basemap.PropertyChanged += MainPageVM_PropertyChanged;
                 OnPropertyChanged();
                 if (Is3D)
                 {
@@ -120,7 +120,7 @@ namespace KmlViewer
                 //value.SpatialReference = Esri.ArcGISRuntime.Geometry.SpatialReferences.WebMercator;
                 m_Map = value;
                 m_Map.OperationalLayers.CollectionChanged += Layers_CollectionChanged;
-                //m_Map.OperationalLayers.OfType<FadeGroupLayer>().First().PropertyChanged += MainPageVM_PropertyChanged;
+                m_Map.Basemap.PropertyChanged += MainPageVM_PropertyChanged;
                 OnPropertyChanged();
                 if (!Is3D)
                 {
@@ -140,6 +140,7 @@ namespace KmlViewer
                 m_Is3D = value;
                 OnPropertyChanged(nameof(Contents));
                 OnPropertyChanged(nameof(Layers));
+                OnPropertyChanged(nameof(Basemap));
                 OnPropertyChanged();
                 StoreAppSetting(value);
             }
@@ -163,33 +164,11 @@ namespace KmlViewer
 
         private void MainPageVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //TODO
-            //var layer = (FadeGroupLayer)sender;
-            //if (Is3D)
-            //	Map.OperationalLayers.OfType<FadeGroupLayer>().First().SelectedIndex = layer.SelectedIndex;
-            //else
-            //	Scene.OperationalLayers.OfType<FadeGroupLayer>().First().SelectedIndex = layer.SelectedIndex;
-            //if(e.PropertyName == "SelectedLayer")
-            //{
-            //	OnPropertyChanged("CopyrightText");
-            //}
-        }
-
-        public string CopyrightText
-        {
-            get
-            {
-                //if (Layers != null)
-                //{
-                //	var layer = Layers.OfType<FadeGroupLayer>().First().SelectedLayer;
-                //	if (layer is ICopyright)
-                //	{
-                //		return (layer as ICopyright).CopyrightText;
-                //	}
-                //}
-                return "";
-
-            }
+            var layer = (FadeGroupLayer)sender;
+            if (Is3D)
+            	(Map.Basemap as FadeGroupLayer).SelectedIndex = layer.SelectedIndex;
+            else
+                (Scene.Basemap as FadeGroupLayer).SelectedIndex = layer.SelectedIndex;
         }
 
         private void Layers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -207,6 +186,27 @@ namespace KmlViewer
                 if (Layers != null)
                     foreach (var item in Layers.OfType<KmlLayer>())
                         yield return item;
+            }
+        }
+        public FadeGroupLayer Basemap
+        {
+            get
+            {
+                if (Is3D)
+                {
+                    if (Scene != null)
+                    {
+                        return Scene.Basemap as FadeGroupLayer;
+                    }
+                }
+                else
+                {
+                    if (Map != null)
+                    {
+                        return Map.Basemap as FadeGroupLayer;
+                    }
+                }
+                return null;
             }
         }
         public LayerCollection Layers

@@ -127,34 +127,6 @@
         </Setter>
     </Style>
 
-
-    <Style TargetType="local:BasemapSelector">
-        
-        <Setter Property="ItemTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Border Background="Gray" Padding="2">
-                        <Border.Resources>
-                        </Border.Resources>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Image Stretch="UniformToFill" MaxHeight="100">
-                                <Image.Source>
-                                    <BitmapImage UriSource="{Binding (local:BasemapSelector.Thumbnail)}" />
-                                </Image.Source>
-                            </Image>
-                            <TextBlock Text="{Binding DisplayName}" Grid.Row="1" HorizontalAlignment="Center" />
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
     <local:TrueToVisibleConverter x:Key="tzConv" />
     <local:NullOrEmptyToCollapsedConverter x:Key="nullConv" />
     <ctrls:BindChildrenIfNotHiddenConverter x:Key="ChildFeaturesBinding" />

@@ -92,14 +92,15 @@
                 </DataTemplate>
             </local:TocTemplateSelector.KmlPlacemarkTemplate>
 
-            <!--<local:TocTemplateSelector.KmlTourTemplate>
-                <DataTemplate x:DataType="ogc:KmlPlacemark">
+            <local:TocTemplateSelector.KmlTourTemplate>
+                <DataTemplate x:DataType="ogc:KmlTour">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Play" />
-                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                        <SymbolIcon Symbol="Video" />
+                        <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center" />
+                        <TextBlock Text="{x:Bind TourStatus, Mode=OneWay}" Margin="5,0,0,0"  VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
-            </local:TocTemplateSelector.KmlTourTemplate>-->
+            </local:TocTemplateSelector.KmlTourTemplate>
 
             <local:TocTemplateSelector.KmlNodeTemplate>
                 <DataTemplate>
@@ -117,13 +118,6 @@
     <TreeView ItemsSource="{x:Bind ItemsSource, Mode=OneWay}"
               ContextRequested="TreeView_ContextRequested"
               ItemInvoked="OnItemInvoked" Margin="-30,0,0,0"
-              ItemTemplateSelector="{StaticResource KmlSelector}" >
-        <!--<TreeView.ContextFlyout>
-            <MenuFlyout x:Name="contextMenu">
-                <MenuFlyoutItem Text="Menu 1" />
-                <MenuFlyoutItem Text="Menu 2" />
-            </MenuFlyout>
-        </TreeView.ContextFlyout>-->
-    </TreeView>
+              ItemTemplateSelector="{StaticResource KmlSelector}" />
 
 </UserControl>

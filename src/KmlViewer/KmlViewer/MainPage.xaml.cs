@@ -421,8 +421,52 @@ namespace KmlViewer
                     item.Click += (s, e2) => sceneView.SetViewpointAsync(new Viewpoint(kp.Geometry));
                     e.MenuItems.Add(item);
                 }
+                if (node is KmlNetworkLink knl)
+                {
+                    var item = new MenuFlyoutItem() { Text = "Refresh" };
+                    item.Click += (s, e2) => knl.Refresh();
+                    e.MenuItems.Add(item);
+                    if (knl.RefreshMode == KmlRefreshMode.OnInterval)
+                    {
+                        item = new MenuFlyoutItem() { Text = "Disable autorefresh" };
+                        item.Click += (s, e2) => knl.RefreshMode = KmlRefreshMode.OnChange;
+                        e.MenuItems.Add(item);
+                    }
+                }
+                else if (node is KmlTour tour)
+                {
+                    var item = new MenuFlyoutItem() { Text = tour.TourStatus == KmlTourStatus.Playing ? "Stop" : "Play" };
+                    item.Click += (s, e2) => ToggleTour(tour);
+                    e.MenuItems.Add(item);
+                }
             }
         }
+
+        private void ToggleTour(KmlTour tour)
+        {
+            if (tourController == null)
+                tourController = new KmlTourController();
+            if (tourController.Tour != null && tourController.Tour != tour)
+            {
+                tourController.Pause();
+                tourController.Reset();
+            }
+            else
+            {
+                tourController.Tour = tour;
+            }
+            if(tour.TourStatus == KmlTourStatus.Playing)
+            {
+                tourController.Pause();
+                tourController.Reset();
+            }
+            else
+            {
+                tourController.Play();
+            }
+        }
+
+        private KmlTourController tourController;
 
         private void BurgerButton_Toggled(object sender, RoutedEventArgs e)
         {

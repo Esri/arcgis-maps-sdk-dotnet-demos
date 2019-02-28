@@ -122,7 +122,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BasemapSelector.cs" />
     <Compile Include="Controls\KmlFeatureItemView.cs" />
     <Compile Include="Controls\KmlTreeView.cs" />
     <Compile Include="Controls\SidePanel.cs" />
@@ -218,7 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.UWP">
-      <Version>100.5.0-daily2338</Version>
+      <Version>100.5.0-KML</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.3</Version>

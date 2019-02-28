@@ -92,8 +92,8 @@ namespace KmlViewer
                 return KmlFolderTemplate;
             if (item is KmlPlacemark)
                 return KmlPlacemarkTemplate;
-            //if (item is KmlTour)
-            //    return KmlTourTemplate;
+            if (item is KmlTour)
+                return KmlTourTemplate;
             if (item is KmlNode)
                 return KmlNodeTemplate;
             return base.SelectTemplateCore(item);

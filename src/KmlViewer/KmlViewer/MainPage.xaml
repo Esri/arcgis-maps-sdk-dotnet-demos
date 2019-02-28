@@ -17,6 +17,7 @@
         <local:NullOrEmptyToCollapsedConverter x:Key="nullConv" />
         <local:LocationFormatConverter x:Key="locationConv" />
         <local:MeterFormatConverter x:Key="meterFormat" />
+        <local:BasemapThumbnailConverter x:Key="basemapThumbnailConverter" />
         <local:TrueToVisibleConverter x:Key="trueVizConv" />
         <local:DayOfYearToDateConverter x:Key="dayOfYearToDateConverter" />
         <local:TimeOfDayTimeConverter x:Key="timeOfDayTimeConverter" />
@@ -30,88 +31,39 @@
                         </mapping:Surface>
                     </mapping:Scene.BaseSurface>
                     <mapping:Scene.Basemap>
-                        <mapping:Basemap>
-                            <mapping:ArcGISTiledLayer Name="Aerial"
-                            Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                        </mapping:Basemap>
+                        <local:FadeGroupLayer>
+                            <mapping:ArcGISTiledLayer Name="Aerial" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
+                            <mapping:OpenStreetMapLayer Name="Open Street Map" />
+                            <mapping:ArcGISTiledLayer Name="Topographic" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Dark Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Light Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="National Geographic" Source="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="USGS Topographic (US)" Source="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="World Terrain" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="World Navigation Charts" Source="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
+                        </local:FadeGroupLayer>
                     </mapping:Scene.Basemap>
-                    <!--<local:FadeGroupLayer SelectedIndex="1" ID="basemap">
-
-                        <mapping:OpenStreetMapLayer Name="Open Street Map"
-                            local:BasemapSelector.Thumbnail="http://c.tile.openstreetmap.org/16/19294/24640.png" />
-                        <layers:ArcGISTiledMapServiceLayer Name="Aerial"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                            ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="Topographic"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="Dark Gray Reference"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="Light Gray Reference"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="Ocean"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="National Geographic"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="USGS Topographic (US)"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer/export?bbox=-117.05%2C35.1%2C-117.0%2C35.11&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="World Terrain"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer Name="World Navigation Charts"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer/export?bbox=-118.9%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
-                    </local:FadeGroupLayer>-->
-
                 </mapping:Scene>
             </local:MainPageVM.Scene>
             <local:MainPageVM.Map>
                 <mapping:Map InitialViewpoint="-180,-90,180,90,4326">
                     <mapping:Map.Basemap>
-                        <mapping:Basemap>
+                        <local:FadeGroupLayer>
+                            <mapping:ArcGISTiledLayer Name="Aerial" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
                             <mapping:OpenStreetMapLayer Name="Open Street Map" />
-                            <!--local:BasemapSelector.Thumbnail="http://c.tile.openstreetmap.org/16/19294/24640.png"-->
-                        </mapping:Basemap>
+                            <mapping:ArcGISTiledLayer Name="Topographic" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Dark Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Light Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="National Geographic" Source="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="USGS Topographic (US)" Source="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="World Terrain" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
+                            <mapping:ArcGISTiledLayer Name="World Navigation Charts" Source="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
+                        </local:FadeGroupLayer>
                     </mapping:Map.Basemap>
-
-                    <!--<local:FadeGroupLayer SelectedIndex="1" ID="basemap">
-
-                        <layers:OpenStreetMapLayer DisplayName="Open Street Map"
-                            local:BasemapSelector.Thumbnail="http://c.tile.openstreetmap.org/16/19294/24640.png" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="Aerial"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                            ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="Topographic"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="Dark Gray Reference"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="Light Gray Reference"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="Ocean"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="National Geographic"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="USGS Topographic (US)"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer/export?bbox=-117.05%2C35.1%2C-117.0%2C35.11&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="World Terrain"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer/export?bbox=-118.5%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
-                        <layers:ArcGISTiledMapServiceLayer DisplayName="World Navigation Charts"
-                            local:BasemapSelector.Thumbnail="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer/export?bbox=-118.9%2C34%2C-118.4%2C34.01&amp;bboxSR=4326&amp;size=180%2C100&amp;format=jpg&amp;f=image"
-                        ServiceUri="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
-                    </local:FadeGroupLayer>-->
-
                 </mapping:Map>
             </local:MainPageVM.Map>
         </local:MainPageVM>
@@ -141,22 +93,25 @@
                     </Grid.RowDefinitions>
 
                     <local:SidePanel SelectedIndex="0" HorizontalAlignment="Stretch" x:Name="sidePanel" Grid.Row="1" >
-                        <local:SidePanelItem Icon="Bookmarks" Header="Content" Padding="20,10,20,0" HorizontalContentAlignment="Stretch">
-                            <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Top">
-
-                                <TextBlock Text="Contents" Style="{StaticResource SubtitleTextBlockStyle}" FontFamily="Global User Interface" />
-
-                                <StackPanel Visibility="{Binding Contents, Converter={StaticResource nullConv}, ConverterParameter=reverse}">
-                                    <TextBlock Text="No KML files loaded" Margin="0,10"/>
-                                    <Button Content="Load KML" Click="LoadKmlButton_Click" HorizontalAlignment="Stretch" />
+                        <local:SidePanelItem Icon="Bookmarks" Header="Content" Padding="20,10,20,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                            <Grid Grid.Row="1" Grid.Column="1" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="Contents" Style="{StaticResource SubtitleTextBlockStyle}" FontFamily="Global User Interface" />
+                                    <StackPanel Visibility="{Binding Contents, Converter={StaticResource nullConv}, ConverterParameter=reverse}">
+                                        <TextBlock Text="No KML files loaded" Margin="0,10"/>
+                                        <Button Content="Load KML" Click="LoadKmlButton_Click" HorizontalAlignment="Stretch" />
+                                    </StackPanel>
                                 </StackPanel>
-
-                                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="1">
                                     <local:TableOfContents ItemsSource="{x:Bind VM.Contents, Mode=OneWay}"
                                                            ItemInvoked="OnFeatureTapped"
                                                            ContextMenuRequested="TableOfContents_ContextMenuRequested" />
                                 </ScrollViewer>
-                            </StackPanel>
+                            </Grid>
                         </local:SidePanelItem>
 
                         <local:SidePanelItem Icon="World" Header="Basemap" Padding="20,10,20,0"
@@ -164,8 +119,29 @@
                             <StackPanel HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top">
                                 <TextBlock Text="Map Type" Style="{StaticResource SubtitleTextBlockStyle}" />
 
-                                <local:BasemapSelector ItemsSource="{Binding Layers[0].ChildLayers}"
-                                    SelectedIndex="{Binding Layers[0].SelectedIndex, Mode=TwoWay}"/>
+                                <ListView ItemsSource="{x:Bind VM.Basemap.BaseLayers, Mode=OneWay}"
+                                    SelectedIndex="{x:Bind VM.Basemap.SelectedIndex, Mode=TwoWay}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="mapping:Layer">
+                                            <Border BorderBrush="Black" BorderThickness="1" Margin="-10,2" >
+                                                <Grid HorizontalAlignment="Stretch">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Image Stretch="UniformToFill" MaxHeight="100">
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="{x:Bind Converter={StaticResource basemapThumbnailConverter}}" />
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Grid Grid.Row="1" Background="White">
+                                                       <TextBlock Text="{x:Bind Name}" Grid.Row="1" HorizontalAlignment="Center" Margin="2" />
+                                                    </Grid>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
                             </StackPanel>
                         </local:SidePanelItem>
 
