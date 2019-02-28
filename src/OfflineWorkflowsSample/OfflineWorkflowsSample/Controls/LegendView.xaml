@@ -4,16 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Esri.ArcGISRuntime.Toolkit.UI.Controls">
     <Grid>
-            <ItemsControl ItemsSource="{Binding Map.OperationalLayers, Mode=OneWay}"
-                          Margin="10">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                            <controls:LayerLegend LayerContent="{Binding}" Margin="10,0" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <ItemsControl ItemsSource="{Binding OperationalLayers, Mode=OneWay}"
+                      Margin="10">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                        <controls:LayerLegend LayerContent="{Binding}" Margin="10,0" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

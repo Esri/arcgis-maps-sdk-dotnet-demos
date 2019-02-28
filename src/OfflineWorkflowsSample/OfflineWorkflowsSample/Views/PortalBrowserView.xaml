@@ -11,7 +11,7 @@
                PaneBackground="Transparent">
         <SplitView.Pane>
             <ScrollViewer>
-                <StackPanel Padding="5,0,5,0">
+                <StackPanel Padding="5,0,20,0">
                     <ListView ItemsSource="{Binding PortalViewModel.Folders.Values}" 
                               SelectedItem="{Binding PortalViewModel.SelectedFolder, Mode=TwoWay}"
                               Background="Transparent">

@@ -17,6 +17,7 @@
         </Grid.RowDefinitions>
         <SplitView x:Name="DownloadControlsSplitView"
                    IsPaneOpen="True" DisplayMode="Inline"
+                   PaneBackground="Transparent"
                    PanePlacement="Right" Grid.Row="2">
             <SplitView.Pane>
                 <Pivot>

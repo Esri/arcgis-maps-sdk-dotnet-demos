@@ -109,6 +109,9 @@
     <Compile Include="Controls\CustomAppTitleBar.xaml.cs">
       <DependentUpon>CustomAppTitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SceneWithTools.xaml.cs">
+      <DependentUpon>SceneWithTools.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\ItemToImageSourceConverter.cs" />
@@ -142,6 +145,9 @@
     </Compile>
     <Compile Include="Views\ItemPages\MapPage.xaml.cs">
       <DependentUpon>MapPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemPages\ScenePage.xaml.cs">
+      <DependentUpon>ScenePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -260,6 +266,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SceneWithTools.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DownloadMapAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -277,6 +287,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ItemPages\MapPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ItemPages\ScenePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

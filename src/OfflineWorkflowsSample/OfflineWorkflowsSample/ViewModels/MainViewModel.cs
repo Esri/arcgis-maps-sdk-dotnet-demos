@@ -83,7 +83,7 @@ namespace OfflineWorkflowsSample
         }
 
         public OfflineMapViewModel OfflineMapViewModel { get; set; } = new OfflineMapViewModel();
-
+        
         public void ShowMessage(string message)
         {
             _windowService.ShowAlertAsync(message);
