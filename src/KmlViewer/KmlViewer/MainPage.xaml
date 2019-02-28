@@ -194,10 +194,6 @@
                     </local:SidePanel>
 
 
-                    <local:FindLocationControl LocationPicked="OnLocationPicked"
-                                       HorizontalAlignment="Stretch"
-                                       VerticalAlignment="Top" BorderThickness="0"
-                                       Margin="50,-0,0,0" />
 
                     <TextBlock Text="A" FontFamily="Segoe MDL2 Assets" />
                     <ToggleButton x:Name="BurgerButton" Width="50" Height="40" IsChecked="True" Background="LightGray" Checked="BurgerButton_Toggled" Unchecked="BurgerButton_Toggled">
@@ -205,6 +201,10 @@
                     </ToggleButton>
                     <SymbolIcon VerticalAlignment="Bottom" HorizontalAlignment="Left"
                         Margin="13" Symbol="Help" Tapped="HelpIcon_Tapped" Grid.Row="1" />
+                    <local:FindLocationControl LocationPicked="OnLocationPicked"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Top" BorderThickness="0"
+                                       Margin="50,-0,0,0" />
                 </Grid>
             </SplitView.Pane>
             <Grid>
