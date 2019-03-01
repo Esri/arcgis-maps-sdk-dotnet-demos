@@ -71,25 +71,41 @@
             <controls1:MeasureToolbar MapView="{Binding ElementName=MyMapView}"
                                       HorizontalAlignment="Right" VerticalAlignment="Top"/>
             <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
                 <StackPanel Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush }">
-                    <AppBarButton Icon="AllApps" Grid.Row="0" Label="Legend" IsCompact="True" Height="48"
+                    <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
                                   Click="MenuButtonClicked" />
-                    <AppBarButton Icon="ZoomIn" Grid.Row="1" Label="Zoom in" IsCompact="True" Height="48"
+                    <AppBarButton Icon="ZoomIn" Label="Zoom in" IsCompact="True" Height="48"
                                   Command="{Binding ZoomInCommand}" />
-                    <AppBarButton Icon="Home" Label="Full extent" Grid.Row="2" IsCompact="True" Height="48"
+                    <AppBarButton Icon="Home" Label="Full extent" IsCompact="True" Height="48"
                                   Command="{Binding ResetViewPointCommand}" />
-                    <AppBarButton Icon="ZoomOut" Label="Zoom out" Grid.Row="3" IsCompact="True" Height="48"
+                    <AppBarButton Icon="ZoomOut" Label="Zoom out" IsCompact="True" Height="48"
                                   Command="{Binding ZoomOutCommand}" />
+                    <AppBarButton Icon="List" Label="Choose basemap">
+                        <AppBarButton.Flyout>
+                            <Flyout>
+                                <ListView ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps }"
+                                          
+                                          SelectionChanged="Selector_OnSelectionChanged"
+                                          >
+                                    <!-- SelectedItem="{Binding Basemap, Mode=TwoWay}" - RPC_E_WRONG_THREAD doing this -->
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="mapping:Basemap">
+                                            <Grid>
+                                                <Image Stretch="UniformToFill"
+                                                       Width="75" Height="75"
+                                                       Source="{Binding Source=Item, Converter={StaticResource ItemToImageSourceConverter}}" />
+                                                <TextBlock Text="{Binding Item.Title}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
                 </StackPanel>
                 
             </Grid>
-            <controls1:ScaleLine MapScale="{x:Bind MyMapView.MapScale, Mode=OneWay}" Grid.Row="1"
+            <controls1:ScaleLine MapScale="{x:Bind MyMapView.MapScale, Mode=OneWay}"
                                  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />
         </Grid>
     </SplitView>

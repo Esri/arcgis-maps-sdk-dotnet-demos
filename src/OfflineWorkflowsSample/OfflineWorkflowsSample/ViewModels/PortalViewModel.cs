@@ -13,7 +13,23 @@ namespace OfflineWorkflowSample
         public Dictionary<string, PortalFolderViewModel> Folders { get; } = new Dictionary<string, PortalFolderViewModel>();
         public Dictionary<string,PortalFolderViewModel> Groups { get; } = new Dictionary<string, PortalFolderViewModel>();
         public PortalFolderViewModel FeaturedContent { get; private set; }
-        public List<Basemap> OrgBasemaps { get; private set; }
+        
+        private List<Basemap> _orgBasemaps = new List<Basemap>();
+        private List<Basemap> _defaultBasemaps;
+        
+        public List<Basemap> OrgBasemaps
+        {
+            get
+            {
+                if (!_orgBasemaps.Any())
+                {
+                    return _defaultBasemaps;
+                }
+
+                return _orgBasemaps;
+            }
+        }
+
         private PortalFolderViewModel _selectedFolder;
         public PortalFolderViewModel SelectedFolder
         {
@@ -55,9 +71,24 @@ namespace OfflineWorkflowSample
                 // TO-DO - update for query pagination
                 Groups[item.Title] = new PortalFolderViewModel(item.Title, itemResults.Results.ToList());
             }
+        }
 
-            // Load the org's basemaps
-            OrgBasemaps = (await portal.GetBasemapsAsync()).ToList();
+        public async Task LoadBasemaps()
+        {
+            _orgBasemaps.Clear();
+            _defaultBasemaps = new List<Basemap>
+            {
+                Basemap.CreateImagery(),
+                Basemap.CreateImageryWithLabels(),
+                Basemap.CreateLightGrayCanvas(),
+                Basemap.CreateNationalGeographic(),
+                Basemap.CreateOceans(),
+                Basemap.CreateOpenStreetMap(),
+                Basemap.CreateStreets()
+            };
+            
+            // Load the org's basemaps.
+            _orgBasemaps.AddRange(await Portal.GetBasemapsAsync());
         }
 
         // Is this a good idea?

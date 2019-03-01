@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -13,9 +15,14 @@ namespace OfflineWorkflowSample
 {
     public sealed partial class MapWithTools : UserControl
     {
+        private MainViewModel _vm => (MainViewModel)Application.Current.Resources[nameof(MainViewModel)];
         public MapWithTools()
         {
             this.InitializeComponent();
+            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                await _vm.PortalViewModel.LoadBasemaps();
+            });
         }
 
         private async void Compass_Tapped(object sender, TappedRoutedEventArgs e)
@@ -53,6 +60,15 @@ namespace OfflineWorkflowSample
                     vm.ShowMessage("Couldn't open item in ArcGIS Online.");
                 }
             }
+        }
+
+        private async void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await MyMapView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                MyMapView.Map.Basemap = e.AddedItems.OfType<Basemap>().FirstOrDefault();
+            });
+
         }
     }
 }
