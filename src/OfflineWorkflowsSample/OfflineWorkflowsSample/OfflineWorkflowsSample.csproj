@@ -106,9 +106,6 @@
     <Compile Include="Controls\BusyOverlay.xaml.cs">
       <DependentUpon>BusyOverlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomAppTitleBar.xaml.cs">
-      <DependentUpon>CustomAppTitleBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\SceneWithTools.xaml.cs">
       <DependentUpon>SceneWithTools.xaml</DependentUpon>
     </Compile>
@@ -119,6 +116,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\OfflineMapsViewModel.cs" />
     <Compile Include="ViewModels\OfflineMapViewModel.cs" />
+    <Compile Include="ViewModels\PortalSearchViewModel.cs" />
     <Compile Include="Views\DownloadMapAreaView.xaml.cs">
       <DependentUpon>DownloadMapAreaView.xaml</DependentUpon>
     </Compile>
@@ -180,6 +178,9 @@
     </Compile>
     <Compile Include="Views\PortalGroupView.xaml.cs">
       <DependentUpon>PortalGroupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -262,10 +263,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\CustomAppTitleBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\SceneWithTools.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -327,6 +324,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PortalGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

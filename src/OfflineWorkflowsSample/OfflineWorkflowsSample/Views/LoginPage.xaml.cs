@@ -27,6 +27,10 @@ namespace OfflineWorkflowSample
             ExtendAcrylicIntoTitleBar();
             ViewModel.WindowService = null;
             ViewModel.CompletedLogin += sender => Login();
+
+            // Configure the title bar.
+            Window.Current.SetTitleBar(DraggablePart);
+            ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
         }
 
         private LoginViewModel ViewModel => (LoginViewModel)Resources["ViewModel"];

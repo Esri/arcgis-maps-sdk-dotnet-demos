@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Esri.ArcGISRuntime.Security;
+using OfflineWorkflowSample.ViewModels;
 
 namespace OfflineWorkflowSample
 {
@@ -15,6 +16,8 @@ namespace OfflineWorkflowSample
         public Dictionary<string, PortalFolderViewModel> Folders { get; } = new Dictionary<string, PortalFolderViewModel>();
         public Dictionary<string,PortalFolderViewModel> Groups { get; } = new Dictionary<string, PortalFolderViewModel>();
         public PortalFolderViewModel FeaturedContent { get; private set; }
+
+        public PortalSearchViewModel SearchViewModel { get; } = new PortalSearchViewModel();
         
         private List<Basemap> _orgBasemaps = new List<Basemap>();
         private List<Basemap> _defaultBasemaps = new List<Basemap>
@@ -59,6 +62,8 @@ namespace OfflineWorkflowSample
         public async Task LoadPortalAsync(ArcGISPortal portal)
         {
             Portal = portal;
+
+            SearchViewModel.Initialize(portal);
             // Get 'featured content'
             //var featuredItems = await portal.GetFeaturedItemsAsync();
             //FeaturedContent = new PortalFolderViewModel("Featured", featuredItems.ToList());

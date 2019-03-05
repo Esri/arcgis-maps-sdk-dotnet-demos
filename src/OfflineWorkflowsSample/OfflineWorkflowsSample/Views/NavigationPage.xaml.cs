@@ -46,6 +46,7 @@ namespace OfflineWorkflowSample.Views
             // Show local content by default.
             ContentFrame.Navigate(typeof(OfflineMapsView), new SuppressNavigationTransitionInfo());
             NavigationView.SelectedItem = NavigationView.MenuItems.First();
+
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -56,6 +57,16 @@ namespace OfflineWorkflowSample.Views
             {
                 LoginViewModel vm = (LoginViewModel)e.Parameter;
                 await ViewModel.Initialize(vm.Portal, vm.UserProfile, this);
+
+                // Listen for search changes
+                ViewModel.PortalViewModel.SearchViewModel.SearchChanged += (sender, args) =>
+                {
+                    if (!(ContentFrame.Content is SearchPage))
+                    {
+                        ContentFrame.Navigate(typeof(SearchPage), new SuppressNavigationTransitionInfo());
+                        NavigationView.SelectedItem = NavigationView.MenuItems.Last();
+                    }
+                };
             }
         }
 
@@ -95,6 +106,7 @@ namespace OfflineWorkflowSample.Views
                     ContentFrame.Navigate(typeof(PortalGroupView), new SuppressNavigationTransitionInfo());
                     break;
                 case "Search":
+                    ContentFrame.Navigate(typeof(SearchPage), new SuppressNavigationTransitionInfo());
                     break;
             }
         }

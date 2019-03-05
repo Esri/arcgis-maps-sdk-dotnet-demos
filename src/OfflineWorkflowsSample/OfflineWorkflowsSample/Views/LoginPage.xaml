@@ -20,7 +20,34 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <local:CustomAppTitleBar Grid.Row="0" />
+        <Grid x:Name="AppTitleBar" 
+              Grid.Row="0"
+              Background="Transparent" 
+              HorizontalAlignment="Stretch"
+              DataContext="{StaticResource MainViewModel}">
+            <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
+            <!-- Using padding columns instead of Margin ensures that the background
+                 paints the area under the caption control buttons (for transparent buttons). -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="../Assets/Square44x44Logo.png"
+                   Grid.Column="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Width="30" Height="30" Margin="4" />
+            <StackPanel x:Name="DraggablePart" 
+                        HorizontalAlignment="Stretch" 
+                        Background="Transparent"
+                        Grid.Column="1">
+                <TextBlock Text="{Binding Title}"
+                           HorizontalTextAlignment="Center"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Margin="0,8,0,0" />
+            </StackPanel>
+        </Grid>
         <Grid Grid.Row="1">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
                         Orientation="Vertical">
