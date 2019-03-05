@@ -64,7 +64,7 @@
         </SplitView.Pane>
         <Grid>
             <controls:MapView x:Name="MyMapView" Map="{Binding}"
-                              viewServices:MapViewService.ViewService="{Binding MapViewService}" />
+                              viewServices:MapViewService.ViewService="{Binding Source={StaticResource MainViewModel},Path=MapViewService}" />
             <controls1:Compass x:Name="compass" Heading="{x:Bind MyMapView.MapRotation, Mode=OneWay}" Height="40"
                                Width="40"
                                Margin="20,30" Tapped="Compass_Tapped" AutoHide="False" VerticalAlignment="Bottom"
@@ -76,11 +76,11 @@
                     <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
                                   Click="MenuButtonClicked" />
                     <AppBarButton Icon="ZoomIn" Label="Zoom in" IsCompact="True" Height="48"
-                                  Command="{Binding ZoomInCommand}" />
+                                  Command="{Binding Source={StaticResource MainViewModel},Path=ZoomInCommand}" />
                     <AppBarButton Icon="Home" Label="Full extent" IsCompact="True" Height="48"
-                                  Command="{Binding ResetViewPointCommand}" />
+                                  Command="{Binding Source={StaticResource MainViewModel},Path=ResetViewPointCommand}" />
                     <AppBarButton Icon="ZoomOut" Label="Zoom out" IsCompact="True" Height="48"
-                                  Command="{Binding ZoomOutCommand}" />
+                                  Command="{Binding Source={StaticResource MainViewModel},Path=ZoomOutCommand}" />
                     <AppBarButton Icon="List" Label="Choose basemap">
                         <AppBarButton.Flyout>
                             <Flyout>

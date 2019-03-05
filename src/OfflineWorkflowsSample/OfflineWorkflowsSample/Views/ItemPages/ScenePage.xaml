@@ -10,8 +10,9 @@
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:controls="using:OfflineWorkflowSample.Controls"
     mc:Ignorable="d"
+    NavigationCacheMode="Disabled"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <!-- NavigationCacheMode Needed to prevent object already owned exceptions with sceneview -->
     <Grid>
          <controls:SceneWithTools DataContext="{Binding}" />
     </Grid>

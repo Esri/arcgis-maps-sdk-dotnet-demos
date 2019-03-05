@@ -9,8 +9,9 @@
     xmlns:downloadMapArea="using:OfflineWorkflowsSample.DownloadMapArea"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     mc:Ignorable="d"
+    NavigationCacheMode="Disabled" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <!-- NavigationCacheMode Needed to prevent object already owned exceptions with mapview -->
     <Grid>
         <offlineWorkflowSample:MapWithTools />
         <offlineWorkflowSample:BusyOverlay DataContext="{Binding Source={StaticResource MainViewModel}}" />

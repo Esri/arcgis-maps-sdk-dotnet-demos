@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.System;
+using Esri.ArcGISRuntime.UI.Controls;
 
 namespace OfflineWorkflowsSample
 {
@@ -23,7 +24,10 @@ namespace OfflineWorkflowsSample
             set
             {
                 SetProperty(ref _selectedItem, value);
-                _windowService.NavigateToPageForItem(_selectedItem);
+                if (value != null)
+                {
+                    _windowService.NavigateToPageForItem(_selectedItem);
+                }
             }
         }
 
@@ -72,6 +76,7 @@ namespace OfflineWorkflowsSample
                 PortalViewModel = new PortalViewModel();
                 await PortalViewModel.LoadPortalAsync(portal);
                 await OfflineMapsViewModel.Initialize();
+                OfflineMapViewModel.MapViewService = MapViewService;
                 IsInitialized = true;
             }
             catch (Exception ex)
@@ -82,7 +87,7 @@ namespace OfflineWorkflowsSample
             }
         }
 
-        public OfflineMapViewModel OfflineMapViewModel { get; set; } = new OfflineMapViewModel();
+        public OfflineMapViewModel OfflineMapViewModel { get; } = new OfflineMapViewModel();
         
         public void ShowMessage(string message)
         {

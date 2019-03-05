@@ -132,6 +132,14 @@ namespace OfflineWorkflowSample.Views
             if (ContentFrame.CanGoBack)
             {
                 ContentFrame.GoBack(new SuppressNavigationTransitionInfo());
+
+                // Reset selected item when showing browsing views.
+                if (ContentFrame.Content is OfflineMapsView || 
+                    ContentFrame.Content is PortalBrowserView || 
+                    ContentFrame.Content is PortalGroupView)
+                {
+                    ViewModel.SelectedItem = null;
+                }
             }
         }
     }

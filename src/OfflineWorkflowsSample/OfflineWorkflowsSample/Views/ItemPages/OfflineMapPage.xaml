@@ -8,7 +8,9 @@
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:downloadMapArea="using:OfflineWorkflowsSample.DownloadMapArea"
     xmlns:generateMapArea="using:OfflineWorkflowsSample.GenerateMapArea"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d">
+    <!-- NavigationCacheMode Needed to prevent object already owned exceptions with mapview -->
     <Grid DataContext="{Binding Source={StaticResource MainViewModel},Path=OfflineMapViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- Title bar -->

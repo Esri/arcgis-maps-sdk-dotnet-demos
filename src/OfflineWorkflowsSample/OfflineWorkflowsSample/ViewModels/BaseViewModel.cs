@@ -77,6 +77,7 @@ namespace OfflineWorkflowsSample.Infrastructure
 
                 return _mapViewService;
             }
+            set { _mapViewService = value; }
         }
 
         private Map _map;

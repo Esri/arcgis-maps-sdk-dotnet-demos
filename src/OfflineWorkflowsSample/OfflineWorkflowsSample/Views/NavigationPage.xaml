@@ -65,6 +65,11 @@
             </muxc:NavigationView.PaneFooter>
             <Frame x:Name="ContentFrame" CacheSize="3"  />
         </muxc:NavigationView>
+        <Border Background="#7F000000" Grid.Row="1"
+                Visibility="{Binding Source={StaticResource MainViewModel},Path=IsBusy}">
+            <TextBlock Text="{Binding Source={StaticResource MainViewModel},Path=IsBusyText}"
+                       Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
     </Grid>
 
 </Page>
