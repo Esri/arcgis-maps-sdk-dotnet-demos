@@ -6,10 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
+    xmlns:converter="using:OfflineWorkflowSample.Infrastructure.Converter"
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Page.Resources>
+        <converter:NullEnumToBlankStringConverter x:Key="NullEnumToBlankStringConverter" />
+    </Page.Resources>
     <SplitView DataContext="{StaticResource MainViewModel}" 
                IsPaneOpen="True" 
                DisplayMode="Inline" 
@@ -36,7 +39,13 @@
                                SearchHistoryEnabled="False"/>
                     <ComboBox ItemsSource="{Binding PortalViewModel.AvailableTypeFilters}"
                               HorizontalAlignment="Stretch"
-                              SelectedItem="{Binding PortalViewModel.TypeFilter,Mode=TwoWay}" />
+                              SelectedItem="{Binding PortalViewModel.TypeFilter,Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource NullEnumToBlankStringConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
             </ScrollViewer>
         </SplitView.Pane>

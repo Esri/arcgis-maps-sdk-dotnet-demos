@@ -57,14 +57,5 @@ namespace OfflineWorkflowSample
                 }
             }
         }
-
-        private async void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            await MyMapView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                MyMapView.Map.Basemap = e.AddedItems.OfType<Basemap>().FirstOrDefault();
-            });
-
-        }
     }
 }

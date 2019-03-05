@@ -14,7 +14,7 @@
         </DataTemplate>
         <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
     </UserControl.Resources>
-    <SplitView x:Name="MapLegendSplitView" 
+    <SplitView x:Name="MapLegendSplitView"
                DisplayMode="Overlay"
                PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
         <SplitView.Pane>
@@ -24,11 +24,12 @@
                         <StackPanel>
                             <TextBlock Text="{Binding Item.Title}"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <Image Margin="5" Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
+                            <Image Margin="5"
+                                   Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
                             <TextBlock Text="{Binding Item.Description}"
                                        Style="{StaticResource BodyTextBlockStyle}"
-                                       TextWrapping="Wrap"/>
-                            <Button Content="Open in ArcGIS Online" 
+                                       TextWrapping="Wrap" />
+                            <Button Content="Open in ArcGIS Online"
                                     HorizontalAlignment="Stretch"
                                     Click="OpenInAgol_Clicked" />
                         </StackPanel>
@@ -42,13 +43,13 @@
                         <StackPanel>
                             <TextBlock Text="Operational layers"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{Binding OperationalLayers}" 
+                            <ListView ItemsSource="{Binding OperationalLayers}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
                             <TextBlock Text="Basemap layers"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{Binding Basemap.BaseLayers}" 
+                            <ListView ItemsSource="{Binding Basemap.BaseLayers}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
-                            <ListView ItemsSource="{Binding Basemap.ReferenceLayers}" 
+                            <ListView ItemsSource="{Binding Basemap.ReferenceLayers}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
                         </StackPanel>
                     </ScrollViewer>
@@ -69,7 +70,7 @@
                                Margin="20,30" Tapped="Compass_Tapped" AutoHide="False" VerticalAlignment="Bottom"
                                HorizontalAlignment="Right" />
             <controls1:MeasureToolbar MapView="{Binding ElementName=MyMapView}"
-                                      HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                      HorizontalAlignment="Right" VerticalAlignment="Top" />
             <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
                 <StackPanel Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush }">
                     <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
@@ -83,18 +84,23 @@
                     <AppBarButton Icon="List" Label="Choose basemap">
                         <AppBarButton.Flyout>
                             <Flyout>
-                                <ListView ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps }"
-                                          
-                                          SelectionChanged="Selector_OnSelectionChanged"
-                                          >
-                                    <!-- SelectedItem="{Binding Basemap, Mode=TwoWay}" - RPC_E_WRONG_THREAD doing this -->
+                                <ListView
+                                    ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps }"
+                                    SelectedItem="{Binding Basemap, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="mapping:Basemap">
-                                            <Grid>
+                                            <Grid Margin="5">
                                                 <Image Stretch="UniformToFill"
-                                                       Width="75" Height="75"
-                                                       Source="{Binding Source=Item, Converter={StaticResource ItemToImageSourceConverter}}" />
-                                                <TextBlock Text="{Binding Item.Title}" />
+
+                                                       Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
+                                                <Border Background="#7F000000" 
+                                                        VerticalAlignment="Top"
+                                                        Padding="5">
+                                                    <TextBlock Text="{Binding Item.Title}"
+                                                               Foreground="White"
+                                                               Opacity="1"
+                                                               TextWrapping="WrapWholeWords" />
+                                                </Border>
                                             </Grid>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
@@ -103,7 +109,7 @@
                         </AppBarButton.Flyout>
                     </AppBarButton>
                 </StackPanel>
-                
+
             </Grid>
             <controls1:ScaleLine MapScale="{x:Bind MyMapView.MapScale, Mode=OneWay}"
                                  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />

@@ -136,10 +136,11 @@ namespace OfflineWorkflowSample
             }
         }
 
-        public List<PortalItemType> AvailableTypeFilters => _availableTypeFilters;
+        public List<PortalItemType?> AvailableTypeFilters => _availableTypeFilters;
 
-        private static List<PortalItemType> _availableTypeFilters = new List<PortalItemType>
+        private static List<PortalItemType?> _availableTypeFilters = new List<PortalItemType?>
         {
+            null,
             PortalItemType.WebMap,
             PortalItemType.WebScene,
             PortalItemType.MobileMapPackage

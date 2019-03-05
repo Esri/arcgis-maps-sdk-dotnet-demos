@@ -112,9 +112,10 @@
     <Compile Include="Controls\SceneWithTools.xaml.cs">
       <DependentUpon>SceneWithTools.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ColorToBrushConverter.cs" />
-    <Compile Include="Converters\DateTimeToStringConverter.cs" />
-    <Compile Include="Converters\ItemToImageSourceConverter.cs" />
+    <Compile Include="Infrastructure\Converter\ColorToBrushConverter.cs" />
+    <Compile Include="Infrastructure\Converter\DateTimeToStringConverter.cs" />
+    <Compile Include="Infrastructure\Converter\ItemToImageSourceConverter.cs" />
+    <Compile Include="Infrastructure\Converter\NullEnumToBlankStringConverter.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\OfflineMapsViewModel.cs" />
     <Compile Include="ViewModels\OfflineMapViewModel.cs" />
@@ -335,7 +336,7 @@
       <Version>100.4.0</Version>
     </PackageReference>
     <PackageReference Include="Esri.ArcGISRuntime.UWP">
-      <Version>100.5.0-daily2345</Version>
+      <Version>100.5.0-daily2349</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.9</Version>
@@ -355,6 +356,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Placeholders\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

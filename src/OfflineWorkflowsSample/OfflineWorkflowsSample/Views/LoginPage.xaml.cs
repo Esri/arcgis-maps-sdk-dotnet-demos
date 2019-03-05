@@ -44,7 +44,6 @@ namespace OfflineWorkflowSample
             // Navigate to the main page, passing the view model as an argument.
             Frame rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(NavigationPage), ViewModel);
-            //rootFrame.Navigate(typeof(NavigationPage), null);
         }
         
     }
