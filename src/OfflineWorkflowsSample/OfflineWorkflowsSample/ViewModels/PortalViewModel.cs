@@ -15,7 +15,10 @@ namespace OfflineWorkflowSample
     {
         public Dictionary<string, PortalFolderViewModel> Folders { get; } = new Dictionary<string, PortalFolderViewModel>();
         public Dictionary<string,PortalFolderViewModel> Groups { get; } = new Dictionary<string, PortalFolderViewModel>();
-        public PortalFolderViewModel FeaturedContent { get; private set; }
+        public PortalFolderViewModel FeaturedContent { get; }
+
+        public List<PortalFolderViewModel> VisibleFolders => Folders.Values.Where(folder => folder.SectionHasContent).ToList();
+        public List<PortalFolderViewModel> VisibleGroups => Groups.Values.Where(group => group.SectionHasContent).ToList();
 
         public PortalSearchViewModel SearchViewModel { get; } = new PortalSearchViewModel();
         
@@ -105,10 +108,13 @@ namespace OfflineWorkflowSample
             set
             {
                 SetProperty(ref _searchFilter, value);
+                
                 foreach (PortalFolderViewModel container in Folders.Values.Concat(Groups.Values))
                 {
                     container.SearchFilter = value;
                 }
+                RaisePropertyChanged(nameof(VisibleFolders));
+                RaisePropertyChanged(nameof(VisibleGroups));
             }
         }
 
@@ -120,10 +126,13 @@ namespace OfflineWorkflowSample
             set
             {
                 SetProperty(ref _offlineOnlyFilter, value);
+                
                 foreach (PortalFolderViewModel container in Folders.Values.Concat(Groups.Values))
                 {
                     container.OfflineOnlyFilter = value;
                 }
+                RaisePropertyChanged(nameof(VisibleFolders));
+                RaisePropertyChanged(nameof(VisibleGroups));
             }
         }
 
@@ -135,10 +144,13 @@ namespace OfflineWorkflowSample
             set
             {
                 SetProperty(ref _typeFilter, value);
+                
                 foreach (PortalFolderViewModel container in Folders.Values.Concat(Groups.Values))
                 {
                     container.TypeFilter = value;
                 }
+                RaisePropertyChanged(nameof(VisibleFolders));
+                RaisePropertyChanged(nameof(VisibleGroups));
             }
         }
 
@@ -169,6 +181,7 @@ namespace OfflineWorkflowSample
             {
                 SetProperty(ref _searchFilter, value);
                 RaisePropertyChanged(nameof(Items));
+                RaisePropertyChanged(nameof(SectionHasContent));
             }
         }
         public PortalItemType? TypeFilter
@@ -178,6 +191,7 @@ namespace OfflineWorkflowSample
             {
                 SetProperty(ref _typeFilter, value);
                 RaisePropertyChanged(nameof(Items));
+                RaisePropertyChanged(nameof(SectionHasContent));
             }
         }
 
@@ -188,6 +202,7 @@ namespace OfflineWorkflowSample
             {
                 SetProperty(ref _offlineOnly, value);
                 RaisePropertyChanged(nameof(Items));
+                RaisePropertyChanged(nameof(SectionHasContent));
             }
         }
 
@@ -214,6 +229,8 @@ namespace OfflineWorkflowSample
                 return items;
             }
         }
+
+        public bool SectionHasContent => Items.Any();
 
         public PortalFolderViewModel(string title, List<PortalItem> items)
         {
