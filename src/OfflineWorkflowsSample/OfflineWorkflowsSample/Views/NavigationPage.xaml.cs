@@ -139,6 +139,12 @@ namespace OfflineWorkflowSample.Views
             }
         }
 
+        public void NavigateToLoginPage()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(LoginPage));
+        }
+
         private void NavigationView_OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
             if (ContentFrame.CanGoBack)

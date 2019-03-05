@@ -5,10 +5,21 @@
     xmlns:models="using:OfflineWorkflowsSample.Models">
 
     <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding FullName}"
-                   VerticalAlignment="Center" />
-        <PersonPicture ProfilePicture="{Binding ProfilePicture}"
-                       DisplayName="{Binding FullName}"
-                       Height="25" Margin="5,0,0,0" />
+        <Button Background="Transparent" BorderBrush="Transparent"
+                Padding="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding FullName}"
+                           VerticalAlignment="Center" />
+                <PersonPicture ProfilePicture="{Binding ProfilePicture}"
+                               DisplayName="{Binding FullName}"
+                               Height="25" Margin="5,0,0,0" />
+            </StackPanel>
+            <Button.Flyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Log out" Command="{Binding Source={StaticResource MainViewModel},Path=LogOutCommand}" />
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
+        
     </StackPanel>
 </UserControl>
