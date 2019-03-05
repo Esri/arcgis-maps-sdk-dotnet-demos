@@ -70,7 +70,6 @@ namespace OfflineWorkflowSample.Views
             }
         }
 
-
         public async Task ShowAlertAsync(string message)
         {
             await ShowAlertAsync(message, "");
@@ -94,20 +93,27 @@ namespace OfflineWorkflowSample.Views
 
         private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            switch (args.InvokedItemContainer.Tag.ToString())
+            if (args.IsSettingsInvoked)
             {
-                case "Local":
-                    ContentFrame.Navigate(typeof(OfflineMapsView), new SuppressNavigationTransitionInfo());
-                    break;
-                case "Folders":
-                    ContentFrame.Navigate(typeof(PortalBrowserView), new SuppressNavigationTransitionInfo());
-                    break;
-                case "Groups":
-                    ContentFrame.Navigate(typeof(PortalGroupView), new SuppressNavigationTransitionInfo());
-                    break;
-                case "Search":
-                    ContentFrame.Navigate(typeof(SearchPage), new SuppressNavigationTransitionInfo());
-                    break;
+                ContentFrame.Navigate(typeof(SettingsPage), new SuppressNavigationTransitionInfo());
+            }
+            else
+            {
+                switch (args.InvokedItemContainer.Tag.ToString())
+                {
+                    case "Local":
+                        ContentFrame.Navigate(typeof(OfflineMapsView), new SuppressNavigationTransitionInfo());
+                        break;
+                    case "Folders":
+                        ContentFrame.Navigate(typeof(PortalBrowserView), new SuppressNavigationTransitionInfo());
+                        break;
+                    case "Groups":
+                        ContentFrame.Navigate(typeof(PortalGroupView), new SuppressNavigationTransitionInfo());
+                        break;
+                    case "Search":
+                        ContentFrame.Navigate(typeof(SearchPage), new SuppressNavigationTransitionInfo());
+                        break;
+                }
             }
         }
 

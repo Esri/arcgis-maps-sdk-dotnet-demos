@@ -98,12 +98,7 @@ namespace OfflineWorkflowSample.ViewModels
             BitmapImage profilePicture = null;
             profilePicture = currentUser.ThumbnailUri != null ? new BitmapImage(currentUser.ThumbnailUri) : null;
 
-            var userProfile = new UserProfileModel()
-            {
-                Username = currentUser.UserName,
-                FullName = currentUser.FullName,
-                ProfilePicture = profilePicture
-            };
+            var userProfile = new UserProfileModel(Portal.User);
 
             return userProfile;
         }

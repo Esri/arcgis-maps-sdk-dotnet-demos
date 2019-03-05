@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Esri.ArcGISRuntime.Portal;
 
 namespace OfflineWorkflowsSample.Models
 {
@@ -29,6 +31,20 @@ namespace OfflineWorkflowsSample.Models
         {
             get { return _fullName; }
             set { SetProperty(ref _fullName, value); }
+        }
+
+        public PortalUser User { get; set; }
+
+        public UserProfileModel(PortalUser user)
+        {
+            Username = user.UserName;
+
+            BitmapImage profilePicture = null;
+            ProfilePicture = user.ThumbnailUri != null ? new BitmapImage(user.ThumbnailUri) : null;
+
+            FullName = user.FullName;
+
+            User = user;
         }
     }
 }
