@@ -19,6 +19,7 @@ namespace OfflineWorkflowSample.ViewModels
         public List<Map> OfflineMaps => MapItems.Values.ToList();
         public List<Item> Items => MapItems.Keys.ToList();
         public Dictionary<Item, Map> MapItems { get; } = new Dictionary<Item, Map>();
+        public Dictionary<Item, string> PathsForItems { get; } = new Dictionary<Item, string>();
 
         public async Task Initialize()
         {
@@ -37,6 +38,7 @@ namespace OfflineWorkflowSample.ViewModels
                         foreach (var mmpkMap in mmpk.Maps)
                         {
                             MapItems[mmpkMap.Item] = mmpkMap;
+                            PathsForItems[mmpkMap.Item] = subDirectory;
                         }
                     }
                 }

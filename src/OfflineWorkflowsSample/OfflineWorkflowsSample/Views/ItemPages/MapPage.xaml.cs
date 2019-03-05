@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -13,7 +14,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Portal;
 using OfflineWorkflowsSample;
+using OfflineWorkflowsSample.Infrastructure.ViewServices;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,11 +33,32 @@ namespace OfflineWorkflowSample.Views.ItemPages
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = new Map(_mainVM.SelectedItem);
+            try
+            {
+                if (_mainVM.SelectedItem is LocalItem localItem)
+                {
+                    // This logic is quite brittle and only valid for MMPKs created as a result of 
+                    //   taking a map offline with this app. 
+                    string mmpkPath = _mainVM.OfflineMapsViewModel.PathsForItems[localItem];
+
+                    var mmpk = await MobileMapPackage.OpenAsync(mmpkPath);
+
+                    // Get the first map.
+                    this.DataContext = mmpk.Maps.First();
+                }
+                else
+                {
+                    this.DataContext = new Map(_mainVM.SelectedItem as PortalItem);
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
     }
 }

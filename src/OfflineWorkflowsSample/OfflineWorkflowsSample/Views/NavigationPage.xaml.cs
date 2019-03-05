@@ -45,6 +45,7 @@ namespace OfflineWorkflowSample.Views
             
             // Show local content by default.
             ContentFrame.Navigate(typeof(OfflineMapsView), new SuppressNavigationTransitionInfo());
+            NavigationView.SelectedItem = NavigationView.MenuItems.First();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
