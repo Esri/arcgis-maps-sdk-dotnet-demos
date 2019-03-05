@@ -44,22 +44,19 @@
             </StackPanel>
         </Grid>
         <!-- Everything else -->
-        <muxc:NavigationView PaneDisplayMode="Top" 
+        <muxc:NavigationView x:Name="NavigationView" 
+                             PaneDisplayMode="Top" 
                              Grid.Row="1"
                              Background="Transparent"
                              ItemInvoked="NavigationView_OnItemInvoked"
                              IsBackEnabled="{Binding ElementName=ContentFrame,Path=CanGoBack}"
+                             IsBackButtonVisible="{Binding ElementName=ContentFrame,Path=CanGoBack}"
                              BackRequested="NavigationView_OnBackRequested">
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Icon="Download" Content="Local content" Tag="Local" />
-                <muxc:NavigationViewItem Icon="List" Content="My folders" Tag="Folders" />
-                <muxc:NavigationViewItem Icon="World" Content="My groups" Tag="Groups" />
-                <muxc:NavigationViewItem Icon="Find" Content="Search" Tag="Search" />
+                <muxc:NavigationViewItem Content="Local content" Tag="Local" />
+                <muxc:NavigationViewItem Content="My folders" Tag="Folders" />
+                <muxc:NavigationViewItem Content="My groups" Tag="Groups" />
             </muxc:NavigationView.MenuItems>
-            <muxc:NavigationView.AutoSuggestBox>
-                <AutoSuggestBox PlaceholderText="Search portal"
-                                MinWidth="175"/>
-            </muxc:NavigationView.AutoSuggestBox>
             <muxc:NavigationView.PaneFooter>
                 <local:UserProfileView HorizontalAlignment="Right" 
                                        VerticalAlignment="Center" 

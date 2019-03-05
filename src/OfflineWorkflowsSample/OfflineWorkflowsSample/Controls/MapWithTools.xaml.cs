@@ -19,10 +19,6 @@ namespace OfflineWorkflowSample
         public MapWithTools()
         {
             this.InitializeComponent();
-            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-            {
-                await _vm.PortalViewModel.LoadBasemaps();
-            });
         }
 
         private async void Compass_Tapped(object sender, TappedRoutedEventArgs e)

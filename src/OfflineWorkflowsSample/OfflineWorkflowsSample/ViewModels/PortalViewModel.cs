@@ -3,6 +3,7 @@ using Esri.ArcGISRuntime.Portal;
 using Prism.Windows.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,16 @@ namespace OfflineWorkflowSample
         public PortalFolderViewModel FeaturedContent { get; private set; }
         
         private List<Basemap> _orgBasemaps = new List<Basemap>();
-        private List<Basemap> _defaultBasemaps;
+        private List<Basemap> _defaultBasemaps = new List<Basemap>
+        {
+            Basemap.CreateImagery(),
+            Basemap.CreateImageryWithLabels(),
+            Basemap.CreateLightGrayCanvas(),
+            Basemap.CreateNationalGeographic(),
+            Basemap.CreateOceans(),
+            Basemap.CreateOpenStreetMap(),
+            Basemap.CreateStreets()
+        };
         
         public List<Basemap> OrgBasemaps
         {
@@ -71,24 +81,14 @@ namespace OfflineWorkflowSample
                 // TO-DO - update for query pagination
                 Groups[item.Title] = new PortalFolderViewModel(item.Title, itemResults.Results.ToList());
             }
-        }
 
-        public async Task LoadBasemaps()
-        {
+            // Get the basemaps.
             _orgBasemaps.Clear();
-            _defaultBasemaps = new List<Basemap>
-            {
-                Basemap.CreateImagery(),
-                Basemap.CreateImageryWithLabels(),
-                Basemap.CreateLightGrayCanvas(),
-                Basemap.CreateNationalGeographic(),
-                Basemap.CreateOceans(),
-                Basemap.CreateOpenStreetMap(),
-                Basemap.CreateStreets()
-            };
-            
-            // Load the org's basemaps.
             _orgBasemaps.AddRange(await Portal.GetBasemapsAsync());
+
+            // Set the initial selections.
+            SelectedFolder = Folders.Values.FirstOrDefault();
+            SelectedGroup = Groups.Values.FirstOrDefault();
         }
 
         // Is this a good idea?
@@ -136,7 +136,7 @@ namespace OfflineWorkflowSample
             }
         }
 
-        public List<PortalItemType> AvailableTypeFilters => PortalViewModel._availableTypeFilters;
+        public List<PortalItemType> AvailableTypeFilters => _availableTypeFilters;
 
         private static List<PortalItemType> _availableTypeFilters = new List<PortalItemType>
         {
