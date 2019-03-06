@@ -33,7 +33,7 @@ namespace OfflineWorkflowSample.Views
         {
             InitializeComponent();
             Window.Current.SetTitleBar(DraggablePart);
-            ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
+            ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.DarkRed;
 
             // Show local content by default.
             ContentFrame.Navigate(typeof(OfflineMapsView), new SuppressNavigationTransitionInfo());

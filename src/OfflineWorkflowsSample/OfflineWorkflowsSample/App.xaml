@@ -4,16 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:OfflineWorkflowsSample"
     xmlns:converters="using:OfflineWorkflowSample.Converters"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    RequestedTheme="Light">
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls">
     <Application.Resources>
         <ResourceDictionary>
             <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
             <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
             <local:MainViewModel x:Key="MainViewModel" />
             <DataTemplate x:Name="PortalItemTemplate" x:Key="PortalItemTemplate">
-                <Border Background="White"
-                        BorderThickness="1"
+                <Border BorderThickness="1"
                         CornerRadius="0" Padding="0,0,5,0"
                         BorderBrush="LightGray">
                     <Grid Width="425" Height="100" ColumnSpacing="5">
@@ -51,7 +49,6 @@
             </DataTemplate>
             <Style x:Key="ButtonStyle" TargetType="Button">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
-                <Setter Property="Background" Value="White" />
                 <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundAccentBrush}" />
                 <Setter Property="Margin" Value="0,5,0,5" />
             </Style>

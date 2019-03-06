@@ -7,7 +7,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid DataContext="{StaticResource MainViewModel}">
+    <Grid DataContext="{StaticResource MainViewModel}" Padding="5">
         <GridView ItemsSource="{Binding OfflineMapsViewModel.Items}"
                   ItemTemplate="{StaticResource PortalItemTemplate}"
                   SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}" />

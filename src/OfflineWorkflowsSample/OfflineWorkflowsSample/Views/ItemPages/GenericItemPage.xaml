@@ -5,8 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:OfflineWorkflowSample.Converters"
-    mc:Ignorable="d"
-    Background="White">
+    RequestedTheme="Light"
+    mc:Ignorable="d">
     <Page.Resources>
         <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
     </Page.Resources>
