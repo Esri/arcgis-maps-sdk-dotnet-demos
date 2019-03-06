@@ -170,9 +170,6 @@
     </Compile>
     <Compile Include="ViewModels\PortalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\UserProfileView.xaml.cs">
-      <DependentUpon>UserProfileView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\OfflineMapsView.xaml.cs">
       <DependentUpon>OfflineMapsView.xaml</DependentUpon>
     </Compile>
@@ -318,10 +315,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OfflineMapForm.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\UserProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

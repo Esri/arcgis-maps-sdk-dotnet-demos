@@ -59,10 +59,23 @@
                 <muxc:NavigationViewItem Content="Search" Tag="Search" />
             </muxc:NavigationView.MenuItems>
             <muxc:NavigationView.PaneFooter>
-                <local:UserProfileView HorizontalAlignment="Right" 
-                                       VerticalAlignment="Center" 
-                                       Margin="0,5,5,5"
-                                       DataContext="{Binding UserProfile}"/>
+                <StackPanel Orientation="Horizontal" DataContext="{Binding UserProfile}">
+                    <Button Background="Transparent" BorderBrush="Transparent"
+                            Padding="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FullName}"
+                                       VerticalAlignment="Center" />
+                            <PersonPicture ProfilePicture="{Binding ProfilePicture}"
+                                           DisplayName="{Binding FullName}"
+                                           Height="25" Margin="5,0,0,0" />
+                        </StackPanel>
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Log out" Command="{Binding Source={StaticResource MainViewModel},Path=LogOutCommand}" />
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
             </muxc:NavigationView.PaneFooter>
             <muxc:NavigationView.AutoSuggestBox>
                 <AutoSuggestBox Text="{Binding PortalViewModel.SearchViewModel.SearchQueryText, Mode=TwoWay}"
