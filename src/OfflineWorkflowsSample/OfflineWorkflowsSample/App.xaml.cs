@@ -42,11 +42,13 @@ namespace OfflineWorkflowsSample
                 Debug.WriteLine("");
             }
             else
+#pragma warning disable 162
             {
                 // Initialize the ArcGIS Runtime before any components are created.
                 ArcGISRuntimeEnvironment.SetLicense(LicenseKey, ExtensionLicenseKeys);
                 
             }
+#pragma warning restore 162
             ArcGISRuntimeEnvironment.Initialize();
 
             UnhandledException += App_UnhandledException;
