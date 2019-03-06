@@ -141,6 +141,9 @@ namespace OfflineWorkflowSample.Views
                     case PortalItemType.WebScene:
                         ContentFrame.Navigate(typeof(ScenePage));
                         break;
+                    default:
+                        ContentFrame.Navigate(typeof(GenericItemPage), new SuppressNavigationTransitionInfo());
+                        break;
                 }
             }
         }
