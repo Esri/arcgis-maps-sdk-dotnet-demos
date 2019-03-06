@@ -85,11 +85,11 @@ namespace OfflineWorkflowSample
             try
             {
                 // Get the 'my content' group
-                var result = await portal.User.GetContentAsync();
-                Folders["All my content"] = new PortalFolderViewModel("All my content", result.Items.ToList());
+                var userContent = await portal.User.GetContentAsync();
+                Folders["All my content"] = new PortalFolderViewModel("All my content", userContent.Items.ToList());
 
                 // Get all other folders
-                foreach (PortalFolder folder in result.Folders)
+                foreach (PortalFolder folder in userContent.Folders)
                 {
                     var itemsForFolder = await portal.User.GetContentAsync(folder.FolderId);
                     Folders[folder.Title] = new PortalFolderViewModel(folder.Title, itemsForFolder.ToList());
