@@ -1,0 +1,67 @@
+﻿<Page
+    x:Class="OfflineWorkflowSample.Views.ItemPages.GenericItemPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OfflineWorkflowSample.Views.ItemPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:OfflineWorkflowSample.Converters"
+    mc:Ignorable="d"
+    Background="White">
+    <Page.Resources>
+        <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
+    </Page.Resources>
+    <Grid DataContext="{Binding Source={StaticResource MainViewModel},Path=SelectedItem}"
+          Padding="5" Background="White"
+          RowSpacing="10" ColumnSpacing="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Name}" Style="{ThemeResource SubheaderTextBlockStyle}"
+                   Grid.Row="0" Grid.ColumnSpan="2" />
+        <Image Source="{Binding Converter={StaticResource ItemToImageSourceConverter}}"
+               Grid.Row="1" Grid.Column="0"/>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="{Binding Snippet}" TextWrapping="WrapWholeWords" />
+            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}">
+                <Run Text="{Binding TypeName}" />
+                <Run Text=" by " />
+                <Run Text="{Binding Owner}" />
+            </TextBlock>
+            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}">
+                <Run Text="Created: " />
+                <Run Text="{Binding Created}" />
+                <Run Text="    " />
+                <Run Text="Updated: " />
+                <Run Text="{Binding Modified}" />
+                <Run Text="    " />
+                <Run Text="Number of views: " />
+                <Run Text="{Binding ViewCount}" />
+            </TextBlock>
+        </StackPanel>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Description" 
+                       Grid.Row="0"
+                       Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <WebView x:Name="DescriptionWebView"
+                     Grid.Row="1"/>
+            <TextBlock Text="Terms of use" 
+                       Grid.Row="2"
+                       Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <WebView x:Name="TermsWebView"
+                     Grid.Row="3"/>
+        </Grid>
+    </Grid>
+</Page>
