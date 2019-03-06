@@ -111,7 +111,7 @@
     <Compile Include="Converters\ItemToImageSourceConverter.cs" />
     <Compile Include="Converters\NullEnumToBlankStringConverter.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Browsing\OfflineMapsViewModel.cs" />
+    <Compile Include="ViewModels\Browsing\LocalContentViewModel.cs" />
     <Compile Include="ViewModels\Offline\OfflineMapViewModel.cs" />
     <Compile Include="ViewModels\Browsing\PortalSearchViewModel.cs" />
     <Compile Include="Views\Offline\DownloadMapAreaView.xaml.cs">

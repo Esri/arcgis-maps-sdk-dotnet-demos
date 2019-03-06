@@ -1,47 +1,45 @@
-﻿using Esri.ArcGISRuntime.Http;
+﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Esri.ArcGISRuntime.Http;
 using Esri.ArcGISRuntime.Portal;
 using Esri.ArcGISRuntime.Security;
 using OfflineWorkflowsSample;
 using OfflineWorkflowsSample.Models;
 using Prism.Commands;
 using Prism.Windows.Mvvm;
-using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace OfflineWorkflowSample.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        #region OAuth constants
-
-        // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
-        private const string AppClientId = "collectorwindowsstore";
-        private const string ClientSecret = "";
-        private const string OAuthRedirectUrl = @"urn:ietf:wg:oauth:2.0:oob";
-        private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
-
-        #endregion OAuth constants
-
-        #region command pattern
-
-        private readonly DelegateCommand _logInToPortalCommand;
-        public ICommand LogInToPortalCommand => _logInToPortalCommand;
+        // Commands enable binding controls to behavior. https://visualstudiomagazine.com/articles/2012/04/10/command-pattern-in-net.aspx
         private readonly DelegateCommand _logInToEnterpriseCommand;
-        public ICommand LogInToEnterpriseCommand => _logInToEnterpriseCommand;
+        private readonly DelegateCommand _logInToPortalCommand;
         private readonly DelegateCommand _showEnterpriseFormCommand;
-        public ICommand ShowEnterpriseFormCommand => _showEnterpriseFormCommand;
 
-        #endregion command pattern
-
-        public IWindowService WindowService = null;
-
-        public ArcGISPortal Portal { get; set; }
+        private bool _portalFormOpen;
 
         private string _portalUrl = ArcGISOnlinePortalUrl;
+        
+        // WindowService allows the ViewModel to communicate with the view without
+        //     exposing details of the view to the ViewModel. 
+        public IWindowService WindowService = null;
+
+        public LoginViewModel()
+        {
+            _logInToPortalCommand = new DelegateCommand(LoginToAgol);
+            _logInToEnterpriseCommand = new DelegateCommand(LoginToEnterprise);
+            _showEnterpriseFormCommand = new DelegateCommand(TogglePortalForm);
+        }
+
+        public ICommand LogInToPortalCommand => _logInToPortalCommand;
+        public ICommand LogInToEnterpriseCommand => _logInToEnterpriseCommand;
+        public ICommand ShowEnterpriseFormCommand => _showEnterpriseFormCommand;
+
+        private ArcGISPortal Portal { get; set; }
 
         public string PortalUrl
         {
@@ -49,26 +47,20 @@ namespace OfflineWorkflowSample.ViewModels
             set => SetProperty(ref _portalUrl, value);
         }
 
-        public UserProfileModel UserProfile { get; set; }
-
-        private bool _portalFormOpen;
+        public UserProfileModel UserProfile { get; private set; }
 
         public bool PortalFormIsOpen
         {
             get => _portalFormOpen;
-            set => SetProperty(ref _portalFormOpen, value);
+            private set => SetProperty(ref _portalFormOpen, value);
         }
 
-        public LoginViewModel()
+        private void LoginToAgol()
         {
-            _logInToPortalCommand = new DelegateCommand(LoginToAGOL);
-            _logInToEnterpriseCommand = new DelegateCommand(LoginToEnterprise);
-            _showEnterpriseFormCommand = new DelegateCommand(ShowPortalForm);
-        }
-
-        private void LoginToAGOL()
-        {
+            // Update the portal URL.
             _portalUrl = ArcGISOnlinePortalUrl;
+
+            // Complete the login.
             DoLogin();
         }
 
@@ -79,32 +71,44 @@ namespace OfflineWorkflowSample.ViewModels
 
         private async void DoLogin()
         {
-            ConfigureOAuth();
-            Portal = await AuthenticateAndCreatePortal();
-            if (Portal == null)
+            try
             {
-                return;
-            }
+                // Set up OAuth authentication.
+                ConfigureOAuth();
 
-            UserProfile = GetProfile();
-            RaiseLoggedIn();
+                // Authenticate and load the portal.
+                Portal = await AuthenticateAndCreatePortal();
+
+                // Skip out if the portal is null.
+                if (Portal == null)
+                {
+                    await WindowService.ShowAlertAsync("Couldn't log in to the portal.", "Log in failed");
+                }
+                else
+                {
+                    UserProfile = new UserProfileModel(Portal.User);
+                    RaiseLoggedIn();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                await WindowService.ShowAlertAsync("Couldn't log in to the portal.", "Log in failed");
+            }
         }
 
-        private void ShowPortalForm()
+        private void TogglePortalForm()
         {
             PortalFormIsOpen = !PortalFormIsOpen;
         }
-
-        private UserProfileModel GetProfile() => new UserProfileModel(Portal.User);
-
+        
         private async Task<ArcGISPortal> AuthenticateAndCreatePortal()
         {
             try
             {
                 // Authenticate
-                Credential cred;
                 CredentialRequestInfo cri = new CredentialRequestInfo {ServiceUri = new Uri(_portalUrl)};
-                cred = await AuthenticationManager.Current.GetCredentialAsync(cri, true);
+                var cred = await AuthenticationManager.Current.GetCredentialAsync(cri, true);
 
                 // Create the portal with authentication info
                 return await ArcGISPortal.CreateAsync(cred.ServiceUri, cred);
@@ -123,7 +127,7 @@ namespace OfflineWorkflowSample.ViewModels
             }
             catch (OperationCanceledException)
             {
-                await WindowService.ShowAlertAsync($"Log in canceled");
+                await WindowService.ShowAlertAsync("Log in canceled");
                 return null;
             }
         }
@@ -177,8 +181,9 @@ namespace OfflineWorkflowSample.ViewModels
             return credential;
         }
 
-        #region Allow page to react to login
+        #region log in event
 
+        // Event allows the view to listen for successful log in.
         public delegate void LoginCompletionHandler(object sender);
 
         public event LoginCompletionHandler CompletedLogin;
@@ -187,7 +192,16 @@ namespace OfflineWorkflowSample.ViewModels
         {
             CompletedLogin?.Invoke(this);
         }
+        #endregion log in event
 
-        #endregion Allow page to react to login
+        #region OAuth constants
+
+        // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
+        private const string AppClientId = "collectorwindowsstore";
+        private const string ClientSecret = "";
+        private const string OAuthRedirectUrl = @"urn:ietf:wg:oauth:2.0:oob";
+        private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
+
+        #endregion OAuth constants
     }
 }

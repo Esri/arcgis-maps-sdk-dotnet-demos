@@ -1,7 +1,7 @@
-﻿using Esri.ArcGISRuntime.Portal;
-using Prism.Mvvm;
-using Windows.UI.Xaml.Media;
+﻿using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Esri.ArcGISRuntime.Portal;
+using Prism.Mvvm;
 
 namespace OfflineWorkflowsSample.Models
 {
@@ -9,33 +9,9 @@ namespace OfflineWorkflowsSample.Models
     {
         private ImageSource _profilePicture;
 
-        public ImageSource ProfilePicture
-        {
-            get { return _profilePicture; }
-            set { SetProperty(ref _profilePicture, value); }
-        }
-
-        private string _username;
-
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value); }
-        }
-
-        private string _fullName;
-
-        public string FullName
-        {
-            get { return _fullName; }
-            set { SetProperty(ref _fullName, value); }
-        }
-
-        public PortalUser User { get; set; }
-
         public UserProfileModel(PortalUser user)
         {
-            Username = user.UserName;
+            Portal = user.Portal;
 
             ProfilePicture = user.ThumbnailUri != null ? new BitmapImage(user.ThumbnailUri) : null;
 
@@ -43,5 +19,17 @@ namespace OfflineWorkflowsSample.Models
 
             User = user;
         }
+
+        public ImageSource ProfilePicture
+        {
+            get => _profilePicture;
+            set => SetProperty(ref _profilePicture, value);
+        }
+
+        public ArcGISPortal Portal { get; }
+
+        public string FullName { get; }
+
+        public PortalUser User { get; }
     }
 }

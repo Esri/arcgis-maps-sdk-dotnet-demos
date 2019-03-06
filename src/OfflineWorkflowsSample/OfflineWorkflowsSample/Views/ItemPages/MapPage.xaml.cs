@@ -34,7 +34,7 @@ namespace OfflineWorkflowSample.Views.ItemPages
                 {
                     // This logic is quite brittle and only valid for MMPKs created as a result of 
                     //   taking a map offline with this app. 
-                    string mmpkPath = _mainVM.OfflineMapsViewModel.PathsForItems[localItem];
+                    string mmpkPath = _mainVM.LocalContentViewModel.PathsForItems[localItem];
 
                     var mmpk = await MobileMapPackage.OpenAsync(mmpkPath);
 

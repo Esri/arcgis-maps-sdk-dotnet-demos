@@ -37,10 +37,10 @@
             </TextBlock>
             <TextBlock Style="{ThemeResource CaptionTextBlockStyle}">
                 <Run Text="Created: " />
-                <Run Text="{Binding Created}" />
+                <Run Text="{Binding Created, Converter={StaticResource DateTimeToStringConverter}}" />
                 <Run Text="    " />
                 <Run Text="Updated: " />
-                <Run Text="{Binding Modified}" />
+                <Run Text="{Binding Modified, Converter={StaticResource DateTimeToStringConverter}}" />
                 <Run Text="    " />
                 <Run Text="Number of views: " />
                 <Run Text="{Binding ViewCount}" />

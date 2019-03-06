@@ -3,6 +3,9 @@ using Windows.UI.Xaml.Data;
 
 namespace OfflineWorkflowSample.Converters
 {
+    /// <summary>
+    /// Format .NET dates nicely for display.
+    /// </summary>
     class DateTimeToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

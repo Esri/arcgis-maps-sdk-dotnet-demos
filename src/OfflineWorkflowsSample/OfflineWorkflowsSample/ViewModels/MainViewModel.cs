@@ -1,20 +1,38 @@
-﻿using Esri.ArcGISRuntime.Portal;
-using Esri.ArcGISRuntime.Security;
-using OfflineWorkflowSample;
-using OfflineWorkflowSample.ViewModels;
-using OfflineWorkflowsSample.Infrastructure;
-using OfflineWorkflowsSample.Models;
-using Prism.Commands;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.System;
+using Esri.ArcGISRuntime.Portal;
+using Esri.ArcGISRuntime.Security;
+using OfflineWorkflowsSample.Infrastructure;
+using OfflineWorkflowsSample.Models;
+using OfflineWorkflowSample;
+using OfflineWorkflowSample.ViewModels;
+using Prism.Commands;
 
 namespace OfflineWorkflowsSample
 {
     public class MainViewModel : BaseViewModel
     {
+        // Commands enable binding controls to behavior. https://visualstudiomagazine.com/articles/2012/04/10/command-pattern-in-net.aspx
+        private readonly DelegateCommand _logOutCommand;
+        private readonly DelegateCommand _openInAgolCommand;
+
         private Item _selectedItem;
+
+        private string _title = "ArcGIS Maps Offline";
+
+        // WindowService allows the ViewModel to communicate with the view without
+        //     exposing details of the view to the ViewModel. 
+        private IWindowService _windowService;
+
+        public MainViewModel()
+        {
+            _logOutCommand = new DelegateCommand(LogOut);
+            // TODO - wire up CanExecute & set up events
+            _openInAgolCommand = new DelegateCommand(() => { _windowService.LaunchItem(SelectedItem); });
+        }
 
         public Item SelectedItem
         {
@@ -22,14 +40,11 @@ namespace OfflineWorkflowsSample
             set
             {
                 SetProperty(ref _selectedItem, value);
-                if (value != null)
-                {
-                    _windowService.NavigateToPageForItem(_selectedItem);
-                }
+                // Notifies the window service that it should navigate to the appropriate
+                //     page for the selected item.
+                if (value != null) _windowService.NavigateToPageForItem(_selectedItem);
             }
         }
-
-        private string _title = "ArcGIS Maps Offline";
 
         public string Title
         {
@@ -37,63 +52,59 @@ namespace OfflineWorkflowsSample
             set => SetProperty(ref _title, value);
         }
 
-        public MainViewModel()
+        public bool IsInitialized { get; private set; }
+
+        public UserProfileModel UserProfile { get; private set; }
+
+        public LocalContentViewModel LocalContentViewModel { get; private set; }
+
+        public PortalViewModel PortalViewModel { get; private set; }
+
+        public OfflineMapViewModel OfflineMapViewModel { get; private set; }
+
+        // Log out of portal.
+        public ICommand LogOutCommand => _logOutCommand;
+
+        // Open the current selected item in ArcGIS Online.
+        public ICommand OpenItemInAgolCommand => _openInAgolCommand;
+
+        private void LogOut()
         {
-            _logOutCommand = new DelegateCommand(() =>
-            {
-                _windowService.NavigateToLoginPage();
-                _userProfile = null;
-                _offlineMapViewModel = null;
-                _portalViewModel = null;
-                _windowService = null;
-                IsInitialized = false;
+            // Go back to the login page.
+            _windowService.NavigateToLoginPage();
 
-                AuthenticationManager.Current.RemoveAllCredentials();
-            });
+            // Clear all content from the last user.
+            UserProfile = null;
+            LocalContentViewModel = null;
+            PortalViewModel = null;
+            _windowService = null;
 
-            // TODO - wire up CanExecute
-            _openInAgolCommand = new DelegateCommand(() => { _windowService.LaunchItem(SelectedItem); });
+            // Clear the credentials - completes the log out.
+            AuthenticationManager.Current.RemoveAllCredentials();
+            IsInitialized = false;
         }
 
-        public IWindowService _windowService;
-
-        public bool IsInitialized { get; set; }
-
-        private UserProfileModel _userProfile;
-
-        public UserProfileModel UserProfile
+        public async Task Initialize(UserProfileModel userProfile, IWindowService windowService)
         {
-            get { return _userProfile; }
-            set { SetProperty(ref _userProfile, value); }
-        }
-
-        private OfflineMapsViewModel _offlineMapViewModel;
-
-        public OfflineMapsViewModel OfflineMapsViewModel
-        {
-            get => _offlineMapViewModel;
-            set => SetProperty(ref _offlineMapViewModel, value);
-        }
-
-        private PortalViewModel _portalViewModel;
-
-        public PortalViewModel PortalViewModel
-        {
-            get => _portalViewModel;
-            set => SetProperty(ref _portalViewModel, value);
-        }
-
-        public async Task Initialize(ArcGISPortal portal, UserProfileModel userProfile, IWindowService windowService)
-        {
+            // Store user details & the window service.
             UserProfile = userProfile;
             _windowService = windowService;
+
             try
             {
+                _windowService.SetBusy(true);
+                _windowService.SetBusyMessage("Loading portal and local content...");
+
+                // Create the view models.
                 PortalViewModel = new PortalViewModel();
-                await PortalViewModel.LoadPortalAsync(portal);
-                OfflineMapViewModel = new OfflineMapViewModel {MapViewService = MapViewService};
-                OfflineMapsViewModel = new OfflineMapsViewModel();
-                await OfflineMapsViewModel.Initialize();
+                OfflineMapViewModel = new OfflineMapViewModel(_windowService, UserProfile.Portal)
+                {
+                    MapViewService = MapViewService
+                };
+                LocalContentViewModel = new LocalContentViewModel();
+
+                // Wait for the view models to finish initialization.
+                await Task.WhenAll(PortalViewModel.LoadPortalAsync(UserProfile.Portal), LocalContentViewModel.Initialize());
                 IsInitialized = true;
             }
             catch (Exception ex)
@@ -102,19 +113,11 @@ namespace OfflineWorkflowsSample
                 Debug.WriteLine(ex);
                 await _windowService.ShowAlertAsync(ex.Message);
             }
+            finally
+            {
+                _windowService.SetBusy(false);
+                _windowService.SetBusyMessage("");
+            }
         }
-
-        public OfflineMapViewModel OfflineMapViewModel { get; private set; }
-
-        public void ShowMessage(string message)
-        {
-            _windowService.ShowAlertAsync(message);
-        }
-
-        private DelegateCommand _logOutCommand;
-        public ICommand LogOutCommand => _logOutCommand;
-
-        private DelegateCommand _openInAgolCommand;
-        public ICommand OpenItemInAgolCommand => _openInAgolCommand;
     }
 }

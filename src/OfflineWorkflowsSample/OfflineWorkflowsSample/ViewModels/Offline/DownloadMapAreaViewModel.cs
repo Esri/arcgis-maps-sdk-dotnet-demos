@@ -113,7 +113,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
                 // Step 2 Create job that handles the download and provides status information 
                 // about the progress
-                var job = task.DownloadPreplannedOfflineMap(SelectedMapArea.GetArea, offlineDataFolder);
+                var job = task.DownloadPreplannedOfflineMap(SelectedMapArea.MapArea, offlineDataFolder);
                 job.ProgressChanged += async (s, e) =>
                 {
                     await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -158,7 +158,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             try
             {
                 _windowService.SetBusy(true);
-                var synchronizationMode = SyncDirection.Bidirectional;
+                SyncDirection synchronizationMode;
                 switch (parameter)
                 {
                     case "Download":
@@ -220,7 +220,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         private async void ZoomToAreas()
         {
             // Calculate full extent of all areas.
-            Envelope fullExtent = GeometryEngine.CombineExtents(MapAreas.Select(area => area.GetArea.AreaOfInterest));
+            Envelope fullExtent = GeometryEngine.CombineExtents(MapAreas.Select(area => area.MapArea.AreaOfInterest));
 
             // Zoom to the areas with a buffer.
             await _mapViewService.SetViewpointGeometryAsync(fullExtent, 20);

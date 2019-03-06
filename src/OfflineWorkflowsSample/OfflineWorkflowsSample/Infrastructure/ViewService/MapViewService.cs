@@ -128,5 +128,17 @@ namespace OfflineWorkflowsSample.Infrastructure.ViewServices
         /// <returns>True if the rotation animation completed, false if it was interrupted by another view navigation.</returns>
         public Task<bool> SetViewpointScaleAsync(double scale)
             => GetView().SetViewpointScaleAsync(scale);
+
+        public Task ResetViewpointAsync()
+        {
+            MapView view = GetView();
+            if (view.Map.InitialViewpoint != null)
+            {
+                return view.SetViewpointAsync(view.Map.InitialViewpoint);
+            }
+
+            // TODO: Is this valid?
+            return null;
+        }
     }
 }

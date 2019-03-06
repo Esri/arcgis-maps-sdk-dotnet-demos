@@ -47,7 +47,7 @@ namespace OfflineWorkflowSample.Views
             if (!ViewModel.IsInitialized)
             {
                 LoginViewModel vm = (LoginViewModel) e.Parameter;
-                await ViewModel.Initialize(vm.Portal, vm.UserProfile, this);
+                await ViewModel.Initialize(vm.UserProfile, this);
 
                 // Listen for search changes
                 ViewModel.PortalViewModel.SearchViewModel.SearchChanged += (sender, args) =>

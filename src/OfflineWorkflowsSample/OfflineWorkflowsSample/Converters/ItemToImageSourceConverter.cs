@@ -7,6 +7,10 @@ using Esri.ArcGISRuntime;
 
 namespace OfflineWorkflowSample.Converters
 {
+    /// <summary>
+    /// Converts from an Item (PortalItem or LocalItem) to an image. This is needed
+    /// because the thumbnail could be an image or a link to an image.
+    /// </summary>
     class ItemToImageSourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

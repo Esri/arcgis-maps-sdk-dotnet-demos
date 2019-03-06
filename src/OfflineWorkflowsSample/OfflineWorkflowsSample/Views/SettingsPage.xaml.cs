@@ -24,8 +24,8 @@ namespace OfflineWorkflowSample.Views
                 var runtimeTypeInfo = typeof(ArcGISRuntimeEnvironment).GetTypeInfo();
                 var rtVersion = FileVersionInfo.GetVersionInfo(runtimeTypeInfo.Assembly.Location);
                 RuntimeVersion = rtVersion.FileVersion;
-                VersionLabelField.Text = RuntimeVersion;
             }
+            VersionLabelField.Text = RuntimeVersion;
         }
     }
 }

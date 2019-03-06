@@ -70,7 +70,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 parameters.IncludeBasemap = IncludeBasemap;
                 parameters.ReturnLayerAttachmentOption = ReturnLayerAttachmentOption.None;
 
-                // Step 3 : Create job that does the work asyncronously and 
+                // Step 3 : Create job that does the work asynchronously and 
                 //          set progress indication
                 _job = task.GenerateOfflineMap(parameters, offlineDataFolder);
                 _job.ProgressChanged += GenerateOfflineMap_ProgressChanged;
@@ -317,10 +317,10 @@ namespace OfflineWorkflowsSample.GenerateMapArea
         #region Commands
 
         // Note: commands are configured in the constructor.
-        private DelegateCommand _generateMapAreaCommand;
-        private DelegateCommand _navigateToMapAreaCommand;
-        private DelegateCommand _openMapFileCommand;
-        private DelegateCommand _resetMapCommand;
+        private readonly DelegateCommand _generateMapAreaCommand;
+        private readonly DelegateCommand _navigateToMapAreaCommand;
+        private readonly DelegateCommand _openMapFileCommand;
+        private readonly DelegateCommand _resetMapCommand;
 
         public ICommand GenerateMapAreaCommand => _generateMapAreaCommand;
         public ICommand NavigateToMapAreaCommand => _navigateToMapAreaCommand;
@@ -345,14 +345,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
 
         private void RaiseMapChanged(bool resetMap = false)
         {
-            if (resetMap)
-            {
-                MapChanged?.Invoke(this, null);
-            }
-            else
-            {
-                MapChanged?.Invoke(this, Map);
-            }
+            MapChanged?.Invoke(this, resetMap ? null : Map);
         }
 
         #endregion Allow page to update the map

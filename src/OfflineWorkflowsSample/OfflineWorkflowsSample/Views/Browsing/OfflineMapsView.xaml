@@ -8,7 +8,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid DataContext="{StaticResource MainViewModel}" Padding="5">
-        <GridView ItemsSource="{Binding OfflineMapsViewModel.Items}"
+        <GridView ItemsSource="{Binding LocalContentViewModel.Items}"
                   ItemTemplate="{StaticResource PortalItemTemplate}"
                   SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}" />
     </Grid>

@@ -20,8 +20,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         {
             try
             {
-                if (Map.InitialViewpoint != null)
-                    await MapViewService.SetViewpointAsync(Map.InitialViewpoint);
+                await MapViewService.ResetViewpointAsync();
             }
             catch (Exception)
             {
@@ -29,10 +28,10 @@ namespace OfflineWorkflowsSample.Infrastructure
             }
         }
 
-        private DelegateCommand _resetViewPointCommand;
+        private readonly DelegateCommand _resetViewPointCommand;
         public ICommand ResetViewPointCommand => _resetViewPointCommand;
 
-        private DelegateCommand _zoomInCommand;
+        private readonly DelegateCommand _zoomInCommand;
         public ICommand ZoomInCommand => _zoomInCommand;
 
         private async void ZoomIn()
@@ -48,7 +47,7 @@ namespace OfflineWorkflowsSample.Infrastructure
             }
         }
 
-        private DelegateCommand _zoomOutCommand;
+        private readonly DelegateCommand _zoomOutCommand;
         public ICommand ZoomOutCommand => _zoomOutCommand;
 
         private async void ZoomOut()
@@ -71,22 +70,16 @@ namespace OfflineWorkflowsSample.Infrastructure
         /// </summary>
         public MapViewService MapViewService
         {
-            get
-            {
-                if (_mapViewService == null)
-                    _mapViewService = new MapViewService();
-
-                return _mapViewService;
-            }
-            set { _mapViewService = value; }
+            get => _mapViewService ?? (_mapViewService = new MapViewService());
+            set => _mapViewService = value;
         }
 
         private Map _map;
 
         public Map Map
         {
-            get { return _map; }
-            set { SetProperty(ref _map, value); }
+            get => _map;
+            set => SetProperty(ref _map, value);
         }
 
         private bool _isBusy;
@@ -101,16 +94,16 @@ namespace OfflineWorkflowsSample.Infrastructure
 
         public string IsBusyText
         {
-            get { return _isBusyText; }
-            set { SetProperty(ref _isBusyText, value); }
+            get => _isBusyText;
+            set => SetProperty(ref _isBusyText, value);
         }
 
         private string _progressPercentage;
 
         public string ProgressPercentage
         {
-            get { return _progressPercentage; }
-            set { SetProperty(ref _progressPercentage, value); }
+            get => _progressPercentage;
+            set => SetProperty(ref _progressPercentage, value);
         }
     }
 }

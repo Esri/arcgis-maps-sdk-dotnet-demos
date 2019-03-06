@@ -1,16 +1,13 @@
 ﻿<UserControl
     x:Class="OfflineWorkflowSample.Controls.SceneWithTools"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:OfflineWorkflowSample.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
-    xmlns:converters="using:OfflineWorkflowSample.Converters"
-    xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
-    xmlns:controls="using:Esri.ArcGISRuntime.UI.Controls"
-    xmlns:viewServices="using:OfflineWorkflowsSample.Infrastructure.ViewServices"
     xmlns:controls1="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
+    xmlns:controls="using:Esri.ArcGISRuntime.UI.Controls"
+    xmlns:converters="using:OfflineWorkflowSample.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -21,7 +18,7 @@
         </DataTemplate>
         <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
     </UserControl.Resources>
-    <SplitView x:Name="MapLegendSplitView" 
+    <SplitView x:Name="MapLegendSplitView"
                DisplayMode="Overlay"
                PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
         <SplitView.Pane>
@@ -31,13 +28,14 @@
                         <StackPanel>
                             <TextBlock Text="{Binding Item.Title}"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <Image Margin="5" Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
+                            <Image Margin="5"
+                                   Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
                             <TextBlock Text="{Binding Item.Description}"
                                        Style="{StaticResource BodyTextBlockStyle}"
-                                       TextWrapping="Wrap"/>
-                            <Button Content="Open in ArcGIS Online" 
+                                       TextWrapping="Wrap" />
+                            <Button Content="Open in ArcGIS Online"
                                     HorizontalAlignment="Stretch"
-                                    Click="OpenInAgol_Clicked" />
+                                    Command="{Binding Source={StaticResource MainViewModel},Path=OpenItemInAgolCommand}" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -59,13 +57,13 @@
                         <StackPanel>
                             <TextBlock Text="Operational layers"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{Binding OperationalLayers}" 
+                            <ListView ItemsSource="{Binding OperationalLayers}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
                             <TextBlock Text="Basemap layers"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{Binding Basemap.BaseLayers}" 
+                            <ListView ItemsSource="{Binding Basemap.BaseLayers}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
-                            <ListView ItemsSource="{Binding Basemap.ReferenceLayers}" 
+                            <ListView ItemsSource="{Binding Basemap.ReferenceLayers}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
                         </StackPanel>
                     </ScrollViewer>
@@ -102,7 +100,7 @@
                                                 <Image Stretch="UniformToFill"
 
                                                        Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
-                                                <Border Background="#7F000000" 
+                                                <Border Background="#7F000000"
                                                         VerticalAlignment="Top"
                                                         Padding="5">
                                                     <TextBlock Text="{Binding Item.Title}"
@@ -118,7 +116,7 @@
                         </AppBarButton.Flyout>
                     </AppBarButton>
                 </StackPanel>
-                
+
             </Grid>
         </Grid>
     </SplitView>

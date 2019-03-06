@@ -52,7 +52,6 @@
                 <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundAccentBrush}" />
                 <Setter Property="Margin" Value="0,5,0,5" />
             </Style>
-            
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
