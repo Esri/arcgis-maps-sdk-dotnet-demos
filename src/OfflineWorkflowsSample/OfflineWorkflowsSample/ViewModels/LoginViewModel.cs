@@ -17,14 +17,17 @@ namespace OfflineWorkflowSample.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         #region OAuth constants
+
         // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
         private const string AppClientId = "collectorwindowsstore";
         private const string ClientSecret = "";
         private const string OAuthRedirectUrl = @"urn:ietf:wg:oauth:2.0:oob";
         private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
+
         #endregion OAuth constants
 
         #region command pattern
+
         private readonly DelegateCommand _logInToPortalCommand;
         public ICommand LogInToPortalCommand => _logInToPortalCommand;
         private readonly DelegateCommand _logInToEnterpriseCommand;
@@ -35,7 +38,7 @@ namespace OfflineWorkflowSample.ViewModels
         #endregion command pattern
 
         public IWindowService WindowService = null;
-        
+
         public ArcGISPortal Portal { get; set; }
 
         private string _portalUrl = ArcGISOnlinePortalUrl;
@@ -48,7 +51,7 @@ namespace OfflineWorkflowSample.ViewModels
 
         public UserProfileModel UserProfile { get; set; }
 
-        private bool _portalFormOpen = false;
+        private bool _portalFormOpen;
 
         public bool PortalFormIsOpen
         {
@@ -82,6 +85,7 @@ namespace OfflineWorkflowSample.ViewModels
             {
                 return;
             }
+
             UserProfile = GetProfile();
             RaiseLoggedIn();
         }
@@ -90,18 +94,8 @@ namespace OfflineWorkflowSample.ViewModels
         {
             PortalFormIsOpen = !PortalFormIsOpen;
         }
-        
-        private UserProfileModel GetProfile()
-        {
-            var currentUser = Portal.User;
 
-            BitmapImage profilePicture = null;
-            profilePicture = currentUser.ThumbnailUri != null ? new BitmapImage(currentUser.ThumbnailUri) : null;
-
-            var userProfile = new UserProfileModel(Portal.User);
-
-            return userProfile;
-        }
+        private UserProfileModel GetProfile() => new UserProfileModel(Portal.User);
 
         private async Task<ArcGISPortal> AuthenticateAndCreatePortal()
         {
@@ -109,8 +103,7 @@ namespace OfflineWorkflowSample.ViewModels
             {
                 // Authenticate
                 Credential cred;
-                CredentialRequestInfo cri = new CredentialRequestInfo();
-                cri.ServiceUri = new Uri(_portalUrl);
+                CredentialRequestInfo cri = new CredentialRequestInfo {ServiceUri = new Uri(_portalUrl)};
                 cred = await AuthenticationManager.Current.GetCredentialAsync(cri, true);
 
                 // Create the portal with authentication info
@@ -142,15 +135,14 @@ namespace OfflineWorkflowSample.ViewModels
             {
                 ServerUri = new Uri(_portalUrl),
                 TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit,
-                
+
                 OAuthClientInfo = new OAuthClientInfo
                 {
                     ClientId = AppClientId,
                     RedirectUri = new Uri(OAuthRedirectUrl)
                 }
-                
             };
-            
+
             // If a client secret has been configured, set the authentication type to OAuthAuthorizationCode.
             if (!String.IsNullOrEmpty(ClientSecret))
             {
@@ -158,7 +150,7 @@ namespace OfflineWorkflowSample.ViewModels
                 serverInfo.TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit;
                 serverInfo.OAuthClientInfo.ClientSecret = ClientSecret;
             }
-            
+
 
             // Register this server with AuthenticationManager.
             AuthenticationManager.Current.RegisterServer(serverInfo);
@@ -170,7 +162,7 @@ namespace OfflineWorkflowSample.ViewModels
         private async Task<Credential> CreateOAuthCredentialAsync(CredentialRequestInfo info)
         {
             // ChallengeHandler function for AuthenticationManager that will be called whenever a secured resource is accessed.
-            Credential credential = null;
+            Credential credential;
             try
             {
                 // AuthenticationManager will handle challenging the user for credentials.
@@ -184,7 +176,7 @@ namespace OfflineWorkflowSample.ViewModels
 
             return credential;
         }
-        
+
         #region Allow page to react to login
 
         public delegate void LoginCompletionHandler(object sender);

@@ -1,11 +1,7 @@
 ﻿using Esri.ArcGISRuntime.Tasks.Offline;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -16,13 +12,14 @@ namespace OfflineWorkflowsSample.Models
         // Random number generator for getting colors
         private static Random _rng = new Random();
         private Color? _displayColor;
+
         public Color DisplayColor
         {
             get
             {
                 if (_displayColor == null)
                 {
-                    SetProperty(ref _displayColor, 
+                    SetProperty(ref _displayColor,
                         Color.FromArgb(_rng.Next(0, 255), _rng.Next(0, 255), _rng.Next(0, 255)));
                 }
 
@@ -31,6 +28,7 @@ namespace OfflineWorkflowsSample.Models
         }
 
         private PreplannedMapArea _mapArea;
+
         public MapAreaModel(PreplannedMapArea mapArea)
         {
             _mapArea = mapArea;
@@ -42,6 +40,7 @@ namespace OfflineWorkflowsSample.Models
         }
 
         private ImageSource _thrumbnail;
+
         public ImageSource Thumbnail
         {
             get { return _thrumbnail; }
@@ -57,6 +56,5 @@ namespace OfflineWorkflowsSample.Models
         public DateTimeOffset Updated => _mapArea.PortalItem.Modified;
 
         public PreplannedMapArea GetArea => _mapArea;
-        
     }
 }

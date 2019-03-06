@@ -9,7 +9,7 @@
         <PivotItem Header="Online">
             <PivotItem.Content>
                 <Grid>
-                        <local:MapWithTools DataContext="{Binding}" />
+                    <local:MapWithTools DataContext="{Binding}" />
                 </Grid>
             </PivotItem.Content>
         </PivotItem>

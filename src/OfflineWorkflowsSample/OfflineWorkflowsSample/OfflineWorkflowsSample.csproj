@@ -106,26 +106,26 @@
     <Compile Include="Controls\SceneWithTools.xaml.cs">
       <DependentUpon>SceneWithTools.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Converter\ColorToBrushConverter.cs" />
-    <Compile Include="Infrastructure\Converter\DateTimeToStringConverter.cs" />
-    <Compile Include="Infrastructure\Converter\ItemToImageSourceConverter.cs" />
-    <Compile Include="Infrastructure\Converter\NullEnumToBlankStringConverter.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\ItemToImageSourceConverter.cs" />
+    <Compile Include="Converters\NullEnumToBlankStringConverter.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\OfflineMapsViewModel.cs" />
-    <Compile Include="ViewModels\OfflineMapViewModel.cs" />
-    <Compile Include="ViewModels\PortalSearchViewModel.cs" />
-    <Compile Include="Views\DownloadMapAreaView.xaml.cs">
+    <Compile Include="ViewModels\Browsing\OfflineMapsViewModel.cs" />
+    <Compile Include="ViewModels\Offline\OfflineMapViewModel.cs" />
+    <Compile Include="ViewModels\Browsing\PortalSearchViewModel.cs" />
+    <Compile Include="Views\Offline\DownloadMapAreaView.xaml.cs">
       <DependentUpon>DownloadMapAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DownloadMapAreaViewModel.cs" />
-    <Compile Include="Views\GenerateMapAreaView.xaml.cs">
+    <Compile Include="ViewModels\Offline\DownloadMapAreaViewModel.cs" />
+    <Compile Include="Views\Offline\GenerateMapAreaView.xaml.cs">
       <DependentUpon>GenerateMapAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\GenerateMapAreaViewModel.cs" />
+    <Compile Include="ViewModels\Offline\GenerateMapAreaViewModel.cs" />
     <Compile Include="Infrastructure\IWindowService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Infrastructure\ColorHelper.cs" />
-    <Compile Include="Infrastructure\Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\OfflineDataStorageHelper.cs" />
     <Compile Include="Infrastructure\ViewService\GeoViewServiceBase.AttachedProperties.cs" />
     <Compile Include="Infrastructure\ViewService\GeoViewServiceBase.cs" />
@@ -156,21 +156,21 @@
     <Compile Include="Views\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OfflineMapForm.xaml.cs">
+    <Compile Include="Views\Offline\OfflineMapForm.xaml.cs">
       <DependentUpon>OfflineMapForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\PortalViewModel.cs" />
+    <Compile Include="ViewModels\Browsing\PortalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\OfflineMapsView.xaml.cs">
+    <Compile Include="Views\Browsing\OfflineMapsView.xaml.cs">
       <DependentUpon>OfflineMapsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PortalBrowserView.xaml.cs">
+    <Compile Include="Views\Browsing\PortalBrowserView.xaml.cs">
       <DependentUpon>PortalBrowserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PortalGroupView.xaml.cs">
+    <Compile Include="Views\Browsing\PortalGroupView.xaml.cs">
       <DependentUpon>PortalGroupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SearchPage.xaml.cs">
+    <Compile Include="Views\Browsing\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
@@ -257,11 +257,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadMapAreaView.xaml">
+    <Page Include="Views\Offline\DownloadMapAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GenerateMapAreaView.xaml">
+    <Page Include="Views\Offline\GenerateMapAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -293,23 +293,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\OfflineMapForm.xaml">
+    <Page Include="Views\Offline\OfflineMapForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\OfflineMapsView.xaml">
+    <Page Include="Views\Browsing\OfflineMapsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PortalBrowserView.xaml">
+    <Page Include="Views\Browsing\PortalBrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PortalGroupView.xaml">
+    <Page Include="Views\Browsing\PortalGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SearchPage.xaml">
+    <Page Include="Views\Browsing\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -343,7 +343,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Placeholders\" />
-    <Folder Include="Converters\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

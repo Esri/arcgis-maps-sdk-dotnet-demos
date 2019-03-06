@@ -1,32 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Esri.ArcGISRuntime.Portal;
+using OfflineWorkflowSample.ViewModels;
+using OfflineWorkflowSample.Views.ItemPages;
+using OfflineWorkflowsSample;
+using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Store;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using OfflineWorkflowsSample;
-using OfflineWorkflowSample.ViewModels;
 using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
-using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
-using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowSample.Views.ItemPages;
 using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
+using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -37,18 +27,17 @@ namespace OfflineWorkflowSample.Views
     /// </summary>
     public sealed partial class NavigationPage : Page, IWindowService
     {
-        private MainViewModel ViewModel => (MainViewModel)Application.Current.Resources[nameof(MainViewModel)];
+        private MainViewModel ViewModel => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
 
         public NavigationPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Window.Current.SetTitleBar(DraggablePart);
             ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
-            
+
             // Show local content by default.
             ContentFrame.Navigate(typeof(OfflineMapsView), new SuppressNavigationTransitionInfo());
             NavigationView.SelectedItem = NavigationView.MenuItems.First();
-
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -57,7 +46,7 @@ namespace OfflineWorkflowSample.Views
 
             if (!ViewModel.IsInitialized)
             {
-                LoginViewModel vm = (LoginViewModel)e.Parameter;
+                LoginViewModel vm = (LoginViewModel) e.Parameter;
                 await ViewModel.Initialize(vm.Portal, vm.UserProfile, this);
 
                 // Listen for search changes
@@ -187,8 +176,8 @@ namespace OfflineWorkflowSample.Views
                 ContentFrame.GoBack(new SuppressNavigationTransitionInfo());
 
                 // Reset selected item when showing browsing views.
-                if (ContentFrame.Content is OfflineMapsView || 
-                    ContentFrame.Content is PortalBrowserView || 
+                if (ContentFrame.Content is OfflineMapsView ||
+                    ContentFrame.Content is PortalBrowserView ||
                     ContentFrame.Content is PortalGroupView)
                 {
                     ViewModel.SelectedItem = null;

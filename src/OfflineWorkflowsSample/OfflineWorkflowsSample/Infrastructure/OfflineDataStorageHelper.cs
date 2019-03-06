@@ -25,7 +25,7 @@ namespace OfflineWorkflowsSample.Infrastructure
 
         internal static async void FlushLogToDisk(string errors, Map map)
         {
-            Windows.Storage.StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(GetDataFolderForMap(map));
+            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(GetDataFolderForMap(map));
             var file = await folder.CreateFileAsync("error_log.txt", CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(file, errors);
         }

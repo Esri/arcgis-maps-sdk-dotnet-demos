@@ -1,28 +1,27 @@
 ﻿using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
+using OfflineWorkflowSample.ViewModels;
 using Prism.Windows.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Esri.ArcGISRuntime.Security;
-using OfflineWorkflowSample.ViewModels;
 
 namespace OfflineWorkflowSample
 {
     public class PortalViewModel : ViewModelBase
     {
         public Dictionary<string, PortalFolderViewModel> Folders { get; } = new Dictionary<string, PortalFolderViewModel>();
-        public Dictionary<string,PortalFolderViewModel> Groups { get; } = new Dictionary<string, PortalFolderViewModel>();
+        public Dictionary<string, PortalFolderViewModel> Groups { get; } = new Dictionary<string, PortalFolderViewModel>();
 
         public List<PortalFolderViewModel> VisibleFolders => Folders.Values.Where(folder => folder.SectionHasContent).ToList();
         public List<PortalFolderViewModel> VisibleGroups => Groups.Values.Where(group => group.SectionHasContent).ToList();
 
         public PortalSearchViewModel SearchViewModel { get; } = new PortalSearchViewModel();
-        
+
         private List<Basemap> _orgBasemaps = new List<Basemap>();
+
         private List<Basemap> _defaultBasemaps = new List<Basemap>
         {
             Basemap.CreateImagery(),
@@ -33,7 +32,7 @@ namespace OfflineWorkflowSample
             Basemap.CreateOpenStreetMap(),
             Basemap.CreateStreets()
         };
-        
+
         public List<Basemap> OrgBasemaps
         {
             get
@@ -48,12 +47,15 @@ namespace OfflineWorkflowSample
         }
 
         private PortalFolderViewModel _selectedFolder;
+
         public PortalFolderViewModel SelectedFolder
         {
             get => _selectedFolder;
             set => SetProperty(ref _selectedFolder, value);
         }
+
         private PortalFolderViewModel _selectedGroup;
+
         public PortalFolderViewModel SelectedGroup
         {
             get => _selectedGroup;
@@ -127,17 +129,19 @@ namespace OfflineWorkflowSample
 
         // Is this a good idea?
         private string _searchFilter;
+
         public string SearchFilter
         {
             get => _searchFilter;
             set
             {
                 SetProperty(ref _searchFilter, value);
-                
+
                 foreach (PortalFolderViewModel container in Folders.Values.Concat(Groups.Values))
                 {
                     container.SearchFilter = value;
                 }
+
                 HandleFilterChangesForFolders();
             }
         }
@@ -150,11 +154,12 @@ namespace OfflineWorkflowSample
             set
             {
                 SetProperty(ref _offlineOnlyFilter, value);
-                
+
                 foreach (PortalFolderViewModel container in Folders.Values.Concat(Groups.Values))
                 {
                     container.OfflineOnlyFilter = OfflineOnlyFilter;
                 }
+
                 HandleFilterChangesForFolders();
             }
         }
@@ -167,11 +172,12 @@ namespace OfflineWorkflowSample
             set
             {
                 SetProperty(ref _typeFilter, value);
-                
+
                 foreach (PortalFolderViewModel container in Folders.Values.Concat(Groups.Values))
                 {
                     container.TypeFilter = value;
                 }
+
                 HandleFilterChangesForFolders();
             }
         }
@@ -216,6 +222,7 @@ namespace OfflineWorkflowSample
                 RaisePropertyChanged(nameof(SectionHasContent));
             }
         }
+
         public PortalItemType? TypeFilter
         {
             get => _typeFilter;

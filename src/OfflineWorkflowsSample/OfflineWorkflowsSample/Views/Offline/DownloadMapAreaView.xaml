@@ -30,8 +30,9 @@
                             </ListView.ItemContainerStyle>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid BorderBrush="{Binding DisplayColor, Converter={StaticResource ColorToBrushConverter}}" 
-                                          BorderThickness="3">
+                                    <Grid
+                                        BorderBrush="{Binding DisplayColor, Converter={StaticResource ColorToBrushConverter}}"
+                                        BorderThickness="3">
                                         <Grid ColumnSpacing="5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="100" />

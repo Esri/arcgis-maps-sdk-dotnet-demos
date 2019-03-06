@@ -1,18 +1,14 @@
-﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Esri.ArcGISRuntime.Portal;
+using Prism.Mvvm;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Esri.ArcGISRuntime.Portal;
 
 namespace OfflineWorkflowsSample.Models
 {
     public class UserProfileModel : BindableBase
     {
         private ImageSource _profilePicture;
+
         public ImageSource ProfilePicture
         {
             get { return _profilePicture; }
@@ -20,6 +16,7 @@ namespace OfflineWorkflowsSample.Models
         }
 
         private string _username;
+
         public string Username
         {
             get { return _username; }
@@ -27,6 +24,7 @@ namespace OfflineWorkflowsSample.Models
         }
 
         private string _fullName;
+
         public string FullName
         {
             get { return _fullName; }
@@ -39,7 +37,6 @@ namespace OfflineWorkflowsSample.Models
         {
             Username = user.UserName;
 
-            BitmapImage profilePicture = null;
             ProfilePicture = user.ThumbnailUri != null ? new BitmapImage(user.ThumbnailUri) : null;
 
             FullName = user.FullName;

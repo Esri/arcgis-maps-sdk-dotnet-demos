@@ -7,7 +7,7 @@ namespace OfflineWorkflowSample.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            DateTimeOffset date = (DateTimeOffset)value;
+            DateTimeOffset date = (DateTimeOffset) value;
             return date.DateTime.ToShortDateString();
         }
 

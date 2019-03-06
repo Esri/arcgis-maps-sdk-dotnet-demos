@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
@@ -12,7 +8,7 @@ namespace OfflineWorkflowsSample.Infrastructure.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var valueBool = (bool)value;
+            var valueBool = (bool) value;
             if (valueBool)
                 return Visibility.Visible;
             return Visibility.Collapsed;

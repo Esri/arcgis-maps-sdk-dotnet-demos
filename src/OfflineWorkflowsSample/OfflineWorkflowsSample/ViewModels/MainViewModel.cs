@@ -1,25 +1,19 @@
-﻿using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Portal;
+﻿using Esri.ArcGISRuntime.Portal;
+using Esri.ArcGISRuntime.Security;
 using OfflineWorkflowSample;
 using OfflineWorkflowSample.ViewModels;
-using OfflineWorkflowsSample.DownloadMapArea;
-using OfflineWorkflowsSample.GenerateMapArea;
 using OfflineWorkflowsSample.Infrastructure;
 using OfflineWorkflowsSample.Models;
+using Prism.Commands;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.System;
-using Esri.ArcGISRuntime.Security;
-using Esri.ArcGISRuntime.UI.Controls;
-using Prism.Commands;
 
 namespace OfflineWorkflowsSample
 {
     public class MainViewModel : BaseViewModel
     {
-
         private Item _selectedItem;
 
         public Item SelectedItem
@@ -53,20 +47,17 @@ namespace OfflineWorkflowsSample
                 _portalViewModel = null;
                 _windowService = null;
                 IsInitialized = false;
-                
+
                 AuthenticationManager.Current.RemoveAllCredentials();
             });
 
             // TODO - wire up CanExecute
-            _openInAgolCommand = new DelegateCommand(() =>
-                {
-                    _windowService.LaunchItem(SelectedItem);
-                });
+            _openInAgolCommand = new DelegateCommand(() => { _windowService.LaunchItem(SelectedItem); });
         }
 
         public IWindowService _windowService;
 
-        public bool IsInitialized { get; set; } = false;
+        public bool IsInitialized { get; set; }
 
         private UserProfileModel _userProfile;
 
@@ -100,8 +91,7 @@ namespace OfflineWorkflowsSample
             {
                 PortalViewModel = new PortalViewModel();
                 await PortalViewModel.LoadPortalAsync(portal);
-                OfflineMapViewModel = new OfflineMapViewModel();
-                OfflineMapViewModel.MapViewService = MapViewService;
+                OfflineMapViewModel = new OfflineMapViewModel {MapViewService = MapViewService};
                 OfflineMapsViewModel = new OfflineMapsViewModel();
                 await OfflineMapsViewModel.Initialize();
                 IsInitialized = true;
@@ -115,7 +105,7 @@ namespace OfflineWorkflowsSample
         }
 
         public OfflineMapViewModel OfflineMapViewModel { get; private set; }
-        
+
         public void ShowMessage(string message)
         {
             _windowService.ShowAlertAsync(message);

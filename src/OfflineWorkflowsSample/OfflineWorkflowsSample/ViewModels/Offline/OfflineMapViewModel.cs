@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Esri.ArcGISRuntime.Mapping;
+﻿using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
 using OfflineWorkflowsSample;
 using OfflineWorkflowsSample.DownloadMapArea;
 using OfflineWorkflowsSample.GenerateMapArea;
 using OfflineWorkflowsSample.Infrastructure;
-using OfflineWorkflowsSample.Infrastructure.ViewServices;
-using Prism.Windows.Mvvm;
+using System;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace OfflineWorkflowSample.ViewModels
 {
     public class OfflineMapViewModel : BaseViewModel
     {
-        private MainViewModel _mainVM => (MainViewModel)Application.Current.Resources[nameof(MainViewModel)];
+        private MainViewModel _mainVM => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
 
         private GenerateMapAreaViewModel _generateMapAreaViewModel;
 
@@ -35,7 +30,7 @@ namespace OfflineWorkflowSample.ViewModels
             set { SetProperty(ref _downloadMapAreaViewModel, value); }
         }
 
-        private Map _onlineMap = null;
+        private Map _onlineMap;
 
         public Map OnlineMap
         {
@@ -92,6 +87,7 @@ namespace OfflineWorkflowSample.ViewModels
                 DownloadMapAreaViewModel.Map = Map;
                 oldMap.OperationalLayers.Clear();
                 oldMap.Tables.Clear();
+                // ReSharper disable once RedundantAssignment
                 oldMap = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();

@@ -1,14 +1,13 @@
 ﻿<Page
     x:Class="OfflineWorkflowSample.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:OfflineWorkflowSample"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:OfflineWorkflowSample.ViewModels"
     mc:Ignorable="d">
     <Page.Resources>
-        <Style x:Key="LoginLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
+        <Style TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextAlignment" Value="Right" />
         </Style>
@@ -20,8 +19,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid x:Name="AppTitleBar" 
-              Grid.Row="0"
+        <Grid Grid.Row="0"
               Background="Transparent" 
               HorizontalAlignment="Stretch"
               DataContext="{StaticResource MainViewModel}">
@@ -74,7 +72,9 @@
                             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                             HorizontalAlignment="Stretch"
                             Command="{Binding ShowEnterpriseFormCommand}"/>
-                    <TextBox Text="{Binding PortalUrl, Mode=TwoWay}" Grid.Row="2" Visibility="{Binding PortalFormIsOpen}"/>
+                    <TextBox Text="{Binding PortalUrl, Mode=TwoWay}" 
+                             Grid.Row="2" Grid.Column="0"
+                             Visibility="{Binding PortalFormIsOpen}"/>
                     <Button Content="Continue" Grid.Row="2" Grid.Column="1"
                             Visibility="{Binding PortalFormIsOpen}"
                             HorizontalAlignment="Stretch"

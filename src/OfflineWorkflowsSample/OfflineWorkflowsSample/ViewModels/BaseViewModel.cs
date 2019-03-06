@@ -65,6 +65,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private MapViewService _mapViewService;
+
         /// <summary>
         /// Gets the view service that provides access to the MapView
         /// </summary>
@@ -81,6 +82,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private Map _map;
+
         public Map Map
         {
             get { return _map; }
@@ -88,6 +90,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private bool _isBusy;
+
         public bool IsBusy
         {
             get => _isBusy;
@@ -95,6 +98,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private string _isBusyText;
+
         public string IsBusyText
         {
             get { return _isBusyText; }
@@ -102,6 +106,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         }
 
         private string _progressPercentage;
+
         public string ProgressPercentage
         {
             get { return _progressPercentage; }

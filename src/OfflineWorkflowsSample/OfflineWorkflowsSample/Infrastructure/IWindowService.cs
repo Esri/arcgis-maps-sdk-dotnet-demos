@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
 
 namespace OfflineWorkflowsSample

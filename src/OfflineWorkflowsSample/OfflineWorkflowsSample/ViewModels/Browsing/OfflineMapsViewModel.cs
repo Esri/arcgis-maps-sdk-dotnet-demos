@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Esri.ArcGISRuntime.Mapping;
+﻿using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowsSample;
 using OfflineWorkflowsSample.Infrastructure;
 using Prism.Windows.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OfflineWorkflowSample.ViewModels
 {
@@ -47,6 +43,7 @@ namespace OfflineWorkflowSample.ViewModels
                     // Ignored - not a valid map package
                 }
             }
+
             RaisePropertyChanged(nameof(Items));
             RaisePropertyChanged(nameof(OfflineMaps));
             RaisePropertyChanged(nameof(MapItems));

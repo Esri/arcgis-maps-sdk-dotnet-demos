@@ -1,15 +1,11 @@
 ﻿<UserControl
     x:Class="OfflineWorkflowsSample.GenerateMapArea.GenerateMapAreaView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="using:OfflineWorkflowsSample.Infrastructure.Converter">
-    <UserControl.Resources>
-        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    </UserControl.Resources>
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
         <Pivot Background="Transparent">
             <PivotItem Header="Take offline">
-                <Grid >
+                <Grid>
                     <StackPanel>
                         <TextBlock Text="1. Select area to take offline"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />

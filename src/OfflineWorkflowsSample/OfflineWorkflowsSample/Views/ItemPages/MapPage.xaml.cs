@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Esri.ArcGISRuntime.Mapping;
+﻿using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
 using OfflineWorkflowsSample;
-using OfflineWorkflowsSample.Infrastructure.ViewServices;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -28,9 +18,10 @@ namespace OfflineWorkflowSample.Views.ItemPages
     public sealed partial class MapPage : Page
     {
         private MainViewModel _mainVM = (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
+
         public MapPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -48,11 +39,11 @@ namespace OfflineWorkflowSample.Views.ItemPages
                     var mmpk = await MobileMapPackage.OpenAsync(mmpkPath);
 
                     // Get the first map.
-                    this.DataContext = mmpk.Maps.First();
+                    DataContext = mmpk.Maps.First();
                 }
                 else
                 {
-                    this.DataContext = new Map(_mainVM.SelectedItem as PortalItem);
+                    DataContext = new Map(_mainVM.SelectedItem as PortalItem);
                 }
             }
             catch (Exception exception)

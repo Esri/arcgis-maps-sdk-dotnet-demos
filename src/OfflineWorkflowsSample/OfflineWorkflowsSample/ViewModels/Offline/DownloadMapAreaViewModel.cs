@@ -27,7 +27,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
     public class DownloadMapAreaViewModel : ViewModelBase
     {
         #region Sample code
-        
+
         private async Task ConfigureMap()
         {
             _areasOverlay = new GraphicsOverlay();
@@ -65,7 +65,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     graphic.Attributes.Add("Name", preplannedMapArea.PortalItem.Title);
                     _areasOverlay.Graphics.Add(graphic);
                 }
-                
+
                 if (!preplannedMapAreas.Any())
                 {
                     await _windowService.ShowAlertAsync("No preplanned map areas available.");
@@ -102,7 +102,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     if (Directory.Exists(offlineDataFolder))
                         Directory.Delete(offlineDataFolder, true);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // If folder can't be deleted, open a new one.
                     offlineDataFolder = Path.Combine(offlineDataFolder, DateTime.Now.Ticks.ToString());
@@ -221,7 +221,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         {
             // Calculate full extent of all areas.
             Envelope fullExtent = GeometryEngine.CombineExtents(MapAreas.Select(area => area.GetArea.AreaOfInterest));
-            
+
             // Zoom to the areas with a buffer.
             await _mapViewService.SetViewpointGeometryAsync(fullExtent, 20);
         }
@@ -254,7 +254,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         {
             get => _map?.Item is PortalItem;
         }
-        
+
         public MapAreaModel SelectedMapArea
         {
             get => _selectedMapArea;
@@ -265,10 +265,11 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 {
                     ZoomToSelectedMapArea();
                 }
+
                 RefreshCommands();
             }
         }
-        
+
         public ObservableCollection<MapAreaModel> MapAreas
         {
             get => _mapAreas;
@@ -314,7 +315,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 _windowService.SetBusy(false);
             }
         }
-        
+
         private async void ZoomToSelectedMapArea()
         {
             _areasOverlay.ClearSelection();
@@ -360,7 +361,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         }
 
         #endregion Misc. Overhead
-        
+
         #region Commands
 
         public ICommand QueryMapAreasCommand => _queryMapAreasCommand;
@@ -369,7 +370,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
         public ICommand OpenMapFileCommand => _openMapFileCommand;
         public ICommand ZoomToAreasCommand => _zoomToAreasCommand;
         public ICommand ResetMapCommand => _resetMapCommand;
-        
+
         private DelegateCommand _downloadMapAreaCommand;
         private DelegateCommand<string> _syncMapAreaCommand;
         private DelegateCommand _openMapFileCommand;

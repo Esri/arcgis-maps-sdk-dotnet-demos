@@ -1,16 +1,10 @@
 ﻿using OfflineWorkflowSample.ViewModels;
-using OfflineWorkflowsSample;
-using System;
-using System.Threading.Tasks;
+using OfflineWorkflowSample.Views;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
-using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using Esri.ArcGISRuntime.Security;
-using OfflineWorkflowSample.Views;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,7 +17,7 @@ namespace OfflineWorkflowSample
     {
         public LoginPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             ExtendAcrylicIntoTitleBar();
             ViewModel.WindowService = null;
             ViewModel.CompletedLogin += sender => Login();
@@ -33,7 +27,7 @@ namespace OfflineWorkflowSample
             ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
         }
 
-        private LoginViewModel ViewModel => (LoginViewModel)Resources["ViewModel"];
+        private LoginViewModel ViewModel => (LoginViewModel) Resources["ViewModel"];
 
         private void ExtendAcrylicIntoTitleBar()
         {
@@ -49,6 +43,5 @@ namespace OfflineWorkflowSample
             Frame rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(NavigationPage), ViewModel);
         }
-        
     }
 }

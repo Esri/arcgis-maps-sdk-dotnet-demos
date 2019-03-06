@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Esri.ArcGISRuntime.Portal;
+﻿using Esri.ArcGISRuntime.Portal;
 using Prism.Commands;
 using Prism.Windows.Mvvm;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace OfflineWorkflowSample.ViewModels
 {
@@ -18,8 +13,8 @@ namespace OfflineWorkflowSample.ViewModels
         private string _searchQuery;
         private int _page = 1;
         private int _resultsPerPage = 25;
-        private bool _includePublicResults = false;
-        private int _totalResults = 0;
+        private bool _includePublicResults;
+        private int _totalResults;
 
         public PortalSearchViewModel()
         {
@@ -81,10 +76,12 @@ namespace OfflineWorkflowSample.ViewModels
         {
             try
             {
-                PortalQueryParameters parameters = new PortalQueryParameters(_searchQuery);
-                parameters.CanSearchPublic = _includePublicResults;
-                parameters.Limit = _resultsPerPage;
-                parameters.StartIndex = (_page - 1) * _resultsPerPage;
+                PortalQueryParameters parameters = new PortalQueryParameters(_searchQuery)
+                {
+                    CanSearchPublic = _includePublicResults,
+                    Limit = _resultsPerPage,
+                    StartIndex = (_page - 1) * _resultsPerPage
+                };
 
                 SearchResults.Clear();
                 var portalResults = await _portal.FindItemsAsync(parameters);
@@ -99,7 +96,7 @@ namespace OfflineWorkflowSample.ViewModels
                 {
                     Page = 1;
                 }
-                
+
                 // Update commands
                 _goForwardCommand.RaiseCanExecuteChanged();
                 _goBackCommand.RaiseCanExecuteChanged();

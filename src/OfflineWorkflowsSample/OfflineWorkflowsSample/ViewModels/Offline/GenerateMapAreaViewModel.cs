@@ -44,11 +44,12 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                     if (Directory.Exists(offlineDataFolder))
                         Directory.Delete(offlineDataFolder, true);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // If folder can't be deleted, open a new one.
                     offlineDataFolder = Path.Combine(offlineDataFolder, DateTime.Now.Ticks.ToString());
                 }
+
                 // If temporary data folder doesn't exists, create it
                 if (!Directory.Exists(offlineDataFolder))
                     Directory.CreateDirectory(offlineDataFolder);
@@ -138,25 +139,25 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 ToggleIncludeBasemap();
             }
         }
-        
+
         public int MaximumLevelOfDetail
         {
             get => _maximumLevelOfDetail;
             set => SetProperty(ref _maximumLevelOfDetail, value);
         }
-        
+
         public string SelectedMaximumScale
         {
             get => _selectedMaximumScale;
             set => SetProperty(ref _selectedMaximumScale, value);
         }
-        
+
         public string SelectedMinimumScale
         {
             get => _selectedMinimumScale;
             set => SetProperty(ref _selectedMinimumScale, value);
         }
-        
+
         public int SelectedLevelOfDetail
         {
             get => _selectedLevelOfDetail;
@@ -166,14 +167,14 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 UpdateScales();
             }
         }
-        
+
         public bool IsMapOnline
         {
             get => _map.Item is PortalItem;
         }
 
         #endregion Properties
-        
+
         #region Misc. Overhead
 
         private IWindowService _windowService;
@@ -229,7 +230,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 _windowService.SetBusy(false);
             }
         }
-        
+
         private void ToggleIncludeBasemap()
         {
             if (!IncludeBasemap)

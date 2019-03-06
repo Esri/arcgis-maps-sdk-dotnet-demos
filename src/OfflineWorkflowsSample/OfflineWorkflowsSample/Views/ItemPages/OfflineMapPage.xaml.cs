@@ -14,9 +14,10 @@ namespace OfflineWorkflowSample.Views
     public sealed partial class OfflineMapPage : Page
     {
         private MainViewModel _mainVM = (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
+
         public OfflineMapPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

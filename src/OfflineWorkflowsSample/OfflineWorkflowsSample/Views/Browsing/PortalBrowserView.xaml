@@ -1,27 +1,22 @@
 ﻿<Page
-    x:Class="OfflineWorkflowSample.Views.PortalGroupView"
+    x:Class="OfflineWorkflowSample.Views.PortalBrowserView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:OfflineWorkflowSample.Views"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:converter="using:OfflineWorkflowSample.Infrastructure.Converter"
-    mc:Ignorable="d"
-    NavigationCacheMode="Required"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    NavigationCacheMode="Required">
     <Page.Resources>
         <converter:NullEnumToBlankStringConverter x:Key="NullEnumToBlankStringConverter" />
     </Page.Resources>
-    <SplitView DataContext="{StaticResource MainViewModel}" 
-               IsPaneOpen="True" 
-               DisplayMode="Inline" 
+    <SplitView DataContext="{StaticResource MainViewModel}"
+               IsPaneOpen="True"
+               DisplayMode="Inline"
                PaneBackground="Transparent">
         <SplitView.Pane>
             <ScrollViewer>
                 <StackPanel Padding="5,0,20,0">
-                    <ListView ItemsSource="{Binding PortalViewModel.VisibleGroups}" 
-                              SelectedItem="{Binding PortalViewModel.SelectedGroup, Mode=TwoWay}"
+                    <ListView ItemsSource="{Binding PortalViewModel.VisibleFolders}"
+                              SelectedItem="{Binding PortalViewModel.SelectedFolder, Mode=TwoWay}"
                               Background="Transparent">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="offlineWorkflowSample:PortalFolderViewModel">
@@ -32,11 +27,11 @@
                     <TextBlock Text="Filters" FontWeight="SemiBold" />
                     <CheckBox IsChecked="{Binding PortalViewModel.OfflineOnlyFilter, Mode=TwoWay}"
                               Margin="0,0,5,0"
-                              Content="Restrict to content available offline"/>
+                              Content="Restrict to content available offline" />
                     <SearchBox QueryText="{Binding PortalViewModel.SearchFilter, Mode=TwoWay}"
                                PlaceholderText="Filter"
                                Margin="0,5,0,5"
-                               SearchHistoryEnabled="False"/>
+                               SearchHistoryEnabled="False" />
                     <ComboBox ItemsSource="{Binding PortalViewModel.AvailableTypeFilters}"
                               HorizontalAlignment="Stretch"
                               SelectedItem="{Binding PortalViewModel.TypeFilter,Mode=TwoWay}">
@@ -50,10 +45,11 @@
             </ScrollViewer>
         </SplitView.Pane>
         <SplitView.Content>
-            <GridView ItemsSource="{Binding PortalViewModel.SelectedGroup.Items}" 
+            <GridView ItemsSource="{Binding PortalViewModel.SelectedFolder.Items}"
                       ItemTemplate="{StaticResource PortalItemTemplate}"
                       SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}"
-                      Margin="5,0,5,0"/>
+                      Grid.Row="1"
+                      Margin="5,0,5,0" />
         </SplitView.Content>
     </SplitView>
 </Page>
