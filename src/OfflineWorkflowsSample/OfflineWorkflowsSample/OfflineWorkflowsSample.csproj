@@ -103,9 +103,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BusyOverlay.xaml.cs">
-      <DependentUpon>BusyOverlay.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\SceneWithTools.xaml.cs">
       <DependentUpon>SceneWithTools.xaml</DependentUpon>
     </Compile>
@@ -256,10 +253,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\BusyOverlay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\SceneWithTools.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

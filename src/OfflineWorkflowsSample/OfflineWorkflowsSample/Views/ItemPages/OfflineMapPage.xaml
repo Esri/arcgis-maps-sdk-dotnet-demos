@@ -33,6 +33,5 @@
             </SplitView.Pane>
             <offlineWorkflowSample:MapWithTools DataContext="{Binding Map}" />
         </SplitView>
-        <offlineWorkflowSample:BusyOverlay DataContext="{Binding}" />
     </Grid>
 </Page>
