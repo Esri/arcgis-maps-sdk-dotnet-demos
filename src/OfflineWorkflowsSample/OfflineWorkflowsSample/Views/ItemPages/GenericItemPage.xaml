@@ -17,6 +17,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="250" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -63,5 +64,10 @@
             <WebView x:Name="TermsWebView"
                      Grid.Row="3"/>
         </Grid>
+        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3">
+            <Button Content="Open in ArcGIS Online"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding Source={StaticResource MainViewModel},Path=OpenItemInAgolCommand}"/>
+        </StackPanel>
     </Grid>
 </Page>

@@ -12,5 +12,6 @@ namespace OfflineWorkflowsSample
         void SetBusyMessage(string message);
         void NavigateToPageForItem(Item item);
         void NavigateToLoginPage();
+        void LaunchItem(Item item);
     }
 }

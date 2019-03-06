@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -35,8 +36,16 @@ namespace OfflineWorkflowSample.Views.ItemPages
         {
             base.OnNavigatedTo(navigationEventArgs);
 
-            DescriptionWebView.NavigateToString(_mainVM.SelectedItem.Description);
-            TermsWebView.NavigateToString(_mainVM.SelectedItem.TermsOfUse);
+            try
+            {
+                DescriptionWebView.NavigateToString(_mainVM.SelectedItem.Description);
+                TermsWebView.NavigateToString(_mainVM.SelectedItem.TermsOfUse);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                // Ignore
+            }
         }
     }
 

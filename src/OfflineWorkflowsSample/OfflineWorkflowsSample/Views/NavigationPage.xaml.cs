@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Store;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
@@ -152,6 +154,30 @@ namespace OfflineWorkflowSample.Views
         {
             Frame rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(LoginPage));
+        }
+
+        public async void LaunchItem(Item item)
+        {
+            try
+            {
+                if (item is PortalItem portalItem)
+                {
+                    await Launcher.LaunchUriAsync(new Uri($"https://www.arcgis.com/home/item.html?id={portalItem.ItemId}"));
+                }
+                else if (item is LocalItem localItem)
+                {
+                    await Launcher.LaunchUriAsync(new Uri($"https://www.arcgis.com/home/item.html?id={localItem.OriginalPortalItemId}"));
+                }
+                else
+                {
+                    await ShowAlertAsync("Couldn't open item in ArcGIS Online.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                await ShowAlertAsync("Couldn't open item in ArcGIS Online.");
+            }
         }
 
         private void NavigationView_OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

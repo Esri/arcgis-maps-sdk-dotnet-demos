@@ -56,6 +56,12 @@ namespace OfflineWorkflowsSample
                 
                 AuthenticationManager.Current.RemoveAllCredentials();
             });
+
+            // TODO - wire up CanExecute
+            _openInAgolCommand = new DelegateCommand(() =>
+                {
+                    _windowService.LaunchItem(SelectedItem);
+                });
         }
 
         public IWindowService _windowService;
@@ -117,5 +123,8 @@ namespace OfflineWorkflowsSample
 
         private DelegateCommand _logOutCommand;
         public ICommand LogOutCommand => _logOutCommand;
+
+        private DelegateCommand _openInAgolCommand;
+        public ICommand OpenItemInAgolCommand => _openInAgolCommand;
     }
 }

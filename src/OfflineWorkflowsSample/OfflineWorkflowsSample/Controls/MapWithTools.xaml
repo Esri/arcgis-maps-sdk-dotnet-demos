@@ -31,7 +31,7 @@
                                        TextWrapping="Wrap" />
                             <Button Content="Open in ArcGIS Online"
                                     HorizontalAlignment="Stretch"
-                                    Click="OpenInAgol_Clicked" />
+                                    Command="{Binding Source={StaticResource MainViewModel},Path=OpenItemInAgolCommand}" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
