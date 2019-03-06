@@ -4,6 +4,7 @@ using Prism.Windows.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Esri.ArcGISRuntime.Security;
@@ -15,7 +16,6 @@ namespace OfflineWorkflowSample
     {
         public Dictionary<string, PortalFolderViewModel> Folders { get; } = new Dictionary<string, PortalFolderViewModel>();
         public Dictionary<string,PortalFolderViewModel> Groups { get; } = new Dictionary<string, PortalFolderViewModel>();
-        public PortalFolderViewModel FeaturedContent { get; }
 
         public List<PortalFolderViewModel> VisibleFolders => Folders.Values.Where(folder => folder.SectionHasContent).ToList();
         public List<PortalFolderViewModel> VisibleGroups => Groups.Values.Where(group => group.SectionHasContent).ToList();
@@ -67,33 +67,58 @@ namespace OfflineWorkflowSample
             Portal = portal;
 
             SearchViewModel.Initialize(portal);
-            // Get 'featured content'
-            //var featuredItems = await portal.GetFeaturedItemsAsync();
-            //FeaturedContent = new PortalFolderViewModel("Featured", featuredItems.ToList());
 
-            // Get the 'my content' group
-            var result = await portal.User.GetContentAsync();
-            Folders["All my content"] = new PortalFolderViewModel("All my content", result.Items.ToList());
-
-            // Get all other folders
-            foreach (PortalFolder folder in result.Folders)
+            try
             {
-                var itemsForFolder = await portal.User.GetContentAsync(folder.FolderId);
-                Folders[folder.Title] = new PortalFolderViewModel(folder.Title, itemsForFolder.ToList());
+                // Get 'featured content'
+                var featuredItems = await portal.GetFeaturedItemsAsync();
+                Folders["Featured content"] = new PortalFolderViewModel("Featured", featuredItems.ToList());
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                // Ignore
             }
 
-            // Get the groups
-            foreach (var item in portal.User.Groups)
+            try
             {
-                PortalQueryParameters parameters = PortalQueryParameters.CreateForItemsInGroup(item.GroupId);
-                var itemResults = await portal.FindItemsAsync(parameters);
-                // TO-DO - update for query pagination
-                Groups[item.Title] = new PortalFolderViewModel(item.Title, itemResults.Results.ToList());
+                // Get the 'my content' group
+                var result = await portal.User.GetContentAsync();
+                Folders["All my content"] = new PortalFolderViewModel("All my content", result.Items.ToList());
+
+                // Get all other folders
+                foreach (PortalFolder folder in result.Folders)
+                {
+                    var itemsForFolder = await portal.User.GetContentAsync(folder.FolderId);
+                    Folders[folder.Title] = new PortalFolderViewModel(folder.Title, itemsForFolder.ToList());
+                }
+
+                // Get the groups
+                foreach (var item in portal.User.Groups)
+                {
+                    PortalQueryParameters parameters = PortalQueryParameters.CreateForItemsInGroup(item.GroupId);
+                    var itemResults = await portal.FindItemsAsync(parameters);
+                    // TO-DO - update for query pagination
+                    Groups[item.Title] = new PortalFolderViewModel(item.Title, itemResults.Results.ToList());
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                // Ignore
             }
 
-            // Get the basemaps.
-            _orgBasemaps.Clear();
-            _orgBasemaps.AddRange(await Portal.GetBasemapsAsync());
+            try
+            {
+                // Get the basemaps.
+                _orgBasemaps.Clear();
+                _orgBasemaps.AddRange(await Portal.GetBasemapsAsync());
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                // Ignore
+            }
 
             // Set the initial selections.
             SelectedFolder = Folders.Values.FirstOrDefault();
@@ -113,8 +138,7 @@ namespace OfflineWorkflowSample
                 {
                     container.SearchFilter = value;
                 }
-                RaisePropertyChanged(nameof(VisibleFolders));
-                RaisePropertyChanged(nameof(VisibleGroups));
+                HandleFilterChangesForFolders();
             }
         }
 
@@ -129,10 +153,9 @@ namespace OfflineWorkflowSample
                 
                 foreach (PortalFolderViewModel container in Folders.Values.Concat(Groups.Values))
                 {
-                    container.OfflineOnlyFilter = value;
+                    container.OfflineOnlyFilter = OfflineOnlyFilter;
                 }
-                RaisePropertyChanged(nameof(VisibleFolders));
-                RaisePropertyChanged(nameof(VisibleGroups));
+                HandleFilterChangesForFolders();
             }
         }
 
@@ -149,8 +172,7 @@ namespace OfflineWorkflowSample
                 {
                     container.TypeFilter = value;
                 }
-                RaisePropertyChanged(nameof(VisibleFolders));
-                RaisePropertyChanged(nameof(VisibleGroups));
+                HandleFilterChangesForFolders();
             }
         }
 
@@ -163,6 +185,16 @@ namespace OfflineWorkflowSample
             PortalItemType.WebScene,
             PortalItemType.MobileMapPackage
         };
+
+        private void HandleFilterChangesForFolders()
+        {
+            RaisePropertyChanged(nameof(VisibleFolders));
+            RaisePropertyChanged(nameof(VisibleGroups));
+
+            // Set the initial selections now that visible folders have changed.
+            SelectedFolder = VisibleFolders.FirstOrDefault();
+            SelectedGroup = VisibleGroups.FirstOrDefault();
+        }
     }
 
     public class PortalFolderViewModel : ViewModelBase
