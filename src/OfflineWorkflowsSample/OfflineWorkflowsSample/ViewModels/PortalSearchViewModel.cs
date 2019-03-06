@@ -86,12 +86,12 @@ namespace OfflineWorkflowSample.ViewModels
                 parameters.Limit = _resultsPerPage;
                 parameters.StartIndex = (_page - 1) * _resultsPerPage;
 
-                Items.Clear();
+                SearchResults.Clear();
                 var portalResults = await _portal.FindItemsAsync(parameters);
                 SetProperty(ref _totalResults, portalResults.TotalResultsCount, nameof(TotalResults));
                 foreach (var result in portalResults.Results)
                 {
-                    Items.Add(result);
+                    SearchResults.Add(result);
                 }
 
                 // Go to the first page if the page is higher than the results should allow
@@ -110,7 +110,7 @@ namespace OfflineWorkflowSample.ViewModels
             }
         }
 
-        public ObservableCollection<PortalItem> Items { get; } = new ObservableCollection<PortalItem>();
+        public ObservableCollection<PortalItem> SearchResults { get; } = new ObservableCollection<PortalItem>();
 
         private DelegateCommand _goBackCommand;
         private DelegateCommand _goForwardCommand;

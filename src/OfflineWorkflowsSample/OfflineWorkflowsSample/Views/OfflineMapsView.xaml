@@ -10,6 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid DataContext="{StaticResource MainViewModel}">
-        <offlineWorkflowSample:ItemListingGridView DataContext="{Binding OfflineMapsViewModel}" />
+        <GridView ItemsSource="{Binding OfflineMapsViewModel.Items}" 
+                  ItemTemplate="{StaticResource PortalItemTemplate}"
+                  SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}" />
     </Grid>
 </Page>

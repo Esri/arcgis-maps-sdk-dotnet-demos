@@ -46,9 +46,11 @@
             </ScrollViewer>
         </SplitView.Pane>
         <SplitView.Content>
-                <offlineWorkflowSample:ItemListingGridView DataContext="{Binding PortalViewModel.SelectedFolder}"
-                                                           Grid.Row="1"
-                                                           Margin="5,0,5,0"/>
+            <GridView ItemsSource="{Binding PortalViewModel.SelectedFolder.Items}" 
+                      ItemTemplate="{StaticResource PortalItemTemplate}"
+                      SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}"
+                      Grid.Row="1"
+                      Margin="5,0,5,0"/>
         </SplitView.Content>
     </SplitView>
 </Page>

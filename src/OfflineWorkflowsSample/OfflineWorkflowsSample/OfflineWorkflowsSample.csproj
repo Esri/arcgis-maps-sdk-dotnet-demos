@@ -135,9 +135,6 @@
     <Compile Include="Infrastructure\ViewService\MapViewService.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventHelper.cs" />
     <Compile Include="Infrastructure\ViewService\WeakEventListener.cs" />
-    <Compile Include="Controls\ItemListingGridView.xaml.cs">
-      <DependentUpon>ItemListingGridView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\LegendView.xaml.cs">
       <DependentUpon>LegendView.xaml</DependentUpon>
     </Compile>
@@ -275,10 +272,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GenerateMapAreaView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ItemListingGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
