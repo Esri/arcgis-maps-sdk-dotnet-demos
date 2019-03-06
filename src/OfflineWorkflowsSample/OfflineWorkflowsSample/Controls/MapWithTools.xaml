@@ -36,7 +36,17 @@
                     </ScrollViewer>
                 </PivotItem>
                 <PivotItem Header="Legend">
-                    <offlineWorkflowSample:LegendView DataContext="{Binding}" />
+                    <ItemsControl ItemsSource="{Binding OperationalLayers, Mode=OneWay}"
+                                  Margin="10">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                    <controls1:LayerLegend LayerContent="{Binding}" Margin="10,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </PivotItem>
                 <PivotItem Header="Layers">
                     <ScrollViewer>
