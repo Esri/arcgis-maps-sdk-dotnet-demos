@@ -1,7 +1,12 @@
-﻿using OfflineWorkflowSample.ViewModels;
+﻿using System;
+using System.Threading.Tasks;
+using Esri.ArcGISRuntime.Portal;
+using OfflineWorkflowSample.ViewModels;
 using OfflineWorkflowSample.Views;
+using OfflineWorkflowsSample;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -13,7 +18,7 @@ namespace OfflineWorkflowSample
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LoginPage : Page
+    public sealed partial class LoginPage : Page, IWindowService
     {
         public LoginPage()
         {
@@ -28,6 +33,43 @@ namespace OfflineWorkflowSample
         }
 
         private LoginViewModel ViewModel => (LoginViewModel) Resources["ViewModel"];
+
+        public void LaunchItem(Item item)
+        {
+            throw new InvalidOperationException("Can't launch item - not logged in.");
+        }
+
+        public void NavigateToLoginPage()
+        {
+            return;
+        }
+
+        public void NavigateToPageForItem(Item item)
+        {
+            throw new InvalidOperationException("Can't navigate to item - not logged in.");
+        }
+
+        public void SetBusy(bool isBusy)
+        {
+            return;
+        }
+
+        public void SetBusyMessage(string message)
+        {
+            return;
+        }
+
+        public async Task ShowAlertAsync(string message)
+        {
+            var messageDialog = new MessageDialog(message);
+            await messageDialog.ShowAsync();
+        }
+
+        public async Task ShowAlertAsync(string message, string title)
+        {
+            var messageDialog = new MessageDialog(message, title);
+            await messageDialog.ShowAsync();
+        }
 
         private void ExtendAcrylicIntoTitleBar()
         {
