@@ -22,7 +22,7 @@
                DisplayMode="Overlay"
                PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
         <SplitView.Pane>
-            <Pivot>
+            <Pivot x:Name="OuterPivot">
                 <PivotItem Header="Info">
                     <ScrollViewer>
                         <StackPanel>
@@ -40,17 +40,19 @@
                     </ScrollViewer>
                 </PivotItem>
                 <PivotItem Header="Legend">
-                    <ItemsControl ItemsSource="{Binding OperationalLayers, Mode=OneWay}"
-                                  Margin="10">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                                    <controls1:LayerLegend LayerContent="{Binding}" Margin="10,0" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding OperationalLayers, Mode=OneWay}"
+                                      Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                        <controls1:LayerLegend LayerContent="{Binding}" Margin="10,0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </PivotItem>
                 <PivotItem Header="Layers">
                     <ScrollViewer>
@@ -91,14 +93,15 @@
                     <AppBarButton Icon="List" Label="Choose basemap">
                         <AppBarButton.Flyout>
                             <Flyout>
-                                <ListView
-                                    ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps }"
-                                    SelectedItem="{Binding Basemap, Mode=TwoWay}">
-                                    <ListView.ItemTemplate>
+                                <GridView Width="230"
+                                          ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps }"
+                                          SelectedItem="{Binding Basemap, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="mapping:Basemap">
-                                            <Grid Margin="5">
+                                            <Grid Margin="5" Width="100" Height="100">
                                                 <Image Stretch="UniformToFill"
-
+                                                       Width="100" Height="100"
+                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                        Source="{Binding Item, Converter={StaticResource ItemToImageSourceConverter}}" />
                                                 <Border Background="#7F000000"
                                                         VerticalAlignment="Top"
@@ -110,8 +113,8 @@
                                                 </Border>
                                             </Grid>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </GridView.ItemTemplate>
+                                </GridView>
                             </Flyout>
                         </AppBarButton.Flyout>
                     </AppBarButton>

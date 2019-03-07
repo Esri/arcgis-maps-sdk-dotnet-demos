@@ -80,32 +80,34 @@
                 </ScrollViewer>
             </PivotItem>
             <PivotItem Header="Sync">
-                <StackPanel>
-                    <TextBlock Text="1. Download latest changes"
-                               Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock
-                        Text="When map area is downloaded, you should make sure to pull down any possible changes."
-                        Style="{StaticResource BodyTextBlockStyle}" />
-                    <Button Content="Download changes"
-                            Command="{Binding SyncMapAreaCommand}" CommandParameter="Download"
-                            Style="{StaticResource ButtonStyle}" />
-                    <TextBlock Text="2. Upload local changes"
-                               Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock
-                        Text="When there are edits done locally that you want to push to the service, you can use UPLOAD option."
-                        Style="{StaticResource BodyTextBlockStyle}" />
-                    <Button Content="Upload changes"
-                            Command="{Binding SyncMapAreaCommand}" CommandParameter="Upload"
-                            Style="{StaticResource ButtonStyle}" />
-                    <TextBlock Text="Bi-directional synchronization"
-                               Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock
-                        Text="When there are edits done locally that you want to push to the service, you can use BIDIRECTIONAL option when you want to get the latest changes from the server in a one operation."
-                        Style="{StaticResource BodyTextBlockStyle}" />
-                    <Button Content="Bidirectional"
-                            Command="{Binding SyncMapAreaCommand}" CommandParameter="Bidirectional"
-                            Style="{StaticResource ButtonStyle}" />
-                </StackPanel>
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="1. Download latest changes"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock
+                            Text="When map area is downloaded, you should make sure to pull down any possible changes."
+                            Style="{StaticResource BodyTextBlockStyle}" />
+                        <Button Content="Download changes"
+                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Download"
+                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="2. Upload local changes"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock
+                            Text="When there are edits done locally that you want to push to the service, you can use UPLOAD option."
+                            Style="{StaticResource BodyTextBlockStyle}" />
+                        <Button Content="Upload changes"
+                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Upload"
+                                Style="{StaticResource ButtonStyle}" />
+                        <TextBlock Text="Bi-directional synchronization"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock
+                            Text="When there are edits done locally that you want to push to the service, you can use BIDIRECTIONAL option when you want to get the latest changes from the server in a one operation."
+                            Style="{StaticResource BodyTextBlockStyle}" />
+                        <Button Content="Bidirectional"
+                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Bidirectional"
+                                Style="{StaticResource ButtonStyle}" />
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
     </Grid>

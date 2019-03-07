@@ -5,7 +5,7 @@
     <Grid>
         <Pivot Background="Transparent">
             <PivotItem Header="Take offline">
-                <Grid>
+                <ScrollViewer>
                     <StackPanel>
                         <TextBlock Text="1. Select area to take offline"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
@@ -47,7 +47,7 @@
                                 Command="{Binding ResetMapCommand}"
                                 Style="{StaticResource ButtonStyle}" />
                     </StackPanel>
-                </Grid>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
     </Grid>

@@ -1,11 +1,6 @@
-﻿using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowsSample;
-using System;
-using Windows.System;
+﻿using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace OfflineWorkflowSample.Controls
 {
@@ -18,7 +13,14 @@ namespace OfflineWorkflowSample.Controls
 
         private void MenuButtonClicked(object sender, RoutedEventArgs e)
         {
+            // Pivot item hack needed to prevent UWP layout cycle, which results in a crash.
+            var content = OuterPivot.Items.ToList();
+            OuterPivot.Items.Clear();
             MapLegendSplitView.IsPaneOpen = !MapLegendSplitView.IsPaneOpen;
+            foreach (var item in content)
+            {
+                OuterPivot.Items.Add(item);
+            }
         }
     }
 }
