@@ -19,10 +19,7 @@ namespace OfflineWorkflowsSample.Models
         {
             MapArea = mapArea;
 
-            if (mapArea.PortalItem.ThumbnailUri != null)
-                Thumbnail = new BitmapImage(mapArea.PortalItem.ThumbnailUri);
-            else
-                Thumbnail = null;
+            Thumbnail = mapArea.PortalItem.ThumbnailUri != null ? new BitmapImage(mapArea.PortalItem.ThumbnailUri) : null;
         }
 
         public Color DisplayColor

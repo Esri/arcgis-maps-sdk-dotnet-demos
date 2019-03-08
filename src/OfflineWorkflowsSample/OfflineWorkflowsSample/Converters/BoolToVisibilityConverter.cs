@@ -9,9 +9,7 @@ namespace OfflineWorkflowsSample.Infrastructure.Converter
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var valueBool = (bool) value;
-            if (valueBool)
-                return Visibility.Visible;
-            return Visibility.Collapsed;
+            return valueBool ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

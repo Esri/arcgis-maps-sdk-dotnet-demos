@@ -50,15 +50,7 @@ namespace OfflineWorkflowSample
 
         public PortalSearchViewModel SearchViewModel { get; } = new PortalSearchViewModel();
 
-        public List<Basemap> OrgBasemaps
-        {
-            get
-            {
-                if (!_orgBasemaps.Any()) return _defaultBasemaps;
-
-                return _orgBasemaps;
-            }
-        }
+        public List<Basemap> OrgBasemaps => _orgBasemaps.Any() ? _orgBasemaps : _defaultBasemaps;
 
         public PortalFolderViewModel SelectedFolder
         {
@@ -124,7 +116,7 @@ namespace OfflineWorkflowSample
             try
             {
                 // Get 'featured content'
-                var featuredItems = await portal.GetFeaturedItemsAsync();
+                IEnumerable<PortalItem> featuredItems = await portal.GetFeaturedItemsAsync();
                 Folders.Add(new PortalFolderViewModel("Featured", featuredItems.ToList()));
             }
             catch (Exception e)
@@ -142,7 +134,7 @@ namespace OfflineWorkflowSample
                 // Get all other folders
                 foreach (PortalFolder folder in userContent.Folders)
                 {
-                    var itemsForFolder = await portal.User.GetContentAsync(folder.FolderId);
+                    IEnumerable<PortalItem> itemsForFolder = await portal.User.GetContentAsync(folder.FolderId);
                     Folders.Add(new PortalFolderViewModel(folder.Title, itemsForFolder.ToList()));
                 }
 
@@ -150,7 +142,7 @@ namespace OfflineWorkflowSample
                 foreach (var item in portal.User.Groups)
                 {
                     PortalQueryParameters parameters = PortalQueryParameters.CreateForItemsInGroup(item.GroupId);
-                    var itemResults = await portal.FindItemsAsync(parameters);
+                    PortalQueryResultSet<PortalItem> itemResults = await portal.FindItemsAsync(parameters);
                     // TO-DO - update for query pagination
                     Groups.Add(new PortalFolderViewModel(item.Title, itemResults.Results.ToList()));
                 }

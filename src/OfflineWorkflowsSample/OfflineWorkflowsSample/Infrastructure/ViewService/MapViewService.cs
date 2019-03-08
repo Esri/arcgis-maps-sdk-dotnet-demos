@@ -8,15 +8,8 @@ using Windows.Foundation;
 
 namespace OfflineWorkflowsSample.Infrastructure.ViewServices
 {
-    public partial class MapViewService : GeoViewServiceBase<MapView>
-    {
-        /// <summary>
-        /// Creates a new instance of <see cref="MapViewService"/> that is used to control attached MapView.
-        /// </summary>
-        public MapViewService() : base()
-        {
-        }
-        
+    public class MapViewService : GeoViewServiceBase<MapView>
+    {    
         /// <summary>
         /// Gets the current rotational heading of the map
         /// </summary>
@@ -51,7 +44,7 @@ namespace OfflineWorkflowsSample.Infrastructure.ViewServices
         /// </summary>
         /// <param name="viewpoint">Viewpoint object</param>
         /// <param name="duration">Duration of the animation</param>
-        /// <param name="animationCurve">The animation curve for controlling the acceleration and decelleration of the animation.</param>
+        /// <param name="animationCurve">The animation curve for controlling the acceleration and deceleration of the animation.</param>
         /// <returns>True if the set view animation completed, false if it was interrupted by another view navigation.</returns>
         public Task<bool> SetViewpointAsync(
             Viewpoint viewpoint, TimeSpan duration, AnimationCurve animationCurve)
@@ -132,13 +125,9 @@ namespace OfflineWorkflowsSample.Infrastructure.ViewServices
         public Task ResetViewpointAsync()
         {
             MapView view = GetView();
-            if (view.Map.InitialViewpoint != null)
-            {
-                return view.SetViewpointAsync(view.Map.InitialViewpoint);
-            }
+            return view.Map.InitialViewpoint != null ? view.SetViewpointAsync(view.Map.InitialViewpoint) : null;
 
             // TODO: Is this valid?
-            return null;
         }
     }
 }

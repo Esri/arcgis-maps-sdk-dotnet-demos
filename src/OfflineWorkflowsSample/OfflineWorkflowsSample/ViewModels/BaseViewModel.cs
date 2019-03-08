@@ -38,7 +38,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         {
             try
             {
-                var currentScale = MapViewService.MapScale;
+                double currentScale = MapViewService.MapScale;
                 await MapViewService.SetViewpointScaleAsync(currentScale * 0.5);
             }
             catch (Exception)
@@ -54,7 +54,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         {
             try
             {
-                var currentScale = MapViewService.MapScale;
+                double currentScale = MapViewService.MapScale;
                 await MapViewService.SetViewpointScaleAsync(currentScale * 1.5);
             }
             catch (Exception)

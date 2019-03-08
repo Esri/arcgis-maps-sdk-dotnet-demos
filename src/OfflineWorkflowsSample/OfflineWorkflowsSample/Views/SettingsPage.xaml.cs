@@ -8,24 +8,21 @@ using Windows.UI.Xaml.Controls;
 
 namespace OfflineWorkflowSample.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        private static string RuntimeVersion = "";
+        private static string _runtimeVersion = "";
 
         public SettingsPage()
         {
             InitializeComponent();
 
-            if (String.IsNullOrWhiteSpace(RuntimeVersion))
+            if (String.IsNullOrWhiteSpace(_runtimeVersion))
             {
                 var runtimeTypeInfo = typeof(ArcGISRuntimeEnvironment).GetTypeInfo();
                 var rtVersion = FileVersionInfo.GetVersionInfo(runtimeTypeInfo.Assembly.Location);
-                RuntimeVersion = rtVersion.FileVersion;
+                _runtimeVersion = rtVersion.FileVersion;
             }
-            VersionLabelField.Text = RuntimeVersion;
+            VersionLabelField.Text = _runtimeVersion;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace OfflineWorkflowSample.Views.ItemPages
 {
     public sealed partial class GenericItemPage : Page
     {
-        private MainViewModel _mainVM => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
+        private MainViewModel MainVm => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
 
         public GenericItemPage()
         {
@@ -24,8 +24,8 @@ namespace OfflineWorkflowSample.Views.ItemPages
 
             try
             {
-                DescriptionWebView.NavigateToString(_mainVM.SelectedItem.Description);
-                TermsWebView.NavigateToString(_mainVM.SelectedItem.TermsOfUse);
+                DescriptionWebView.NavigateToString(MainVm.SelectedItem.Description);
+                TermsWebView.NavigateToString(MainVm.SelectedItem.TermsOfUse);
             }
             catch (Exception e)
             {

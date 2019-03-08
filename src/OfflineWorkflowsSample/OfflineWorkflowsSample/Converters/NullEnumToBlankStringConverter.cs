@@ -16,9 +16,7 @@ namespace OfflineWorkflowSample.Infrastructure.Converter
             if (value is PortalItemType pItemType)
                 return pItemType;
             // Hack to word around weird combobox behavior.
-            if (value is MainViewModel) return "";
-
-            return "";
+            return value is MainViewModel ? "" : value.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

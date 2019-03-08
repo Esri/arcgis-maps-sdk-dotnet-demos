@@ -20,9 +20,7 @@ namespace OfflineWorkflowsSample
         #region license information
 
         private const string LicenseKey = "ADD_LICENSE_KEY";
-        private List<string> ExtensionLicenseKeys = new List<string>
-        {
-        };
+        private List<string> ExtensionLicenseKeys = new List<string>();
 
 
         #endregion
@@ -53,8 +51,8 @@ namespace OfflineWorkflowsSample
 
             UnhandledException += App_UnhandledException;
 
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)

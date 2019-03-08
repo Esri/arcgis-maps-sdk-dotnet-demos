@@ -13,10 +13,8 @@ namespace OfflineWorkflowSample.Converters
             {
                 return new SolidColorBrush(Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B));
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

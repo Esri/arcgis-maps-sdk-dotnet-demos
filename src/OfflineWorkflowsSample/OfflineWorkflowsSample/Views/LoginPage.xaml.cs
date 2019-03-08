@@ -15,18 +15,15 @@ using Windows.UI.Xaml.Controls;
 
 namespace OfflineWorkflowSample
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class LoginPage : Page, IWindowService
     {
         public LoginPage()
         {
             InitializeComponent();
             ExtendAcrylicIntoTitleBar();
-            ViewModel.WindowService = null;
+            ViewModel.WindowService = this;
             ViewModel.CompletedLogin += sender => Login();
-
+            
             // Configure the title bar.
             Window.Current.SetTitleBar(DraggablePart);
             ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
@@ -39,25 +36,16 @@ namespace OfflineWorkflowSample
             throw new InvalidOperationException("Can't launch item - not logged in.");
         }
 
-        public void NavigateToLoginPage()
-        {
-            return;
-        }
+        public void NavigateToLoginPage(){}
 
         public void NavigateToPageForItem(Item item)
         {
             throw new InvalidOperationException("Can't navigate to item - not logged in.");
         }
 
-        public void SetBusy(bool isBusy)
-        {
-            return;
-        }
+        public void SetBusy(bool isBusy){}
 
-        public void SetBusyMessage(string message)
-        {
-            return;
-        }
+        public void SetBusyMessage(string message){}
 
         public async Task ShowAlertAsync(string message)
         {

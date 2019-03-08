@@ -107,7 +107,7 @@ namespace OfflineWorkflowsSample.Infrastructure
         {
             if (instance == null)
             {
-                throw new ArgumentNullException("instance");
+                throw new ArgumentNullException(nameof(instance));
             }
             _weakInstance = new WeakReference<TInstance>(instance);
         }

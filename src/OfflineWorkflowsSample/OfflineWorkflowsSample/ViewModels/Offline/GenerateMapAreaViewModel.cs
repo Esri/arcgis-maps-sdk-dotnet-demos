@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.System;
+using Esri.ArcGISRuntime.Data;
 
 namespace OfflineWorkflowsSample.GenerateMapArea
 {
@@ -36,7 +37,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 _windowService.SetBusyMessage("Taking map offline");
                 _windowService.SetBusy(true);
 
-                var offlineDataFolder = OfflineDataStorageHelper.GetDataFolderForMap(Map);
+                string offlineDataFolder = OfflineDataStorageHelper.GetDataFolderForMap(Map);
 
                 // If temporary data folder exists remove it
                 try
@@ -82,10 +83,10 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 {
                     string errorString = "";
                     // If one or more layers fails, layer errors are populated with corresponding errors.
-                    foreach (var layerError in results.LayerErrors)
-                        errorString += $"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}\r\n";
-                    foreach (var tableError in results.TableErrors)
-                        errorString += $"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}\r\n";
+                    foreach (var (key, value) in results.LayerErrors)
+                        errorString += $"Error occurred on {key.Name} : {value.Message}\r\n";
+                    foreach (var (key, value) in results.TableErrors)
+                        errorString += $"Error occurred on {key.TableName} : {value.Message}\r\n";
                     OfflineDataStorageHelper.FlushLogToDisk(errorString, Map);
                 }
 
@@ -168,10 +169,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             }
         }
 
-        public bool IsMapOnline
-        {
-            get => _map.Item is PortalItem;
-        }
+        public bool IsMapOnline => _map.Item is PortalItem;
 
         #endregion Properties
 

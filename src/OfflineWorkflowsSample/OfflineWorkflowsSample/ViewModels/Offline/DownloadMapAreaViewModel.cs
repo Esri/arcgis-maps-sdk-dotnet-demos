@@ -50,7 +50,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 var offlineMapTask = await OfflineMapTask.CreateAsync(Map);
 
                 // Get list of areas
-                var preplannedMapAreas = await offlineMapTask.GetPreplannedMapAreasAsync();
+                IReadOnlyList<PreplannedMapArea> preplannedMapAreas = await offlineMapTask.GetPreplannedMapAreasAsync();
 
                 // Create UI from the areas
                 foreach (var preplannedMapArea in preplannedMapAreas.OrderBy(x => x.PortalItem.Title))
@@ -94,7 +94,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             {
                 _windowService.SetBusyMessage("Downloading selected area...");
                 _windowService.SetBusy(true);
-                var offlineDataFolder = Path.Combine(OfflineDataStorageHelper.GetDataFolderForMap(Map));
+                string offlineDataFolder = Path.Combine(OfflineDataStorageHelper.GetDataFolderForMap(Map));
 
                 // If temporary data folder exists remove it
                 try
@@ -131,9 +131,9 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 {
                     string errorString = "";
                     // If one or more layers fails, layer errors are populated with corresponding errors.
-                    foreach (var layerError in results.LayerErrors)
+                    foreach (KeyValuePair<Layer, Exception> layerError in results.LayerErrors)
                         errorString += $"Error occurred on {layerError.Key.Name} : {layerError.Value.Message}\r\n";
-                    foreach (var tableError in results.TableErrors)
+                    foreach (KeyValuePair<Esri.ArcGISRuntime.Data.FeatureTable, Exception> tableError in results.TableErrors)
                         errorString += $"Error occurred on {tableError.Key.TableName} : {tableError.Value.Message}\r\n";
                     OfflineDataStorageHelper.FlushLogToDisk(errorString, Map);
                 }
@@ -178,7 +178,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                 // Create task that is used to synchronize the offline map
                 var task = await OfflineMapSyncTask.CreateAsync(Map);
                 // Create parameters 
-                var parameters = new OfflineMapSyncParameters()
+                var parameters = new OfflineMapSyncParameters
                 {
                     SyncDirection = synchronizationMode
                 };
@@ -201,7 +201,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
                     // handle nicely
                 }
 
-                foreach (var message in job.Messages.Select(x => x.Message))
+                foreach (string message in job.Messages.Select(x => x.Message))
                 {
                     Debug.WriteLine(message);
                 }
@@ -250,10 +250,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             }
         }
 
-        public bool IsMapOnline
-        {
-            get => _map?.Item is PortalItem;
-        }
+        public bool IsMapOnline => _map?.Item is PortalItem;
 
         public MapAreaModel SelectedMapArea
         {
@@ -340,7 +337,7 @@ namespace OfflineWorkflowsSample.DownloadMapArea
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                await _windowService.ShowAlertAsync(e.Message, $"Couldn't open folder");
+                await _windowService.ShowAlertAsync(e.Message, "Couldn't open folder");
             }
         }
 

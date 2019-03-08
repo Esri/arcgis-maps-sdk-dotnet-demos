@@ -11,7 +11,7 @@ namespace OfflineWorkflowSample.ViewModels
     {
         private readonly DelegateCommand _goBackCommand;
         private readonly DelegateCommand _goForwardCommand;
-        private readonly int _resultsPerPage = 25;
+        private const int ResultsPerPage = 25;
         private bool _includePublicResults;
         private int _page = 1;
         private ArcGISPortal _portal;
@@ -20,7 +20,7 @@ namespace OfflineWorkflowSample.ViewModels
 
         public PortalSearchViewModel()
         {
-            _goForwardCommand = new DelegateCommand(() => Page++, () => _totalResults >= _page * _resultsPerPage);
+            _goForwardCommand = new DelegateCommand(() => Page++, () => _totalResults >= _page * ResultsPerPage);
             _goBackCommand = new DelegateCommand(() => Page--, () => _page > 1);
         }
 
@@ -82,17 +82,17 @@ namespace OfflineWorkflowSample.ViewModels
                 PortalQueryParameters parameters = new PortalQueryParameters(_searchQuery)
                 {
                     CanSearchPublic = _includePublicResults,
-                    Limit = _resultsPerPage,
-                    StartIndex = (_page - 1) * _resultsPerPage
+                    Limit = ResultsPerPage,
+                    StartIndex = (_page - 1) * ResultsPerPage
                 };
 
                 SearchResults.Clear();
-                var portalResults = await _portal.FindItemsAsync(parameters);
+                PortalQueryResultSet<PortalItem> portalResults = await _portal.FindItemsAsync(parameters);
                 SetProperty(ref _totalResults, portalResults.TotalResultsCount, nameof(TotalResults));
                 foreach (var result in portalResults.Results) SearchResults.Add(result);
 
                 // Go to the first page if the page is higher than the results should allow
-                if (_page > (_totalResults / _resultsPerPage) + 1) Page = 1;
+                if (_page > _totalResults / ResultsPerPage + 1) Page = 1;
 
                 // Update commands
                 _goForwardCommand.RaiseCanExecuteChanged();

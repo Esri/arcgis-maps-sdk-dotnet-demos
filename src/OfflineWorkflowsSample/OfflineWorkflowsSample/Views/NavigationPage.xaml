@@ -10,6 +10,7 @@
     <Grid DataContext="{StaticResource MainViewModel}">
         <Grid.Resources>
             <!-- This looks like it isn't being used, but it is. It overrides a style in NavigationView. -->
+            <!-- ReSharper disable once Xaml.RedundantResource -->
             <SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
         </Grid.Resources>
         <Grid.RowDefinitions>

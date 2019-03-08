@@ -5,7 +5,7 @@ using Esri.ArcGISRuntime.Mapping;
 
 namespace OfflineWorkflowsSample.Infrastructure
 {
-    public class OfflineDataStorageHelper
+    public static class OfflineDataStorageHelper
     {
         internal static string GetDataFolder()
         {

@@ -48,7 +48,7 @@ namespace OfflineWorkflowsSample.Infrastructure.ViewServices
             }
             if (d is TGeoView && e.NewValue is GeoViewServiceBase<TGeoView>)
             {
-                var viewService = (e.NewValue as GeoViewServiceBase<TGeoView>);
+                var viewService = e.NewValue as GeoViewServiceBase<TGeoView>;
                 var currentView = d as GeoView;
 
                 // Set reference as a weak reference
@@ -62,7 +62,7 @@ namespace OfflineWorkflowsSample.Infrastructure.ViewServices
         /// <summary>
         /// Override this to remove type specific events from the <see cref="GeoView"/>
         /// </summary>
-        /// <remarks>Remember to use weakevents!</remarks>
+        /// <remarks>Remember to use weak events!</remarks>
         /// <param name="geoView">Geoview to that has attached events.</param>
         protected virtual void UnregisterGeoViewEvents(TGeoView geoView)
         {

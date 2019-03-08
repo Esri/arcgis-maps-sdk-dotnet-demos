@@ -67,8 +67,8 @@ namespace OfflineWorkflowsSample.Infrastructure.ViewServices
         /// <remarks>If you are using data from ArcGIS Online, you need to show the attribution.</remarks>
         public bool IsAttributionTextVisible
         {
-            get { return GetView().IsAttributionTextVisible; }
-            set { GetView().IsAttributionTextVisible = value; }
+            get => GetView().IsAttributionTextVisible;
+            set => GetView().IsAttributionTextVisible = value;
         }
 
         /// <summary>
