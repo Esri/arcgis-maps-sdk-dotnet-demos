@@ -50,10 +50,16 @@ namespace OfflineWorkflowSample.ViewModels
         {
             try
             {
-                // Load the online map that the offline map was made from.
-                if (map.Item is PortalItem)
-                    OnlineMap = map;
-                else if (map.Item is LocalItem localItem) LoadOnlineMapItemForOfflineMap(localItem);
+                switch (map.Item)
+                {
+                    case PortalItem _:
+                        OnlineMap = map;
+                        break;
+                    case LocalItem localItem:
+                        // Load the online map that the offline map was made from.
+                        await LoadOnlineMapItemForOfflineMap(localItem);
+                        break;
+                }
 
                 Map = map;
 
@@ -75,18 +81,10 @@ namespace OfflineWorkflowSample.ViewModels
             }
         }
 
-        private async void LoadOnlineMapItemForOfflineMap(LocalItem localItem)
+        private async Task LoadOnlineMapItemForOfflineMap(LocalItem localItem)
         {
-            try
-            {
-                PortalItem onlineItem = await PortalItem.CreateAsync(Portal, localItem.OriginalPortalItemId);
-                OnlineMap = new Map(onlineItem);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            PortalItem onlineItem = await PortalItem.CreateAsync(Portal, localItem.OriginalPortalItemId);
+            OnlineMap = new Map(onlineItem);
         }
 
         private void UpdateMap(object sender, Map newMap)

@@ -37,6 +37,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -114,6 +115,7 @@
     <Compile Include="ViewModels\Browsing\LocalContentViewModel.cs" />
     <Compile Include="ViewModels\Offline\OfflineMapViewModel.cs" />
     <Compile Include="ViewModels\Browsing\PortalSearchViewModel.cs" />
+    <Compile Include="ViewModels\Browsing\PortalItemViewModel.cs" />
     <Compile Include="Views\Offline\DownloadMapAreaView.xaml.cs">
       <DependentUpon>DownloadMapAreaView.xaml</DependentUpon>
     </Compile>
@@ -124,7 +126,6 @@
     <Compile Include="ViewModels\Offline\GenerateMapAreaViewModel.cs" />
     <Compile Include="Infrastructure\IWindowService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="Infrastructure\ColorHelper.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\OfflineDataStorageHelper.cs" />
     <Compile Include="Infrastructure\ViewService\GeoViewServiceBase.AttachedProperties.cs" />

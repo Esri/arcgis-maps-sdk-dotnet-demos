@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.System;
-using Esri.ArcGISRuntime.Data;
 
 namespace OfflineWorkflowsSample.GenerateMapArea
 {
@@ -201,16 +200,18 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                 try
                 {
                     // Set the scale information to the UI
-                    var basemapLayer = Map.AllLayers.OfType<ArcGISTiledLayer>().FirstOrDefault();
+                    var basemapLayer = Map.AllLayers.OfType<ImageTiledLayer>().FirstOrDefault();
                     if (basemapLayer != null)
-                        _levelsOfDetail = basemapLayer.ServiceInfo.TileInfo.LevelsOfDetail;
-                    else
+                    {
+                        _levelsOfDetail = basemapLayer.TileInfo.LevelsOfDetail;
+                        MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
+                    }
+                    else if (Map.AllLayers.OfType<ArcGISVectorTiledLayer>().Any())
                     {
                         var vectorBasemapLayer = Map.AllLayers.OfType<ArcGISVectorTiledLayer>().First();
                         _levelsOfDetail = vectorBasemapLayer.SourceInfo.LevelsOfDetail;
+                        MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
                     }
-
-                    MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
                 }
                 catch (Exception)
                 {

@@ -20,6 +20,20 @@ namespace OfflineWorkflowSample.ViewModels
         private readonly DelegateCommand _logInToPortalCommand;
         private readonly DelegateCommand _showEnterpriseFormCommand;
 
+        private bool _isLoggingIn;
+
+        private bool IsLoggingIn
+        {
+            get => _isLoggingIn;
+            set
+            {
+                SetProperty(ref _isLoggingIn, value);
+                _logInToPortalCommand.RaiseCanExecuteChanged();
+                _showEnterpriseFormCommand.RaiseCanExecuteChanged();
+                _logInToEnterpriseCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         private bool _portalFormOpen;
 
         private string _portalUrl = ArcGISOnlinePortalUrl;
@@ -30,9 +44,9 @@ namespace OfflineWorkflowSample.ViewModels
 
         public LoginViewModel()
         {
-            _logInToPortalCommand = new DelegateCommand(LoginToAgol);
-            _logInToEnterpriseCommand = new DelegateCommand(LoginToEnterprise);
-            _showEnterpriseFormCommand = new DelegateCommand(TogglePortalForm);
+            _logInToPortalCommand = new DelegateCommand(LoginToAgol, () => !IsLoggingIn);
+            _logInToEnterpriseCommand = new DelegateCommand(LoginToEnterprise, () => !IsLoggingIn);
+            _showEnterpriseFormCommand = new DelegateCommand(TogglePortalForm, () => !IsLoggingIn);
         }
 
         public ICommand LogInToPortalCommand => _logInToPortalCommand;
@@ -71,6 +85,8 @@ namespace OfflineWorkflowSample.ViewModels
 
         private async void DoLogin()
         {
+            IsLoggingIn = true;
+
             try
             {
                 // Set up OAuth authentication.
@@ -80,11 +96,7 @@ namespace OfflineWorkflowSample.ViewModels
                 Portal = await AuthenticateAndCreatePortal();
 
                 // Skip out if the portal is null.
-                if (Portal == null)
-                {
-                    await WindowService.ShowAlertAsync("Couldn't log in to the portal.", "Log in failed");
-                }
-                else
+                if (Portal != null)
                 {
                     UserProfile = new UserProfileModel(Portal.User);
                     RaiseLoggedIn();
@@ -94,6 +106,10 @@ namespace OfflineWorkflowSample.ViewModels
             {
                 Debug.WriteLine(e);
                 await WindowService.ShowAlertAsync("Couldn't log in to the portal.", "Log in failed");
+            }
+            finally
+            {
+                IsLoggingIn = false;
             }
         }
 

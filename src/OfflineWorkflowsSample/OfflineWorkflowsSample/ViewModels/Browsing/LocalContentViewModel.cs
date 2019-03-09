@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +13,8 @@ namespace OfflineWorkflowSample.ViewModels
 {
     public class LocalContentViewModel : ViewModelBase
     {
-        private List<Map> OfflineMaps => MapItems.Values.ToList();
-        public List<Item> Items => MapItems.Keys.ToList();
-        private Dictionary<Item, Map> MapItems { get; } = new Dictionary<Item, Map>();
-        public Dictionary<Item, string> PathsForItems { get; } = new Dictionary<Item, string>();
+        public ObservableCollection<PortalItemViewModel<LocalItem>> Items { get; } = new ObservableCollection<PortalItemViewModel<LocalItem>>();
+        public Dictionary<LocalItem, string> PathsForItems { get; } = new Dictionary<LocalItem, string>();
 
         public async Task Initialize()
         {
@@ -31,8 +30,8 @@ namespace OfflineWorkflowSample.ViewModels
                     if (mmpk?.Item != null)
                         foreach (var mmpkMap in mmpk.Maps)
                         {
-                            MapItems[mmpkMap.Item] = mmpkMap;
-                            PathsForItems[mmpkMap.Item] = subDirectory;
+                            Items.Add(new PortalItemViewModel<LocalItem>((LocalItem)mmpk.Item));
+                            PathsForItems[(LocalItem)mmpkMap.Item] = subDirectory;
                         }
                 }
                 catch (Exception)
@@ -41,8 +40,6 @@ namespace OfflineWorkflowSample.ViewModels
                 }
 
             RaisePropertyChanged(nameof(Items));
-            RaisePropertyChanged(nameof(OfflineMaps));
-            RaisePropertyChanged(nameof(MapItems));
         }
     }
 }

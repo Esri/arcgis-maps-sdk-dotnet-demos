@@ -183,14 +183,14 @@ namespace OfflineWorkflowSample
 
     public class PortalFolderViewModel : ViewModelBase
     {
-        private readonly List<PortalItem> _allItems;
+        private readonly List<PortalItemViewModel<PortalItem>> _allItems;
         private bool _offlineOnly;
         private string _searchFilter;
         private PortalItemType? _typeFilter;
 
         public PortalFolderViewModel(string title, List<PortalItem> items)
         {
-            _allItems = items;
+            _allItems = items.Select(item => new PortalItemViewModel<PortalItem>(item)).ToList();
             Title = title;
         }
 
@@ -229,24 +229,24 @@ namespace OfflineWorkflowSample
             }
         }
 
-        public IEnumerable<PortalItem> Items
+        public IEnumerable<PortalItemViewModel<PortalItem>> Items
         {
             get
             {
-                IEnumerable<PortalItem> items = _allItems;
+                IEnumerable<PortalItemViewModel<PortalItem>> items = _allItems;
                 if (!String.IsNullOrWhiteSpace(SearchFilter))
                 {
-                    items = items.Where(item => item.Title.Contains(SearchFilter));
+                    items = items.Where(item => item.Item.Title.Contains(SearchFilter));
                 }
 
                 if (TypeFilter != null)
                 {
-                    items = items.Where(item => item.Type == TypeFilter);
+                    items = items.Where(item => item.Item.Type == TypeFilter);
                 }
 
                 if (_offlineOnly)
                 {
-                    items = items.Where(item => item.TypeKeywords.Contains("Offline"));
+                    items = items.Where(item => item.Item.TypeKeywords.Contains("Offline"));
                 }
 
                 return items;

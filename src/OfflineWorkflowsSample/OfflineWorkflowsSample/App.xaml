@@ -9,7 +9,7 @@
             <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
             <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
             <local:MainViewModel x:Key="MainViewModel" />
-            <DataTemplate x:Name="PortalItemTemplate" x:Key="PortalItemTemplate">
+            <DataTemplate x:Key="PortalItemTemplate">
                 <Border BorderThickness="1"
                         CornerRadius="0" Padding="0,0,5,0"
                         BorderBrush="LightGray">
@@ -27,19 +27,19 @@
                         </Grid.ColumnDefinitions>
                         <Image Stretch="UniformToFill"
                                Grid.Column="0" Grid.Row="0" Grid.RowSpan="4"
-                               Source="{Binding Converter={StaticResource ItemToImageSourceConverter}}" />
-                        <TextBlock Text="{Binding Title}"
+                               Source="{Binding Thumbnail}" />
+                        <TextBlock Text="{Binding DisplayName}"
                                    Grid.Row="0" Grid.Column="1"
                                    Margin="0,5,0,0"
                                    TextWrapping="Wrap"
                                    Style="{StaticResource BodyTextBlockStyle}" />
-                        <TextBlock Text="{Binding TypeName}"
+                        <TextBlock Text="{Binding TypeString}"
                                    Grid.Row="3" Grid.Column="2"
                                    Style="{StaticResource CaptionTextBlockStyle}" />
                         <TextBlock Text="{Binding Owner}"
                                    Grid.Row="2" Grid.Column="1"
                                    Style="{StaticResource CaptionTextBlockStyle}" />
-                        <TextBlock Text="{Binding Modified, Converter={StaticResource DateTimeToStringConverter}}"
+                        <TextBlock Text="{Binding ModifiedDate, Converter={StaticResource DateTimeToStringConverter}}"
                                    Grid.Row="3" Grid.Column="1"
                                    Margin="0,5,5,5"
                                    Style="{StaticResource CaptionTextBlockStyle}" />
