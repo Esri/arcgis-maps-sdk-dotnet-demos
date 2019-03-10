@@ -4,9 +4,11 @@ using OfflineWorkflowsSample;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using OfflineWorkflowSample.ViewModels.ItemPages;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -14,39 +16,52 @@ namespace OfflineWorkflowSample.Views.ItemPages
 {
     public sealed partial class MapPage : Page
     {
-        private MainViewModel _mainVM = (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
+        private readonly MainViewModel _mainVM = (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
+        private readonly MapPageViewModel ViewModel;
 
         public MapPage()
         {
             InitializeComponent();
+            ViewModel = (MapPageViewModel)Resources[nameof(ViewModel)];
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
+            Item item = _mainVM.SelectedItem.Item;
             try
             {
-                if (_mainVM.SelectedItem is LocalItem localItem)
+                Map map;
+                if (item is LocalItem localItem)
                 {
                     // This logic is quite brittle and only valid for MMPKs created as a result of 
                     //   taking a map offline with this app. 
-                    string mmpkPath = _mainVM.LocalContentViewModel.PathsForItems[localItem];
+                    string mmpkPath = localItem.Path;
 
                     var mmpk = await MobileMapPackage.OpenAsync(mmpkPath);
 
                     // Get the first map.
-                    DataContext = mmpk.Maps.First();
+                    map = mmpk.Maps.First();
                 }
                 else
                 {
-                    DataContext = new Map(_mainVM.SelectedItem as PortalItem);
+                    map = new Map(_mainVM.SelectedItem.Item as PortalItem);
                 }
+                ViewModel.Initialize(map, _mainVM.SelectedItem);
             }
             catch (Exception exception)
             {
                 Debug.WriteLine(exception);
             }
+        }
+
+        protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+
+            // Reset the view model to avoid object already owned exceptions.
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, ViewModel.Reset);
         }
     }
 }

@@ -24,8 +24,8 @@ namespace OfflineWorkflowSample.Views.ItemPages
 
             try
             {
-                DescriptionWebView.NavigateToString(MainVm.SelectedItem.Description);
-                TermsWebView.NavigateToString(MainVm.SelectedItem.TermsOfUse);
+                DescriptionWebView.NavigateToString(MainVm.SelectedItem.Item.Description);
+                TermsWebView.NavigateToString(MainVm.SelectedItem.Item.TermsOfUse);
             }
             catch (Exception e)
             {

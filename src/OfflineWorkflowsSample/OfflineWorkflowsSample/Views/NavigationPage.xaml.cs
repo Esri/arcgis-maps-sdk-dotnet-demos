@@ -105,14 +105,18 @@ namespace OfflineWorkflowSample.Views
             }
         }
 
-        public void NavigateToPageForItem(Item item)
+        public void NavigateToPageForItem(PortalItemViewModel itemVM)
         {
+            Item item = itemVM.Item;
             if (item is LocalItem localItem)
             {
                 switch (localItem.Type)
                 {
-                    case LocalItemType.MobileMap:
+                    case LocalItemType.MobileMapPackage:
                         ContentFrame.Navigate(typeof(MapPage));
+                        break;
+                    default:
+                        ContentFrame.Navigate(typeof(GenericItemPage));
                         break;
                 }
             }
@@ -126,7 +130,9 @@ namespace OfflineWorkflowSample.Views
                             ContentFrame.Navigate(typeof(OfflineMapPage));
                         }
                         else
+                        {
                             ContentFrame.Navigate(typeof(MapPage));
+                        }
                         break;
                     case PortalItemType.WebScene:
                         ContentFrame.Navigate(typeof(ScenePage));
@@ -177,7 +183,8 @@ namespace OfflineWorkflowSample.Views
                 // Reset selected item when showing browsing views.
                 if (ContentFrame.Content is OfflineMapsView ||
                     ContentFrame.Content is PortalBrowserView ||
-                    ContentFrame.Content is PortalGroupView)
+                    ContentFrame.Content is PortalGroupView ||
+                    ContentFrame.Content is SearchPage)
                 {
                     ViewModel.SelectedItem = null;
                 }

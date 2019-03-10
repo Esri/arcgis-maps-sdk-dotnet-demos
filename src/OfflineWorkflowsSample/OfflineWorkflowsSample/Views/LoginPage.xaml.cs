@@ -38,7 +38,7 @@ namespace OfflineWorkflowSample
 
         public void NavigateToLoginPage(){}
 
-        public void NavigateToPageForItem(Item item)
+        public void NavigateToPageForItem(PortalItemViewModel item)
         {
             throw new InvalidOperationException("Can't navigate to item - not logged in.");
         }

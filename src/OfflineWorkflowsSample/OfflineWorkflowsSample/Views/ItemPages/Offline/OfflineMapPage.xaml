@@ -7,10 +7,14 @@
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:downloadMapArea="using:OfflineWorkflowsSample.DownloadMapArea"
     xmlns:generateMapArea="using:OfflineWorkflowsSample.GenerateMapArea"
+    xmlns:viewModels="using:OfflineWorkflowSample.ViewModels"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d">
     <!-- NavigationCacheMode Needed to prevent object already owned exceptions with MapView -->
-    <Grid DataContext="{Binding Source={StaticResource MainViewModel},Path=OfflineMapViewModel}">
+    <Page.Resources>
+        <viewModels:OfflineMapViewModel x:Key="ViewModel" />
+    </Page.Resources>
+    <Grid DataContext="{StaticResource ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- Title bar -->
             <RowDefinition Height="Auto" /> <!-- user profile -->
@@ -29,7 +33,7 @@
                     </PivotItem>
                 </Pivot>
             </SplitView.Pane>
-            <offlineWorkflowSample:MapWithTools DataContext="{Binding Map}" />
+            <offlineWorkflowSample:MapWithTools Map="{Binding Map}" Item="{Binding Item}" />
         </SplitView>
     </Grid>
 </Page>

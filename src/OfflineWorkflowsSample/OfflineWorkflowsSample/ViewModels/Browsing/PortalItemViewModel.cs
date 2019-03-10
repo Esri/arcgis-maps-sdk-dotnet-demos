@@ -11,23 +11,19 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace OfflineWorkflowSample.ViewModels
 {
-    public class PortalItemViewModel<T> : ViewModelBase where T : Item
+    public class PortalItemViewModel : ViewModelBase
     {
-        private SynchronizationContext _context;
-        private T _item;
+        private readonly SynchronizationContext _context;
 
-        public T Item
-        {
-            get => _item;
-        }
+        public Item Item { get; private set; }
 
-        public PortalItemViewModel (T item)
+        public PortalItemViewModel (Item item)
         {
-            _item = item;
+            Item = item;
             _context = SynchronizationContext.Current;
         }
 
-        public string DisplayName => _item.Title;
+        public string DisplayName => Item.Title;
 
         public string TypeString
         {
@@ -74,6 +70,7 @@ namespace OfflineWorkflowSample.ViewModels
                 if (Item.Thumbnail != null)
                 {
                     _runtimeImage = Item.Thumbnail;
+
                     return _runtimeImage;
                 }
 
@@ -104,26 +101,37 @@ namespace OfflineWorkflowSample.ViewModels
                     _thumbnail = new BitmapImage(new Uri("ms-appx:///Assets/MapIcon.png"));
                 }
 
-                ItemImage.LoadStatusChanged += ItemImageOnLoadStatusChanged;
+                if (ItemImage == null)
+                {
+                    _imageLoaded = true;
+                    return _thumbnail;
+                }
 
-                ItemImage.LoadAsync();
+                if (ItemImage.LoadStatus != LoadStatus.Loaded)
+                {
+                    ItemImage.Loaded += ItemImageOnLoadStatusChanged;
+
+                    ItemImage.LoadAsync();
+                }
+                else
+                {
+                    // Context trickiness to make sure things happen on the UI thread.
+                    _context.Post(UpdateImage, null);
+                }
 
                 return _thumbnail;
             }
-            set
+            private set
             {
                 _imageLoaded = true;
                 SetProperty(ref _thumbnail, value);
             }
         }
 
-        private void ItemImageOnLoadStatusChanged(object sender, LoadStatusEventArgs e)
+        private void ItemImageOnLoadStatusChanged(object sender, EventArgs e)
         {
-            if (e.Status == LoadStatus.Loaded)
-            {
-                // Context trickiness to make sure things happen on the UI thread.
-                _context.Post(UpdateImage, null);
-            }
+            // Context trickiness to make sure things happen on the UI thread.
+            _context.Post(UpdateImage, null);
         }
 
         private async void UpdateImage(object state)

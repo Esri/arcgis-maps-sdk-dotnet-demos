@@ -12,7 +12,9 @@ namespace OfflineWorkflowSample.ViewModels
 {
     public class OfflineMapViewModel : BaseViewModel
     {
-        private readonly IWindowService _windowService;
+        private PortalItemViewModel _item;
+
+        private IWindowService _windowService;
 
         private DownloadMapAreaViewModel _downloadMapAreaViewModel;
 
@@ -20,13 +22,7 @@ namespace OfflineWorkflowSample.ViewModels
 
         private Map _onlineMap;
 
-        public OfflineMapViewModel(IWindowService windowService, ArcGISPortal portal)
-        {
-            _windowService = windowService;
-            Portal = portal;
-        }
-
-        private ArcGISPortal Portal { get; }
+        private ArcGISPortal Portal { get; set; }
 
         public GenerateMapAreaViewModel GenerateMapAreaViewModel
         {
@@ -46,8 +42,17 @@ namespace OfflineWorkflowSample.ViewModels
             set => SetProperty(ref _onlineMap, value);
         }
 
-        public async void Initialize(Map map)
+        public PortalItemViewModel Item
         {
+            get => _item;
+            set => SetProperty(ref _item, value);
+        }
+
+        public async void Initialize(Map map, PortalItemViewModel item, ArcGISPortal portal, IWindowService windowService)
+        {
+            Portal = portal;
+            _windowService = windowService;
+            Item = item;
             try
             {
                 switch (map.Item)
@@ -79,6 +84,20 @@ namespace OfflineWorkflowSample.ViewModels
             {
                 Debug.WriteLine(e);
             }
+        }
+
+        public void Reset()
+        {
+            Map.Basemap = null;
+            Map.OperationalLayers.Clear();
+            Map = null;
+            OnlineMap.Basemap = null;
+            OnlineMap.OperationalLayers.Clear();
+            OnlineMap = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
 
         private async Task LoadOnlineMapItemForOfflineMap(LocalItem localItem)

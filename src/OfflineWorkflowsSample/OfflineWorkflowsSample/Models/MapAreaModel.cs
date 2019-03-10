@@ -27,11 +27,8 @@ namespace OfflineWorkflowsSample.Models
             get
             {
                 if (_displayColor == null)
-                    SetProperty(ref _displayColor,
-                        Color.FromArgb(Rng.Next(0, 255), Rng.Next(0, 255), Rng.Next(0, 255)));
-                else 
-                    return _displayColor.Value;
-                return Color.Black;
+                    _displayColor = Color.FromArgb(Rng.Next(0, 255), Rng.Next(0, 255), Rng.Next(0, 255));
+                return _displayColor.Value;
             }
         }
 

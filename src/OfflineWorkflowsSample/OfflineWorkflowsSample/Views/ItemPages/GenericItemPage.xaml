@@ -4,12 +4,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:OfflineWorkflowSample.Converters"
     RequestedTheme="Light"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d">
-    <Page.Resources>
-        <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
-    </Page.Resources>
     <Grid DataContext="{Binding Source={StaticResource MainViewModel},Path=SelectedItem}"
           Padding="5" Background="White"
           RowSpacing="10" ColumnSpacing="10">
@@ -23,27 +20,27 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding Name}" Style="{ThemeResource SubheaderTextBlockStyle}"
+        <TextBlock Text="{Binding DisplayName}" Style="{ThemeResource SubheaderTextBlockStyle}"
                    Grid.Row="0" Grid.ColumnSpan="2" />
-        <Image Source="{Binding Converter={StaticResource ItemToImageSourceConverter}}"
+        <Image Source="{Binding Thumbnail}"
                Grid.Row="1" Grid.Column="0" />
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock Text="{Binding Snippet}" TextWrapping="WrapWholeWords" />
+            <TextBlock Text="{Binding Item.Snippet}" TextWrapping="WrapWholeWords" />
             <!-- Note: some of these fields are only available on PortalItem. IDE may show warning because SelectedItem is just Item. -->
             <TextBlock Style="{ThemeResource CaptionTextBlockStyle}">
-                <Run Text="{Binding TypeName}" />
+                <Run Text="{Binding Item.TypeName}" />
                 <Run Text=" by " />
                 <Run Text="{Binding Owner}" />
             </TextBlock>
             <TextBlock Style="{ThemeResource CaptionTextBlockStyle}">
                 <Run Text="Created: " />
-                <Run Text="{Binding Created, Converter={StaticResource DateTimeToStringConverter}}" />
+                <Run Text="{Binding Item.Created, Converter={StaticResource DateTimeToStringConverter}}" />
                 <Run Text="    " />
                 <Run Text="Updated: " />
-                <Run Text="{Binding Modified, Converter={StaticResource DateTimeToStringConverter}}" />
+                <Run Text="{Binding ModifiedDate, Converter={StaticResource DateTimeToStringConverter}}" />
                 <Run Text="    " />
                 <Run Text="Number of views: " />
-                <Run Text="{Binding ViewCount}" />
+                <Run Text="{Binding Item.ViewCount}" />
             </TextBlock>
         </StackPanel>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">

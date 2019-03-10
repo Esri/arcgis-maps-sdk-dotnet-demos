@@ -64,7 +64,7 @@ namespace OfflineWorkflowSample
             set => SetProperty(ref _selectedGroup, value);
         }
 
-        private ArcGISPortal Portal { get; set; }
+        public ArcGISPortal Portal { get; private set; }
 
         public string SearchFilter
         {
@@ -183,14 +183,14 @@ namespace OfflineWorkflowSample
 
     public class PortalFolderViewModel : ViewModelBase
     {
-        private readonly List<PortalItemViewModel<PortalItem>> _allItems;
+        private readonly List<PortalItemViewModel> _allItems;
         private bool _offlineOnly;
         private string _searchFilter;
         private PortalItemType? _typeFilter;
 
         public PortalFolderViewModel(string title, List<PortalItem> items)
         {
-            _allItems = items.Select(item => new PortalItemViewModel<PortalItem>(item)).ToList();
+            _allItems = items.Select(item => new PortalItemViewModel(item)).ToList();
             Title = title;
         }
 
@@ -229,11 +229,11 @@ namespace OfflineWorkflowSample
             }
         }
 
-        public IEnumerable<PortalItemViewModel<PortalItem>> Items
+        public IEnumerable<PortalItemViewModel> Items
         {
             get
             {
-                IEnumerable<PortalItemViewModel<PortalItem>> items = _allItems;
+                IEnumerable<PortalItemViewModel> items = _allItems;
                 if (!String.IsNullOrWhiteSpace(SearchFilter))
                 {
                     items = items.Where(item => item.Item.Title.Contains(SearchFilter));
@@ -241,7 +241,7 @@ namespace OfflineWorkflowSample
 
                 if (TypeFilter != null)
                 {
-                    items = items.Where(item => item.Item.Type == TypeFilter);
+                    items = items.Where(item => item.Item is PortalItem).Where(item => ((PortalItem)item.Item).Type == TypeFilter);
                 }
 
                 if (_offlineOnly)

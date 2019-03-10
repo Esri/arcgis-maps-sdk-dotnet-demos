@@ -18,7 +18,7 @@ namespace OfflineWorkflowsSample
         private readonly DelegateCommand _logOutCommand;
         private readonly DelegateCommand _openInAgolCommand;
 
-        private Item _selectedItem;
+        private PortalItemViewModel _selectedItem;
 
         private string _title = "ArcGIS Maps Offline";
 
@@ -26,14 +26,16 @@ namespace OfflineWorkflowsSample
         //     exposing details of the view to the ViewModel. 
         private IWindowService _windowService;
 
+        public IWindowService WindowService => _windowService;
+
         public MainViewModel()
         {
             _logOutCommand = new DelegateCommand(LogOut);
             // TODO - wire up CanExecute & set up events
-            _openInAgolCommand = new DelegateCommand(() => { _windowService.LaunchItem(SelectedItem); });
+            _openInAgolCommand = new DelegateCommand(() => { _windowService.LaunchItem(SelectedItem.Item); });
         }
 
-        public Item SelectedItem
+        public PortalItemViewModel SelectedItem
         {
             get => _selectedItem;
             set
@@ -58,8 +60,6 @@ namespace OfflineWorkflowsSample
         public LocalContentViewModel LocalContentViewModel { get; private set; }
 
         public PortalViewModel PortalViewModel { get; private set; }
-
-        public OfflineMapViewModel OfflineMapViewModel { get; private set; }
 
         // Log out of portal.
         public ICommand LogOutCommand => _logOutCommand;
@@ -96,10 +96,6 @@ namespace OfflineWorkflowsSample
 
                 // Create the view models.
                 PortalViewModel = new PortalViewModel();
-                OfflineMapViewModel = new OfflineMapViewModel(_windowService, UserProfile.Portal)
-                {
-                    MapViewService = MapViewService
-                };
                 LocalContentViewModel = new LocalContentViewModel();
 
                 // Wait for the view models to finish initialization.

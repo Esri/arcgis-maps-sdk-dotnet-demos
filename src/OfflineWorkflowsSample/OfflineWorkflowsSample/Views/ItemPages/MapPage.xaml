@@ -5,11 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
+    xmlns:itemPages="using:OfflineWorkflowSample.ViewModels.ItemPages"
     mc:Ignorable="d"
     NavigationCacheMode="Disabled"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <!-- NavigationCacheMode Needed to prevent object already owned exceptions with MapView -->
-    <Grid>
-        <offlineWorkflowSample:MapWithTools />
+    <Page.Resources>
+        <itemPages:MapPageViewModel x:Key="ViewModel" />
+    </Page.Resources>
+    <Grid DataContext="{StaticResource ViewModel}">
+        <offlineWorkflowSample:MapWithTools Map="{Binding Map}" Item="{Binding Item}" />
     </Grid>
 </Page>

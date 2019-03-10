@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Portal;
+﻿using Esri.ArcGISRuntime.Mapping;
 using OfflineWorkflowsSample.Infrastructure;
 using Prism.Windows.Mvvm;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace OfflineWorkflowSample.ViewModels
 {
     public class LocalContentViewModel : ViewModelBase
     {
-        public ObservableCollection<PortalItemViewModel<LocalItem>> Items { get; } = new ObservableCollection<PortalItemViewModel<LocalItem>>();
-        public Dictionary<LocalItem, string> PathsForItems { get; } = new Dictionary<LocalItem, string>();
+        public ObservableCollection<PortalItemViewModel> Items { get; } = new ObservableCollection<PortalItemViewModel>();
 
         public async Task Initialize()
         {
@@ -28,11 +24,7 @@ namespace OfflineWorkflowSample.ViewModels
                 {
                     var mmpk = await MobileMapPackage.OpenAsync(subDirectory);
                     if (mmpk?.Item != null)
-                        foreach (var mmpkMap in mmpk.Maps)
-                        {
-                            Items.Add(new PortalItemViewModel<LocalItem>((LocalItem)mmpk.Item));
-                            PathsForItems[(LocalItem)mmpkMap.Item] = subDirectory;
-                        }
+                        Items.Add(new PortalItemViewModel(mmpk.Item));
                 }
                 catch (Exception)
                 {

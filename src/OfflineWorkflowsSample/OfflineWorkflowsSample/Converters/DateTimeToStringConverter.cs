@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.UI.Xaml.Data;
 
 namespace OfflineWorkflowSample.Converters
@@ -10,8 +11,17 @@ namespace OfflineWorkflowSample.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            DateTimeOffset date = (DateTimeOffset) value;
-            return date.DateTime.ToShortDateString();
+            if (value is DateTimeOffset dto)
+            {
+                DateTimeOffset date = (DateTimeOffset) value;
+                return date.LocalDateTime.ToShortDateString();
+            } else if (value is DateTime dt)
+            {
+                return dt.ToShortDateString();
+            }
+
+            Debug.WriteLine($"This shouldn't happen. {value} passed to {nameof(DateTimeToStringConverter)}.");
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

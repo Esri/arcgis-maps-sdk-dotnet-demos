@@ -7,7 +7,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
-            <converters:ItemToImageSourceConverter x:Key="ItemToImageSourceConverter" />
             <local:MainViewModel x:Key="MainViewModel" />
             <DataTemplate x:Key="PortalItemTemplate">
                 <Border BorderThickness="1"

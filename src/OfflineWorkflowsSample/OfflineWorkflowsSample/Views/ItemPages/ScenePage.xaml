@@ -5,11 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:OfflineWorkflowSample.Controls"
+    xmlns:itemPages="using:OfflineWorkflowSample.ViewModels.ItemPages"
     mc:Ignorable="d"
     NavigationCacheMode="Disabled"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <!-- NavigationCacheMode Needed to prevent object already owned exceptions with SceneView -->
-    <Grid>
-        <controls:SceneWithTools DataContext="{Binding}" />
+    <Page.Resources>
+        <itemPages:ScenePageViewModel x:Key="ViewModel" />
+    </Page.Resources>
+    <Grid DataContext="{StaticResource ViewModel}">
+        <controls:SceneWithTools Scene="{Binding Scene}" Item="{Binding Item}" />
     </Grid>
 </Page>

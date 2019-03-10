@@ -66,7 +66,7 @@ namespace OfflineWorkflowSample.ViewModels
 
         public int TotalResults => _totalResults;
 
-        public ObservableCollection<PortalItem> SearchResults { get; } = new ObservableCollection<PortalItem>();
+        public ObservableCollection<PortalItemViewModel> SearchResults { get; } = new ObservableCollection<PortalItemViewModel>();
         public ICommand GoBackCommand => _goBackCommand;
         public ICommand GoForwardCommand => _goForwardCommand;
 
@@ -89,7 +89,10 @@ namespace OfflineWorkflowSample.ViewModels
                 SearchResults.Clear();
                 PortalQueryResultSet<PortalItem> portalResults = await _portal.FindItemsAsync(parameters);
                 SetProperty(ref _totalResults, portalResults.TotalResultsCount, nameof(TotalResults));
-                foreach (var result in portalResults.Results) SearchResults.Add(result);
+                foreach (var result in portalResults.Results)
+                {
+                    SearchResults.Add(new PortalItemViewModel(result));
+                }
 
                 // Go to the first page if the page is higher than the results should allow
                 if (_page > _totalResults / ResultsPerPage + 1) Page = 1;
