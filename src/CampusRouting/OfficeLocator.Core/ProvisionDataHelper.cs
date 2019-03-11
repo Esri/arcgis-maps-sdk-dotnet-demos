@@ -8,17 +8,31 @@ using Windows.Storage;
 
 namespace OfficeLocator
 {
-    internal static class ProvisionDataHelper
+    public static class ProvisionDataHelper
     {
         private const string itemId = "dce76fb7cf1146c990427555fb3c74d2"; //The ArcGIS Portal Item ID for the basemap, network and geocoder.
 
+
+        /// <summary>
+        /// Gets the data folder where locally provisioned data is stored
+        /// </summary>
+        /// <returns></returns>
+        internal static string GetDataFolder()
+        {
+            var appDataFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+            return Path.Combine(appDataFolder, "CampusData");
+        }
+        public static Task GetDataAsync(Action<string> progress)
+        {
+            return GetDataAsync(GetDataFolder(), progress);
+        }
         /// <summary>
         /// Downloads data from ArcGIS Portal and unzips it to the local data folder
         /// </summary>
         /// <param name="path">The path to put the data in - if the folder already exists, the data is assumed to have been downloaded and this immediately returns</param>
         /// <param name="progress">Progress reporr status callback</param>
         /// <returns></returns>
-        public static async Task GetData(string path, Action<string> progress)
+        public static async Task GetDataAsync(string path, Action<string> progress)
         {
             if (System.IO.Directory.Exists(path))
                 return;
@@ -47,10 +61,19 @@ namespace OfficeLocator
             }
             progress?.Invoke("Downloading data...");
 
-            task.Progress += (s, e) =>
+            if (progress != null)
             {
-                progress?.Invoke("Downloading data " + (e.HasPercentage ? e.Percentage.ToString()+"%" : e.TotalBytes/1024 + " kb..."));
-            };
+                string lastState = "";
+                task.Progress += (s, e) =>
+                {
+                    var state = "Downloading data " + (e.HasPercentage ? e.Percentage.ToString() + "%" : e.TotalBytes / 1024 + " kb...");
+                    if (state != lastState)
+                    {
+                        progress?.Invoke(state);
+                        lastState = state;
+                    }
+                };
+            }
             await task.DownloadAsync();
             AppSettings.Remove("DataDownloadTask");
             progress?.Invoke("Unpacking data...");

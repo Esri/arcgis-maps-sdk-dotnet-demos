@@ -35,7 +35,7 @@ namespace OfficeLocator
         /// <returns></returns>
         private async Task ProvisionDataAsync()
         {
-            await ProvisionDataHelper.GetData(GetDataFolder(), (status) =>
+            await ProvisionDataHelper.GetDataAsync((status) =>
             {
                 UpdateLoadStatus(status);
             });
@@ -96,7 +96,7 @@ namespace OfficeLocator
         private async Task InitializeMap()
         {
             Basemap basemap = Basemap.CreateTopographic();
-            var layer = new ArcGISVectorTiledLayer(new Uri(Path.Combine(GetDataFolder(), "Basemap/CampusBasemap.vtpk"), UriKind.RelativeOrAbsolute));
+            var layer = new ArcGISVectorTiledLayer(new Uri(Path.Combine(ProvisionDataHelper.GetDataFolder(), "Basemap/CampusBasemap.vtpk"), UriKind.RelativeOrAbsolute));
             await layer.LoadAsync();
             basemap.BaseLayers.Add(layer);
 
@@ -326,17 +326,6 @@ namespace OfficeLocator
         {
             RunOnUIThreadAction(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));          
         }
-
-        /// <summary>
-        /// Gets the data folder where locally provisioned data is stored
-        /// </summary>
-        /// <returns></returns>
-        internal static string GetDataFolder()
-        {
-            var appDataFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-            return Path.Combine(appDataFolder, "CampusData");
-        }
-
 
 #if NETFX_CORE
         private Windows.UI.Core.CoreDispatcher Dispatcher = Windows.UI.Xaml.Application.Current.Resources.Dispatcher;

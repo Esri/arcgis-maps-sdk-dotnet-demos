@@ -27,7 +27,7 @@ namespace OfficeLocator
 					return;
 				if (initializeTask == null)
 				{
-                    string path = System.IO.Path.Combine(MapViewModel.GetDataFolder(), "Geocoder", "CampusRooms.loc");
+                    string path = System.IO.Path.Combine(ProvisionDataHelper.GetDataFolder(), "Geocoder", "CampusRooms.loc");
 					var task = LocatorTask.CreateAsync(new Uri(path, UriKind.RelativeOrAbsolute)); //Using relative path makes the create never complete.
                     initializeTask = task.ContinueWith(t =>
 					{
