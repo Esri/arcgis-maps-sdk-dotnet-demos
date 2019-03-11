@@ -1,0 +1,7 @@
+﻿<Application
+    x:Class="OfficeLocator.Core.Tests.UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OfficeLocator.Core.Tests.UWP">
+
+</Application>
