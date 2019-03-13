@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     NavigationCacheMode="Required"
+    Padding="5"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <GridView ItemsSource="{x:Bind ViewModel.LocalContentViewModel.Items,Mode=OneWay}"
               ItemTemplate="{StaticResource PortalItemTemplate}"
