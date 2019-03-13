@@ -107,13 +107,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TemplatesResourceDictionary.xaml.cs">
+      <DependentUpon>TemplatesResourceDictionary.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ItemPages\MapPageViewModel.cs" />
     <Compile Include="ViewModels\ItemPages\ScenePageViewModel.cs" />
     <Compile Include="Views\Controls\SceneWithTools.xaml.cs">
       <DependentUpon>SceneWithTools.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorToBrushConverter.cs" />
-    <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\NullEnumToBlankStringConverter.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Browsing\LocalContentViewModel.cs" />
@@ -130,7 +132,6 @@
     <Compile Include="ViewModels\ItemPages\Offline\GenerateMapAreaViewModel.cs" />
     <Compile Include="Infrastructure\IWindowService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\OfflineDataStorageHelper.cs" />
     <Compile Include="Infrastructure\ViewService\GeoViewServiceBase.AttachedProperties.cs" />
     <Compile Include="Infrastructure\ViewService\GeoViewServiceBase.cs" />
@@ -258,6 +259,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="TemplatesResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\SceneWithTools.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

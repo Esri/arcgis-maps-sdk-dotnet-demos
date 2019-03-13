@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Esri.ArcGISRuntime.Security;
+using OfflineWorkflowSample;
+using OfflineWorkflowSample.ViewModels;
+using OfflineWorkflowsSample.Infrastructure;
+using OfflineWorkflowsSample.Models;
+using Prism.Commands;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Esri.ArcGISRuntime.Portal;
-using Esri.ArcGISRuntime.Security;
-using OfflineWorkflowsSample.Infrastructure;
-using OfflineWorkflowsSample.Models;
-using OfflineWorkflowSample;
-using OfflineWorkflowSample.ViewModels;
-using Prism.Commands;
 
 namespace OfflineWorkflowsSample
 {
@@ -43,7 +42,7 @@ namespace OfflineWorkflowsSample
                 SetProperty(ref _selectedItem, value);
                 // Notifies the window service that it should navigate to the appropriate
                 //     page for the selected item.
-                if (value != null) _windowService.NavigateToPageForItem(_selectedItem);
+                if (_selectedItem != null) _windowService.NavigateToPageForItem(_selectedItem);
             }
         }
 

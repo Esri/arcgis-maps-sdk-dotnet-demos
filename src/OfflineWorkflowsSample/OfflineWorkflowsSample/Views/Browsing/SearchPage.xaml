@@ -7,17 +7,16 @@
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <SplitView DataContext="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.SearchViewModel}"
-               IsPaneOpen="True"
+    <SplitView IsPaneOpen="True"
                DisplayMode="Inline"
                PaneBackground="Transparent">
         <SplitView.Pane>
             <ScrollViewer>
                 <StackPanel Padding="5,0,20,0">
-                    <AutoSuggestBox Text="{Binding SearchQueryText,Mode=TwoWay}"
+                    <AutoSuggestBox Text="{x:Bind SearchViewModel.SearchQueryText,Mode=TwoWay}"
                                     PlaceholderText="Search Portal" />
                     <CheckBox Content="Include public results"
-                              IsChecked="{Binding IncludePublicResults,Mode=TwoWay}" />
+                              IsChecked="{x:Bind SearchViewModel.IncludePublicResults,Mode=TwoWay}" />
                     <Grid ColumnSpacing="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -27,27 +26,27 @@
                         <Button Content="Prev"
                                 Grid.Column="0"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding GoBackCommand}" />
-                        <TextBlock Text="{Binding Page,Mode=TwoWay}"
+                                Command="{x:Bind SearchViewModel.GoBackCommand}" />
+                        <TextBlock Text="{x:Bind SearchViewModel.Page,Mode=OneWay}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    Grid.Column="1" />
                         <Button Content="Next"
                                 Grid.Column="2"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding GoForwardCommand}" />
+                                Command="{x:Bind SearchViewModel.GoForwardCommand}" />
                     </Grid>
                     <TextBlock>
                         <Run>Total results: </Run>
-                        <Run Text="{Binding TotalResults}" />
+                        <Run Text="{x:Bind SearchViewModel.TotalResults,Mode=OneWay}" />
                     </TextBlock>
                 </StackPanel>
             </ScrollViewer>
         </SplitView.Pane>
         <SplitView.Content>
-            <GridView ItemsSource="{Binding SearchResults}"
+            <GridView ItemsSource="{x:Bind SearchViewModel.SearchResults,Mode=OneWay}"
                       ItemTemplate="{StaticResource PortalItemTemplate}"
-                      SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}"
+                      SelectedItem="{Binding ViewModel.SelectedItem,Mode=TwoWay}"
                       Margin="5,0,5,0" />
         </SplitView.Content>
     </SplitView>

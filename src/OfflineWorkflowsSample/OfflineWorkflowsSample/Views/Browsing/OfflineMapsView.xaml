@@ -7,10 +7,7 @@
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Grid DataContext="{StaticResource MainViewModel}" Padding="5">
-        <GridView ItemsSource="{Binding LocalContentViewModel.Items}"
-                  ItemTemplate="{StaticResource PortalItemTemplate}"
-                  SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}" />
-    </Grid>
+    <GridView ItemsSource="{x:Bind ViewModel.LocalContentViewModel.Items,Mode=OneWay}"
+              ItemTemplate="{StaticResource PortalItemTemplate}"
+              SelectedItem="{Binding ViewModel.SelectedItem,Mode=TwoWay}" />
 </Page>

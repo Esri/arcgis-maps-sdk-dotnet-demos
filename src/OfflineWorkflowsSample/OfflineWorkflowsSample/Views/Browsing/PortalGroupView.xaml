@@ -6,39 +6,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:converter="using:OfflineWorkflowSample.Infrastructure.Converter"
+    xmlns:portal="using:Esri.ArcGISRuntime.Portal"
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <converter:NullEnumToBlankStringConverter x:Key="NullEnumToBlankStringConverter" />
     </Page.Resources>
-    <SplitView DataContext="{StaticResource MainViewModel}"
-               IsPaneOpen="True"
+    <SplitView IsPaneOpen="True"
                DisplayMode="Inline"
                PaneBackground="Transparent">
         <SplitView.Pane>
             <ScrollViewer>
                 <StackPanel Padding="5,0,20,0">
-                    <ListView ItemsSource="{Binding PortalViewModel.VisibleGroups}"
-                              SelectedItem="{Binding PortalViewModel.SelectedGroup, Mode=TwoWay}"
+                    <ListView ItemsSource="{x:Bind PortalViewModel.VisibleGroups,Mode=OneWay}"
+                              SelectedItem="{x:Bind PortalViewModel.SelectedGroup,Mode=TwoWay}"
                               Background="Transparent">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="offlineWorkflowSample:PortalFolderViewModel">
-                                <TextBlock Text="{Binding Title}" />
+                                <TextBlock Text="{x:Bind Title}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                     <TextBlock Text="Filters" FontWeight="SemiBold" />
-                    <CheckBox IsChecked="{Binding PortalViewModel.OfflineOnlyFilter, Mode=TwoWay}"
+                    <CheckBox IsChecked="{x:Bind PortalViewModel.OfflineOnlyFilter,Mode=TwoWay}"
                               Margin="0,0,5,0"
                               Content="Restrict to content available offline" />
-                    <SearchBox QueryText="{Binding PortalViewModel.SearchFilter, Mode=TwoWay}"
+                    <SearchBox QueryText="{x:Bind PortalViewModel.SearchFilter,Mode=TwoWay}"
                                PlaceholderText="Filter"
                                Margin="0,5,0,5"
                                SearchHistoryEnabled="False" />
-                    <ComboBox ItemsSource="{Binding PortalViewModel.AvailableTypeFilters}"
+                    <ComboBox ItemsSource="{x:Bind PortalViewModel.AvailableTypeFilters,Mode=OneWay}"
                               HorizontalAlignment="Stretch"
                               SelectedItem="{Binding PortalViewModel.TypeFilter,Mode=TwoWay}">
+                        <!-- Not using x:Bind here because UWP binding can't handle a nullable x:DataType. -->
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Converter={StaticResource NullEnumToBlankStringConverter}}" />
@@ -49,9 +50,9 @@
             </ScrollViewer>
         </SplitView.Pane>
         <SplitView.Content>
-            <GridView ItemsSource="{Binding PortalViewModel.SelectedGroup.Items}"
+            <GridView ItemsSource="{x:Bind PortalViewModel.SelectedGroup.Items,Mode=OneWay}"
                       ItemTemplate="{StaticResource PortalItemTemplate}"
-                      SelectedItem="{Binding Source={StaticResource MainViewModel},Path=SelectedItem,Mode=TwoWay}"
+                      SelectedItem="{Binding ViewModel.SelectedItem,Mode=TwoWay}"
                       Margin="5,0,5,0" />
         </SplitView.Content>
     </SplitView>

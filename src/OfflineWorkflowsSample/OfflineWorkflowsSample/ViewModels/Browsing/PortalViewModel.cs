@@ -158,6 +158,12 @@ namespace OfflineWorkflowSample
                 // Get the basemaps.
                 _orgBasemaps.Clear();
                 _orgBasemaps.AddRange(await Portal.GetBasemapsAsync());
+
+                // Make sure the basemaps are loaded - ensures the name shows up in the UI.
+                foreach (var item in OrgBasemaps)
+                {
+                    await item.LoadAsync();
+                }
             }
             catch (Exception e)
             {

@@ -17,7 +17,9 @@
         </DataTemplate>
     </UserControl.Resources>
     <SplitView x:Name="MapLegendSplitView"
-               DisplayMode="Overlay"
+               DisplayMode="Overlay" 
+               PaneOpening="MapLegendSplitView_OnPaneOpening"
+               PaneClosing="MapLegendSplitView_OnPaneClosing"
                PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
         <SplitView.Pane>
             <Pivot x:Name="OuterPivot">
@@ -59,12 +61,9 @@
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
                             <ListView ItemsSource="{x:Bind Scene.OperationalLayers,Mode=OneWay}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}" />
-                            <TextBlock Text="Basemap layers"
+                            <TextBlock Text="Basemap"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{x:Bind Scene.Basemap.BaseLayers,Mode=OneWay}"
-                                      ItemTemplate="{StaticResource LayerItemTemplate}" />
-                            <ListView ItemsSource="{x:Bind Scene.Basemap.ReferenceLayers,Mode=OneWay}"
-                                      ItemTemplate="{StaticResource LayerItemTemplate}" />
+                            <TextBlock Text="{x:Bind Scene.Basemap.Name,Mode=OneWay}" Padding="15,10,0,0" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -78,6 +77,10 @@
         </SplitView.Pane>
         <Grid>
             <controls:SceneView x:Name="MySceneView" Scene="{x:Bind Scene}" />
+            <controls1:Compass GeoView="{x:Bind MySceneView, Mode=OneWay}" Height="40"
+                               Width="40"
+                               Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
+                               HorizontalAlignment="Right" />
             <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -104,7 +107,7 @@
                                                 <Border Background="#7F000000"
                                                         VerticalAlignment="Top"
                                                         Padding="5">
-                                                    <TextBlock Text="{Binding Item.Title}"
+                                                    <TextBlock Text="{Binding Name}"
                                                                Foreground="White"
                                                                Opacity="1"
                                                                TextWrapping="WrapWholeWords" />

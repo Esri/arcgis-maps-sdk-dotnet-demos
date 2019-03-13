@@ -18,10 +18,10 @@ namespace OfflineWorkflowSample.ViewModels
             string filepath = OfflineDataStorageHelper.GetDataFolder();
 
             foreach (string subDirectory in Directory.GetDirectories(filepath))
-                // Note: the downloaded map packages are stored as *unpacked* mobile map packages.
-                // This constructor accepts paths to unpacked packages.
+            {
                 try
                 {
+                    // Note: the downloaded map packages are stored as *unpacked* mobile map packages.
                     var mmpk = await MobileMapPackage.OpenAsync(subDirectory);
                     if (mmpk?.Item != null)
                         Items.Add(new PortalItemViewModel(mmpk.Item));
@@ -30,6 +30,7 @@ namespace OfflineWorkflowSample.ViewModels
                 {
                     // Ignored - not a valid map package
                 }
+            }
 
             RaisePropertyChanged(nameof(Items));
         }

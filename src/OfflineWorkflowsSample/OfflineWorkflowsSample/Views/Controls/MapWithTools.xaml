@@ -12,7 +12,8 @@
         </DataTemplate>
     </UserControl.Resources>
     <SplitView x:Name="MapLegendSplitView"
-               DisplayMode="Overlay"
+               DisplayMode="Overlay" PaneClosing="MapLegendSplitView_OnPaneClosing" 
+               PaneOpening="MapLegendSplitView_OnPaneOpening"
                PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
         <SplitView.Pane>
             <Pivot x:Name="OuterPivot">
@@ -53,13 +54,11 @@
                             <TextBlock Text="Operational layers"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
                             <ListView ItemsSource="{x:Bind Map.OperationalLayers,Mode=OneWay}"
-                                      ItemTemplate="{StaticResource LayerItemTemplate}" />
-                            <TextBlock Text="Basemap layers"
+                                      ItemTemplate="{StaticResource LayerItemTemplate}"
+                                      SelectionMode="None"/>
+                            <TextBlock Text="Basemap"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
-                            <ListView ItemsSource="{x:Bind Map.Basemap.BaseLayers,Mode=OneWay}"
-                                      ItemTemplate="{StaticResource LayerItemTemplate}" />
-                            <ListView ItemsSource="{x:Bind Map.Basemap.ReferenceLayers,Mode=OneWay}"
-                                      ItemTemplate="{StaticResource LayerItemTemplate}" />
+                            <TextBlock Text="{x:Bind Map.Basemap.Name,Mode=OneWay}" Padding="15,10,0,0" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -74,9 +73,9 @@
         <Grid>
             <controls:MapView x:Name="MyMapView" Map="{x:Bind Map,Mode=OneWay}"
                               viewServices:MapViewService.ViewService="{Binding Source={StaticResource MainViewModel},Path=MapViewService}" />
-            <controls1:Compass Heading="{x:Bind MyMapView.MapRotation, Mode=OneWay}" Height="40"
+            <controls1:Compass GeoView="{x:Bind MyMapView, Mode=OneWay}" Height="40"
                                Width="40"
-                               Margin="20,30" Tapped="Compass_Tapped" AutoHide="False" VerticalAlignment="Bottom"
+                               Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
                                HorizontalAlignment="Right" />
             <controls1:MeasureToolbar MapView="{x:Bind MyMapView}"
                                       HorizontalAlignment="Right" VerticalAlignment="Top" />
@@ -94,7 +93,7 @@
                         <AppBarButton.Flyout>
                             <Flyout>
                                 <GridView Width="230"
-                                    ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps }"
+                                    ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps}"
                                     SelectedItem="{Binding Map.Basemap, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="mapping:Basemap">
@@ -106,7 +105,7 @@
                                                 <Border Background="#7F000000"
                                                         VerticalAlignment="Top"
                                                         Padding="5">
-                                                    <TextBlock Text="{Binding Item.Title}"
+                                                    <TextBlock Text="{Binding Name}"
                                                                Foreground="White"
                                                                Opacity="1"
                                                                TextWrapping="WrapWholeWords" />
@@ -121,7 +120,7 @@
                 </StackPanel>
 
             </Grid>
-            <controls1:ScaleLine MapScale="{x:Bind MyMapView.MapScale, Mode=OneWay}"
+            <controls1:ScaleLine MapView="{x:Bind MyMapView, Mode=OneWay}"
                                  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />
         </Grid>
     </SplitView>

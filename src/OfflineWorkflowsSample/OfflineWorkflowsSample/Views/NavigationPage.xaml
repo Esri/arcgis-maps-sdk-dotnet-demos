@@ -51,7 +51,6 @@
                              Background="Transparent"
                              ItemInvoked="NavigationView_OnItemInvoked"
                              IsBackEnabled="{Binding ElementName=ContentFrame,Path=CanGoBack}"
-                             IsBackButtonVisible="{Binding ElementName=ContentFrame,Path=CanGoBack}"
                              BackRequested="NavigationView_OnBackRequested">
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Content="Local content" Tag="Local" />
