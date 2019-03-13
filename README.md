@@ -1,7 +1,7 @@
 ArcGIS Runtime Demos for .NET
 ===========================
 
-This project contains source code for simple native Windows Desktop, Windows Universal, Xamarin.Android and Xamarin.iOS applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.   
+This project contains source code for simple native Windows Desktop, Windows Universal, Xamarin.Android and Xamarin.iOS applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.
 You can also find a set of smaller feature-focused samples in the [Runtime Samples](https://github.com/Esri/arcgis-runtime-samples-dotnet) repo.
 
 ### Demos (v100.x)
@@ -14,6 +14,7 @@ You can also find a set of smaller feature-focused samples in the [Runtime Sampl
 * [`GeoEvent Server Streaming Service`](src/GeoEventServerSample) - Demonstrates how to stream data from ArcGIS GeoEvent Server and render them on the map.
 * [`Multi Targeting Project`](src/MultiTargeting) - Example showing how to create a single multi-targeting project that targets all the frameworks that the ArcGIS Runtime SDK for .NET Supports.
 * [`Geocode & Route on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Desktop (WPF) and Universal Windows Platform (UWP).
+* [`Offline workflows`](src/OfflineWorkflowsSample) - Demonstrates how to browse a portal for offline-enabled maps and take them offline. Also demonstrates how to open maps previously taken offline.
 
 ### Demos (v10.2.x)
 

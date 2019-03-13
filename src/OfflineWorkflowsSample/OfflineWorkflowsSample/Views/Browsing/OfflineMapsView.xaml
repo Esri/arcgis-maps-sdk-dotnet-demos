@@ -9,5 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <GridView ItemsSource="{x:Bind ViewModel.LocalContentViewModel.Items,Mode=OneWay}"
               ItemTemplate="{StaticResource PortalItemTemplate}"
-              SelectedItem="{Binding ViewModel.SelectedItem,Mode=TwoWay}" />
+              SelectedItem="{Binding ViewModel.SelectedItem,Mode=TwoWay}"
+              Margin="5"/>
 </Page>
