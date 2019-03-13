@@ -49,7 +49,7 @@
         <Grid Grid.Row="1">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
                         Orientation="Vertical">
-                <TextBlock Text="ArcGIS Maps Offline"
+                <TextBlock Text="Offline Workflows Demo"
                            Style="{StaticResource HeaderTextBlockStyle}"
                            TextAlignment="Center"
                            Margin="20" />

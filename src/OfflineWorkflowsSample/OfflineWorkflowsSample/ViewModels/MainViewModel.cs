@@ -19,7 +19,7 @@ namespace OfflineWorkflowsSample
 
         private PortalItemViewModel _selectedItem;
 
-        private string _title = "ArcGIS Maps Offline";
+        private string _title = "Offline Workflows Demo";
 
         // WindowService allows the ViewModel to communicate with the view without
         //     exposing details of the view to the ViewModel. 
