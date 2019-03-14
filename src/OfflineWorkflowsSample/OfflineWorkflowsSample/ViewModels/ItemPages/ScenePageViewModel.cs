@@ -6,8 +6,8 @@ namespace OfflineWorkflowSample.ViewModels.ItemPages
 {
     public class ScenePageViewModel : ViewModelBase
     {
-        private PortalItemViewModel _item;
         private Scene _map;
+        private PortalItemViewModel _item;
 
         public Scene Scene
         {

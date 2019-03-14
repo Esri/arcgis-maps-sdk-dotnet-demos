@@ -14,32 +14,33 @@
         <viewModels:LoginViewModel x:Key="ViewModel" />
     </Page.Resources>
 
-    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}" DataContext="{StaticResource ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              Background="Transparent"
-              HorizontalAlignment="Stretch">
+              Background="Transparent" 
+              HorizontalAlignment="Stretch"
+              DataContext="{StaticResource MainViewModel}">
             <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
             <!-- Using padding columns instead of Margin ensures that the background
                  paints the area under the caption control buttons (for transparent buttons). -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60"/>
             </Grid.ColumnDefinitions>
             <Image Source="../Assets/Square44x44Logo.png"
                    Grid.Column="0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Width="30" Height="30" Margin="4" />
-            <StackPanel x:Name="DraggablePart"
-                        HorizontalAlignment="Stretch"
+            <StackPanel x:Name="DraggablePart" 
+                        HorizontalAlignment="Stretch" 
                         Background="Transparent"
                         Grid.Column="1">
-                <TextBlock Text="{x:Bind MainViewModel.Title,Mode=OneWay}"
+                <TextBlock Text="{Binding Title}"
                            HorizontalTextAlignment="Center"
                            Style="{StaticResource CaptionTextBlockStyle}"
                            Margin="0,8,0,0" />
@@ -66,18 +67,18 @@
                     <Button Content="Sign in to ArcGIS Online"
                             Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                             HorizontalAlignment="Stretch"
-                            Command="{x:Bind ViewModel.LogInToPortalCommand}" />
-                    <Button Content="Sign in to Enterprise"
+                            Command="{Binding LogInToPortalCommand}"/>
+                    <Button Content="Sign in to Enterprise" 
                             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                             HorizontalAlignment="Stretch"
-                            Command="{x:Bind ViewModel.ShowEnterpriseFormCommand}" />
-                    <TextBox Text="{x:Bind ViewModel.PortalUrl, Mode=TwoWay}"
+                            Command="{Binding ShowEnterpriseFormCommand}"/>
+                    <TextBox Text="{Binding PortalUrl, Mode=TwoWay}" 
                              Grid.Row="2" Grid.Column="0"
-                             Visibility="{x:Bind ViewModel.PortalFormIsOpen,Mode=OneWay}" />
+                             Visibility="{Binding PortalFormIsOpen}"/>
                     <Button Content="Continue" Grid.Row="2" Grid.Column="1"
-                            Visibility="{x:Bind ViewModel.PortalFormIsOpen,Mode=OneWay}"
+                            Visibility="{Binding PortalFormIsOpen}"
                             HorizontalAlignment="Stretch"
-                            Command="{x:Bind ViewModel.LogInToEnterpriseCommand}" />
+                            Command="{Binding LogInToEnterpriseCommand}"/>
                 </Grid>
 
             </StackPanel>

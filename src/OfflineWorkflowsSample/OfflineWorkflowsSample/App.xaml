@@ -6,6 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <local:MainViewModel x:Key="MainViewModel" />
+            
             <Style x:Key="ButtonStyle" TargetType="Button">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundAccentBrush}" />
@@ -13,8 +14,6 @@
             </Style>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- The date template was moved to a separate resource dictionary because x:DataType causes XAML compilation errors otherwise. -->
-                <!-- https://stackoverflow.com/questions/48030101/uwp-how-to-use-xbind-in-resourcedictionary -->
                 <local:TemplatesResourceDictionary />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

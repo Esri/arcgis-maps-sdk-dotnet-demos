@@ -23,36 +23,29 @@ namespace OfflineWorkflowSample
             ExtendAcrylicIntoTitleBar();
             ViewModel.WindowService = this;
             ViewModel.CompletedLogin += sender => Login();
-
+            
             // Configure the title bar.
             Window.Current.SetTitleBar(DraggablePart);
             ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
         }
 
         private LoginViewModel ViewModel => (LoginViewModel) Resources["ViewModel"];
-        private MainViewModel MainViewModel => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
 
         public void LaunchItem(Item item)
         {
             throw new InvalidOperationException("Can't launch item - not logged in.");
         }
 
-        public void NavigateToLoginPage()
-        {
-        }
+        public void NavigateToLoginPage(){}
 
         public void NavigateToPageForItem(PortalItemViewModel item)
         {
             throw new InvalidOperationException("Can't navigate to item - not logged in.");
         }
 
-        public void SetBusy(bool isBusy)
-        {
-        }
+        public void SetBusy(bool isBusy){}
 
-        public void SetBusyMessage(string message)
-        {
-        }
+        public void SetBusyMessage(string message){}
 
         public async Task ShowAlertAsync(string message)
         {
