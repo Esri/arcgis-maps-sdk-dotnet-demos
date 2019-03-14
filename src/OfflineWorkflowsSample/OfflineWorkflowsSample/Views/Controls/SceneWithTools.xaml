@@ -13,11 +13,11 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="LayerItemTemplate" x:DataType="mapping:Layer">
-            <TextBlock Text="{Binding Name}" />
+            <TextBlock Text="{x:Bind Name}" />
         </DataTemplate>
     </UserControl.Resources>
     <SplitView x:Name="MapLegendSplitView"
-               DisplayMode="Overlay" 
+               DisplayMode="Overlay"
                PaneOpening="MapLegendSplitView_OnPaneOpening"
                PaneClosing="MapLegendSplitView_OnPaneClosing"
                PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
@@ -35,7 +35,7 @@
                                        TextWrapping="Wrap" />
                             <Button Content="Open in ArcGIS Online"
                                     HorizontalAlignment="Stretch"
-                                    Command="{Binding Source={StaticResource MainViewModel},Path=OpenItemInAgolCommand}" />
+                                    Command="{x:Bind ViewModel.OpenItemInAgolCommand}" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -44,10 +44,10 @@
                         <ItemsControl ItemsSource="{x:Bind Scene.OperationalLayers, Mode=OneWay}"
                                       Margin="10">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="mapping:Layer">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                                        <controls1:LayerLegend LayerContent="{Binding}" Margin="10,0" />
+                                        <TextBlock Text="{x:Bind Name,Mode=OneWay}" FontWeight="Bold" />
+                                        <controls1:LayerLegend LayerContent="{x:Bind Mode=OneWay}" Margin="10,0" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -95,7 +95,7 @@
                         <AppBarButton.Flyout>
                             <Flyout>
                                 <GridView Width="230"
-                                          ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps }"
+                                          ItemsSource="{x:Bind ViewModel.PortalViewModel.OrgBasemaps,Mode=OneTime }"
                                           SelectedItem="{Binding Scene.Basemap, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="mapping:Basemap">
@@ -107,7 +107,7 @@
                                                 <Border Background="#7F000000"
                                                         VerticalAlignment="Top"
                                                         Padding="5">
-                                                    <TextBlock Text="{Binding Name}"
+                                                    <TextBlock Text="{x:Bind Name}"
                                                                Foreground="White"
                                                                Opacity="1"
                                                                TextWrapping="WrapWholeWords" />

@@ -2,30 +2,20 @@
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 using Esri.ArcGISRuntime.Mapping;
+using OfflineWorkflowsSample;
 using OfflineWorkflowSample.ViewModels;
 
 namespace OfflineWorkflowSample.Controls
 {
     public sealed partial class SceneWithTools : UserControl
     {
-        public SceneWithTools()
-        {
-            InitializeComponent();
-        }
-
+        // Dependency properties enable specifying custom bindable properties, in this case map and item.
         public static readonly DependencyProperty SceneProperty =
             DependencyProperty.Register(
                 nameof(Scene), typeof(Scene),
                 typeof(SceneWithTools), null
             );
-
-        public Scene Scene
-        {
-            get => (Scene)GetValue(SceneProperty);
-            set => SetValue(SceneProperty, value);
-        }
 
         public static readonly DependencyProperty ItemProperty =
             DependencyProperty.Register(
@@ -33,13 +23,28 @@ namespace OfflineWorkflowSample.Controls
                 typeof(SceneWithTools), null
             );
 
+        public SceneWithTools()
+        {
+            InitializeComponent();
+            DataContext = this;
+        }
+
+        private MainViewModel ViewModel => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
+
+        public Scene Scene
+        {
+            get => (Scene) GetValue(SceneProperty);
+            set => SetValue(SceneProperty, value);
+        }
+
         public PortalItemViewModel Item
         {
-            get => (PortalItemViewModel)GetValue(ItemProperty);
+            get => (PortalItemViewModel) GetValue(ItemProperty);
             set => SetValue(ItemProperty, value);
         }
 
         #region Pivot item hack
+
         // Pivot item hack needed to prevent UWP layout cycle, which results in a crash.
 
         private List<object> _pivotContents;
@@ -63,7 +68,7 @@ namespace OfflineWorkflowSample.Controls
             if (_pivotContents != null)
             {
                 OuterPivot.Items.Clear();
-                foreach(var item in _pivotContents)
+                foreach (var item in _pivotContents)
                     OuterPivot.Items.Add(item);
                 _pivotContents = null;
             }

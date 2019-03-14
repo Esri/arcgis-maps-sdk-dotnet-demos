@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:converter="using:OfflineWorkflowSample.Infrastructure.Converter"
-    xmlns:portal="using:Esri.ArcGISRuntime.Portal"
     NavigationCacheMode="Required">
     <Page.Resources>
         <converter:NullEnumToBlankStringConverter x:Key="NullEnumToBlankStringConverter" />
@@ -32,7 +31,7 @@
                                PlaceholderText="Filter"
                                Margin="0,5,0,5"
                                SearchHistoryEnabled="False" />
-                    <ComboBox ItemsSource="{Binding PortalViewModel.AvailableTypeFilters,Mode=OneWay}"
+                    <ComboBox ItemsSource="{x:Bind PortalViewModel.AvailableTypeFilters,Mode=OneWay}"
                               HorizontalAlignment="Stretch"
                               SelectedItem="{Binding PortalViewModel.TypeFilter,Mode=TwoWay}">
                         <!-- Not using x:Bind here because UWP binding can't handle a nullable x:DataType. -->

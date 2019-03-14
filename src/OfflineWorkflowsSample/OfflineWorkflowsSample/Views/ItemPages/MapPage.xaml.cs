@@ -1,29 +1,27 @@
-﻿using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowsSample;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Portal;
+using OfflineWorkflowsSample;
 using OfflineWorkflowSample.ViewModels.ItemPages;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace OfflineWorkflowSample.Views.ItemPages
 {
     public sealed partial class MapPage : Page
     {
         private readonly MainViewModel _mainVM = (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
-        private readonly MapPageViewModel ViewModel;
 
         public MapPage()
         {
             InitializeComponent();
-            ViewModel = (MapPageViewModel)Resources[nameof(ViewModel)];
         }
+
+        private MapPageViewModel ViewModel => (MapPageViewModel) Resources[nameof(ViewModel)];
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -48,6 +46,7 @@ namespace OfflineWorkflowSample.Views.ItemPages
                 {
                     map = new Map(_mainVM.SelectedItem.Item as PortalItem);
                 }
+
                 ViewModel.Initialize(map, _mainVM.SelectedItem);
             }
             catch (Exception exception)

@@ -14,7 +14,7 @@
     <Page.Resources>
         <viewModels:OfflineMapViewModel x:Key="ViewModel" />
     </Page.Resources>
-    <Grid DataContext="{StaticResource ViewModel}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- Title bar -->
             <RowDefinition Height="Auto" /> <!-- user profile -->
@@ -26,14 +26,15 @@
             <SplitView.Pane>
                 <Pivot>
                     <PivotItem Header="On-demand">
-                        <generateMapArea:GenerateMapAreaView DataContext="{Binding GenerateMapAreaViewModel}" />
+                        <generateMapArea:GenerateMapAreaView DataContext="{x:Bind ViewModel.GenerateMapAreaViewModel,Mode=OneWay}" />
                     </PivotItem>
                     <PivotItem Header="Preplanned">
-                        <downloadMapArea:DownloadMapAreaView DataContext="{Binding DownloadMapAreaViewModel}" />
+                        <downloadMapArea:DownloadMapAreaView DataContext="{x:Bind ViewModel.DownloadMapAreaViewModel,Mode=OneWay}" />
                     </PivotItem>
                 </Pivot>
             </SplitView.Pane>
-            <offlineWorkflowSample:MapWithTools Map="{Binding Map}" Item="{Binding Item}" />
+            <offlineWorkflowSample:MapWithTools Map="{x:Bind ViewModel.Map,Mode=OneWay}"
+                                                Item="{x:Bind ViewModel.Item,Mode=OneWay}" />
         </SplitView>
     </Grid>
 </Page>

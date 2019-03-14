@@ -13,7 +13,8 @@ namespace OfflineWorkflowSample.Views
             this.DataContext = this;
         }
 
-        private MainViewModel ViewModel => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
+        // ReSharper disable once MemberCanBePrivate.Global
+        public MainViewModel ViewModel => (MainViewModel) Application.Current.Resources[nameof(MainViewModel)];
         public PortalSearchViewModel SearchViewModel => ViewModel.PortalViewModel.SearchViewModel;
     }
 }

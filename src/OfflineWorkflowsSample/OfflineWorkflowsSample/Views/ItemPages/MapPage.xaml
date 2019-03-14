@@ -13,7 +13,8 @@
     <Page.Resources>
         <itemPages:MapPageViewModel x:Key="ViewModel" />
     </Page.Resources>
-    <Grid DataContext="{StaticResource ViewModel}">
-        <offlineWorkflowSample:MapWithTools Map="{Binding Map}" Item="{Binding Item}" />
+    <Grid>
+        <offlineWorkflowSample:MapWithTools Map="{x:Bind ViewModel.Map,Mode=OneWay}" 
+                                            Item="{x:Bind ViewModel.Item,Mode=OneWay}" />
     </Grid>
 </Page>

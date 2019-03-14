@@ -13,7 +13,7 @@
     <Page.Resources>
         <itemPages:ScenePageViewModel x:Key="ViewModel" />
     </Page.Resources>
-    <Grid DataContext="{StaticResource ViewModel}">
-        <controls:SceneWithTools Scene="{Binding Scene}" Item="{Binding Item}" />
+    <Grid>
+        <controls:SceneWithTools Scene="{x:Bind ViewModel.Scene}" Item="{x:Bind ViewModel.Item}" />
     </Grid>
 </Page>

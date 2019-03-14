@@ -8,11 +8,11 @@
     xmlns:viewServices="using:OfflineWorkflowsSample.Infrastructure.ViewServices">
     <UserControl.Resources>
         <DataTemplate x:Key="LayerItemTemplate" x:DataType="mapping:Layer">
-            <TextBlock Text="{Binding Name}" />
+            <TextBlock Text="{x:Bind Name}" />
         </DataTemplate>
     </UserControl.Resources>
     <SplitView x:Name="MapLegendSplitView"
-               DisplayMode="Overlay" PaneClosing="MapLegendSplitView_OnPaneClosing" 
+               DisplayMode="Overlay" PaneClosing="MapLegendSplitView_OnPaneClosing"
                PaneOpening="MapLegendSplitView_OnPaneOpening"
                PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
         <SplitView.Pane>
@@ -29,7 +29,7 @@
                                        TextWrapping="Wrap" />
                             <Button Content="Open in ArcGIS Online"
                                     HorizontalAlignment="Stretch"
-                                    Command="{Binding Source={StaticResource MainViewModel},Path=OpenItemInAgolCommand}" />
+                                    Command="{x:Bind ViewModel.OpenItemInAgolCommand}" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -38,10 +38,10 @@
                         <ItemsControl ItemsSource="{x:Bind Map.OperationalLayers, Mode=OneWay}"
                                       Margin="10">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="mapping:Layer">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                                        <controls1:LayerLegend LayerContent="{Binding}" Margin="10,0" />
+                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" FontWeight="Bold" />
+                                        <controls1:LayerLegend LayerContent="{x:Bind Mode=OneWay}" Margin="10,0" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -55,7 +55,7 @@
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
                             <ListView ItemsSource="{x:Bind Map.OperationalLayers,Mode=OneWay}"
                                       ItemTemplate="{StaticResource LayerItemTemplate}"
-                                      SelectionMode="None"/>
+                                      SelectionMode="None" />
                             <TextBlock Text="Basemap"
                                        Style="{StaticResource SubtitleTextBlockStyle}" />
                             <TextBlock Text="{x:Bind Map.Basemap.Name,Mode=OneWay}" Padding="15,10,0,0" />
@@ -72,7 +72,7 @@
         </SplitView.Pane>
         <Grid>
             <controls:MapView x:Name="MyMapView" Map="{x:Bind Map,Mode=OneWay}"
-                              viewServices:MapViewService.ViewService="{Binding Source={StaticResource MainViewModel},Path=MapViewService}" />
+                              viewServices:MapViewService.ViewService="{x:Bind ViewModel.MapViewService,Mode=OneWay}" />
             <controls1:Compass GeoView="{x:Bind MyMapView, Mode=OneWay}" Height="40"
                                Width="40"
                                Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
@@ -84,28 +84,28 @@
                     <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
                                   Click="MenuButtonClicked" />
                     <AppBarButton Icon="ZoomIn" Label="Zoom in" IsCompact="True" Height="48"
-                                  Command="{Binding Source={StaticResource MainViewModel},Path=ZoomInCommand}" />
+                                  Command="{x:Bind ViewModel.ZoomInCommand}" />
                     <AppBarButton Icon="Home" Label="Full extent" IsCompact="True" Height="48"
-                                  Command="{Binding Source={StaticResource MainViewModel},Path=ResetViewPointCommand}" />
+                                  Command="{x:Bind ViewModel.ResetViewPointCommand}" />
                     <AppBarButton Icon="ZoomOut" Label="Zoom out" IsCompact="True" Height="48"
-                                  Command="{Binding Source={StaticResource MainViewModel},Path=ZoomOutCommand}" />
+                                  Command="{x:Bind ViewModel.ZoomOutCommand}" />
                     <AppBarButton Icon="List" Label="Choose basemap">
                         <AppBarButton.Flyout>
                             <Flyout>
                                 <GridView Width="230"
-                                    ItemsSource="{Binding Source={StaticResource MainViewModel},Path=PortalViewModel.OrgBasemaps}"
-                                    SelectedItem="{Binding Map.Basemap, Mode=TwoWay}">
+                                          ItemsSource="{x:Bind ViewModel.PortalViewModel.OrgBasemaps,Mode=OneTime}"
+                                          SelectedItem="{Binding Map.Basemap, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="mapping:Basemap">
                                             <Grid Margin="5" Width="100" Height="100">
                                                 <Image Stretch="UniformToFill"
                                                        Width="100" Height="100"
                                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                       Source="{Binding Item.ThumbnailUri}" />
+                                                       Source="{Binding Item.ThumbnailUri,Mode=OneWay}" />
                                                 <Border Background="#7F000000"
                                                         VerticalAlignment="Top"
                                                         Padding="5">
-                                                    <TextBlock Text="{Binding Name}"
+                                                    <TextBlock Text="{x:Bind Name}"
                                                                Foreground="White"
                                                                Opacity="1"
                                                                TextWrapping="WrapWholeWords" />
