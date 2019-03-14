@@ -29,14 +29,14 @@ namespace OfflineWorkflowSample.ViewModels.ItemPages
 
         public void Reset()
         {
-            Map.Basemap = null;
-            Map.OperationalLayers.Clear();
-            Map = null;
+            if (Map != null)
+            {
+                Map.Basemap = null;
+                Map.OperationalLayers.Clear();
+                Map = null;
+            }
+            
             Item = null;
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
     }
 }

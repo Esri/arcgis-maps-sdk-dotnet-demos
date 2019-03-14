@@ -33,10 +33,6 @@ namespace OfflineWorkflowSample.ViewModels.ItemPages
             Scene.OperationalLayers.Clear();
             Scene = null;
             Item = null;
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
     }
 }

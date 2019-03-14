@@ -94,10 +94,6 @@ namespace OfflineWorkflowSample.ViewModels
             OnlineMap.Basemap = null;
             OnlineMap.OperationalLayers.Clear();
             OnlineMap = null;
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
 
         private async Task LoadOnlineMapItemForOfflineMap(LocalItem localItem)
@@ -118,9 +114,6 @@ namespace OfflineWorkflowSample.ViewModels
                 oldMap.Tables.Clear();
                 // ReSharper disable once RedundantAssignment
                 oldMap = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
             }
             else
             {
