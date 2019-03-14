@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:converter="using:OfflineWorkflowSample.Infrastructure.Converter"
-    xmlns:portal="using:Esri.ArcGISRuntime.Portal"
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

@@ -1,7 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 using Esri.ArcGISRuntime.Portal;
-using OfflineWorkflowsSample;
 
 namespace OfflineWorkflowSample.Infrastructure.Converter
 {
@@ -16,7 +15,7 @@ namespace OfflineWorkflowSample.Infrastructure.Converter
             if (value is PortalItemType pItemType)
                 return pItemType;
             // Hack to word around weird combobox behavior.
-            return value is MainViewModel ? "" : value.ToString();
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

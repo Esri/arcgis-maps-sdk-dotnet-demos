@@ -1,13 +1,13 @@
-﻿using Esri.ArcGISRuntime.Mapping;
+﻿using System;
+using Esri.ArcGISRuntime.Mapping;
 using Prism.Windows.Mvvm;
-using System;
 
 namespace OfflineWorkflowSample.ViewModels.ItemPages
 {
     public class MapPageViewModel : ViewModelBase
     {
-        private Map _map;
         private PortalItemViewModel _item;
+        private Map _map;
 
         public Map Map
         {
