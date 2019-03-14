@@ -133,6 +133,7 @@ namespace OfflineWorkflowSample.Views
                         {
                             ContentFrame.Navigate(typeof(MapPage));
                         }
+
                         break;
                     case PortalItemType.WebScene:
                         ContentFrame.Navigate(typeof(ScenePage));

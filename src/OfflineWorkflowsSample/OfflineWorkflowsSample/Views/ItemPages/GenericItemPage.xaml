@@ -8,8 +8,7 @@
     RequestedTheme="Light"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d">
-    <Grid
-          Padding="5" Background="White"
+    <Grid Padding="5" Background="White"
           RowSpacing="10" ColumnSpacing="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
@@ -21,7 +20,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="{x:Bind ViewModel.SelectedItem.DisplayName}" Style="{ThemeResource SubheaderTextBlockStyle}"
+        <TextBlock Text="{x:Bind ViewModel.SelectedItem.DisplayName}" 
+                   Style="{ThemeResource SubheaderTextBlockStyle}"
                    Grid.Row="0" Grid.ColumnSpan="2" />
         <Image Source="{x:Bind ViewModel.SelectedItem.Thumbnail,Mode=OneWay}"
                Grid.Row="1" Grid.Column="0" />
