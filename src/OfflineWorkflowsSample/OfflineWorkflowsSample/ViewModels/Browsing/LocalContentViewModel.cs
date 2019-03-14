@@ -31,8 +31,6 @@ namespace OfflineWorkflowSample.ViewModels
                     // Ignored - not a valid map package
                 }
             }
-
-            RaisePropertyChanged(nameof(Items));
         }
     }
 }
