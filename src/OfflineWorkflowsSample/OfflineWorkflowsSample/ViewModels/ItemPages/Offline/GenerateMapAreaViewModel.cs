@@ -168,7 +168,7 @@ namespace OfflineWorkflowsSample.GenerateMapArea
             }
         }
 
-        public bool IsMapOnline => _map.Item is PortalItem;
+        public bool IsMapOnline => _map?.Item is PortalItem;
 
         #endregion Properties
 
@@ -205,20 +205,25 @@ namespace OfflineWorkflowsSample.GenerateMapArea
                     {
                         _levelsOfDetail = basemapLayer.TileInfo.LevelsOfDetail;
                         MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
+                        SelectedLevelOfDetail = MaximumLevelOfDetail;
                     }
                     else if (Map.AllLayers.OfType<ArcGISVectorTiledLayer>().Any())
                     {
                         var vectorBasemapLayer = Map.AllLayers.OfType<ArcGISVectorTiledLayer>().First();
                         _levelsOfDetail = vectorBasemapLayer.SourceInfo.LevelsOfDetail;
                         MaximumLevelOfDetail = _levelsOfDetail.Max(x => x.Level);
+                        SelectedLevelOfDetail = MaximumLevelOfDetail;
                     }
+                    else
+                    {
+                        _levelsOfDetail = null;
+                    }
+                    
                 }
                 catch (Exception)
                 {
-                    _levelsOfDetail = new List<LevelOfDetail>();
+                    _levelsOfDetail = null;
                 }
-
-                SelectedLevelOfDetail = 17;
             }
             catch (Exception ex)
             {

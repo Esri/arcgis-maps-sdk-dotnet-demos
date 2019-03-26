@@ -107,6 +107,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DoubleToScaleStringConverter.cs" />
     <Compile Include="TemplatesResourceDictionary.xaml.cs">
       <DependentUpon>TemplatesResourceDictionary.xaml</DependentUpon>
     </Compile>
@@ -161,9 +162,6 @@
     </Compile>
     <Compile Include="Views\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ItemPages\Offline\OfflineMapForm.xaml.cs">
-      <DependentUpon>OfflineMapForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Browsing\PortalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -300,10 +298,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NavigationPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemPages\Offline\OfflineMapForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -18,8 +18,6 @@ using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
 using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
 using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace OfflineWorkflowSample.Views
 {
     public sealed partial class NavigationPage : Page, IWindowService
@@ -81,27 +79,35 @@ namespace OfflineWorkflowSample.Views
 
         private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
+            // Determine which page should be navigated to.
+            Type nextPageType = null;
             if (args.IsSettingsInvoked)
             {
-                ContentFrame.Navigate(typeof(SettingsPage), new SuppressNavigationTransitionInfo());
+                nextPageType = typeof(SettingsPage);
             }
             else
             {
                 switch (args.InvokedItemContainer.Tag.ToString())
                 {
                     case "Local":
-                        ContentFrame.Navigate(typeof(OfflineMapsView), new SuppressNavigationTransitionInfo());
+                        nextPageType = typeof(OfflineMapsView);
                         break;
                     case "Folders":
-                        ContentFrame.Navigate(typeof(PortalBrowserView), new SuppressNavigationTransitionInfo());
+                        nextPageType = typeof(PortalBrowserView);
                         break;
                     case "Groups":
-                        ContentFrame.Navigate(typeof(PortalGroupView), new SuppressNavigationTransitionInfo());
+                        nextPageType = typeof(PortalGroupView);
                         break;
                     case "Search":
-                        ContentFrame.Navigate(typeof(SearchPage), new SuppressNavigationTransitionInfo());
+                        nextPageType = typeof(SearchPage);
                         break;
                 }
+            }
+
+            // Only navigate if the new page is different from the active page.
+            if (nextPageType != ContentFrame.SourcePageType)
+            {
+                ContentFrame.Navigate(nextPageType, new SuppressNavigationTransitionInfo());
             }
         }
 
@@ -182,12 +188,25 @@ namespace OfflineWorkflowSample.Views
                 ContentFrame.GoBack(new SuppressNavigationTransitionInfo());
 
                 // Reset selected item when showing browsing views.
-                if (ContentFrame.Content is OfflineMapsView ||
-                    ContentFrame.Content is PortalBrowserView ||
-                    ContentFrame.Content is PortalGroupView ||
-                    ContentFrame.Content is SearchPage)
+                if (ContentFrame.Content is OfflineMapsView)
                 {
                     ViewModel.SelectedItem = null;
+                    NavigationView.SelectedItem = LocalContentMenuItem;
+                }
+                if (ContentFrame.Content is PortalBrowserView)
+                {
+                    ViewModel.SelectedItem = null;
+                    NavigationView.SelectedItem = MyFoldersMenuItem;
+                }
+                if (ContentFrame.Content is PortalGroupView)
+                {
+                    ViewModel.SelectedItem = null;
+                    NavigationView.SelectedItem = MyGroupsMenuItem;
+                }
+                if (ContentFrame.Content is SearchPage)
+                {
+                    ViewModel.SelectedItem = null;
+                    NavigationView.SelectedItem = SearchMenuItem;
                 }
             }
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using Esri.ArcGISRuntime.Mapping;
+﻿using Esri.ArcGISRuntime.Mapping;
 using Prism.Windows.Mvvm;
 
 namespace OfflineWorkflowSample.ViewModels.ItemPages

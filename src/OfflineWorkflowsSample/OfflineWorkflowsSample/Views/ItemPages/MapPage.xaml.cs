@@ -2,9 +2,11 @@
 using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Esri.ArcGISRuntime;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
 using OfflineWorkflowsSample;
@@ -47,11 +49,20 @@ namespace OfflineWorkflowSample.Views.ItemPages
                     map = new Map(_mainVM.SelectedItem.Item as PortalItem);
                 }
 
+                await map.LoadAsync();
+
+                if (map.LoadStatus != LoadStatus.Loaded)
+                {
+                    throw new Exception("Map couldn't be loaded.");
+                }
+
                 ViewModel.Initialize(map, _mainVM.SelectedItem);
             }
             catch (Exception exception)
             {
                 Debug.WriteLine(exception);
+                this.Frame.GoBack();
+                await new MessageDialog("Couldn't load map.", "Error").ShowAsync();
             }
         }
 

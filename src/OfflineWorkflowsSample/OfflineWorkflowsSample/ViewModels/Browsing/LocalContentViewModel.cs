@@ -5,15 +5,27 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Prism.Commands;
 
 namespace OfflineWorkflowSample.ViewModels
 {
     public class LocalContentViewModel : ViewModelBase
     {
+
+        public LocalContentViewModel()
+        {
+            _refreshCommand = new DelegateCommand(
+                async () => await Initialize());
+        }
+
         public ObservableCollection<PortalItemViewModel> Items { get; } = new ObservableCollection<PortalItemViewModel>();
 
         public async Task Initialize()
         {
+            // Clear any existing items.
+            Items.Clear();
+
             // Get the data folder.
             string filepath = OfflineDataStorageHelper.GetDataFolder();
 
@@ -32,5 +44,9 @@ namespace OfflineWorkflowSample.ViewModels
                 }
             }
         }
+
+        private readonly DelegateCommand _refreshCommand;
+
+        public ICommand RefreshCommand => _refreshCommand;
     }
 }

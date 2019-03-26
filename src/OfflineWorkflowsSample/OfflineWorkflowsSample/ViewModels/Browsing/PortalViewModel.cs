@@ -122,7 +122,8 @@ namespace OfflineWorkflowSample
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                // Ignore
+                // Ignore - if the portal has no featured items, there will be no featured item group id,
+                // which causes ArcGIS Runtime to throw an exception.
             }
 
             try

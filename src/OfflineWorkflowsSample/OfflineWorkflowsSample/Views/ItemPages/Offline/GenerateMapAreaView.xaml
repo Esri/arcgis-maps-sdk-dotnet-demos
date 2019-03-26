@@ -1,7 +1,11 @@
 ﻿<UserControl
     x:Class="OfflineWorkflowsSample.GenerateMapArea.GenerateMapAreaView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:OfflineWorkflowSample.Converters">
+    <UserControl.Resources>
+        <converters:DoubleToScaleStringConverter x:Key="DoubleToScaleStringConverter" />
+    </UserControl.Resources>
     <Grid>
         <Pivot Background="Transparent">
             <PivotItem Header="Take offline">
@@ -15,9 +19,9 @@
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <TextBlock TextWrapping="Wrap">
                             <Run Text="Selected scale range: &#x0a;" />
-                            <Run Text="{Binding SelectedMinimumScale, Mode=OneWay}" />
+                            <Run Text="{Binding SelectedMinimumScale, Mode=OneWay, Converter={StaticResource DoubleToScaleStringConverter}}" />
                             <Run Text=" - " />
-                            <Run Text="{Binding SelectedMaximumScale, Mode=OneWay}" />
+                            <Run Text="{Binding SelectedMaximumScale, Mode=OneWay, Converter={StaticResource DoubleToScaleStringConverter}}" />
                         </TextBlock>
                         <Slider TickFrequency="1"
                                 Value="{Binding SelectedLevelOfDetail, Mode=TwoWay}"

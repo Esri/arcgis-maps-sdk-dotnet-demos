@@ -1,6 +1,10 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using System.Diagnostics;
+using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Esri.ArcGISRuntime;
 using Esri.ArcGISRuntime.Mapping;
 using OfflineWorkflowsSample;
 using OfflineWorkflowSample.ViewModels;
@@ -18,12 +22,30 @@ namespace OfflineWorkflowSample.Views
 
         private OfflineMapViewModel ViewModel => (OfflineMapViewModel) Resources[nameof(ViewModel)];
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            ViewModel.MapViewService = _mainVM.MapViewService;
-            ViewModel.Initialize(new Map(_mainVM.SelectedItem.Item), _mainVM.SelectedItem, _mainVM.PortalViewModel.Portal, _mainVM.WindowService);
+            try
+            {
+                Map map = new Map(_mainVM.SelectedItem.Item);
+
+                await map.LoadAsync();
+
+                if (map.LoadStatus != LoadStatus.Loaded)
+                {
+                    throw new Exception("Map couldn't be loaded.");
+                }
+
+                ViewModel.MapViewService = _mainVM.MapViewService;
+                ViewModel.Initialize(new Map(_mainVM.SelectedItem.Item), _mainVM.SelectedItem, _mainVM.PortalViewModel.Portal, _mainVM.WindowService);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                this.Frame.GoBack();
+                await new MessageDialog("Couldn't load map.", "Error").ShowAsync();
+            }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

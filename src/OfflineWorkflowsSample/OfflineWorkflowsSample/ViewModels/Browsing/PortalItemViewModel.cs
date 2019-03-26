@@ -3,6 +3,7 @@ using Esri.ArcGISRuntime.Portal;
 using Esri.ArcGISRuntime.UI;
 using Prism.Windows.Mvvm;
 using System;
+using System.Diagnostics;
 using System.Threading;
 #if WINDOWS_UWP
 using Windows.UI.Xaml.Media;
@@ -136,7 +137,15 @@ namespace OfflineWorkflowSample.ViewModels
 
         private async void UpdateImage(object state)
         {
-            Thumbnail = await ItemImage.ToImageSourceAsync();
+            try
+            {
+                Thumbnail = await ItemImage.ToImageSourceAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                // Ignore - there's already a placeholder thumbnail to be used in case of error.
+            }
         }
         #endif
     }

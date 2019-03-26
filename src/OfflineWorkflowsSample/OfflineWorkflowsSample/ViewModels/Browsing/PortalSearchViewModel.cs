@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
+using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Portal;
 using Prism.Commands;
 using Prism.Windows.Mvvm;
@@ -86,6 +90,12 @@ namespace OfflineWorkflowSample.ViewModels
                     StartIndex = (_page - 1) * ResultsPerPage
                 };
 
+                // Works around issue where queries with empty string need a BBOX or category
+                if (_includePublicResults && String.IsNullOrEmpty(_searchQuery))
+                {
+                    parameters.BoundingBox = new Envelope(-180, -90, 180, 90, SpatialReferences.Wgs84);
+                }
+
                 SearchResults.Clear();
                 PortalQueryResultSet<PortalItem> portalResults = await _portal.FindItemsAsync(parameters);
                 SetProperty(ref _totalResults, portalResults.TotalResultsCount, nameof(TotalResults));
@@ -103,7 +113,7 @@ namespace OfflineWorkflowSample.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
             }
         }
 

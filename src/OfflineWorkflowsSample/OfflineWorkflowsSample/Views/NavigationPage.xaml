@@ -53,10 +53,10 @@
                              IsBackEnabled="{x:Bind ContentFrame.CanGoBack,Mode=OneWay}"
                              BackRequested="NavigationView_OnBackRequested">
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Content="Local content" Tag="Local" />
-                <muxc:NavigationViewItem Content="My folders" Tag="Folders" />
-                <muxc:NavigationViewItem Content="My groups" Tag="Groups" />
-                <muxc:NavigationViewItem Content="Search" Tag="Search" />
+                <muxc:NavigationViewItem x:Name="LocalContentMenuItem" Content="Local content" Tag="Local" />
+                <muxc:NavigationViewItem x:Name="MyFoldersMenuItem" Content="My folders" Tag="Folders" />
+                <muxc:NavigationViewItem x:Name="MyGroupsMenuItem" Content="My groups" Tag="Groups" />
+                <muxc:NavigationViewItem x:Name="SearchMenuItem" Content="Search" Tag="Search" />
             </muxc:NavigationView.MenuItems>
             <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">

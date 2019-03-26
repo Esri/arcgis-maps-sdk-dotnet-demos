@@ -1,9 +1,13 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Esri.ArcGISRuntime;
 using Esri.ArcGISRuntime.Mapping;
 using OfflineWorkflowsSample;
 using OfflineWorkflowSample.ViewModels.ItemPages;
+using System.Diagnostics;
+using Windows.UI.Popups;
 
 namespace OfflineWorkflowSample.Views.ItemPages
 {
@@ -18,10 +22,29 @@ namespace OfflineWorkflowSample.Views.ItemPages
 
         private ScenePageViewModel ViewModel => (ScenePageViewModel) Resources[nameof(ViewModel)];
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.Initialize(new Scene(_mainVM.SelectedItem.Item), _mainVM.SelectedItem);
+
+            try
+            {
+                Scene scene = new Scene(_mainVM.SelectedItem.Item);
+
+                await scene.LoadAsync();
+
+                if (scene.LoadStatus != LoadStatus.Loaded)
+                {
+                    throw new Exception("Scene couldn't be loaded.");
+                }
+
+                ViewModel.Initialize(new Scene(_mainVM.SelectedItem.Item), _mainVM.SelectedItem);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                this.Frame.GoBack();
+                await new MessageDialog("Couldn't load scene.", "Error").ShowAsync();
+            }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
