@@ -45,11 +45,6 @@
                                                 <TextBlock Text="{Binding Title}"
                                                            Margin="10,5,10,5"
                                                            Style="{StaticResource BodyTextBlockStyle}" />
-                                                <TextBlock Text="{Binding Snippet}"
-                                                           TextWrapping="Wrap"
-                                                           VerticalAlignment="Top"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           Style="{StaticResource CaptionTextBlockStyle}" />
                                             </StackPanel>
                                         </Grid>
                                     </Grid>
