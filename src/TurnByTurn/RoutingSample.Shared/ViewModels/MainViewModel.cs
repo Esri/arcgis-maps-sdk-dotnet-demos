@@ -388,19 +388,18 @@ namespace RoutingSample.ViewModels
                     var to = Destination;
 
                     // Determine the route
-                    var (routeResult, routeTask, routeParameters) = await new NavigationService()
-                        .SolveRouteAsync(from, to);
+                    var result = await new NavigationService().SolveRouteAsync(from, to);
 
                     // Copy the result from the service
-                    RouteParameters = routeParameters;
-                    RouteTask = routeTask;
-                    RouteResult = routeResult;
+                    RouteParameters = result.Parameters;
+                    RouteTask = result.Task;
+                    RouteResult = result.Route;
 
                     // Display the route
                     DisplayRoute();
 
                     // Restart the simulation
-                    Simulation.Simulator.SetRoute(routeResult.Routes[0]);
+                    Simulation.Simulator.SetRoute(RouteResult.Routes[0]);
                     Simulation.Restart();
                 }
                 catch (Exception ex)

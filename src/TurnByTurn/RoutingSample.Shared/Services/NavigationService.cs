@@ -8,6 +8,24 @@ using System.Threading.Tasks;
 
 namespace RoutingSample.Services
 {
+    public struct SolveRouteResult
+    {
+        /// <summary>
+        /// The route result.
+        /// </summary>
+        public RouteResult Route;
+
+        /// <summary>
+        /// The route task.
+        /// </summary>
+        public RouteTask Task;
+
+        /// <summary>
+        /// The route parameters.
+        /// </summary>
+        public RouteParameters Parameters;
+    }
+
     public class NavigationService
     {
         private readonly string _database, _networkName;
@@ -26,7 +44,7 @@ namespace RoutingSample.Services
         /// </summary>
         /// <param name="stops">The stops on the route.</param>
         /// <returns></returns>
-        public async Task<(RouteResult, RouteTask, RouteParameters)> SolveRouteAsync(MapPoint from, MapPoint to)
+        public async Task<SolveRouteResult> SolveRouteAsync(MapPoint from, MapPoint to)
         {
             RouteTask routeTask = null;
             RouteParameters routeParameters = null;
@@ -62,7 +80,7 @@ namespace RoutingSample.Services
                 }
             }
 
-            return (routeResult, routeTask, routeParameters);
+            return new SolveRouteResult { Route = routeResult, Task = routeTask, Parameters = routeParameters };
         }
     }
 }
