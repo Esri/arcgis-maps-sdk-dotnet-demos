@@ -45,8 +45,7 @@
                       Map="{Binding Map}"
                       GraphicsOverlays="{Binding RouteGraphicsOverlays}"
                       Grid.Row="2"
-                      GeoViewTapped="MapView_GeoViewTapped"
-                      MouseMove="MapView_MouseMove">
+                      GeoViewTapped="MapView_GeoViewTapped">
             <local:RestoreAutoPanMode.RestoreAutoPanSettings>
                 <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True"/>
             </local:RestoreAutoPanMode.RestoreAutoPanSettings>

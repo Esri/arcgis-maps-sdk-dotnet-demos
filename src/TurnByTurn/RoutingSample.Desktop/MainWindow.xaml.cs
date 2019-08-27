@@ -24,29 +24,7 @@ namespace RoutingSample.Desktop
             _mainViewModel.LocationDisplay.NavigationPointHeightFactor = 0.5;
 
             DataContext = _mainViewModel;
-
-#if OFFLINE
-
-#else
-            //_mainViewModel.Destination = "277 N Avenida Caballeros, Palm Springs, CA";
-
-            InitializeAuth();
-#endif
         }
-
-#if !OFFLINE
-        private async void InitializeAuth()
-        {
-
-            if (!await OAuth.AuthorizeAsync())
-            {
-                MessageBox.Show("This sample requires an ArcGIS Online subscription " +
-                    "in order to use the Global Routing Service.",
-                    "ArcGIS Online Required", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
-            }
-        }
-#endif
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
@@ -59,20 +37,10 @@ namespace RoutingSample.Desktop
                 "About Turn-by-Turn Sample App", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void Go_Click(object sender, RoutedEventArgs e)
-        {
-            //_mainViewModel.FindRoute();
-        }
-
         private void MapView_GeoViewTapped(object sender, GeoViewInputEventArgs e)
         {
-            // Set the destination ;)
+            // Set the destination
             _mainViewModel.Destination = MapView.ScreenToLocation(e.Position);
-        }
-
-        private void MapView_MouseMove(object sender, MouseEventArgs e)
-        {
-
         }
     }
 }

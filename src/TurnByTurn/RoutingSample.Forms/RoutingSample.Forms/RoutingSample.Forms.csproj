@@ -7,11 +7,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>TRACE;XAMARIN;OFFLINE</DefineConstants>
+    <DefineConstants>TRACE;XAMARIN</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;XAMARIN;OFFLINE</DefineConstants>
+    <DefineConstants>TRACE;XAMARIN</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

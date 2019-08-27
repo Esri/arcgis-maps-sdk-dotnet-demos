@@ -426,10 +426,8 @@ namespace RoutingSample.ViewModels
             RouteTracker = new RouteTracker(RouteResult, 0);
             RouteTracker.VoiceGuidanceUnitSystem = UnitSystem.Imperial;
 
-#if OFFLINE
             // Configure rerouting for our journey
             await RouteTracker.EnableReroutingAsync(RouteTask, RouteParameters, ReroutingStrategy.ToNextWaypoint, false);
-#endif
         }
 
         // Adds the specified route to the graphics overlay

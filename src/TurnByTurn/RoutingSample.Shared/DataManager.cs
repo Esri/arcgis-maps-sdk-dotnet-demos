@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace RoutingSample
 {
-#if OFFLINE
     /// <summary>
     /// Provides methods for downloading and using sample data.
     /// </summary>
@@ -89,7 +88,7 @@ namespace RoutingSample
 
             // Update __sample.config to save the last time downloaded
             var configFilePath = Path.Combine(dataDir, "__sample.config");
-#if NETFX_CORE
+#if WINDOWS_UWP
             await File.WriteAllTextAsync(configFilePath, $"Data downloaded: {DateTime.Now}");
 #else
             File.WriteAllText(configFilePath, $"Data downloaded: {DateTime.Now}");
@@ -112,5 +111,4 @@ namespace RoutingSample
             });
         }
     }
-#endif
 }
