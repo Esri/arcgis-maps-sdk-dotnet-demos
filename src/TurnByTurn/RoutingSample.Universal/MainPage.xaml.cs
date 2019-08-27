@@ -1,13 +1,7 @@
-﻿using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Security;
-using RoutingSample.ViewModels;
+﻿using RoutingSample.ViewModels;
 using System;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace RoutingSample
 {
@@ -16,12 +10,22 @@ namespace RoutingSample
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private readonly MainViewModel _mainViewModel;
+
         public MainPage()
         {
-            this.InitializeComponent();
-            
-            var viewModel = (MainPageVM)MyMapView.DataContext;
-            viewModel.LocationDisplay = MyMapView.LocationDisplay;
+            InitializeComponent();
+
+            _mainViewModel = new MainViewModel();
+            _mainViewModel.LocationDisplay = MapView.LocationDisplay;
+            _mainViewModel.LocationDisplay.NavigationPointHeightFactor = 0.5;
+
+            DataContext = _mainViewModel;
+        }
+
+        private void MapView_GeoViewTapped(object sender, Esri.ArcGISRuntime.UI.Controls.GeoViewInputEventArgs e)
+        {
+            _mainViewModel.Destination = MapView.ScreenToLocation(e.Position);
         }
     }
 }

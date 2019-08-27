@@ -3,99 +3,99 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
         xmlns:local="clr-namespace:RoutingSample"
-        xmlns:vm="clr-namespace:RoutingSample.ViewModels"
-        Title="Turn-by-Turn Sample App" Height="450" Width="750">
-    <Window.Resources>
-        <vm:MainPageVM x:Key="viewmodel" />
-    </Window.Resources>
+        Title="Turn-by-Turn Sample App" Height="720" Width="960" WindowStartupLocation="CenterScreen">
 
-    <Grid DataContext="{StaticResource viewmodel}" Background="LightGray" >
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="320"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-		<Grid.RowDefinitions>
+    <Grid >
+        <Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
-		<!--Menu-->
-		<Menu Grid.ColumnSpan="2">
-			<MenuItem Header="File">
-				<MenuItem Header="Exit" Click="Exit_Clicked" />
-			</MenuItem>
-			<MenuItem Header="Edit" />
-			<MenuItem Header="View" />
-			<MenuItem Header="Help" />
+        
+		<!-- Menu -->
+		<Menu Background="White">
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About Turn-by-Turn Sample App" Click="About_Click" />
+            </MenuItem>
 		</Menu>
-		<!--StatusBar-->
-		<StatusBar Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" DataContext="{Binding LocationDisplay}"	 >
-			<StatusBarItem  >
+        
+		<!-- Footer -->
+        <StatusBar Grid.Row="3"
+                   HorizontalAlignment="Stretch"
+                   HorizontalContentAlignment="Stretch"
+                   DataContext="{Binding LocationDisplay}">
+            <StatusBarItem  >
                 <TextBlock Text="{Binding Location.Velocity, StringFormat={}Speed: {0} kph}" />
-			</StatusBarItem>
-			<Separator Opacity=".5"/>
-			<StatusBarItem  >
-				<TextBlock Text="{Binding Location.Course, StringFormat={}Heading: {0:0}}" />
-			</StatusBarItem>
-		</StatusBar>
+            </StatusBarItem>
+            <Separator Opacity=".5"/>
+            <StatusBarItem  >
+                <TextBlock Text="{Binding Location.Course, StringFormat={}Heading: {0:0}}" />
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <ProgressBar IsIndeterminate="{Binding IsRouting}" Width="100" Height="15"/>
+            </StatusBarItem>
+        </StatusBar>
 
-		
-        <!--SidePanel-->
-        <StackPanel Margin="20" Grid.Row="1" >
-            <!--Create Route Panel-->
+        <!-- Map -->
+        <esri:MapView x:Name="MapView"
+                      Map="{Binding Map}"
+                      GraphicsOverlays="{Binding RouteGraphicsOverlays}"
+                      Grid.Row="2"
+                      GeoViewTapped="MapView_GeoViewTapped">
+            <local:RestoreAutoPanMode.RestoreAutoPanSettings>
+                <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True"/>
+            </local:RestoreAutoPanMode.RestoreAutoPanSettings>
+        </esri:MapView>
+
+        <!-- Maneuver -->
+        <Border Grid.Row="1" Padding="4"
+                Background="White"
+                BorderBrush="LightGray"
+                BorderThickness="0,1,0,1"
+                DataContext="{Binding Maneuver}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="4" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Width="48" Height="48" Grid.Column="0"
+                       Source="{Binding ImageUri}" />
+                <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                    <TextBlock Text="{Binding Text}" FontWeight="SemiBold" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding RemainingTime, Converter={StaticResource TimeFormatter}}" />
+                        <TextBlock Text="•" Padding="4,0"/>
+                        <TextBlock Text="{Binding RemainingDistance, Converter={StaticResource DistanceFormatter}}" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Simulation -->
+        <Border Grid.Row="2" Width="96"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="8,8,8,28"
+                Padding="4"
+                Background="White"
+                BorderBrush="LightGray"
+                BorderThickness="1">
             <StackPanel>
-                <TextBlock Text="Enter address:" />
-                <TextBox Text="{Binding RouteToAddress, Mode=TwoWay}" />
-
-                <ProgressBar IsIndeterminate="{Binding IsCalculatingRoute}" />
-                <TextBlock Text="{Binding RouteCalculationErrorMessage}" Foreground="Red" FontWeight="Bold" />
+                <TextBlock Text="SIMULATION" FontWeight="SemiBold" FontSize="12" TextAlignment="Center" />
+                <TextBlock Text="{Binding Simulation.State, Converter={StaticResource EnumFormatter}}" TextAlignment="Center" Margin="0,0,0,4" />
+                <StackPanel>
+                    <Button Command="{Binding FollowCommand}" Content="Follow" />
+                    <Button Command="{Binding WanderCommand}" Content="Wander" Margin="0,4"/>
+                    <Button Command="{Binding StopCommand}" Content="Stop" />
+                </StackPanel>
             </StackPanel>
+        </Border>
 
-            <!--Route Details Panel-->
-            <StackPanel>
-
-                <TextBlock Text="{Binding Route.NextManeuver}" FontSize="24" />
-
-                <TextBlock Text="Time to waypoint:" />
-                <TextBlock Text="{Binding Route.TimeToWaypoint}" FontSize="24" />
-
-                <TextBlock Text="Distance to waypoint:" />
-                <TextBlock Text="{Binding Route.MilesToWaypoint}" FontSize="24" />
-
-                <TextBlock Text="Time to destination:" />
-                <TextBlock Text="{Binding Route.TimeToDestination}" FontSize="24" />
-
-                <TextBlock Text="Distance to destination" />
-                <TextBlock Text="{Binding Route.MilesToDestination}" FontSize="24" />
-
-                <Image Source="{Binding Route.ManeuverImage}" HorizontalAlignment="Center" Width="50" />
-
-            </StackPanel>
-
-        </StackPanel>
-
-        <Grid x:Name="MapPanel" Grid.Column="1" Grid.Row="1">
-            <esri:MapView x:Name="MyMapView" Map="{Binding Map}"
-                          local:CommandBinder.RequestView="{Binding ViewpointRequested}"
-                          GraphicsOverlays="{Binding ResultGraphicsOverlays}">
-				<local:RestoreAutoPanMode.RestoreAutoPanSettings>
-					<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
-				</local:RestoreAutoPanMode.RestoreAutoPanSettings>
-                <!--Overlay used to show next maneuver on top of the map-->
-                <esri:MapView.Overlays>
-                    <esri:OverlayItemsControl>
-                        <Grid esri:MapView.ViewOverlayAnchor="{Binding Route.WaypointLocation}" DataContext="{StaticResource viewmodel}"
-								VerticalAlignment="Top" Margin="0,0,0,5" >
-                            <Path Data="M0,0 L0,3 1,4 2,3 2,0 0,0"
-									  Fill="#55000000" Stretch="Fill" />
-                            <Image Source="{Binding Route.ManeuverImage}" 
-									   Height="50" Margin="2,2,2,15" />
-                        </Grid>
-                    </esri:OverlayItemsControl>
-                </esri:MapView.Overlays>
-            </esri:MapView>
-        </Grid>        
     </Grid>
 </Window>
