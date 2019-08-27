@@ -6,8 +6,6 @@ using Xamarin.Forms;
 
 namespace RoutingSample.Forms
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
@@ -26,12 +24,7 @@ namespace RoutingSample.Forms
             var status = await DependencyService.Get<ILocationAccessService>().RequestAsync();
             if (status == LocationAccessStatus.Granted)
             {
-                /// .... not sure what to do here
                 await mapView.LocationDisplay.DataSource.StartAsync();
-            }
-            else
-            {
-                // TODO error out
             }
             
             _mainViewModel.LocationDisplay = mapView.LocationDisplay;

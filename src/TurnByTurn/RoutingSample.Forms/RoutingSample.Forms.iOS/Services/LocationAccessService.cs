@@ -44,22 +44,6 @@ namespace RoutingSample.Forms.iOS.Services
             // Start the authorization request
             if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
             {
-                /*
-                var info = NSBundle.MainBundle.InfoDictionary;
-                if (info.ContainsKey(new NSString("NSLocationAlwaysUsageDescription")))
-                {
-                    locationManager.RequestAlwaysAuthorization();
-                }
-                else if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
-                {
-                    locationManager.RequestWhenInUseAuthorization();
-                }
-                else
-                {
-                    throw new UnauthorizedAccessException("Please set either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription in Info.plist.");
-                }
-                */
-
                 var info = NSBundle.MainBundle.InfoDictionary;
                 if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
                 {
