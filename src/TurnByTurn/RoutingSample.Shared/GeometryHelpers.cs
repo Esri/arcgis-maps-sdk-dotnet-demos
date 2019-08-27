@@ -59,6 +59,7 @@ namespace RoutingSample
                 var pointDistanceResult = GeometryEngine.DistanceGeodetic(point1, point2, LinearUnits.Meters,
                     AngularUnits.Degrees, GeodeticCurveType.Geodesic);
                 var pointDistance = pointDistanceResult.Distance;
+                var pointBearing = pointDistanceResult.Azimuth1;
 
                 // Determine whether `distance` falls between these points
                 if (distance < searchDistance + pointDistance)
@@ -66,8 +67,7 @@ namespace RoutingSample
                     var segmentDistance = distance - searchDistance;
 
                     // Find the extact position of the point
-                    // TODO: return bearing too?
-                    return CreatePointAlongGeodetic(point1, BearingGeodetic(point1, point2), segmentDistance);
+                    return CreatePointAlongGeodetic(point1, pointBearing, segmentDistance);
                 }
 
                 // Continue the search
@@ -120,19 +120,9 @@ namespace RoutingSample
         /// </returns>
         public static double BearingGeodetic(MapPoint point1, MapPoint point2)
         {
-            // Convert the points to radians
-            var lon1 = point1.X / 180 * Math.PI;
-            var lat1 = point1.Y / 180 * Math.PI;
-            var lon2 = point2.X / 180 * Math.PI;
-            var lat2 = point2.Y / 180 * Math.PI;
-
-            // Determine the bearing
-            var y = Math.Sin(lon1 - lon2) * Math.Cos(lat2);
-            var x = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(lon1 - lon2);
-            var brng = Math.Atan2(y, x) % (2 * Math.PI);
-
-            // Convert back to degrees
-            return NormalizeBearing(360 - (brng / Math.PI * 180));
+            var result = GeometryEngine.DistanceGeodetic(point1, point2, LinearUnits.Meters,
+                AngularUnits.Degrees, GeodeticCurveType.Geodesic);
+            return result.Azimuth1;
         }
     }
 }

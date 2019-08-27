@@ -119,7 +119,6 @@ namespace RoutingSample
             UpdateLocation(new Location(_location, 0.001, Speed, _course, false));
 
 #if XAMARIN
-            // TODO: Does this return false once StopAsync is called?
             return IsStarted;
 #endif
         }
