@@ -4,15 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:RoutingSample"
 	xmlns:esri="using:Esri.ArcGISRuntime.UI"
-	xmlns:esriCtrls="using:Esri.ArcGISRuntime.UI.Controls"
-	xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
-	xmlns:symbology="using:Esri.ArcGISRuntime.Symbology"
-	xmlns:vm="using:RoutingSample.ViewModels">
-    <Page.Resources>
-        <vm:MainPageVM x:Key="viewmodel" />
-    </Page.Resources>
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-			  DataContext="{StaticResource viewmodel}">
+	xmlns:esriCtrls="using:Esri.ArcGISRuntime.UI.Controls">
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,23 +13,18 @@
         </Grid.RowDefinitions>
 
         <!--Route Details Panel-->
-        <Grid Visibility="{Binding Route, Converter={StaticResource nullToCollapsed}}">
-            <TextBlock Text="{Binding Route.NextManeuver}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
-            <Image Source="{Binding Route.ManeuverImage}" HorizontalAlignment="Left" Height="50" Margin="20,10,0,10" />
-            <TextBlock Text="{Binding RouteCalculationErrorMessage}" Foreground="Red" FontWeight="Bold" IsHitTestVisible="False"
-					   VerticalAlignment="Bottom" HorizontalAlignment="Right" />
-
+        <Grid Visibility="{Binding Route, Converter={StaticResource NullToCollapsedConverter}}"
+              DataContext="{Binding Maneuver}">
+            <TextBlock Text="{Binding Text}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
+            <Image Source="{Binding ImageUri}" HorizontalAlignment="Left" Height="50" Margin="20,10,0,10" />
             <!--
-			<StackPanel HorizontalAlignment="Left"
-						VerticalAlignment="Center">
-				<TextBlock Text="Time to waypoint:" />
-				<TextBlock Text="{Binding Route.TimeToWaypoint}" FontSize="24" HorizontalAlignment="Center" />
-			</StackPanel>
-			-->
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontWeight="Bold" IsHitTestVisible="False"
+					   VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+            -->
             <StackPanel HorizontalAlignment="Right"
 						VerticalAlignment="Center" Margin="0,0,20,0">
-                <!--<TextBlock Text="Distance to waypoint:" />-->
-                <TextBlock Text="{Binding Route.MilesToWaypoint}" FontSize="24" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding RemainingTime, Converter={StaticResource TimeFormatter}}" FontSize="24" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding RemainingDistance, Converter={StaticResource DistanceFormatter}}" FontSize="24" HorizontalAlignment="Center" />
             </StackPanel>
 
             <Grid.Transitions>
@@ -48,69 +36,37 @@
 
         <Grid Grid.Row="1">
             <Grid x:Uid="MapPanel" Grid.Column="1" >
-                <esriCtrls:MapView x:Name="MyMapView" Map="{Binding Map}"
-                              local:CommandBinder.RequestView="{Binding ViewpointRequested}" 
-                              GraphicsOverlays="{Binding ResultGraphicsOverlays, Mode=OneWay}">
+                <esriCtrls:MapView x:Name="MapView" Map="{Binding Map}"
+                                   GraphicsOverlays="{Binding RouteGraphicsOverlays, Mode=OneWay}"
+                                   GeoViewTapped="MapView_GeoViewTapped"
+                                   >
                     <!--Restores the map pan mode after interacting with the map-->
                     <local:RestoreAutoPanMode.RestoreAutoPanSettings>
                         <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" />
                     </local:RestoreAutoPanMode.RestoreAutoPanSettings>
-                    <!--Overlay used to show next maneuver on top of the map-->
-                    <esriCtrls:MapView.Overlays>
-                        <esriCtrls:OverlayItemsControl>
-                            <Grid esriCtrls:MapView.ViewOverlayAnchor="{Binding Route.WaypointLocation}" DataContext="{StaticResource viewmodel}"
-								VerticalAlignment="Top" Margin="0,0,0,5" >
-                                <Path Data="M0,0 L0,3 1,4 2,3 2,0 0,0"
-									  Fill="#55000000" Stretch="Fill" />
-                                <Image Source="{Binding Route.ManeuverImage}" 
-									   Height="50" Margin="2,2,2,15" />
-                            </Grid>
-                        </esriCtrls:OverlayItemsControl>
-                    </esriCtrls:MapView.Overlays>
                 </esriCtrls:MapView>
             </Grid>
 
-            <Border Margin="20" HorizontalAlignment="Right" VerticalAlignment="Top"
-					Background="#55000000" Padding="5">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <!--Create Route Panel-->
-                    <StackPanel>
-                        <SearchBox PlaceholderText="Enter destination" SearchHistoryEnabled="True"  QueryText="{Binding RouteToAddress, Mode=TwoWay}" Width="200" />
-                        <ProgressBar IsIndeterminate="{Binding IsCalculatingRoute}" Margin="0,0,0,-5" />
-                    </StackPanel>
-                </Grid>
+            <!-- Simulation Controls -->
+            <Border VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    Margin="8,8,8,28"
+                    Padding="8"
+                    Background="#AAFFFFFF"
+                    BorderBrush="Black"
+                    BorderThickness="0"
+                    CornerRadius="8"
+                    Visibility="{Binding RouteResult, Converter={StaticResource NullToCollapsedConverter}}"
+                    RequestedTheme="Light"
+                    >
+                <StackPanel Spacing="4" >
+                    <TextBlock Text="SIMULATION" Width="100" TextAlignment="Center" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Simulation.State, Converter={StaticResource EnumFormatter}}" TextAlignment="Center" />
+                    <Button Command="{Binding FollowCommand}" Content="Follow" Width="100" />
+                    <Button Command="{Binding WanderCommand}" Content="Wander" Width="100" />
+                    <Button Command="{Binding StopCommand}" Content="Stop" Width="100" />
+                </StackPanel>
             </Border>
-
-            <Border VerticalAlignment="Top"
-					HorizontalAlignment="Left"
-					BorderBrush="Black" BorderThickness="0"
-					Margin="20,20,0,0" Background="#AAFFFFFF" Padding="10"
-					Visibility="{Binding Route, Converter={StaticResource nullToCollapsed}}"
-					RequestedTheme="Light"
-					>
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="55"/>
-                        <RowDefinition Height="55"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0">
-                        <TextBlock Text="Time to destination:"  FontWeight="Light" />
-                        <TextBlock Text="{Binding Route.TimeToDestination, Converter={StaticResource timeSpanFormatter}}"
-							   FontSize="32" FontFamily="Segoe UI Light" 
-							   HorizontalAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="1">
-                        <TextBlock Text="Distance to destination" FontWeight="Light" />
-                        <TextBlock Text="{Binding Route.MilesToDestination}"
-								   FontSize="32" FontFamily="Segoe UI Light" 
-								   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </Grid>
-            </Border>            
         </Grid>
     </Grid>
 </Page>

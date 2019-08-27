@@ -8,7 +8,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-
                 <!-- 
                     Styles that define common aspects of the platform look and feel
                     Required by Visual Studio project and item templates
@@ -16,8 +15,10 @@
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:NullToCollapsedConverter x:Key="nullToCollapsed" />
-            <converters:TimeSpanFormatter x:Key="timeSpanFormatter" />
+            <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+            <converters:TimeFormatter x:Key="TimeFormatter" />
+            <converters:DistanceFormatter x:Key="DistanceFormatter" />
+            <converters:EnumFormatter x:Key="EnumFormatter" />
 
             <Style TargetType="TextBlock">
                 <Setter Property="FontSize" Value="16" />
