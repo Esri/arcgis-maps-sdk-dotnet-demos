@@ -79,6 +79,7 @@ namespace OfflineWorkflowSample.Views
 
         private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
+            ContentFrame.BackStack.Clear();
             // Determine which page should be navigated to.
             Type nextPageType = null;
             if (args.IsSettingsInvoked)
@@ -113,6 +114,7 @@ namespace OfflineWorkflowSample.Views
 
         public void NavigateToPageForItem(PortalItemViewModel itemVM)
         {
+            ContentFrame.BackStack.Clear();
             Item item = itemVM.Item;
             if (item is LocalItem localItem)
             {
@@ -209,6 +211,7 @@ namespace OfflineWorkflowSample.Views
                     NavigationView.SelectedItem = SearchMenuItem;
                 }
             }
+            ContentFrame.BackStack.Clear();
         }
     }
 }

@@ -28,8 +28,8 @@ namespace OfflineWorkflowSample.ViewModels.ItemPages
 
         public void Reset()
         {
-            Scene.Basemap = new Basemap(); // Should be set to null but there's a bug as of 100.5-daily2354
-            Scene.OperationalLayers.Clear();
+            Scene.Basemap = null;
+            Scene.OperationalLayers?.Clear();
             Scene = null;
             Item = null;
         }

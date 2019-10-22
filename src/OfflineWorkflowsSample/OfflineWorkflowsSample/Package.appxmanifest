@@ -27,9 +27,9 @@
     </Application>
   </Applications>
   <Capabilities>
-    <Capability Name="internetClient" />
-    <Capability Name="privateNetworkClientServer" />
-    <Capability Name="internetClientServer" />
-    <DeviceCapability Name="location" />
+    <Capability Name="privateNetworkClientServer"/>
+    <Capability Name="internetClient"/>
+    <Capability Name="internetClientServer"/>
+    <DeviceCapability Name="location"/>
   </Capabilities>
 </Package>

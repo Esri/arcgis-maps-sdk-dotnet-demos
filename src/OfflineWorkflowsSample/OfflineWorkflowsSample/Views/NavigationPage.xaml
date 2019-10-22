@@ -60,17 +60,16 @@
             </muxc:NavigationView.MenuItems>
             <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
-                    <Button Background="Transparent" BorderBrush="Transparent"
-                            Padding="0">
+                    <Button Background="Transparent" BorderBrush="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{x:Bind ViewModel.UserProfile.FullName}"
-                                       VerticalAlignment="Center" />
+                                       VerticalAlignment="Center" Margin="0,0,10,0" />
                             <PersonPicture ProfilePicture="{x:Bind ViewModel.UserProfile.ProfilePicture,Mode=OneWay}"
                                            DisplayName="{x:Bind ViewModel.UserProfile.FullName}"
-                                           Height="25" Margin="5,0,0,0" />
+                                           Height="25" Margin="0,-15, 0, -15"/>
                         </StackPanel>
                         <Button.Flyout>
-                            <MenuFlyout>
+                            <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem Text="Log out"
                                                 Command="{x:Bind ViewModel.LogOutCommand}" />
                             </MenuFlyout>

@@ -37,7 +37,7 @@ namespace OfflineWorkflowSample.Views.ItemPages
                     throw new Exception("Scene couldn't be loaded.");
                 }
 
-                ViewModel.Initialize(new Scene(_mainVM.SelectedItem.Item), _mainVM.SelectedItem);
+                ViewModel.Initialize(scene, _mainVM.SelectedItem);
             }
             catch (Exception exception)
             {

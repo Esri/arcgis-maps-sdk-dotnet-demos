@@ -16,12 +16,59 @@
             <TextBlock Text="{x:Bind Name}" />
         </DataTemplate>
     </UserControl.Resources>
-    <SplitView x:Name="MapLegendSplitView"
-               DisplayMode="Overlay"
-               PaneOpening="MapLegendSplitView_OnPaneOpening"
-               PaneClosing="MapLegendSplitView_OnPaneClosing"
-               PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
-        <SplitView.Pane>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <controls:SceneView x:Name="MySceneView" Scene="{x:Bind Scene, Mode=OneWay}" />
+            <controls1:Compass GeoView="{x:Bind MySceneView, Mode=OneWay}" Height="40"
+                               Width="40"
+                               Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
+                               HorizontalAlignment="Right" />
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush }">
+                    <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
+                                  Click="MenuButtonClicked" />
+                    <AppBarButton Icon="List" Label="Choose basemap">
+                        <AppBarButton.Flyout>
+                            <Flyout>
+                                <GridView Width="230"
+                                          ItemsSource="{x:Bind ViewModel.PortalViewModel.OrgBasemaps,Mode=OneTime }"
+                                          SelectedItem="{Binding Scene.Basemap, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate x:DataType="mapping:Basemap">
+                                            <Grid Margin="5" Width="100" Height="100">
+                                                <Image Stretch="UniformToFill"
+                                                       Width="100" Height="100"
+                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                       Source="{Binding Item.ThumbnailUri}" />
+                                                <Border Background="#7F000000"
+                                                        VerticalAlignment="Top"
+                                                        Padding="5">
+                                                    <TextBlock Text="{x:Bind Name}"
+                                                               Foreground="White"
+                                                               Opacity="1"
+                                                               TextWrapping="WrapWholeWords" />
+                                                </Border>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                </GridView>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="0" Width="350" x:Name="BonusSidebar">
             <Pivot x:Name="OuterPivot">
                 <PivotItem Header="Info">
                     <ScrollViewer>
@@ -67,61 +114,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
-                <Pivot.RightHeader>
-                    <Button HorizontalAlignment="Right"
-                            Click="MenuButtonClicked">
-                        <SymbolIcon Symbol="ClosePane" />
-                    </Button>
-                </Pivot.RightHeader>
             </Pivot>
-        </SplitView.Pane>
-        <Grid>
-            <controls:SceneView x:Name="MySceneView" Scene="{x:Bind Scene}" />
-            <controls1:Compass GeoView="{x:Bind MySceneView, Mode=OneWay}" Height="40"
-                               Width="40"
-                               Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
-                               HorizontalAlignment="Right" />
-            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <StackPanel Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush }">
-                    <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
-                                  Click="MenuButtonClicked" />
-                    <AppBarButton Icon="List" Label="Choose basemap">
-                        <AppBarButton.Flyout>
-                            <Flyout>
-                                <GridView Width="230"
-                                          ItemsSource="{x:Bind ViewModel.PortalViewModel.OrgBasemaps,Mode=OneTime }"
-                                          SelectedItem="{Binding Scene.Basemap, Mode=TwoWay}">
-                                    <GridView.ItemTemplate>
-                                        <DataTemplate x:DataType="mapping:Basemap">
-                                            <Grid Margin="5" Width="100" Height="100">
-                                                <Image Stretch="UniformToFill"
-                                                       Width="100" Height="100"
-                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                       Source="{Binding Item.ThumbnailUri}" />
-                                                <Border Background="#7F000000"
-                                                        VerticalAlignment="Top"
-                                                        Padding="5">
-                                                    <TextBlock Text="{x:Bind Name}"
-                                                               Foreground="White"
-                                                               Opacity="1"
-                                                               TextWrapping="WrapWholeWords" />
-                                                </Border>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </GridView.ItemTemplate>
-                                </GridView>
-                            </Flyout>
-                        </AppBarButton.Flyout>
-                    </AppBarButton>
-                </StackPanel>
-
-            </Grid>
         </Grid>
-    </SplitView>
+    </Grid>
 </UserControl>

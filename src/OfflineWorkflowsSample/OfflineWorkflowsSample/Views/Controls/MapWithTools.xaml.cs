@@ -43,37 +43,16 @@ namespace OfflineWorkflowSample
             set => SetValue(ItemProperty, value);
         }
 
-        #region Pivot item hack
-
-        // Pivot item hack needed to prevent UWP layout cycle, which results in a crash.
-
-        private List<object> _pivotContents;
-
         private void MenuButtonClicked(object sender, RoutedEventArgs e)
         {
-            MapLegendSplitView.IsPaneOpen = !MapLegendSplitView.IsPaneOpen;
-        }
-
-        private void MapLegendSplitView_OnPaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
-        {
-            if (OuterPivot.Items.Any())
+            if (BonusSidebar.Visibility == Visibility.Visible)
             {
-                _pivotContents = OuterPivot.Items.ToList();
-                OuterPivot.Items.Clear();
+                BonusSidebar.Visibility = Visibility.Collapsed;
+            } 
+            else
+            {
+                BonusSidebar.Visibility = Visibility.Visible;
             }
         }
-
-        private void MapLegendSplitView_OnPaneOpening(SplitView sender, object args)
-        {
-            if (_pivotContents != null)
-            {
-                OuterPivot.Items.Clear();
-                foreach (var item in _pivotContents)
-                    OuterPivot.Items.Add(item);
-                _pivotContents = null;
-            }
-        }
-
-        #endregion
     }
 }

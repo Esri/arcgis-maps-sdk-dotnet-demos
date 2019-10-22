@@ -5,17 +5,73 @@
     xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
     xmlns:controls1="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     xmlns:controls="using:Esri.ArcGISRuntime.UI.Controls"
-    xmlns:viewServices="using:OfflineWorkflowsSample.Infrastructure.ViewServices">
+    xmlns:viewServices="using:OfflineWorkflowsSample.Infrastructure.ViewServices"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
     <UserControl.Resources>
         <DataTemplate x:Key="LayerItemTemplate" x:DataType="mapping:Layer">
             <TextBlock Text="{x:Bind Name}" />
         </DataTemplate>
     </UserControl.Resources>
-    <SplitView x:Name="MapLegendSplitView"
-               DisplayMode="Overlay" PaneClosing="MapLegendSplitView_OnPaneClosing"
-               PaneOpening="MapLegendSplitView_OnPaneOpening"
-               PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
-        <SplitView.Pane>
+    <Grid>
+        <!-- Why not use a splitview? Because I don't like seeing Layout Cycle Detected crashes every time I blink. -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <controls:MapView x:Name="MyMapView" Map="{x:Bind Map, Mode=OneWay}"
+                              viewServices:MapViewService.ViewService="{x:Bind ViewModel.MapViewService,Mode=OneWay}" />
+            <controls1:Compass GeoView="{x:Bind MyMapView, Mode=OneWay}" Height="40"
+                               Width="40"
+                               Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
+                               HorizontalAlignment="Right" />
+            <controls1:MeasureToolbar MapView="{x:Bind MyMapView}"
+                                      HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <StackPanel Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush }">
+                    <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
+                                  Click="MenuButtonClicked" />
+                    <AppBarButton Icon="ZoomIn" Label="Zoom in" IsCompact="True" Height="48"
+                                  Command="{x:Bind ViewModel.ZoomInCommand}" />
+                    <AppBarButton Icon="Home" Label="Full extent" IsCompact="True" Height="48"
+                                  Command="{x:Bind ViewModel.ResetViewPointCommand}" />
+                    <AppBarButton Icon="ZoomOut" Label="Zoom out" IsCompact="True" Height="48"
+                                  Command="{x:Bind ViewModel.ZoomOutCommand}" />
+                    <AppBarButton Icon="List" Label="Choose basemap">
+                        <AppBarButton.Flyout>
+                            <Flyout>
+                                <GridView Width="230"
+                                          ItemsSource="{x:Bind ViewModel.PortalViewModel.OrgBasemaps,Mode=OneTime}"
+                                          SelectedItem="{Binding Map.Basemap, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate x:DataType="mapping:Basemap">
+                                            <Grid Margin="5" Width="100" Height="100">
+                                                <Image Stretch="UniformToFill"
+                                                       Width="100" Height="100"
+                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                       Source="{Binding Item.ThumbnailUri,Mode=OneWay}" />
+                                                <Border Background="#7F000000"
+                                                        VerticalAlignment="Top"
+                                                        Padding="5">
+                                                    <TextBlock Text="{x:Bind Name}"
+                                                               Foreground="White"
+                                                               Opacity="1"
+                                                               TextWrapping="WrapWholeWords" />
+                                                </Border>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                </GridView>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                </StackPanel>
+
+            </Grid>
+            <controls1:ScaleLine MapView="{x:Bind MyMapView, Mode=OneWay}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />
+        </Grid>
+        <Grid Grid.Column="0" Width="350" x:Name="BonusSidebar">
             <Pivot x:Name="OuterPivot">
                 <PivotItem Header="Info">
                     <ScrollViewer>
@@ -62,66 +118,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
-                <Pivot.RightHeader>
-                    <Button HorizontalAlignment="Right"
-                            Click="MenuButtonClicked">
-                        <SymbolIcon Symbol="ClosePane" />
-                    </Button>
-                </Pivot.RightHeader>
             </Pivot>
-        </SplitView.Pane>
-        <Grid>
-            <controls:MapView x:Name="MyMapView" Map="{x:Bind Map,Mode=OneWay}"
-                              viewServices:MapViewService.ViewService="{x:Bind ViewModel.MapViewService,Mode=OneWay}" />
-            <controls1:Compass GeoView="{x:Bind MyMapView, Mode=OneWay}" Height="40"
-                               Width="40"
-                               Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
-                               HorizontalAlignment="Right" />
-            <controls1:MeasureToolbar MapView="{x:Bind MyMapView}"
-                                      HorizontalAlignment="Right" VerticalAlignment="Top" />
-            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
-                <StackPanel Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush }">
-                    <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
-                                  Click="MenuButtonClicked" />
-                    <AppBarButton Icon="ZoomIn" Label="Zoom in" IsCompact="True" Height="48"
-                                  Command="{x:Bind ViewModel.ZoomInCommand}" />
-                    <AppBarButton Icon="Home" Label="Full extent" IsCompact="True" Height="48"
-                                  Command="{x:Bind ViewModel.ResetViewPointCommand}" />
-                    <AppBarButton Icon="ZoomOut" Label="Zoom out" IsCompact="True" Height="48"
-                                  Command="{x:Bind ViewModel.ZoomOutCommand}" />
-                    <AppBarButton Icon="List" Label="Choose basemap">
-                        <AppBarButton.Flyout>
-                            <Flyout>
-                                <GridView Width="230"
-                                          ItemsSource="{x:Bind ViewModel.PortalViewModel.OrgBasemaps,Mode=OneTime}"
-                                          SelectedItem="{Binding Map.Basemap, Mode=TwoWay}">
-                                    <GridView.ItemTemplate>
-                                        <DataTemplate x:DataType="mapping:Basemap">
-                                            <Grid Margin="5" Width="100" Height="100">
-                                                <Image Stretch="UniformToFill"
-                                                       Width="100" Height="100"
-                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                       Source="{Binding Item.ThumbnailUri,Mode=OneWay}" />
-                                                <Border Background="#7F000000"
-                                                        VerticalAlignment="Top"
-                                                        Padding="5">
-                                                    <TextBlock Text="{x:Bind Name}"
-                                                               Foreground="White"
-                                                               Opacity="1"
-                                                               TextWrapping="WrapWholeWords" />
-                                                </Border>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </GridView.ItemTemplate>
-                                </GridView>
-                            </Flyout>
-                        </AppBarButton.Flyout>
-                    </AppBarButton>
-                </StackPanel>
-
-            </Grid>
-            <controls1:ScaleLine MapView="{x:Bind MyMapView, Mode=OneWay}"
-                                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,30" />
         </Grid>
-    </SplitView>
+    </Grid>
 </UserControl>

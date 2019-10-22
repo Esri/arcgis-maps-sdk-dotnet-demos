@@ -7,8 +7,7 @@
     xmlns:offlineWorkflowSample="using:OfflineWorkflowSample"
     xmlns:converter="using:OfflineWorkflowSample.Infrastructure.Converter"
     mc:Ignorable="d"
-    NavigationCacheMode="Required"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    NavigationCacheMode="Required">
     <Page.Resources>
         <converter:NullEnumToBlankStringConverter x:Key="NullEnumToBlankStringConverter" />
     </Page.Resources>

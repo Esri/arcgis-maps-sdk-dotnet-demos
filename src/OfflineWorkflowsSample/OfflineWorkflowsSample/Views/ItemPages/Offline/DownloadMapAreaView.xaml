@@ -14,8 +14,7 @@
                         <TextBlock Text="1. Query map areas"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <Button Content="Query areas"
-                                Command="{Binding QueryMapAreasCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding QueryMapAreasCommand}" />
                         <TextBlock Text="2. Select map area for download"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <ListView ItemsSource="{Binding MapAreas, Mode=OneWay}"
@@ -52,25 +51,21 @@
                             </ListView.ItemTemplate>
                         </ListView>
                         <Button Content="Zoom to preplanned areas"
-                                Command="{Binding ZoomToAreasCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding ZoomToAreasCommand}" />
                         <TextBlock Text="3. Download selected area"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <Button Content="Download area"
-                                Command="{Binding DownloadMapAreaCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding DownloadMapAreaCommand}" />
                         <TextBlock Text="4. Open downloaded map"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <TextBlock Text="Curious? See the package in local storage."
                                    Style="{StaticResource BodyTextBlockStyle}" />
                         <Button Content="Reveal in File Explorer"
-                                Command="{Binding OpenMapFileCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding OpenMapFileCommand}" />
                         <TextBlock Text="5. Do it again"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <Button Content="Reset the map"
-                                Command="{Binding ResetMapCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding ResetMapCommand}" />
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
@@ -83,24 +78,21 @@
                             Text="When map area is downloaded, you should make sure to pull down any possible changes."
                             Style="{StaticResource BodyTextBlockStyle}" />
                         <Button Content="Download changes"
-                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Download"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Download" />
                         <TextBlock Text="2. Upload local changes"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <TextBlock
                             Text="When there are edits done locally that you want to push to the service, you can use UPLOAD option."
                             Style="{StaticResource BodyTextBlockStyle}" />
                         <Button Content="Upload changes"
-                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Upload"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Upload" />
                         <TextBlock Text="Bi-directional synchronization"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <TextBlock
                             Text="When there are edits done locally that you want to push to the service, you can use BIDIRECTIONAL option when you want to get the latest changes from the server in a one operation."
                             Style="{StaticResource BodyTextBlockStyle}" />
                         <Button Content="Bidirectional"
-                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Bidirectional"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding SyncMapAreaCommand}" CommandParameter="Bidirectional" />
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

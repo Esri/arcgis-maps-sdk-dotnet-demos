@@ -36,20 +36,17 @@
                         <TextBlock Text="4. Generate offline map"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <Button Content="Generate area"
-                                Command="{Binding GenerateMapAreaCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding GenerateMapAreaCommand}" />
                         <TextBlock Text="5. Open downloaded map"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <TextBlock Text="Curious? See the package in local storage."
                                    Style="{StaticResource BodyTextBlockStyle}" />
                         <Button Content="Reveal in File Explorer"
-                                Command="{Binding OpenMapFileCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding OpenMapFileCommand}" />
                         <TextBlock Text="6. Do it again"
                                    Style="{StaticResource SubtitleTextBlockStyle}" />
                         <Button Content="Reset the map"
-                                Command="{Binding ResetMapCommand}"
-                                Style="{StaticResource ButtonStyle}" />
+                                Command="{Binding ResetMapCommand}" />
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
