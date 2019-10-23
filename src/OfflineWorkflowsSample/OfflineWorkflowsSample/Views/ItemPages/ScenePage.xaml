@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="OfflineWorkflowSample.Views.ItemPages.ScenePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:OfflineWorkflowSample.Controls"
+    xmlns:itemPages="using:OfflineWorkflowSample.ViewModels.ItemPages"
+    mc:Ignorable="d"
+    NavigationCacheMode="Disabled"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <!-- NavigationCacheMode Needed to prevent object already owned exceptions with SceneView -->
+    <Page.Resources>
+        <itemPages:ScenePageViewModel x:Key="ViewModel" />
+    </Page.Resources>
+    <Grid>
+        <controls:SceneWithTools Scene="{x:Bind ViewModel.Scene, Mode=OneWay}" Item="{x:Bind ViewModel.Item, Mode=OneWay}" />
+    </Grid>
+</Page>
