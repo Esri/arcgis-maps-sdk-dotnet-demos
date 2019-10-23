@@ -213,9 +213,9 @@ namespace OfflineWorkflowSample.ViewModels
         #region OAuth constants
 
         // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
-        private const string AppClientId = "collectorwindowsstore";
-        private const string ClientSecret = "";
-        private const string OAuthRedirectUrl = @"urn:ietf:wg:oauth:2.0:oob";
+        private const string AppClientId = "YOUR_APP_CLIENT_ID_HERE";
+        private const string ClientSecret = "GET IT FROM https://developers.arcgis.com/applications/";
+        private const string OAuthRedirectUrl = @"DON'T FORGET A REDIRECT URL";
         private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
 
         #endregion OAuth constants
