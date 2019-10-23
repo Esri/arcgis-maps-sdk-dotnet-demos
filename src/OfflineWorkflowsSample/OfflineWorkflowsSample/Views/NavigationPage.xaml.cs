@@ -80,6 +80,7 @@ namespace OfflineWorkflowSample.Views
         private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             ContentFrame.BackStack.Clear();
+            ViewModel.SelectedItem = null;
             // Determine which page should be navigated to.
             Type nextPageType = null;
             if (args.IsSettingsInvoked)
@@ -187,27 +188,24 @@ namespace OfflineWorkflowSample.Views
         {
             if (ContentFrame.CanGoBack)
             {
+                ViewModel.SelectedItem = null;
                 ContentFrame.GoBack(new SuppressNavigationTransitionInfo());
 
                 // Reset selected item when showing browsing views.
                 if (ContentFrame.Content is OfflineMapsView)
                 {
-                    ViewModel.SelectedItem = null;
                     NavigationView.SelectedItem = LocalContentMenuItem;
                 }
                 if (ContentFrame.Content is PortalBrowserView)
                 {
-                    ViewModel.SelectedItem = null;
                     NavigationView.SelectedItem = MyFoldersMenuItem;
                 }
                 if (ContentFrame.Content is PortalGroupView)
                 {
-                    ViewModel.SelectedItem = null;
                     NavigationView.SelectedItem = MyGroupsMenuItem;
                 }
                 if (ContentFrame.Content is SearchPage)
                 {
-                    ViewModel.SelectedItem = null;
                     NavigationView.SelectedItem = SearchMenuItem;
                 }
             }
