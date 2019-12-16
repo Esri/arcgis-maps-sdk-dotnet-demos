@@ -32,11 +32,11 @@
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
 	<string>FormsDemoAR</string>
-    <key>XSAppIconAssets</key>
-    <string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>For showing the current location in a map</string>
-    <key>NSCameraUsageDescription</key>
-    <string>For Augmented Reality</string>
+	<string>For showing the current location in a map</string>
+	<key>NSCameraUsageDescription</key>
+	<string>For Augmented Reality</string>
 </dict>
 </plist>
