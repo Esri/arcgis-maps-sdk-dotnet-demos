@@ -62,7 +62,7 @@ namespace FormsDemoAR
         private async Task configureScene()
         {
             // Create a scene and add the Melbourne layer to it.
-            Scene melbourneScene = new Scene(SceneViewTilingScheme.Geographic);
+            Scene melbourneScene = new Scene();
             melbourneScene.OperationalLayers.Add(new IntegratedMeshLayer(new Uri("https://arcgisruntime.maps.arcgis.com/home/item.html?id=2367c1fbe19d4a1aa05d79d084e3d832")));
 
             // Show the scene in the view
