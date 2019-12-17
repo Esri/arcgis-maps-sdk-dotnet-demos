@@ -14,11 +14,11 @@ You can also find a set of smaller feature-focused samples in the [Runtime Sampl
 * [`GeoEvent Server Streaming Service`](src/GeoEventServerSample) - Demonstrates how to stream data from ArcGIS GeoEvent Server and render them on the map.
 * [`Multi Targeting Project`](src/MultiTargeting) - Example showing how to create a single multi-targeting project that targets all the frameworks that the ArcGIS Runtime SDK for .NET Supports.
 * [`Geocode & Route on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Desktop (WPF) and Universal Windows Platform (UWP).
+* [`KML Viewer`](src/KmlViewer) - A UWP app for visualizing KML/KMZ files in 2D and 3D.
 
 ### Demos (v10.2.x)
 
 * [`Measure Tool`](src/MeasureTool) - A sample demonstrating how to extend the editor to create a measure tool.
-* [`KML Viewer`](src/KmlViewer) - A Windows Store app for visualizing KML/KMZ files in 2D and 3D.
 * [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D.
 
 ## Resources
