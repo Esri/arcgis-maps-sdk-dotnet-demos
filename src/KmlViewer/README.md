@@ -1,6 +1,6 @@
 Demo: KML 2D/3D Viewer
 =======================
-Required version: ArcGIS Runtime SDK 10.2.6 for .NET
+Required version: ArcGIS Runtime SDK 100.7.0 for .NET
 
 Windows Store app for opening KML and KMZ Files in a 3D or 2D View.
 

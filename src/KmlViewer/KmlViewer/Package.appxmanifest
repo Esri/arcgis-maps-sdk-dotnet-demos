@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="KMLViewer" Publisher="CN=Morten Nielsen, O=Morten Nielsen, L=Redlands, S=CA, C=US" Version="1.0.3.0" />
+  <Identity Name="KMLViewer" Publisher="CN=ArcGISRuntime .NET Team" Version="1.0.3.0" />
   <mp:PhoneIdentity PhoneProductId="53de70c5-b01f-46ba-8403-942120165e79" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>KML Viewer</DisplayName>
