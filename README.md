@@ -1,21 +1,23 @@
 ArcGIS Runtime Demos for .NET
 ===========================
 
-This project contains source code for simple native Windows Desktop, Windows Universal, Xamarin.Android and Xamarin.iOS applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.   
+This project contains source code for simple native Windows Desktop, Windows Universal, Xamarin.Android and Xamarin.iOS applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.
 You can also find a set of smaller feature-focused samples in the [Runtime Samples](https://github.com/Esri/arcgis-runtime-samples-dotnet) repo.
 
 ### Demos (v100.x)
 
-* [`Turn-by-Turn Routing`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Phone, Windows Store and Windows Desktop.
+* [`Turn-by-Turn Routing`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Desktop, Windows Store and Xamarin.Forms.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
 * [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
-* [`Esri Campus Routing`](src/CampusRouting) - A cross-platform (Xamarin) sample demonstrating indoor geocoding and routing for a campus running on Windows Universap, Android and iOS.
+* [`Esri Campus Routing`](src/CampusRouting) - A cross-platform (Xamarin) sample demonstrating indoor geocoding and routing for a campus running on Windows Universal, Android and iOS.
 * [`Electronic Navigation Charts (ENC)`](src/HydrographicsSample) - Demonstrates how to work with and render ENC data using the Hydrographics package.
 * [`GeoEvent Server Streaming Service`](src/GeoEventServerSample) - Demonstrates how to stream data from ArcGIS GeoEvent Server and render them on the map.
 * [`Multi Targeting Project`](src/MultiTargeting) - Example showing how to create a single multi-targeting project that targets all the frameworks that the ArcGIS Runtime SDK for .NET Supports.
 * [`Geocode & Route on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Desktop (WPF) and Universal Windows Platform (UWP).
+* [`Viewshed analysis in tabletop AR with Xamarin.Forms`](src/ViewshedInTabletopAR) - Demonstrates how to do a viewshed analysis in a tabletop AR scenario using a moving graphic with Xamarin.Forms.
+* [`Offline workflows`](src/OfflineWorkflowsSample) - Demonstrates how to browse a portal for offline-enabled maps and take them offline. Also demonstrates how to open maps previously taken offline.
 * [`KML Viewer`](src/KmlViewer) - A UWP app for visualizing KML/KMZ files in 2D and 3D.
-
+ 
 ### Demos (v10.2.x)
 
 * [`Measure Tool`](src/MeasureTool) - A sample demonstrating how to extend the editor to create a measure tool.

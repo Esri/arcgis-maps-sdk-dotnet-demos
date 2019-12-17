@@ -1,0 +1,120 @@
+﻿<UserControl
+    x:Class="OfflineWorkflowSample.Controls.SceneWithTools"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
+    xmlns:controls1="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
+    xmlns:controls="using:Esri.ArcGISRuntime.UI.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="LayerItemTemplate" x:DataType="mapping:Layer">
+            <TextBlock Text="{x:Bind Name}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <controls:SceneView x:Name="MySceneView" Scene="{x:Bind Scene, Mode=OneWay}" />
+            <controls1:Compass GeoView="{x:Bind MySceneView, Mode=OneWay}" Height="40"
+                               Width="40"
+                               Margin="20,30" AutoHide="False" VerticalAlignment="Bottom"
+                               HorizontalAlignment="Right" />
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush }">
+                    <AppBarButton Icon="AllApps" Label="Legend" IsCompact="True" Height="48"
+                                  Click="MenuButtonClicked" />
+                    <AppBarButton Icon="List" Label="Choose basemap">
+                        <AppBarButton.Flyout>
+                            <Flyout>
+                                <GridView Width="230"
+                                          ItemsSource="{x:Bind ViewModel.PortalViewModel.OrgBasemaps,Mode=OneTime }"
+                                          SelectedItem="{Binding Scene.Basemap, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate x:DataType="mapping:Basemap">
+                                            <Grid Margin="5" Width="100" Height="100">
+                                                <Image Stretch="UniformToFill"
+                                                       Width="100" Height="100"
+                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                       Source="{Binding Item.ThumbnailUri}" />
+                                                <Border Background="#7F000000"
+                                                        VerticalAlignment="Top"
+                                                        Padding="5">
+                                                    <TextBlock Text="{x:Bind Name}"
+                                                               Foreground="White"
+                                                               Opacity="1"
+                                                               TextWrapping="WrapWholeWords" />
+                                                </Border>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                </GridView>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="0" Width="350" x:Name="BonusSidebar">
+            <Pivot x:Name="OuterPivot">
+                <PivotItem Header="Info">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind Item.Item.Title,Mode=OneWay}"
+                                       Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <Image Margin="5"
+                                   Source="{x:Bind Item.Thumbnail,Mode=OneWay}" />
+                            <TextBlock Text="{x:Bind Item.Item.Description,Mode=OneWay}"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       TextWrapping="Wrap" />
+                            <Button Content="Open in ArcGIS Online"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{x:Bind ViewModel.OpenItemInAgolCommand}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+                <PivotItem Header="Legend">
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{x:Bind Scene.OperationalLayers, Mode=OneWay}"
+                                      Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="mapping:Layer">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Bind Name,Mode=OneWay}" FontWeight="Bold" />
+                                        <controls1:LayerLegend LayerContent="{x:Bind Mode=OneWay}" Margin="10,0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </PivotItem>
+                <PivotItem Header="Layers">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock Text="Operational layers"
+                                       Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <ListView ItemsSource="{x:Bind Scene.OperationalLayers,Mode=OneWay}"
+                                      ItemTemplate="{StaticResource LayerItemTemplate}" />
+                            <TextBlock Text="Basemap"
+                                       Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <TextBlock Text="{x:Bind Scene.Basemap.Name,Mode=OneWay}" Padding="15,10,0,0" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+            </Pivot>
+        </Grid>
+    </Grid>
+</UserControl>

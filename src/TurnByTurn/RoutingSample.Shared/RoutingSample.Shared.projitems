@@ -6,7 +6,7 @@
     <SharedGUID>a2354b88-e136-4b85-8ac0-dd7f9df4a6b1</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>RoutingSample.Shared</Import_RootNamespace>
+    <Import_RootNamespace>RoutingSample</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\BearLeft.png" />
@@ -16,7 +16,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\HighwayMerge.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\RampLeft.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\RampRight.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\Roundabout .png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\Roundabout.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\Stop.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\Straight.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\SharpLeft.png" />
@@ -26,15 +26,26 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\UTurn.png" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CommandBinder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\BaseValueConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\TimeSpanFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DistanceFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\EnumFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DelegateCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GeometryHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Maneuver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Simulation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\TimeFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueConverterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NullToCollapsedConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ModelBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\RouteDataSource.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\RouteService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\NavigationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RestoreAutoPanMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RouteLocationSimulator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainPageVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SimulatedLocationDataSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Speech.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Services\" />
   </ItemGroup>
 </Project>
