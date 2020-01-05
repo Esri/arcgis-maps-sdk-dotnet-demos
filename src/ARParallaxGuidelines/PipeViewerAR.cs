@@ -175,7 +175,7 @@ namespace ARParallaxGuidelines
             shadowOverlay.SceneProperties.SurfacePlacement = SurfacePlacement.DrapedFlat;
 
             // Configure the renderer.
-            shadowOverlay.Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, System.Drawing.Color.FromArgb(128, System.Drawing.Color.Yellow), 0.3));
+            shadowOverlay.Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, System.Drawing.Color.Yellow, 0.3));
 
             // Add all underground graphics.
             _shadowPipes = _pipeGraphics.Where(g => (double)g.Attributes["ElevationOffset"] < 0).Select(g => new Graphic(g.Geometry, g.Attributes));
@@ -188,35 +188,25 @@ namespace ARParallaxGuidelines
         private void ConfigureAndAddLeaders()
         {
             GraphicsOverlay leadersOverlay = new GraphicsOverlay();
-            leadersOverlay.SceneProperties.SurfacePlacement = SurfacePlacement.DrapedFlat;
+            leadersOverlay.SceneProperties.SurfacePlacement = SurfacePlacement.Absolute;
             leadersOverlay.Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, System.Drawing.Color.Red, 0.3));
 
-            foreach(Graphic shadowPipeGraphic in _shadowPipes)
+            foreach(Graphic pipeGraphic in _pipeGraphics)
             {
-                
-                var truePipeGraphic = _pipeGraphics.First(tpg => tpg.Attributes["PipeIndex"].Equals(shadowPipeGraphic.Attributes["PipeIndex"]));
+                Polyline pipePolyline = (Polyline)pipeGraphic.Geometry;
+                double offset = (double)pipeGraphic.Attributes["ElevationOffset"];
 
-                int partIndex = 0;
-
-                var shadowLine = shadowPipeGraphic.Geometry as Polyline;
-                foreach (var shadowPart in shadowLine.Parts)
+                foreach (var part in pipePolyline.Parts)
                 {
-                    MapPoint surfaceStartPoint = shadowPart.StartPoint;
-                    MapPoint surfaceEndPoint = shadowPart.EndPoint;
-
-                    var matchingTruePart = (truePipeGraphic.Geometry as Polyline).Parts[partIndex];
-                    MapPoint trueStartPoint = matchingTruePart.StartPoint;
-                    MapPoint trueEndPoint = matchingTruePart.EndPoint;
-
-                    Polyline leaderStartPolyline = new Polyline(new[] { trueStartPoint, surfaceStartPoint });
-                    Polyline leaderEndPolyline = new Polyline(new[] { trueEndPoint, surfaceEndPoint });
-
-                    leadersOverlay.Graphics.Add(new Graphic(leaderStartPolyline));
-                    leadersOverlay.Graphics.Add(new Graphic(leaderEndPolyline));
-
-                    partIndex++;
+                    foreach(var point in part.Points)
+                    {
+                        MapPoint offsetPoint = new MapPoint(point.X, point.Y, point.Z - offset);
+                        Polyline leaderLine = new Polyline(new[] { point, offsetPoint });
+                        leadersOverlay.Graphics.Add(new Graphic(leaderLine));
+                    }
                 }
             }
+
             _arView.GraphicsOverlays.Add(leadersOverlay);
         }
 

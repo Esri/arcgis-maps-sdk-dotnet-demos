@@ -21,6 +21,7 @@ namespace ARParallaxGuidelines
             // create a new window instance based on the screen size
             Window = new UIWindow(UIScreen.MainScreen.Bounds);
             var navController = new UINavigationController();
+            navController.NavigationBarHidden = true;
             Window.RootViewController = navController;
             navController.PushViewController(new PipePlacer(), false);
 

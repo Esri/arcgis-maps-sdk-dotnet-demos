@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using CoreGraphics;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
@@ -83,7 +85,7 @@ namespace ARParallaxGuidelines
         {
             // Transition to the view the pipes in augmented reality.
             NavigationController.PopViewController(true);
-            NavigationController.PushViewController(new PipeViewerAR() { _pipeGraphics = _pipesOverlay.Graphics.Select(x => new Graphic(x.Geometry, x.Attributes)).ToList() }, true);
+            NavigationController.PushViewController(new PipeViewerAR() { _pipeGraphics = _pipesOverlay.Graphics.Select(x => new Graphic(x.Geometry, x.Attributes)) }, true);
         }
 
         private void RedoButton_Clicked(object sender, EventArgs e)
@@ -116,23 +118,29 @@ namespace ARParallaxGuidelines
                 return;
             }
 
-            // Get the first point of the pipe.
-            MapPoint firstPoint = ((Polyline)geometry).Parts[0].StartPoint;
             try
             {
                 // Get the users selected elevation offset.
                 double elevationOffset = _elevationSlider.Value;
 
-                // Get the elevation of the geometry from the first point of the pipe.
-                double elevation = await _elevationSurface.GetElevationAsync(firstPoint);
+                var densifiedPolyline = (Polyline)GeometryEngine.Densify(geometry, 0.5);
+                PolylineBuilder newPolylineBuilder = new PolylineBuilder(densifiedPolyline.SpatialReference);
 
-                // Create a polyline for the pipe at the selected altitude.
-                Polyline elevatedLine = GeometryEngine.SetZ(geometry, elevation + elevationOffset) as Polyline;
+                foreach(var part in densifiedPolyline.Parts)
+                {
+                    foreach(var point in part.Points)
+                    {
+                        double pointElevation = await _elevationSurface.GetElevationAsync(point);
+                        MapPoint newMapPoint = new MapPoint(point.X, point.Y, pointElevation + elevationOffset);
+                        newPolylineBuilder.AddPoint(newMapPoint);
+                    }
+                }
+
+                Polyline elevatedLine = newPolylineBuilder.ToGeometry();
 
                 // Create a graphic for the pipe.
                 Graphic linegraphic = new Graphic(elevatedLine);
                 linegraphic.Attributes["ElevationOffset"] = elevationOffset;
-                linegraphic.Attributes["PipeIndex"] = _pipeIndex;
                 _pipeIndex++;
                 _pipesOverlay.Graphics.Add(linegraphic);
 
