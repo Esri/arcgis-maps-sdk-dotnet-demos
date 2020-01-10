@@ -123,7 +123,7 @@ namespace ARParallaxGuidelines
                 // Get the users selected elevation offset.
                 double elevationOffset = _elevationSlider.Value;
 
-                var densifiedPolyline = (Polyline)GeometryEngine.Densify(geometry, 0.5);
+                var densifiedPolyline = (Polyline)GeometryEngine.Densify(geometry, 2);
                 PolylineBuilder newPolylineBuilder = new PolylineBuilder(densifiedPolyline.SpatialReference);
 
                 foreach(var part in densifiedPolyline.Parts)
