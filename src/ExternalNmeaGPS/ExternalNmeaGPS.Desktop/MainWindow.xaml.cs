@@ -23,10 +23,11 @@ namespace ExternalNmeaGPS
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private ExternalNmeaGPS.Controls.SatelliteViewWindow skyViewWindow = new Controls.SatelliteViewWindow();
-		private ExternalNmeaGPS.Controls.NmeaRawMessagesWindow messagesWindow = new Controls.NmeaRawMessagesWindow();
-		private NmeaParser.NmeaDevice currentNmeaDevice;
-		private string currentNmeaFile;
+		private readonly Controls.SatelliteViewWindow skyViewWindow = new Controls.SatelliteViewWindow();
+		private readonly Controls.NmeaRawMessagesWindow messagesWindow = new Controls.NmeaRawMessagesWindow();
+		private NmeaParser.NmeaDevice? currentNmeaDevice;
+		private string? currentNmeaFile;
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -55,7 +56,7 @@ namespace ExternalNmeaGPS
 			mapView.LocationDisplay.DataSource.LocationChanged += LocationProvider_LocationChanged;
 		}
 
-		private void LocationProvider_LocationChanged(object sender, Esri.ArcGISRuntime.Location.Location e)
+		private void LocationProvider_LocationChanged(object? sender, Esri.ArcGISRuntime.Location.Location e)
 		{
 			Dispatcher.BeginInvoke((Action)delegate()
 			{
@@ -66,17 +67,15 @@ namespace ExternalNmeaGPS
 			});
 		}
 		
-		private void device_MessageReceived(object sender, NmeaParser.NmeaMessageReceivedEventArgs args)
+		private void device_MessageReceived(object? sender, NmeaParser.NmeaMessageReceivedEventArgs args)
 		{
 			Dispatcher.BeginInvoke((Action) delegate()
 			{
 				messagesWindow.AddMessage(args.Message);
 
-				if(args.Message is NmeaParser.Nmea.Gps.Gpgsv)
+				if(args.Message is NmeaParser.Nmea.Gsv gsv)
 				{
-					var gpgsv = (NmeaParser.Nmea.Gps.Gpgsv)args.Message;
-					if(args.IsMultipart && args.MessageParts != null)
-						skyViewWindow.GpgsvMessages = args.MessageParts.OfType<NmeaParser.Nmea.Gps.Gpgsv>();
+					skyViewWindow.GsvMessage= gsv;
 				}
 			});
 		}
@@ -85,12 +84,14 @@ namespace ExternalNmeaGPS
 		{
 			skyViewWindow.Show();
 			skyViewWindow.Activate();
+			skyViewWindow.Owner = this;
 		}
 
 		private void MenuItemShowMessages_Click(object sender, RoutedEventArgs e)
 		{
 			messagesWindow.Show();
 			messagesWindow.Activate();
+			messagesWindow.Owner = this;
 		}
 
 		private void SerialPortOpen_Click(object sender, RoutedEventArgs e)
@@ -121,7 +122,8 @@ namespace ExternalNmeaGPS
 
 		private void LoadAsLayer_Click(object sender, RoutedEventArgs e)
 		{
-			LoadEntireNmeaTrack(currentNmeaFile);
+			if (currentNmeaFile != null)
+				LoadEntireNmeaTrack(currentNmeaFile);
 		}
 
 		private void LoadEntireNmeaTrack(string filename)
@@ -136,14 +138,13 @@ namespace ExternalNmeaGPS
 				while (!sr.EndOfStream)
 				{
 					var line = sr.ReadLine();
-					if (line.StartsWith("$"))
+					if (line != null && line.StartsWith("$"))
 					{
 						try
 						{
 							var msg = NmeaParser.Nmea.NmeaMessage.Parse(line);
-							if (msg is NmeaParser.Nmea.Gps.Gprmc)
+							if (msg is NmeaParser.Nmea.Rmc rmc)
 							{
-								var rmc = (NmeaParser.Nmea.Gps.Gprmc)msg;
 								if (!double.IsNaN(rmc.Longitude))
 									vertices.Add(new MapPoint(rmc.Longitude, rmc.Latitude));
 							}
@@ -153,10 +154,10 @@ namespace ExternalNmeaGPS
 				}
 			}
 			var pline = new Esri.ArcGISRuntime.Geometry.Polyline(vertices, SpatialReferences.Wgs84);
-			var linesymbol = new SimpleLineSymbol() { Width = 4, Color = Colors.CornflowerBlue };
+			var linesymbol = new SimpleLineSymbol() { Width = 4, Color = System.Drawing.Color.CornflowerBlue };
 			var symbol = new CompositeSymbol();
 			symbol.Symbols.Add(linesymbol);
-			symbol.Symbols.Add(new SimpleMarkerSymbol() { Size = 5, Color = Colors.Black });
+			symbol.Symbols.Add(new SimpleMarkerSymbol() { Size = 5, Color = System.Drawing.Color.Black });
 			layer.Graphics.Add(new Graphic(pline, symbol));
 		}
 
@@ -164,5 +165,5 @@ namespace ExternalNmeaGPS
         {
             App.Current.Shutdown();
         }
-    }
+	}
 }

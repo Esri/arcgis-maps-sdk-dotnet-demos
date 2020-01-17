@@ -25,23 +25,22 @@ namespace ExternalNmeaGPS.Controls
 			InitializeComponent();
 		}
 
-		public IEnumerable<NmeaParser.Nmea.Gps.Gpgsv> GpgsvMessages
+		public NmeaParser.Nmea.Gsv GsvMessage
 		{
-			get { return (IEnumerable<NmeaParser.Nmea.Gps.Gpgsv>)GetValue(GpgsvMessagesProperty); }
-			set { SetValue(GpgsvMessagesProperty, value); }
+			get { return (NmeaParser.Nmea.Gsv)GetValue(GsvMessageProperty); }
+			set { SetValue(GsvMessageProperty, value); }
 		}
 
-		// Using a DependencyProperty as the backing store for GpgsvMessages.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty GpgsvMessagesProperty =
-			DependencyProperty.Register("GpgsvMessages", typeof(IEnumerable<NmeaParser.Nmea.Gps.Gpgsv>), typeof(SatelliteView), new PropertyMetadata(null, OnGpgsvMessagesChanged));
+		public static readonly DependencyProperty GsvMessageProperty =
+			DependencyProperty.Register(nameof(GsvMessage), typeof(NmeaParser.Nmea.Gsv), typeof(SatelliteView), new PropertyMetadata(null, OnGsvMessagePropertyChanged));
 
-		private static void OnGpgsvMessagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static void OnGsvMessagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var sats = e.NewValue as IEnumerable<NmeaParser.Nmea.Gps.Gpgsv>;
+			var sats = e.NewValue as NmeaParser.Nmea.Gsv;
 			if (sats == null)
-				(d as SatelliteView).satellites.ItemsSource = null;
+				((SatelliteView)d).satellites.ItemsSource = null;
 			else
-				(d as SatelliteView).satellites.ItemsSource = sats.SelectMany(s => s.SVs);
+				((SatelliteView)d).satellites.ItemsSource = sats.SVs;
 		}		
 	}
 	public class PolarPlacementItem : ContentControl
@@ -74,7 +73,7 @@ namespace ExternalNmeaGPS.Controls
 
 		private static void OnAzimuthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			(d as PolarPlacementItem).InvalidateArrange();
+			((UIElement)d).InvalidateArrange();
 		}
 
 		public double Elevation
@@ -88,7 +87,7 @@ namespace ExternalNmeaGPS.Controls
 
 		private static void OnElevationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			(d as PolarPlacementItem).InvalidateArrange();
+			((UIElement)d).InvalidateArrange();
 		}
 
 	}
