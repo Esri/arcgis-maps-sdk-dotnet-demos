@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalNmeaGPS.Desktop", "ExternalNmeaGPS.Desktop\ExternalNmeaGPS.Desktop.csproj", "{9BC72287-D6C0-4314-B988-FB61F48E0999}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalNmeaGPS.Desktop", "ExternalNmeaGPS.Desktop\ExternalNmeaGPS.Desktop.csproj", "{8D7FB4B9-4ADC-4F2A-8C1A-85B4FF12B6E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9BC72287-D6C0-4314-B988-FB61F48E0999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BC72287-D6C0-4314-B988-FB61F48E0999}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BC72287-D6C0-4314-B988-FB61F48E0999}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BC72287-D6C0-4314-B988-FB61F48E0999}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D7FB4B9-4ADC-4F2A-8C1A-85B4FF12B6E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D7FB4B9-4ADC-4F2A-8C1A-85B4FF12B6E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D7FB4B9-4ADC-4F2A-8C1A-85B4FF12B6E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D7FB4B9-4ADC-4F2A-8C1A-85B4FF12B6E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {34F4A278-0438-443B-B2F2-E90668E77294}
 	EndGlobalSection
 EndGlobal

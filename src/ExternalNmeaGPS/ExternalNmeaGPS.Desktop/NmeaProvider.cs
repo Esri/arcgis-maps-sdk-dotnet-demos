@@ -6,20 +6,21 @@ namespace ExternalNmeaGPS
 {
 	public class NmeaLocationProvider : Esri.ArcGISRuntime.Location.LocationDataSource
 	{
-		private NmeaParser.NmeaDevice device;
-		double m_Accuracy = 0;
-		double m_altitude = double.NaN;
-        double m_speed = 0;
-        double m_course = 0;
+		private NmeaParser.NmeaDevice m_device;
+		private double m_Accuracy = 0;
+		private double m_altitude = double.NaN;
+        private double m_speed = 0;
+        private double m_course = 0;
 
-		public NmeaLocationProvider(NmeaParser.NmeaDevice device)
-		{
-			this.device = device;
-			if(device != null)
-				device.MessageReceived += device_MessageReceived;
-		}
+        public NmeaLocationProvider(NmeaParser.NmeaDevice device)
+        {
+            if (device is null)
+                throw new ArgumentNullException(nameof(device));
+            this.m_device = device;
+            device.MessageReceived += Device_MessageReceived;
+        }
 
-		void device_MessageReceived(object sender, NmeaParser.NmeaMessageReceivedEventArgs e)
+		private void Device_MessageReceived(object? sender, NmeaParser.NmeaMessageReceivedEventArgs e)
 		{
 			var message = e.Message;
 			ParseMessage(message);
@@ -31,9 +32,9 @@ namespace ExternalNmeaGPS
             bool lostFix = false;
             double lat = 0;
             double lon = 0;
-			if (message is NmeaParser.Nmea.Gps.Garmin.Pgrme)
+			if (message is NmeaParser.Nmea.Garmin.Pgrme)
 			{
-				m_Accuracy = ((NmeaParser.Nmea.Gps.Garmin.Pgrme)message).HorizontalError;
+				m_Accuracy = ((NmeaParser.Nmea.Garmin.Pgrme)message).HorizontalError;
 			}
             else if(message is NmeaParser.Nmea.Gst)
             {
@@ -43,7 +44,7 @@ namespace ExternalNmeaGPS
             else if(message is NmeaParser.Nmea.Gga)
 			{
                 Gga = ((NmeaParser.Nmea.Gga)message);
-                isNewFix = Gga.Quality != NmeaParser.Nmea.Gps.Gpgga.FixQuality.Invalid;
+                isNewFix = Gga.Quality != NmeaParser.Nmea.Gga.FixQuality.Invalid;
                 lostFix = !isNewFix;
                 m_altitude = Gga.Altitude;
                 lat = Gga.Latitude;
@@ -78,8 +79,8 @@ namespace ExternalNmeaGPS
 
         protected override Task OnStartAsync()
         {
-			if (device != null)
-            	return this.device.OpenAsync();
+			if (m_device != null)
+            	return this.m_device.OpenAsync();
 			else
 				return System.Threading.Tasks.Task<bool>.FromResult(true);
         }
@@ -87,15 +88,15 @@ namespace ExternalNmeaGPS
         protected override Task OnStopAsync()
         {
             m_Accuracy = double.NaN;
-			if(this.device != null)
-            	return this.device.CloseAsync();
+			if(this.m_device != null)
+            	return this.m_device.CloseAsync();
 			else
 				return System.Threading.Tasks.Task<bool>.FromResult(true);
         }
 
-        public NmeaParser.Nmea.Gsa Gsa { get; private set; }
-        public NmeaParser.Nmea.Gga Gga { get; private set; }
-        public NmeaParser.Nmea.Rmc Rmc { get; private set; }
-        public NmeaParser.Nmea.Gst Gst { get; private set; }
+        public NmeaParser.Nmea.Gsa? Gsa { get; private set; }
+        public NmeaParser.Nmea.Gga? Gga { get; private set; }
+        public NmeaParser.Nmea.Rmc? Rmc { get; private set; }
+        public NmeaParser.Nmea.Gst? Gst { get; private set; }
     }
 }
