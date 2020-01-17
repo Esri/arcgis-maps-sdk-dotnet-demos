@@ -20,7 +20,7 @@ namespace LocalNetworkSample.Desktop
 
         private void mapview_PointerMoved(object sender, MouseEventArgs e)
         {
-            var mapview = (Esri.ArcGISRuntime.UI.MapView)sender;
+            var mapview = (Esri.ArcGISRuntime.UI.Controls.MapView)sender;
             var vm = (MainPageVM)mapview.DataContext;
             vm.UpdateMouseLocation(mapview.ScreenToLocation(e.GetPosition(mapview)));
         }

@@ -7,63 +7,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:common="using:LocalNetworkSample.Common"	
-	xmlns:esri="using:Esri.ArcGISRuntime.UI"
+	xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
+    xmlns:esriui="using:Esri.ArcGISRuntime.UI"
 	xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
 	xmlns:symb="using:Esri.ArcGISRuntime.Symbology"
 	xmlns:geom="using:Esri.ArcGISRuntime.Geometry"
 	xmlns:loc="using:Esri.ArcGISRuntime.Location"
 	xmlns:data="using:Esri.ArcGISRuntime.Data"
+    xmlns:sd="using:System.Drawing"
     mc:Ignorable="d">
     <Page.Resources>
         <common:BooleanToVisibilityConverter x:Key="boolToViz" />
         <common:NullToCollapsedConverter x:Key="nullToCollapsed" />
-        <local:MainPageVM x:Key="vm">
-            <local:MainPageVM.GraphicsOverlays>
-                <esri:GraphicsOverlayCollection>
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <symb:SimpleRenderer Label="PolygonBarriers">
-                                <symb:SimpleFillSymbol Color="#55FF0000" />
-                            </symb:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <symb:SimpleRenderer Label="PolylineBarriers">
-                                <symb:SimpleLineSymbol Color="Red" Width="5" />
-                            </symb:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <symb:SimpleRenderer Label="PointBarriers">
-                                <symb:SimpleMarkerSymbol Color="Red" Size="12" />
-                            </symb:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <symb:SimpleRenderer Label="route">
-                                <symb:SimpleLineSymbol Style="Solid" Color="CornflowerBlue" Width="5" />
-                            </symb:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <symb:SimpleRenderer Label="geocode">
-                                <symb:SimpleMarkerSymbol Size="10" >
-                                    <symb:SimpleMarkerSymbol.Outline>
-                                        <symb:SimpleLineSymbol Width="2" Color="White" />
-                                    </symb:SimpleMarkerSymbol.Outline>
-                                </symb:SimpleMarkerSymbol>
-                            </symb:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-                </esri:GraphicsOverlayCollection>
-            </local:MainPageVM.GraphicsOverlays>
-        </local:MainPageVM>
+        <local:MainPageVM x:Key="vm" />
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -188,15 +144,4 @@
 				   Foreground="{StaticResource AppAccentBrush}" />
         </Border>
     </Grid>
-
-    <Page.BottomAppBar>
-        <CommandBar IsOpen="True" IsSticky="True">
-            <CommandBar.PrimaryCommands>
-                <localCtrls:LocationDisplayToggle
-					LocationDisplay="{Binding LocationDisplay, Mode=TwoWay, Source={StaticResource vm}}" />
-            </CommandBar.PrimaryCommands>
-            <CommandBar.SecondaryCommands>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-    </Page.BottomAppBar>
 </Page>
