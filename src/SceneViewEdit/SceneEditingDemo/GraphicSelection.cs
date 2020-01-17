@@ -1,6 +1,6 @@
-﻿using Esri.ArcGISRuntime.Controls;
+﻿using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Layers;
+using Esri.ArcGISRuntime.Mapping;
 
 namespace SceneEditingDemo
 {

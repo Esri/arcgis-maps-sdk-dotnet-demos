@@ -1,10 +1,11 @@
-﻿using Esri.ArcGISRuntime.Controls;
+﻿using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Layers;
+using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Esri.ArcGISRuntime.UI.Controls;
 
 #if NETFX_CORE
 using Windows.UI;
@@ -22,28 +23,28 @@ namespace SceneEditingDemo.Helpers
 	{
 		#region Default draw symbols
 		//Symbol used by DrawPointAsync while moving the mouse
-		private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = Colors.Blue };
+		private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = System.Drawing.Color.Blue };
 
 		//Symbol used by DrawPolylineAsync	
 		private static LineSymbol DefaultLineSymbol = new SimpleLineSymbol()
 		{
 			Width = 2,
-			Color = Color.FromArgb(150, 0, 0, 255)
+			Color = System.Drawing.Color.FromArgb(150, 0, 0, 255)
 		};
 
 		//Symbol used by DrawPolygonAsync
 		private static FillSymbol DefaultFillSymbol = new SimpleFillSymbol()
 		{
-			Outline = new SimpleLineSymbol() { Width = 2, Color = Colors.Black },
-			Color = Color.FromArgb(100, 0, 0, 255)
+			Outline = new SimpleLineSymbol() { Width = 2, Color = System.Drawing.Color.Black },
+			Color = System.Drawing.Color.FromArgb(100, 0, 0, 255)
 		};
 
 		//Line Symbol used to show line between last added vertex and current mouse location
 		private static LineSymbol DefaultLineMoveSymbol = new SimpleLineSymbol()
 		{
 			Width = 5,
-			Color = Color.FromArgb(100, 255, 255, 255),
-			Style = SimpleLineStyle.Dot
+			Color = System.Drawing.Color.FromArgb(100, 127, 127, 127),
+			Style = SimpleLineSymbolStyle.Dot
 		};
 		#endregion Default draw symbols
 
@@ -95,6 +96,7 @@ namespace SceneEditingDemo.Helpers
 		{
 			var tcs = new TaskCompletionSource<Polyline>();
 			PolylineBuilder polylineBuilder = new PolylineBuilder(sceneView.SpatialReference);
+			polylineBuilder.AddPart(new MapPoint[] { });
 			var sketchlayer = CreateSketchLayer(sceneView);
 			Graphic lineGraphic = new Graphic() { Symbol = DefaultLineSymbol };
 			Graphic lineMoveGraphic = new Graphic() { Symbol = DefaultLineMoveSymbol };
@@ -143,6 +145,7 @@ namespace SceneEditingDemo.Helpers
 		{
 			var tcs = new TaskCompletionSource<Polygon>();
 			PolygonBuilder polygonBuilder = new PolygonBuilder(sceneView.SpatialReference);
+			polygonBuilder.AddPart(new MapPoint[] { });
 			var sketchlayer = CreateSketchLayer(sceneView);
 			Graphic polygonGraphic = new Graphic() { Symbol = DefaultFillSymbol };
 			Graphic lineMoveGraphic = new Graphic() { Symbol = DefaultLineMoveSymbol };
@@ -150,13 +153,13 @@ namespace SceneEditingDemo.Helpers
 			Action cleanupEvents = SetUpHandlers(sceneView,
 				(p) => //On mouse move move completion line around
 				{
-					if (p != null && polygonBuilder.Parts.Count > 0)
+					if (p != null && polygonBuilder.Parts.Count > 0 && polygonBuilder.Parts[0].Count > 0)
 					{
 						lineMoveGraphic.Geometry = new Polyline(new MapPoint[] 
 							{
 								 polygonBuilder.Parts[0].Last().EndPoint, 
 								 p, 
-								 polygonBuilder.Parts[0].First().StartPoint 
+								 polygonBuilder.Parts[0].First().StartPoint
 							});
 					}
 				},
@@ -217,40 +220,40 @@ namespace SceneEditingDemo.Helpers
 			if (onMove != null)
 			{
 #if NETFX_CORE
-				movehandler = (s, e) => onMove(view.ScreenToLocation(e.GetCurrentPoint(view).Position));
+				movehandler = (s, e) => onMove(view.ScreenToBaseSurface(e.GetCurrentPoint(view).Position));
 				view.PointerMoved += movehandler;
 #else
-				movehandler = (s, e) => onMove(view.ScreenToLocation(e.GetPosition(view)));
+				movehandler = (s, e) => onMove(view.ScreenToBaseSurface(e.GetPosition(view)));
 				view.MouseMove += movehandler;
 #endif
 			}
-			EventHandler<MapViewInputEventArgs> tappedHandler = null;
+			EventHandler<GeoViewInputEventArgs> tappedHandler = null;
 			if (onTapped != null)
 			{
 				tappedHandler = (s, e) => onTapped(e.Location);
-				view.SceneViewTapped += tappedHandler;
+				view.GeoViewTapped += tappedHandler;
 			}
-			EventHandler<MapViewInputEventArgs> doubletappedHandler = null;
+			EventHandler<GeoViewInputEventArgs> doubletappedHandler = null;
 			if (onDoubleTapped != null)
 			{
 				doubletappedHandler = (s, e) => { e.Handled = true; onDoubleTapped(e.Location); };
-				view.SceneViewDoubleTapped += doubletappedHandler;
+				view.GeoViewDoubleTapped += doubletappedHandler;
 			}
 			Action cleanup = () =>
 			{
 				if (movehandler != null)
 #if NETFX_CORE
-						view.PointerMoved -= movehandler;
+					view.PointerMoved -= movehandler;
 #else
 					view.MouseMove -= movehandler;
 #endif
-				if (tappedHandler != null) view.SceneViewTapped -= tappedHandler;
-				if (doubletappedHandler != null) view.SceneViewDoubleTapped -= doubletappedHandler;
+				if (tappedHandler != null) view.GeoViewTapped -= tappedHandler;
+				if (doubletappedHandler != null) view.GeoViewDoubleTapped -= doubletappedHandler;
 			};
 			return cleanup;
 		}
 
-		private static GraphicsOverlay CreateSketchLayer(ViewBase scene)
+		private static GraphicsOverlay CreateSketchLayer(GeoView scene)
 		{
 			GraphicsOverlay go = new GraphicsOverlay();
 			scene.GraphicsOverlays.Add(go);

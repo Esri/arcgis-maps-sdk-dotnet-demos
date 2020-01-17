@@ -6,24 +6,24 @@
         WindowState="Maximized">
 	<Grid>
 		<Grid.Resources>
-			<esri:SimpleMarkerSymbol x:Key="SMS" Color="Red" Style="Circle" Size="10" />
-			<esri:SimpleLineSymbol x:Key="SLS" Color="Red" Width="5" />
-			<esri:SimpleFillSymbol x:Key="SFS" Color="Red" Style="Solid" />
+            <esri:SimpleMarkerSymbol x:Key="SMS" Color="{StaticResource Red}" Style="Circle" Size="10" />
+            <esri:SimpleLineSymbol x:Key="SLS" Color="{StaticResource Red}" Width="5" />
+            <esri:SimpleFillSymbol x:Key="SFS" Color="{StaticResource Red}" Style="Solid" />
 			<esri:SimpleRenderer x:Key="MarkerRenderer" Symbol="{StaticResource SMS}" />
 			<esri:SimpleRenderer x:Key="PolylineRenderer" Symbol="{StaticResource SLS}" />
 			<esri:SimpleRenderer x:Key="PolygonRenderer" Symbol="{StaticResource SFS}" />
 		</Grid.Resources>
         <esri:SceneView x:Name="MySceneView"
-						SceneViewTapped="MySceneView_SceneViewTapped">
+						GeoViewTapped="MySceneView_SceneViewTapped">
             <esri:Scene>
-				<esri:ArcGISTiledMapServiceLayer 
-                    ID="StreetMapLayer"
-					ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
+                <esri:ArcGISTiledLayer
+                    Id="StreetMapLayer"
+					Source="https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
 			</esri:Scene>
 			<esri:SceneView.GraphicsOverlays>
-				<esri:GraphicsOverlay ID="PointGraphicsOverlay" Renderer="{StaticResource MarkerRenderer}" />
-				<esri:GraphicsOverlay ID="PolylineGraphicsOverlay" Renderer="{StaticResource PolylineRenderer}" />
-				<esri:GraphicsOverlay ID="PolygonGraphicsOverlay" Renderer="{StaticResource PolygonRenderer}" />
+				<esri:GraphicsOverlay Id="PointGraphicsOverlay" Renderer="{StaticResource MarkerRenderer}" />
+				<esri:GraphicsOverlay Id="PolylineGraphicsOverlay" Renderer="{StaticResource PolylineRenderer}" />
+				<esri:GraphicsOverlay Id="PolygonGraphicsOverlay" Renderer="{StaticResource PolygonRenderer}" />
 			</esri:SceneView.GraphicsOverlays>
 		</esri:SceneView>
 
