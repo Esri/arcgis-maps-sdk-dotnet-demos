@@ -1,12 +1,13 @@
-﻿using Esri.ArcGISRuntime.Controls;
+﻿using Esri.ArcGISRuntime.UI.Controls;
 using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Layers;
+using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using Esri.ArcGISRuntime.UI;
 
 #if NETFX_CORE
 using Windows.UI;
@@ -31,31 +32,31 @@ namespace SceneEditingDemo.Helpers
 		#region Default draw symbols
 	
 		//Symbol used by DrawPointAsync while moving the mouse
-		private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = Colors.Blue };
+		private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = System.Drawing.Color.Blue };
 
 		//Symbol used by Vertices on editing
-		private static MarkerSymbol DefaultVertexSymbol = new SimpleMarkerSymbol() { Color = Colors.Blue };
+		private static MarkerSymbol DefaultVertexSymbol = new SimpleMarkerSymbol() { Color = System.Drawing.Color.Blue };
 
 		//Symbol used by DrawPolylineAsync	
 		private static LineSymbol DefaultLineSymbol = new SimpleLineSymbol() 
 		{ 
 			Width = 2, 
-			Color = Color.FromArgb(150, 0, 0, 255) 
+			Color = System.Drawing.Color.FromArgb(150, 0, 0, 255) 
 		}; 
 	
 		//Symbol used by DrawPolygonAsync
 		private static FillSymbol DefaultFillSymbol = new SimpleFillSymbol() 
 		{
-			Outline = new SimpleLineSymbol() { Width = 2, Color = Colors.Black },
-			Color = Color.FromArgb(100, 0, 0, 255)
+			Outline = new SimpleLineSymbol() { Width = 2, Color = System.Drawing.Color.Black },
+			Color = System.Drawing.Color.FromArgb(100, 0, 0, 255)
 		};
 
 		//Line Symbol used to show line between vertices when drawing
 		private static LineSymbol DefaultLineMoveSymbol = new SimpleLineSymbol() 
 		{
 			Width = 5,
-			Color = Color.FromArgb(100, 255, 255, 255),
-			Style = SimpleLineStyle.Dot
+			Color = System.Drawing.Color.FromArgb(100, 127, 127, 127),
+			Style = SimpleLineSymbolStyle.Dot
 		};
 
         #endregion // Default draw symbols
@@ -138,10 +139,10 @@ namespace SceneEditingDemo.Helpers
 
 			// Create vertices from the original polyline
 			var vertices = new List<Graphic>();
-			foreach (var vertex in (polygon.Parts[0].GetPoints()))
+			foreach (var vertex in (polygon.Parts[0].Points))
 				vertices.Add(new Graphic(vertex, DefaultVertexSymbol));
 
-			vertices.RemoveAt(vertices.Count - 1); // don't add closing point
+			//vertices.RemoveAt(vertices.Count - 1); // don't add closing point
 
 			// Default to original polyline
 			var newPolygon = new Polygon(polygon.Parts);
@@ -162,8 +163,9 @@ namespace SceneEditingDemo.Helpers
 					if (p != null && isEditingVertex)
 					{
 						// Update visual indicator polyline
-						var vertexPoints = newPolygon.Parts[0].GetPoints().ToList();
-						vertexPoints.RemoveAt(vertexPoints.Count - 1); // don't add closing point
+						var vertexPoints = newPolygon.Parts[0].Points.ToList();
+						if(vertexPoints.Count > 2 && GeometryEngine.Equals(vertexPoints.First(), vertexPoints.Last()))
+							vertexPoints.RemoveAt(vertexPoints.Count - 1); // don't add closing point
 						var index = vertexPoints
 							.IndexOf(vertexPoints.Where
 								(point => GeometryEngine.Equals(point, selectedVertex.Geometry)).First());
@@ -177,7 +179,7 @@ namespace SceneEditingDemo.Helpers
 						if (index != vertexPoints.Count() - 1)
 							temporaryVertices.Add(vertexPoints[index + 1]); // Add next segment
 						else
-							temporaryVertices.Add(vertexPoints.First());
+							temporaryVertices.Add(vertexPoints.First()); // Add end segment from start
 
 						var builder = new PolylineBuilder(temporaryVertices);
 						lineMoveGraphic.Geometry = builder.ToGeometry();
@@ -194,7 +196,7 @@ namespace SceneEditingDemo.Helpers
 					if (isEditingVertex) return;
 					if (selectedVertex != null) selectedVertex.IsSelected = false;
 
-					selectedVertex = await vertexlayer.HitTestAsync(sceneView, sceneView.LocationToScreen(p));
+					selectedVertex = (await sceneView.IdentifyGraphicsOverlayAsync(vertexlayer, sceneView.LocationToScreen(p), 2, false, 1)).Graphics.FirstOrDefault();
 
 					// No vertex found so return
 					if (selectedVertex == null)
@@ -208,13 +210,14 @@ namespace SceneEditingDemo.Helpers
 						var newPoint = await SceneDrawHelper.DrawPointAsync(sceneView, tokenSource.Token);
 						if (newPoint == null) return;
 
-						var vertexPoints = newPolygon.Parts[0].GetPoints().ToList();
-						vertexPoints.RemoveAt(vertexPoints.Count - 1); // don't add closing point
+						var vertexPoints = newPolygon.Parts[0].Points.ToList();
+						if (vertexPoints.Count > 2 && GeometryEngine.Equals(vertexPoints.First(), vertexPoints.Last()))
+							vertexPoints.RemoveAt(vertexPoints.Count - 1); // don't add closing point
 						var index = vertexPoints
 							.IndexOf(vertexPoints.Where
 								(point => GeometryEngine.Equals(point, selectedVertex.Geometry)).First());
 						var builder = new PolygonBuilder(vertexPoints);
-						builder.Parts[0].MovePoint(index, newPoint);
+						builder.Parts[0].SetPoint(index, newPoint);
 						
 						// Update polyline
 						newPolygon = builder.ToGeometry();
@@ -223,7 +226,7 @@ namespace SceneEditingDemo.Helpers
 						selectedVertex.Geometry = newPoint;
 						tokenSource = null;				
 					}
-					catch (TaskCanceledException tce)
+					catch (TaskCanceledException)
 					{	
 					}
 					finally
@@ -281,7 +284,7 @@ namespace SceneEditingDemo.Helpers
 
 			// Create vertices from the original polyline
 			var vertices = new List<Graphic>();
-			foreach (var vertex in (polyline.Parts[0].GetPoints()))
+			foreach (var vertex in (polyline.Parts[0].Points))
 				vertices.Add(new Graphic(vertex, DefaultVertexSymbol));
 
 			// Default to original polyline
@@ -303,7 +306,7 @@ namespace SceneEditingDemo.Helpers
 					if (p != null && isEditingVertex)
 					{
 						// Update visual indicator polyline
-						var vertexPoints = newPolyline.Parts[0].GetPoints().ToList();
+						var vertexPoints = newPolyline.Parts[0].Points.ToList();
 						var index = vertexPoints
 							.IndexOf(vertexPoints.Where
 								(point => GeometryEngine.Equals(point, selectedVertex.Geometry)).First());
@@ -326,7 +329,7 @@ namespace SceneEditingDemo.Helpers
 					if (isEditingVertex) return;
 					if (selectedVertex != null) selectedVertex.IsSelected = false;
 
-					selectedVertex = await vertexlayer.HitTestAsync(sceneView, sceneView.LocationToScreen(p));
+					selectedVertex = (await sceneView.IdentifyGraphicsOverlayAsync(vertexlayer, sceneView.LocationToScreen(p), 2, false, 1)).Graphics.FirstOrDefault();
 
 					// No vertex found so return
 					if (selectedVertex == null)
@@ -341,12 +344,12 @@ namespace SceneEditingDemo.Helpers
 
 						if (newPoint == null) return;
 						
-						var vertexPoints = newPolyline.Parts[0].GetPoints();
+						var vertexPoints = newPolyline.Parts[0].Points;
 						var index = vertexPoints.ToList()
 							.IndexOf(vertexPoints.Where
 								(point => GeometryEngine.Equals(point, selectedVertex.Geometry)).First());
 						var builder = new PolylineBuilder(vertexPoints);
-						builder.Parts[0].MovePoint(index, newPoint);
+						builder.Parts[0].SetPoint(index, newPoint);
 
 						lineGraphic.Geometry = null;
 
@@ -358,7 +361,7 @@ namespace SceneEditingDemo.Helpers
 						selectedVertex.Geometry = newPoint;
 						tokenSource = null;
 					}
-					catch (TaskCanceledException tce)
+					catch (TaskCanceledException)
 					{
 					}
 					finally
@@ -470,21 +473,21 @@ namespace SceneEditingDemo.Helpers
 				movehandler = (s, e) => onMove(view.ScreenToLocation(e.GetCurrentPoint(view).Position));
 				view.PointerMoved += movehandler;
 #else
-				movehandler = (s, e) => onMove(view.ScreenToLocation(e.GetPosition(view)));
+				movehandler = (s, e) => onMove(view.ScreenToBaseSurface(e.GetPosition(view)));
 				view.MouseMove += movehandler;
 #endif
 			}
-			EventHandler<MapViewInputEventArgs> tappedHandler = null;
+			EventHandler<GeoViewInputEventArgs> tappedHandler = null;
 			if (onTapped != null)
 			{
 				tappedHandler = (s, e) => onTapped(e.Location);
-				view.SceneViewTapped += tappedHandler;
+				view.GeoViewTapped += tappedHandler;
 			}
-			EventHandler<MapViewInputEventArgs> doubletappedHandler = null;
+			EventHandler<GeoViewInputEventArgs> doubletappedHandler = null;
 			if (onDoubleTapped != null)
 			{
 				doubletappedHandler = (s, e) => { e.Handled = true; onDoubleTapped(e.Location); };
-				view.SceneViewDoubleTapped += doubletappedHandler;
+				view.GeoViewDoubleTapped += doubletappedHandler;
 			}
 			Action cleanup = () =>
 			{
@@ -494,13 +497,13 @@ namespace SceneEditingDemo.Helpers
 #else
 					view.MouseMove -= movehandler;
 #endif
-				if (tappedHandler != null) view.SceneViewTapped -= tappedHandler;
-				if (doubletappedHandler != null) view.SceneViewDoubleTapped -= doubletappedHandler;
+				if (tappedHandler != null) view.GeoViewTapped -= tappedHandler;
+				if (doubletappedHandler != null) view.GeoViewDoubleTapped -= doubletappedHandler;
 			};
 			return cleanup;
 		}
 
-		private static GraphicsOverlay CreateSketchLayer(ViewBase scene)
+		private static GraphicsOverlay CreateSketchLayer(GeoView scene)
 		{
 			GraphicsOverlay go = new GraphicsOverlay();
 			scene.GraphicsOverlays.Add(go);

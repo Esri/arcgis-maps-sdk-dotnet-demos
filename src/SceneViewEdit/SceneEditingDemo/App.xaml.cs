@@ -13,6 +13,9 @@ namespace SceneEditingDemo
 	{
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
+			// Workaround for .NET Core not supporting declaring System.Drawing.Color in XAML yet. See https://github.com/dotnet/wpf/issues/2141
+			Resources["Red"] = System.Drawing.Color.Red;
+
 			try
 			{
 				// Deployed applications must be licensed at the Basic level or greater (https://developers.arcgis.com/licensing).
