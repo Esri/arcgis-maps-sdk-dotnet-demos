@@ -1,5 +1,5 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,15 +26,15 @@ namespace LocalNetworkSample.Controls
 			this.InitializeComponent();
 		}
 
-		public Esri.ArcGISRuntime.Tasks.NetworkAnalyst.DirectionManeuver RouteDirection
+		public Esri.ArcGISRuntime.Tasks.NetworkAnalysis.DirectionManeuver RouteDirection
 		{
-			get { return (Esri.ArcGISRuntime.Tasks.NetworkAnalyst.DirectionManeuver)GetValue(RouteDirectionProperty); }
+			get { return (Esri.ArcGISRuntime.Tasks.NetworkAnalysis.DirectionManeuver)GetValue(RouteDirectionProperty); }
 			set { SetValue(RouteDirectionProperty, value); }
 		}
 
 		// Using a DependencyProperty as the backing store for RouteDirection.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty RouteDirectionProperty =
-			DependencyProperty.Register("RouteDirection", typeof(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.DirectionManeuver),
+			DependencyProperty.Register("RouteDirection", typeof(Esri.ArcGISRuntime.Tasks.NetworkAnalysis.DirectionManeuver),
 			typeof(RouteDirectionView), new PropertyMetadata(null, OnRouteDirectionPropertyChanged));
 
 		private static void OnRouteDirectionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -52,14 +52,14 @@ namespace LocalNetworkSample.Controls
 			}
 			LayoutRoot.Visibility = Windows.UI.Xaml.Visibility.Visible;
 			LayoutRoot.DataContext = direction;
-			var d = LinearUnits.Miles.ConvertFromMeters(direction.Length);
+			var d = LinearUnits.Miles.FromMeters(direction.Length);
 			if (d == 0)
 				distance.Text = "";
 			else if(d >= .25)
 				distance.Text = d.ToString("0.0 mi");
 			else
 			{
-				d = LinearUnits.Yards.ConvertFromMeters(direction.Length);
+				d = LinearUnits.Yards.FromMeters(direction.Length);
 				distance.Text = d.ToString("0 yd");
 			}
 			if (direction.Duration.TotalHours >= 1)
