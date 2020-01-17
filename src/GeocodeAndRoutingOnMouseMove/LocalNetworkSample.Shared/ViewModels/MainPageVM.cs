@@ -3,8 +3,9 @@ using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Tasks.Geocoding;
-using Esri.ArcGISRuntime.Tasks.NetworkAnalyst;
+using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Controls;
 using LocalNetworkSample.Common;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,12 @@ namespace LocalNetworkSample
             AddPolylineBarrierCommand = new DelegateCommand(() => DrawBarrier<Polyline>());
             AddPolygonBarrierCommand = new DelegateCommand(() => DrawBarrier<Polygon>());
             ClearBarriersCommand = new DelegateCommand(() => ClearBarriers());
+            GraphicsOverlays = new GraphicsOverlayCollection();
+            GraphicsOverlays.Add(new GraphicsOverlay() { Id = "PolygonBarriers", Renderer = new SimpleRenderer(new SimpleFillSymbol() { Color = System.Drawing.Color.FromArgb(120, 255, 0, 0) }) });
+            GraphicsOverlays.Add(new GraphicsOverlay() { Id = "PolylineBarriers", Renderer = new SimpleRenderer(new SimpleLineSymbol() { Color = System.Drawing.Color.Red, Width = 5 }) });
+            GraphicsOverlays.Add(new GraphicsOverlay() { Id = "PointBarriers", Renderer = new SimpleRenderer(new SimpleMarkerSymbol() { Color = System.Drawing.Color.Red, Size = 12 }) });
+            GraphicsOverlays.Add(new GraphicsOverlay() { Id = "Route", Renderer = new SimpleRenderer(new SimpleLineSymbol() { Color = System.Drawing.Color.CornflowerBlue, Width = 5 }) });
+            GraphicsOverlays.Add(new GraphicsOverlay() { Id = "Geocode", Renderer = new SimpleRenderer(new SimpleMarkerSymbol() { Size = 10, Outline = new SimpleLineSymbol() { Color = System.Drawing.Color.White, Width = 2 } }) });
         }
 
         private bool m_UseOnlineService;
@@ -154,7 +161,7 @@ namespace LocalNetworkSample
                 if (route == null)
                     route = GetRouter();
                 var l = route.IsCompleted ? route.Result : await route;
-                var param = await l.GenerateDefaultParametersAsync();
+                var param = await l.CreateDefaultParametersAsync();
 
                 param.SetStops(new Stop[] { new Stop(from), new Stop(location) });
                 if (SelectedCostAttributeName != null) //Set what to optimize for
@@ -207,7 +214,7 @@ namespace LocalNetworkSample
                 var l = route.IsCompleted ? route.Result : await route;
 
                 m_RouteTaskInfo = l.RouteTaskInfo;
-                var param = await l.GenerateDefaultParametersAsync();
+                var param = await l.CreateDefaultParametersAsync();
                 OnPropertyChanged("RouteTaskInfo");
                 SelectedCostAttributeName = m_RouteTaskInfo.CostAttributes
                     .Where(ca => ca.Key == param.TravelMode.ImpedanceAttributeName)
@@ -390,17 +397,17 @@ namespace LocalNetworkSample
                 if (typeof(T) == typeof(MapPoint))
                 {
                     barriers = FindGraphicsOverlay("PointBarriers");
-                    geometry = await GeoViewDrawHelper.DrawPointAsync(GeoView, CancellationToken.None);
+                    geometry = await ((MapView)GeoView).SketchEditor.StartAsync(SketchCreationMode.Point, false);
                 }
                 else if (typeof(T) == typeof(Polyline))
                 {
                     barriers = FindGraphicsOverlay("PolylineBarriers");
-                    geometry = await GeoViewDrawHelper.DrawPolylineAsync(GeoView, CancellationToken.None);
+                    geometry = await ((MapView)GeoView).SketchEditor.StartAsync(SketchCreationMode.Polyline, false);
                 }
                 else if (typeof(T) == typeof(Polygon))
                 {
                     barriers = FindGraphicsOverlay("PolygonBarriers");
-                    geometry = await GeoViewDrawHelper.DrawPolygonAsync(GeoView, CancellationToken.None);
+                    geometry = await ((MapView)GeoView).SketchEditor.StartAsync(SketchCreationMode.Polygon, false);
                 }
 
                 if (geometry != null)
@@ -440,11 +447,7 @@ namespace LocalNetworkSample
 
         private GraphicsOverlay FindGraphicsOverlay(string label)
         {
-            return GraphicsOverlays.FirstOrDefault(go =>
-            {
-                var rendererLabel = (go.Renderer as SimpleRenderer)?.Label;
-                return string.Equals(rendererLabel, label, StringComparison.CurrentCultureIgnoreCase);
-            });
+            return GraphicsOverlays.FirstOrDefault(go => string.Equals(go.Id, label, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

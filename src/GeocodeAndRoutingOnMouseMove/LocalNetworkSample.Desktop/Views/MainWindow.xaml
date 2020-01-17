@@ -8,54 +8,7 @@
         Title="ArcGIS Runtime SDK for .NET - Network Sample" Height="400" Width="800">
     <Window.Resources>
         <common:BooleanToVisibilityConverter x:Key="boolToViz" />
-
-        <local:MainPageVM x:Key="vm">
-            <local:MainPageVM.GraphicsOverlays>
-                <esri:GraphicsOverlayCollection>
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <esri:SimpleRenderer Label="PolygonBarriers">
-                                <esri:SimpleFillSymbol Color="#55FF0000" />
-                            </esri:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <esri:SimpleRenderer Label="PolylineBarriers">
-                                <esri:SimpleLineSymbol Color="Red" Width="5" />
-                            </esri:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <esri:SimpleRenderer Label="PointBarriers">
-                                <esri:SimpleMarkerSymbol Color="Red" Size="12" />
-                            </esri:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <esri:SimpleRenderer Label="route">
-                                <esri:SimpleLineSymbol Style="Solid" Color="CornflowerBlue" Width="5" />
-                            </esri:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-
-                    <esri:GraphicsOverlay>
-                        <esri:GraphicsOverlay.Renderer>
-                            <esri:SimpleRenderer Label="geocode">
-                                <esri:SimpleMarkerSymbol Size="10" >
-                                    <esri:SimpleMarkerSymbol.Outline>
-                                        <esri:SimpleLineSymbol Width="2" Color="White" />
-                                    </esri:SimpleMarkerSymbol.Outline>
-                                </esri:SimpleMarkerSymbol>
-                            </esri:SimpleRenderer>
-                        </esri:GraphicsOverlay.Renderer>
-                    </esri:GraphicsOverlay>
-                </esri:GraphicsOverlayCollection>
-            </local:MainPageVM.GraphicsOverlays>
-        </local:MainPageVM>
+        <local:MainPageVM x:Key="vm"/>
     </Window.Resources>
 
     <Grid DataContext="{StaticResource vm}">

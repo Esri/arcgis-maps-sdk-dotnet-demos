@@ -1,6 +1,8 @@
-﻿using Esri.ArcGISRuntime.Geometry;
+﻿/*
+ * using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Controls;
 using System;
 using System.Linq;
 using System.Threading;
@@ -21,27 +23,27 @@ namespace LocalNetworkSample.Common
     {
         #region Default draw symbols
         //Symbol used by DrawPointAsync while moving the mouse
-        private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = Colors.Blue, Size = 12, Style = SimpleMarkerSymbolStyle.Circle };
+        private static MarkerSymbol DefaultMarkerSymbol = new SimpleMarkerSymbol() { Color = System.Drawing.Color.Blue, Size = 12, Style = SimpleMarkerSymbolStyle.Circle };
 
         //Symbol used by DrawPolylineAsync	
         private static LineSymbol DefaultLineSymbol = new SimpleLineSymbol()
         {
             Width = 2,
-            Color = Color.FromArgb(150, 0, 0, 255)
+            Color = System.Drawing.Color.FromArgb(150, 0, 0, 255)
         };
 
         //Symbol used by DrawPolygonAsync
         private static FillSymbol DefaultFillSymbol = new SimpleFillSymbol()
         {
-            Outline = new SimpleLineSymbol() { Width = 2, Color = Colors.Black },
-            Color = Color.FromArgb(100, 0, 0, 255)
+            Outline = new SimpleLineSymbol() { Width = 2, Color = System.Drawing.Color.Black },
+            Color = System.Drawing.Color.FromArgb(100, 0, 0, 255)
         };
 
         //Line Symbol used to show line between last added vertex and current mouse location
         private static LineSymbol DefaultLineMoveSymbol = new SimpleLineSymbol()
         {
             Width = 5,
-            Color = Color.FromArgb(100, 255, 255, 255),
+            Color = System.Drawing.Color.FromArgb(100, 255, 255, 255),
             Style = SimpleLineSymbolStyle.Dot
         };
         #endregion Default draw symbols
@@ -260,3 +262,4 @@ namespace LocalNetworkSample.Common
         #endregion Private utility methods
     }
 }
+*/
