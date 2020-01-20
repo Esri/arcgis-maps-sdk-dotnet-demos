@@ -30,7 +30,7 @@ namespace ExternalNmeaGPS.Controls
 			base.OnClosing(e);
 		}
 
-		public NmeaParser.Nmea.Gsv GsvMessage
+		public NmeaParser.Messages.Gsv GsvMessage
 		{
 			get { return satView.GsvMessage; }
 			set { satView.GsvMessage = value; }

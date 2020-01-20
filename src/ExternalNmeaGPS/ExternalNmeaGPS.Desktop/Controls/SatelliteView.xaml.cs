@@ -25,18 +25,18 @@ namespace ExternalNmeaGPS.Controls
 			InitializeComponent();
 		}
 
-		public NmeaParser.Nmea.Gsv GsvMessage
+		public NmeaParser.Messages.Gsv GsvMessage
 		{
-			get { return (NmeaParser.Nmea.Gsv)GetValue(GsvMessageProperty); }
+			get { return (NmeaParser.Messages.Gsv)GetValue(GsvMessageProperty); }
 			set { SetValue(GsvMessageProperty, value); }
 		}
 
 		public static readonly DependencyProperty GsvMessageProperty =
-			DependencyProperty.Register(nameof(GsvMessage), typeof(NmeaParser.Nmea.Gsv), typeof(SatelliteView), new PropertyMetadata(null, OnGsvMessagePropertyChanged));
+			DependencyProperty.Register(nameof(GsvMessage), typeof(NmeaParser.Messages.Gsv), typeof(SatelliteView), new PropertyMetadata(null, OnGsvMessagePropertyChanged));
 
 		private static void OnGsvMessagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var sats = e.NewValue as NmeaParser.Nmea.Gsv;
+			var sats = e.NewValue as NmeaParser.Messages.Gsv;
 			if (sats == null)
 				((SatelliteView)d).satellites.ItemsSource = null;
 			else

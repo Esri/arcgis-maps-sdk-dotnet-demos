@@ -73,7 +73,7 @@ namespace ExternalNmeaGPS
 			{
 				messagesWindow.AddMessage(args.Message);
 
-				if(args.Message is NmeaParser.Nmea.Gsv gsv)
+				if(args.Message is NmeaParser.Messages.Gsv gsv)
 				{
 					skyViewWindow.GsvMessage= gsv;
 				}
@@ -142,8 +142,8 @@ namespace ExternalNmeaGPS
 					{
 						try
 						{
-							var msg = NmeaParser.Nmea.NmeaMessage.Parse(line);
-							if (msg is NmeaParser.Nmea.Rmc rmc)
+							var msg = NmeaParser.Messages.NmeaMessage.Parse(line);
+							if (msg is NmeaParser.Messages.Rmc rmc)
 							{
 								if (!double.IsNaN(rmc.Longitude))
 									vertices.Add(new MapPoint(rmc.Longitude, rmc.Latitude));
