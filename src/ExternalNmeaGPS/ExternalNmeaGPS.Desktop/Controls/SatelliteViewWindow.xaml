@@ -12,7 +12,7 @@
 			<ctrls:SatelliteView MaxWidth="{Binding ActualHeight, ElementName=satView}"
 					Grid.Column="1" x:Name="satView" />
 			<ctrls:SatelliteSnr Grid.Row="1"
-						GpgsvMessages="{Binding GpgsvMessages, ElementName=satView}" />
+						GsvMessage="{Binding GsvMessage, ElementName=satView}" />
 		</Grid>
 	</Grid>
 </Window>

@@ -1,10 +1,14 @@
-﻿using Esri.ArcGISRuntime.Controls;
+﻿using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Layers;
+using Esri.ArcGISRuntime.Mapping;
 using SceneEditingDemo.Helpers;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using Esri.ArcGISRuntime.UI.Controls;
+using System.Linq;
+using System;
+using System.Globalization;
 
 namespace SceneEditingDemo
 {
@@ -16,6 +20,11 @@ namespace SceneEditingDemo
 
 		// Store graphic that is being edited
 		GraphicSelection _selection;
+
+		public enum DrawShape
+		{
+			Point, Polyline, Polygon
+		}
 
 		public MainWindow()
 		{
@@ -74,7 +83,7 @@ namespace SceneEditingDemo
 				        break;
 		        }
 	        }
-	        catch (TaskCanceledException tce)
+	        catch (TaskCanceledException)
 	        {
                 // This occurs if draw operation is canceled or new operation is started before previous was finished.
 		        Debug.WriteLine("Previous draw operation was canceled.");
@@ -128,7 +137,7 @@ namespace SceneEditingDemo
 
 		        _selection.SelectedGraphic.Geometry = editedGeometry; // Set edited geometry to selected graphic
 	        }
-	        catch (TaskCanceledException tce)
+	        catch (TaskCanceledException)
 	        {
                 // This occurs if draw operation is canceled or new operation is started before previous was finished.
                 Debug.WriteLine("Previous edit operation was canceled.");
@@ -159,7 +168,7 @@ namespace SceneEditingDemo
 			EditButton.IsEnabled = false; 
 		}
 
-		private async void MySceneView_SceneViewTapped(object sender, MapViewInputEventArgs e)
+		private async void MySceneView_SceneViewTapped(object sender, GeoViewInputEventArgs e)
 		{
 			// If draw or edit is active, return
 			if (SceneEditHelper.IsActive) return; 
@@ -181,9 +190,7 @@ namespace SceneEditingDemo
 			// Find first graphic from the overlays
 			foreach (var overlay in MySceneView.GraphicsOverlays)
 			{
-				var foundGraphic = await overlay.HitTestAsync(
-						MySceneView,
-						point);
+				var foundGraphic = (await MySceneView.IdentifyGraphicsOverlayAsync(overlay, point, 2, false, 1)).Graphics.FirstOrDefault();
 
 				if (foundGraphic != null)
 				{
@@ -194,6 +201,30 @@ namespace SceneEditingDemo
 			}
 
 			EditButton.IsEnabled = _selection == null ? false : true;
+		}
+	}
+
+	public class ColorConverter : System.Windows.Data.IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if(targetType == typeof(System.Drawing.Color))
+			{
+				if(value is string name)
+				{
+					return System.Drawing.Color.FromName(name);
+				}
+				else if (parameter is string pname)
+				{
+					return System.Drawing.Color.FromName(pname);
+				}
+			}
+			return value;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

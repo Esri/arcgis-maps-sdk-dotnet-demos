@@ -44,7 +44,7 @@
 							BorderThickness="1"
 							ToolTip="{Binding SignalToNoiseRatio}"
 							VerticalAlignment="Bottom">
-						<TextBlock Text="{Binding PrnNumber}"
+						<TextBlock Text="{Binding Id}"
 								   HorizontalAlignment="Center" />
 					</Border>
 				</DataTemplate>

@@ -32,9 +32,9 @@ namespace ExternalNmeaGPS.Controls
 			base.OnClosing(e);
 		}
 
-		public void AddMessage(NmeaParser.Nmea.NmeaMessage message)
+		public void AddMessage(NmeaParser.Messages.NmeaMessage message)
 		{
-			messages.Enqueue(message.MessageType + ": " + message.ToString());
+			messages.Enqueue($"{DateTime.Now.ToString("hh:mm:ss.fff")}: {message}");
 			if (messages.Count > 100) messages.Dequeue(); //Keep message queue at 100
 			output.Text = string.Join("\n", messages.ToArray());
 			output.Select(output.Text.Length - 1, 0); //scroll to bottom

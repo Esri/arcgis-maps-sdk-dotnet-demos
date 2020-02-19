@@ -29,9 +29,9 @@ namespace ExternalNmeaGPS
 
 
 #if NETFX_CORE
-			void m_timer_Tick(object sender, object e)
+			void m_timer_Tick(object? sender, object e)
 #else
-			void m_timer_Tick(object sender, EventArgs e)
+			void m_timer_Tick(object? sender, EventArgs e)
 #endif
 			{
 				m_timer.Stop();
@@ -51,7 +51,7 @@ namespace ExternalNmeaGPS
 		}
 
 
-		private MapView m_mapView;
+		private MapView? m_mapView;
 		private DelayTimer m_timer;
 
 
@@ -78,68 +78,59 @@ namespace ExternalNmeaGPS
 			if (m_mapView != null && m_mapView != mv)
 				throw new InvalidOperationException("RestoreAutoPanMode can only be assigned to one mapview");
 			m_mapView = mv;
-			(m_mapView as INotifyPropertyChanged).PropertyChanged += m_mapView_PropertyChanged;
+			(m_mapView as INotifyPropertyChanged).PropertyChanged += MapView_PropertyChanged;
 		}
 
 
 		internal void DetachFromMapView(MapView mv)
 		{
-			(m_mapView as INotifyPropertyChanged).PropertyChanged -= m_mapView_PropertyChanged;
+			if (m_mapView is INotifyPropertyChanged inpc)
+				inpc.PropertyChanged -= MapView_PropertyChanged;
 			m_mapView = null;
 		}
 
-
-		private void m_mapView_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		private void MapView_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
+
 			//If user stopped navigating and we're not in the correct autopan mode,
 			//restore autopan after the set delay.
-			if(IsEnabled && e.PropertyName == "IsNavigating")
+			if (sender is MapView mapView)
 			{
-				if(m_mapView.LocationDisplay != null && 
-					m_mapView.LocationDisplay.AutoPanMode != PanMode)
+				if (IsEnabled && e.PropertyName == "IsNavigating")
 				{
-					if (!m_mapView.IsNavigating)
-						m_timer.Invoke(TimeSpan.FromSeconds(DelayInSeconds));
-					else
-						m_timer.Cancel();
+					if (mapView.LocationDisplay != null &&
+						mapView.LocationDisplay.AutoPanMode != PanMode)
+					{
+						if (!mapView.IsNavigating)
+							m_timer.Invoke(TimeSpan.FromSeconds(DelayInSeconds));
+						else
+							m_timer.Cancel();
+					}
 				}
 			}
 		}
-
 
 		public bool IsEnabled { get; set; }
 
 
 		public int DelayInSeconds { get; set; }
 
-
 		public Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode PanMode { get; set; }
 
 		public double RestoreScale { get; set; }
 
+		public static RestoreAutoPanMode GetRestoreAutoPanSettings(DependencyObject obj) => (RestoreAutoPanMode)obj.GetValue(RestoreAutoPanSettingsProperty);
 
-		public static RestoreAutoPanMode GetRestoreAutoPanSettings(DependencyObject obj)
-		{
-			return (RestoreAutoPanMode)obj.GetValue(RestoreAutoPanSettingsProperty);
-		}
-
-
-		public static void SetRestoreAutoPanSettings(DependencyObject obj, RestoreAutoPanMode value)
-		{
-			obj.SetValue(RestoreAutoPanSettingsProperty, value);
-		}
-
+		public static void SetRestoreAutoPanSettings(DependencyObject obj, RestoreAutoPanMode value) => obj.SetValue(RestoreAutoPanSettingsProperty, value);
 
 		public static readonly DependencyProperty RestoreAutoPanSettingsProperty =
 			DependencyProperty.RegisterAttached("RestoreAutoPanSettings", typeof(RestoreAutoPanMode), typeof(RestoreAutoPanMode), 
 			new PropertyMetadata(null, OnRestoreAutoPanSettingsChanged));
 
-
 		private static void OnRestoreAutoPanSettingsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (!(d is MapView))
 				throw new InvalidOperationException("This property must be attached to a mapview");
-
 
 			MapView mv = (MapView)d;
 			var oldValue = e.OldValue as RestoreAutoPanMode;
