@@ -1,10 +1,9 @@
-ArcGIS Runtime Demos for .NET
-===========================
+# ArcGIS Runtime Demos for .NET
 
 This project contains source code for simple native Windows Desktop, Windows Universal, Xamarin.Android and Xamarin.iOS applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.
 You can also find a set of smaller feature-focused samples in the [Runtime Samples](https://github.com/Esri/arcgis-runtime-samples-dotnet) repo.
 
-### Demos
+## Demos
 
 * [`Turn-by-Turn Routing`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Desktop, Windows Store and Xamarin.Forms.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
@@ -19,7 +18,7 @@ You can also find a set of smaller feature-focused samples in the [Runtime Sampl
 * [`KML Viewer`](src/KmlViewer) - A UWP app for visualizing KML/KMZ files in 2D and 3D.
 * [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D using a customer editor.
 * [`Measure Tool`](src/MeasureTool) - A simple sample demonstrating how to use the editor to create your own measure tool.
-
+* [`Parallax Guidelines in AR`](src/ARParallaxGuidelines) - Demonstrates how to draw guidelines from hidden infrastructure to the ground surface in Augmented Reality (AR). Drawing these guidelines helps viewers to understand object
 
 ## Resources
 
@@ -34,7 +33,8 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 Anyone and everyone is welcome to [contribute](CONTRIBUTING.md).
 
 ## Licensing
-Copyright 2014 Esri
+
+Copyright 2014-2020 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
