@@ -35,25 +35,31 @@ namespace ARParallaxGuidelines.Forms
             // Create and add the map.
             MyMapView.Map = new Map(Basemap.CreateImagery());
 
-            
-
             // Add a graphics overlay for the drawn pipes.
             MyMapView.GraphicsOverlays.Add(_pipesOverlay);
             _pipesOverlay.Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, System.Drawing.Color.Red, 2));
 
             await ViewModel.InitializeAsync();
+            BindingContext = ViewModel;
 
             // Set the SketchEditor for the map.
             MyMapView.SketchEditor = ViewModel.SketchEditor;
 
+#if ANDROID
+            ARParallaxGuidelines.Forms.Droid.MainActivity.Instance.AskForLocationPermission(MyMapView);
+#else
             // Configure location display.
             MyMapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
             await MyMapView.LocationDisplay.DataSource.StartAsync();
             MyMapView.LocationDisplay.IsEnabled = true;
+#endif
+            
         }
-        private void Button_Clicked(object sender, EventArgs e)
+
+        private async void Button_Clicked_2(object sender, EventArgs e)
         {
-            var _ = Navigation.PushAsync(new ARPage());
+            var graphics = _pipesOverlay.Graphics.Select(x => new Graphic(x.Geometry, x.Attributes));
+            var _ = Navigation.PushAsync(new ARPage() { _pipeGraphics = graphics });
         }
 
         private async void Button_Clicked_1(object sender, EventArgs e)

@@ -34,9 +34,7 @@ namespace ARParallaxGuidelines
 
         public AdjustableLocationDataSource()
         {
-#if !_STANDARD_
             _baseSource = new SystemLocationDataSource();
-#endif
             _baseSource.HeadingChanged += _baseSource_HeadingChanged;
             _baseSource.LocationChanged += _baseSource_LocationChanged;
         }

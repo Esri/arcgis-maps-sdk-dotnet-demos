@@ -7,19 +7,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forms", "Forms", "{C3573B08
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ARParallaxGuidelines.Shared", "Shared\ARParallaxGuidelines.Shared.shproj", "{99B29CFC-74E5-4972-BD1B-21C7F5D43952}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARParallaxGuidelines.Forms", "Forms\ARParallaxGuidelines.Forms.csproj", "{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "Forms.Android\Android.csproj", "{FC84C880-8EF5-4C47-8F88-AD2427825716}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "Forms.iOS\iOS.csproj", "{21781D74-3510-4616-A5C9-D6B3F6E0C992}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "Native.iOS\iOS.csproj", "{980DA764-2393-4570-BFFE-F662168D52E6}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Forms.Shared", "Forms\Forms.Shared\Forms.Shared.shproj", "{8CB887F7-808A-40EA-A7B0-52EC9AC3302B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Forms\Forms.Shared\Forms.Shared.projitems*{21781d74-3510-4616-a5c9-d6b3f6e0c992}*SharedItemsImports = 4
 		Shared\ARParallaxGuidelines.Shared.projitems*{21781d74-3510-4616-a5c9-d6b3f6e0c992}*SharedItemsImports = 4
+		Forms\Forms.Shared\Forms.Shared.projitems*{8cb887f7-808a-40ea-a7b0-52ec9ac3302b}*SharedItemsImports = 13
 		Shared\ARParallaxGuidelines.Shared.projitems*{980da764-2393-4570-bffe-f662168d52e6}*SharedItemsImports = 4
 		Shared\ARParallaxGuidelines.Shared.projitems*{99b29cfc-74e5-4972-bd1b-21c7f5d43952}*SharedItemsImports = 13
+		Forms\Forms.Shared\Forms.Shared.projitems*{fc84c880-8ef5-4c47-8f88-ad2427825716}*SharedItemsImports = 4
 		Shared\ARParallaxGuidelines.Shared.projitems*{fc84c880-8ef5-4c47-8f88-ad2427825716}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,18 +34,6 @@ Global
 		Release|iPhoneSimulator = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Release|iPhone.Build.0 = Release|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{FC84C880-8EF5-4C47-8F88-AD2427825716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC84C880-8EF5-4C47-8F88-AD2427825716}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC84C880-8EF5-4C47-8F88-AD2427825716}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -86,9 +77,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7A1AADCF-6A74-4EC9-AD73-D55E3C97061B} = {C3573B08-BB14-4E58-9C14-04804D319F0A}
 		{FC84C880-8EF5-4C47-8F88-AD2427825716} = {C3573B08-BB14-4E58-9C14-04804D319F0A}
 		{21781D74-3510-4616-A5C9-D6B3F6E0C992} = {C3573B08-BB14-4E58-9C14-04804D319F0A}
+		{8CB887F7-808A-40EA-A7B0-52EC9AC3302B} = {C3573B08-BB14-4E58-9C14-04804D319F0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928D35EF-EE93-4DC8-A8B2-80C48199CAD2}

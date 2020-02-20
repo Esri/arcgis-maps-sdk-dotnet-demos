@@ -3,12 +3,16 @@
 	<uses-sdk android:minSdkVersion="26" android:targetSdkVersion="28" />
 	<!-- Location service is used for full-scale AR where the current device location is required -->
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<!-- Both "AR Optional" and "AR Required" apps require CAMERA permission. -->
 	<uses-permission android:name="android.permission.CAMERA" />
 	<!-- Indicates that app requires ARCore ("AR Required"). Ensures app is only
      visible in the Google Play Store on devices that support ARCore.
      For "AR Optional" apps remove this line. -->
 	<uses-feature android:name="android.hardware.camera.ar" android:required="true" />
+  <uses-feature android:name="android.hardware.location" android:required="true" />
+  <uses-feature android:name="android.hardware.location.gps" android:required="true" />
+  <uses-feature android:name="android.hardware.location.network" android:required="true" />
 	<application android:label="ARParallaxGuidelines.Forms">
 		<!-- Indicates that app requires ARCore ("AR Required"). Causes Google
          Play Store to download and install ARCore along with the app.

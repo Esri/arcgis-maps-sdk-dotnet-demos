@@ -1,5 +1,6 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,13 +16,54 @@ namespace ARParallaxGuidelines.Forms
     [DesignTimeVisible(false)]
     public partial class ARPage : ContentPage
     {
+        // Pipe graphics that have been passed in by the PipePlacer class.
+        public IEnumerable<Graphic> _pipeGraphics;
+        private IEnumerable<Graphic> _shadowPipes;
+
+        // Elevation for the scene.
+        private ArcGISTiledElevationSource _elevationSource;
+        private Surface _elevationSurface;
+
+        // Track when user is changing between AR and GPS localization.
+        private bool _changingScale;
+
+        // Location data source for AR and route tracking.
+        private AdjustableLocationDataSource _locationSource = new AdjustableLocationDataSource();
+
+        // Track whether calibration is in progress and update the UI when that changes.
+        private bool _isCalibrating = false;
+
+        private bool IsCalibrating
+        {
+            get => _isCalibrating;
+            set
+            {
+                if (_isCalibrating != value)
+                {
+                    _isCalibrating = value;
+                    if (_isCalibrating)
+                    {
+                        // Show the base surface so that the user can calibrate using the base surface on top of the real world.
+                        arSceneView.Scene.BaseSurface.Opacity = 0.5;
+
+                        // Enable scene interaction.
+                        arSceneView.InteractionOptions.IsEnabled = true;
+                    }
+                    else
+                    {
+                        // Hide the base surface.
+                        arSceneView.Scene.BaseSurface.Opacity = 0;
+
+                        // Disable scene interaction.
+                        arSceneView.InteractionOptions.IsEnabled = false;
+                    }
+                }
+            }
+        }
+
         public ARPage()
         {
             InitializeComponent();
-
-            //We'll set the origin of the scene centered on Mnt Everest so we can use that as the tie-point when we tap to place
-            arSceneView.OriginCamera = new Camera(27.988056, 86.925278, 0, 0, 90, 0);
-            arSceneView.TranslationFactor = 10000; //1m device movement == 10km
         }
 
         private async void InitializeScene()
@@ -55,32 +97,6 @@ namespace ARParallaxGuidelines.Forms
         {
             arSceneView.StopTrackingAsync();
             base.OnDisappearing();
-        }
-
-        private void DoubleTap_ToPlace(object sender, Esri.ArcGISRuntime.Xamarin.Forms.GeoViewInputEventArgs e)
-        {
-            if (arSceneView.SetInitialTransformation(e.Position))
-            {
-                if (arSceneView.Scene == null)
-                {
-                    arSceneView.RenderPlanes = false;
-                    Status.Text = string.Empty;
-                    InitializeScene();
-                }
-            }
-        }
-
-        private void PlanesDetectedChanged(object sender, bool planesDetected)
-        {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                if (!planesDetected)
-                    Status.Text = "Move your device in a circular motion to detect surfaces";
-                else if (arSceneView.Scene == null)
-                    Status.Text = "Double-tap a plane to place your scene";
-                else
-                    Status.Text = string.Empty;
-            });
         }
     }
 }

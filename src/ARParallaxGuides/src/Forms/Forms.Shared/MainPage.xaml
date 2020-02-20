@@ -6,6 +6,7 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:forms="clr-namespace:Esri.ArcGISRuntime.Xamarin.Forms;assembly=Esri.ArcGISRuntime.Xamarin.Forms"
              mc:Ignorable="d" ios:Page.UseSafeArea="True"
+             Title="Infrastructure Planner"
              x:Class="ARParallaxGuidelines.Forms.MainPage">
     <ContentPage.Content>
         <Grid>
@@ -16,18 +17,17 @@
             <forms:MapView Grid.Row="0" x:Name="MyMapView" />
             <Grid Grid.Row="1" ios:Page.UseSafeArea="True">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button Text="+" Grid.Column="0" IsEnabled="{Binding AddButtonEnabled}" Clicked="Button_Clicked_1" />
-                <Button Text="Undo" Grid.Column="1" Command="{Binding UndoCommand}" />
-                <Button Text="Redo" Grid.Column="2" Command="{Binding RedoCommand}" />
+                <Button Text="&lt;-" Grid.Column="1" Command="{Binding UndoCommand}" />
+                <Button Text="-&gt;" Grid.Column="2" Command="{Binding RedoCommand}" />
                 <Button Text="Done" Grid.Column="3" Command="{Binding CompleteCommand}" />
-                <Button Text="View" Grid.Column="5" IsEnabled="{Binding ViewReady}" />
+                <Button Text="View" Grid.Column="4" IsEnabled="{Binding ViewReady, Mode=OneWay}" Clicked="Button_Clicked_2" />
             </Grid>
         </Grid>
     </ContentPage.Content>
