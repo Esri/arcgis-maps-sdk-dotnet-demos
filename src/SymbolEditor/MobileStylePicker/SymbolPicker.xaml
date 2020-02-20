@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="MobileStylePicker.SymbolPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MobileStylePicker"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="800">
+
+    <StackPanel>
+        <TextBlock Text="Symbol Style" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="SymbolStylePicker" SelectionChanged="SymbolStylePicker_SelectionChanged" />
+            <Button Content="Load from file..." Grid.Column="1" Click="LoadFromFile_Click" />
+        </Grid>
+        <TextBlock Text="Category:" />
+        <ComboBox x:Name="CategoryPicker"
+                  SelectionChanged="categories_SelectionChanged" HorizontalAlignment="Stretch" />
+        <TextBlock Text="Symbols:" Margin="0,10,0,0" />
+        <ComboBox x:Name="SymbolList" SelectionChanged="SymbolList_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <esri:SymbolDisplay Symbol="{Binding Symbol}" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Name}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <local:SymbolViewer Margin="20" Symbol="{Binding SelectedItem.Symbol, ElementName=SymbolList}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Accept" />
+            <Button Content="Cancel" />
+        </StackPanel>
+    </StackPanel>
+
+</UserControl>

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ArcGISRuntime2D_Pro25.stylx" />
+    <None Remove="ArcGISRuntime3D_Pro25.stylx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ArcGISRuntime2D_Pro25.stylx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="100.7.0" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit" Version="100.7.0" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.Preview" Version="100.7.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+﻿<mah:MetroWindow x:Class="MobileStylePicker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:local="clr-namespace:MobileStylePicker"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Symbol Style Picker" Height="768" Width="1024">
+    <mah:MetroWindow.Resources>
+        <local:MapViewModel x:Key="MapViewModel" />
+    </mah:MetroWindow.Resources>
+    <Grid DataContext="{Binding Source={StaticResource MapViewModel}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <esri:MapView Map="{Binding Map}" Grid.Column="2" x:Name="mapView" />
+        <GridSplitter Grid.Column="1" ResizeDirection="Auto" />
+        <esri:TableOfContents GeoView="{Binding ElementName=mapView}" TableOfContentContextMenuOpening="TableOfContents_TableOfContentContextMenuOpening"  />
+    </Grid>
+</mah:MetroWindow>

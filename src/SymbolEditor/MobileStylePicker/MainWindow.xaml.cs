@@ -1,0 +1,91 @@
+﻿using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Symbology;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace MobileStylePicker
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void TableOfContents_TableOfContentContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.Preview.UI.Controls.TableOfContentsContextMenuEventArgs e)
+        {
+            Symbol symbolReference = null;
+            Action<Symbol> symbolSetter = null;
+            if(e.LegendInfo != null)
+            {
+                // Find the symbol in the layer that matches the one in the legend
+                var layer = e.TableOfContentItem as Layer;
+                if(layer is FeatureLayer fl)
+                {
+                    var renderer = fl.Renderer;
+                    if(renderer is SimpleRenderer sr)
+                    {
+                        symbolReference = sr.Symbol;
+                        symbolSetter = (s) => sr.Symbol = symbolReference;
+                    }
+                    else if(renderer is UniqueValueRenderer uvr)
+                    {
+                        // TODO: Also handle uvr.DefaultSymbol
+                        var uv = uvr.UniqueValues.Where(u => u.Label == e.LegendInfo.Name);
+                        if(uv.Count() > 1) // In case multiple symbols matches
+                        {
+                            uv = uv.Where(u => u.Symbol.ToJson() == e.LegendInfo.Symbol.ToJson());
+                        }
+                        if(uv.Count() == 1)
+                        {
+                            var u = uv.First();
+                            symbolReference = u.Symbol;
+                            symbolSetter = (s) => u.Symbol = s;
+                        }
+                    }
+                    else
+                    {
+                        // TODO
+                    }
+                }
+            }
+
+            if (symbolReference != null && symbolSetter != null)
+            {
+                e.MenuItems.Add(new MenuItem() { Header = "Edit symbol... " });
+                e.MenuItems[0].Click += (s,e) =>
+                {
+                    var editor = new SymbolEditor();
+                    editor.Symbol = symbolReference;
+                    var window = new MahApps.Metro.Controls.MetroWindow()
+                    {
+                        Width = 600,
+                        Height = 500,
+                        Owner = this,
+                        Content = editor,
+                        Title = "Symbol Editor"
+                    };
+                    if (window.ShowDialog() == true)
+                    {
+                        symbolSetter(editor.Symbol);
+                    }
+                };
+            }
+        }
+    }
+}
