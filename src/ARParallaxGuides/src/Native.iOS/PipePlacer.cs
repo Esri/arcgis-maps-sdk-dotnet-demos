@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ARParallaxGuidelines.Shared;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
@@ -24,17 +25,10 @@ namespace ARParallaxGuidelines
         private UIBarButtonItem _elevationSliderButton;
         private UISlider _elevationSlider;
 
-        private static int _pipeIndex;
+        private InfrastructureEditorViewModel _editorVM = new InfrastructureEditorViewModel();
 
         // Graphics overlays for showing pipes.
         private GraphicsOverlay _pipesOverlay = new GraphicsOverlay();
-
-        // Sketch editor for drawing pipes onto the MapView.
-        private SketchEditor _sketchEditor = new SketchEditor();
-
-        // Elevation source for getting altitude value for points.
-        private ArcGISTiledElevationSource _elevationSource;
-        private Surface _elevationSurface;
 
         private async void Initialize()
         {
@@ -50,32 +44,16 @@ namespace ARParallaxGuidelines
             _mapView.GraphicsOverlays.Add(_pipesOverlay);
             _pipesOverlay.Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, System.Drawing.Color.Red, 2));
 
-            // Set the SketchEditor for the map.
-            _mapView.SketchEditor = _sketchEditor;
+            await _editorVM.InitializeAsync();
 
-            // Create an elevation source and Surface.
-            _elevationSource = new ArcGISTiledElevationSource(new Uri("https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"));
-            await _elevationSource.LoadAsync();
-            _elevationSurface = new Surface();
-            _elevationSurface.ElevationSources.Add(_elevationSource);
-            await _elevationSurface.LoadAsync();
+            // Set the SketchEditor for the map.
+            _mapView.SketchEditor = _editorVM.SketchEditor;
 
             // Enable the add button.
             _addButton.Enabled = true;
         }
 
-        private void DoneButton_Clicked(object sender, EventArgs e)
-        {
-            // Check if sketch can be completed.
-            if (_mapView.SketchEditor.CompleteCommand.CanExecute(null))
-            {
-                // Complete the sketch.
-                _mapView.SketchEditor.CompleteCommand.Execute(null);
-
-                // Disable the editing buttons.
-                _doneButton.Enabled = _undoButton.Enabled = _redoButton.Enabled = false;
-            }
-        }
+        private void DoneButton_Clicked(object sender, EventArgs e) => _editorVM.ExecuteCompleteCommand();
 
         private void ViewButton_Clicked(object sender, EventArgs e)
         {
@@ -84,82 +62,19 @@ namespace ARParallaxGuidelines
             NavigationController.PushViewController(new PipeViewerAR() { _pipeGraphics = _pipesOverlay.Graphics.Select(x => new Graphic(x.Geometry, x.Attributes)) }, true);
         }
 
-        private void RedoButton_Clicked(object sender, EventArgs e)
-        {
-            // Redo if possible.
-            if (_sketchEditor.RedoCommand.CanExecute(null)) _sketchEditor.RedoCommand.Execute(null);
-        }
+        private void RedoButton_Clicked(object sender, EventArgs e) => _editorVM.ExecuteRedoCommand();
 
-        private void UndoButton_Clicked(object sender, EventArgs e)
-        {
-            // Undo if possible.
-            if (_sketchEditor.UndoCommand.CanExecute(null)) _sketchEditor.UndoCommand.Execute(null);
-        }
+        private void UndoButton_Clicked(object sender, EventArgs e) => _editorVM.ExecuteUndoCommand();
 
         private async void AddSketch(object sender, EventArgs e)
         {
-            // Enable the editing buttons.
-            _doneButton.Enabled = _undoButton.Enabled = _redoButton.Enabled = true;
+            var geometry = await _editorVM.ExecuteAddSketch();
 
-            // Prevent the user from adding pipes concurrently.
-            _addButton.Enabled = false;
-
-            // Get the geometry of the user drawn line.
-            Geometry geometry = await _sketchEditor.StartAsync(SketchCreationMode.Polyline);
-            _addButton.Enabled = true;
-
-            // Verify that the user has drawn a polyline.
-            if (!(geometry is Polyline))
+            if (geometry != null)
             {
-                return;
-            }
-
-            try
-            {
-                // Get the users selected elevation offset.
-                double elevationOffset = _elevationSlider.Value;
-
-                var densifiedPolyline = (Polyline)GeometryEngine.Densify(geometry, 2);
-                PolylineBuilder newPolylineBuilder = new PolylineBuilder(densifiedPolyline.SpatialReference);
-
-                foreach(var part in densifiedPolyline.Parts)
-                {
-                    foreach(var point in part.Points)
-                    {
-                        double pointElevation = await _elevationSurface.GetElevationAsync(point);
-                        MapPoint newMapPoint = new MapPoint(point.X, point.Y, pointElevation + elevationOffset);
-                        newPolylineBuilder.AddPoint(newMapPoint);
-                    }
-                }
-
-                Polyline elevatedLine = newPolylineBuilder.ToGeometry();
-
-                // Create a graphic for the pipe.
-                Graphic linegraphic = new Graphic(elevatedLine);
-                linegraphic.Attributes["ElevationOffset"] = elevationOffset;
-                _pipeIndex++;
-                _pipesOverlay.Graphics.Add(linegraphic);
-
-                // Display a message with the pipes offset from the surface.
-                if (elevationOffset < 0)
-                {
-                    _helpLabel.Text = string.Format("Pipe added {0:0.0}m below surface", elevationOffset * -1);
-                }
-                else if (elevationOffset == 0)
-                {
-                    _helpLabel.Text = "Pipe added at ground level";
-                }
-                else
-                {
-                    _helpLabel.Text = string.Format("Pipe added {0:0.0}m above the surface", elevationOffset);
-                }
-
-                // Enable the view button once a pipe has been added to the graphics overlay.
-                _viewButton.Enabled = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                var graphic = new Graphic(geometry);
+                graphic.Attributes[nameof(_editorVM.ElevationOffset)] = _editorVM.ElevationOffset;
+                _pipesOverlay.Graphics.Add(graphic);
             }
         }
 
@@ -238,10 +153,53 @@ namespace ARParallaxGuidelines
             });
         }
 
+        private void _elevationSlider_ValueChanged(object sender, EventArgs e)
+        {
+            _editorVM.ElevationOffset = _elevationSlider.Value;
+        }
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             Initialize();
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            if (_elevationSlider != null)
+                _elevationSlider.ValueChanged += _elevationSlider_ValueChanged;
+            if (_editorVM != null)
+                _editorVM.PropertyChanged += _editorVM_PropertyChanged;
+        }
+
+        private void _editorVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(_editorVM.AddButtonEnabled):
+                    _addButton.Enabled = _editorVM.AddButtonEnabled;
+                    break;
+                case nameof(_editorVM.DoneButtonEnabled):
+                    _doneButton.Enabled = _editorVM.DoneButtonEnabled;
+                    break;
+                case nameof(_editorVM.RedoButtonEnabled):
+                    _redoButton.Enabled = _editorVM.RedoButtonEnabled;
+                    break;
+                case nameof(_editorVM.UndoButtonEnabled):
+                    _undoButton.Enabled = _editorVM.UndoButtonEnabled;
+                    break;
+            }
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+
+            if (_elevationSlider != null)
+                _elevationSlider.ValueChanged -= _elevationSlider_ValueChanged;
+            if (_editorVM != null)
+                _editorVM.PropertyChanged -= _editorVM_PropertyChanged;
         }
     }
 }

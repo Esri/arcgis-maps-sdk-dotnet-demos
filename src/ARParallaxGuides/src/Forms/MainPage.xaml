@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:forms="clr-namespace:Esri.ArcGISRuntime.Xamarin.Forms;assembly=Esri.ArcGISRuntime.Xamarin.Forms"
+             mc:Ignorable="d" ios:Page.UseSafeArea="True"
+             x:Class="ARParallaxGuidelines.Forms.MainPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <forms:MapView Grid.Row="0" x:Name="MyMapView" />
+            <Grid Grid.Row="1" ios:Page.UseSafeArea="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Text="+" Grid.Column="0" IsEnabled="{Binding AddButtonEnabled}" Clicked="Button_Clicked_1" />
+                <Button Text="Undo" Grid.Column="1" Command="{Binding UndoCommand}" />
+                <Button Text="Redo" Grid.Column="2" Command="{Binding RedoCommand}" />
+                <Button Text="Done" Grid.Column="3" Command="{Binding CompleteCommand}" />
+                <Button Text="View" Grid.Column="5" IsEnabled="{Binding ViewReady}" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

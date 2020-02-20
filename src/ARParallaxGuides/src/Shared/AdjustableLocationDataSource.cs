@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Esri.ArcGISRuntime.Geometry;
+﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
-using Foundation;
-using UIKit;
+using System.Threading.Tasks;
 
 namespace ARParallaxGuidelines
 {
@@ -36,11 +30,13 @@ namespace ARParallaxGuidelines
         private Location _lastLocation;
 
         // The system's location data source.
-        private SystemLocationDataSource _baseSource;
+        private LocationDataSource _baseSource;
 
         public AdjustableLocationDataSource()
         {
+#if !_STANDARD_
             _baseSource = new SystemLocationDataSource();
+#endif
             _baseSource.HeadingChanged += _baseSource_HeadingChanged;
             _baseSource.LocationChanged += _baseSource_LocationChanged;
         }
