@@ -15,22 +15,23 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Stretch">
-            <!--<Grid.Background>
-                <VisualBrush TileMode="Tile" Stretch="None" Viewport="0,0,18,18" ViewportUnits="Absolute">
-                    <VisualBrush.Visual>
-                        <Grid Background="White" Width="18" Height="18">
-                            <Rectangle Fill="LightGray" Width="9" Height="9" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                            <Rectangle Fill="LightGray" Width="9" Height="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-                        </Grid>
-                    </VisualBrush.Visual>
-                </VisualBrush>
-            </Grid.Background>-->
-
-            <esri:SceneView x:Name="sceneView" BorderBrush="Black" BorderThickness="1" 
-             Visibility="Collapsed" IsAttributionTextVisible="False" Background="Transparent" />
+            <!--<esri:SceneView x:Name="sceneView" BorderBrush="Black" BorderThickness="1" 
+             Visibility="Collapsed" IsAttributionTextVisible="False" Background="Transparent" />-->
             <esri:MapView x:Name="mapView" BorderBrush="Black" BorderThickness="1" 
              Visibility="Visible" IsAttributionTextVisible="False" Background="Transparent" />
         </Grid>
-        <Slider Margin="2" Value="1" Maximum="4" Minimum="0" ValueChanged="Slider_ValueChanged" Grid.Row="1" />
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Zoom:" />
+            <Slider Margin="2" Value="1" x:Name="zoomSlider"
+                    Width="200" Grid.Column="1"
+                    Maximum="10" Minimum="1" ValueChanged="Slider_ValueChanged" />
+            <TextBlock Text="{Binding Value, ElementName=zoomSlider, StringFormat={}{0:F1}x}"
+                       Grid.Column="2" />
+        </Grid>
     </Grid>
 </UserControl>

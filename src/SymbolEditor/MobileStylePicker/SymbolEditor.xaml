@@ -19,11 +19,18 @@
                 </local:DropDownButton.ContextMenu>
             </local:DropDownButton>
 
-            <Grid HorizontalAlignment="Stretch"
-                      Margin="0,20,0,0"
-                  MaxWidth="300"
-                  Height="{Binding ActualWidth, RelativeSource={x:Static RelativeSource.Self}}">
-                <local:SymbolViewer Symbol="{Binding Symbol}" />
+            <Grid Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Color" />
+                    <TextBlock Text="Size" />
+                </StackPanel>
+                <local:SymbolViewer Symbol="{Binding Symbol}" 
+                  VerticalAlignment="Top" Grid.Column="1"/>
+                
             </Grid>
         </StackPanel>
     </Grid>

@@ -24,7 +24,7 @@ namespace MobileStylePicker
     {
         static readonly MapPoint nullIsland = new MapPoint(0, 0, SpatialReferences.Wgs84);
         Graphic graphic2D = new Graphic() { Geometry = nullIsland };
-        Graphic graphic3D = new Graphic() { Geometry = nullIsland };
+        // Graphic graphic3D = new Graphic() { Geometry = nullIsland };
         public SymbolViewer()
         {
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace MobileStylePicker
                 InitialViewpoint = new Viewpoint(nullIsland, 10000),
                 ReferenceScale = 10000,
                 MinScale = 10000,
-                MaxScale = 10000 / 4,
+                MaxScale = 10000 / 10,
             };
             go.Graphics.Add(graphic2D);
             mapView.GraphicsOverlays.Add(go);
@@ -49,7 +49,7 @@ namespace MobileStylePicker
         private void RefreshSymbol()
         {
             graphic2D.Symbol = Symbol;
-            graphic3D.Symbol = Symbol;
+            // graphic3D.Symbol = Symbol;
             if (Symbol != null)
                 mapView.Visibility = Visibility;
         }
@@ -60,9 +60,8 @@ namespace MobileStylePicker
             set { SetValue(SymbolProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Symbol.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SymbolProperty =
-            DependencyProperty.Register("Symbol", typeof(Symbol), typeof(SymbolViewer), new PropertyMetadata(null, OnSymbolPropertyChanged));
+            DependencyProperty.Register(nameof(Symbol), typeof(Symbol), typeof(SymbolViewer), new PropertyMetadata(null, OnSymbolPropertyChanged));
 
         private static void OnSymbolPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -20,7 +20,7 @@ namespace MobileStylePicker
     /// <summary>
     /// Interaction logic for SymbolPicker.xaml
     /// </summary>
-    public partial class SymbolPicker : UserControl
+    public partial class SymbolPicker : MahApps.Metro.Controls.MetroWindow
     {
         static ObservableCollection<SymbolStyleItems> symbols = new ObservableCollection<SymbolStyleItems>();
         public class SymbolStyleItems
@@ -43,10 +43,10 @@ namespace MobileStylePicker
             {
                 var pro2d = await SymbolStyle.OpenAsync("ArcGISRuntime2D_Pro25.stylx");
                 symbols.Add(new SymbolStyleItems() { Style = pro2d, Name = "2D Web Styles" });
-                SymbolStylePicker.SelectedIndex = 0;
-                var pro3d = await SymbolStyle.OpenAsync("ArcGISRuntime3D_Pro25.stylx");
-                symbols.Add(new SymbolStyleItems() { Style = pro3d, Name = "3D Web Styles" });
+                //var pro3d = await SymbolStyle.OpenAsync("ArcGISRuntime3D_Pro25.stylx");
+                //symbols.Add(new SymbolStyleItems() { Style = pro3d, Name = "3D Web Styles" });
             }
+            SymbolStylePicker.SelectedIndex = 0;
         }
 
         private async void LoadSymbolStyle()
@@ -150,6 +150,12 @@ namespace MobileStylePicker
         private void SymbolStylePicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SymbolStyle = (SymbolStylePicker.SelectedItem as SymbolStyleItems).Style;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            this.Close();
         }
     }
 }

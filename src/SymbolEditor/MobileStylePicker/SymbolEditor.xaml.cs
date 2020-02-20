@@ -37,16 +37,9 @@ namespace MobileStylePicker
 
         private void PickFromSymbolStyle_Click(object sender, RoutedEventArgs e)
         {
-            var picker = new SymbolPicker();
-            var window = new MetroWindow()
-            {
-                Width = 600,
-                Height = 500,
-                Content = picker,
-                Title = "Symbol Style Browser"
-            };
+            var picker = new SymbolPicker() { Margin = new Thickness(20) };
 
-            if (window.ShowDialog() == true)
+            if (picker.ShowDialog() == true)
             {
                 var symbol = picker.SelectedItem?.Symbol;
                 if (symbol != null)
