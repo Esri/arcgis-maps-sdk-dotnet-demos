@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
 
-namespace MobileStylePicker
+namespace SymbolEditorApp.Controls
 {
     public class DropDownButton : Button
     {

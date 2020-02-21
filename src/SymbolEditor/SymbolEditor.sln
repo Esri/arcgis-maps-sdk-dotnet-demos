@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileStylePicker", "MobileStylePicker\MobileStylePicker.csproj", "{17556ECB-935A-4E13-865A-DA3C57027438}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymbolEditorApp", "SymbolEditorApp\SymbolEditorApp.csproj", "{17556ECB-935A-4E13-865A-DA3C57027438}"
 EndProject
-Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "MobileStylePicker.MSIX", "MobileStylePicker.MSIX\MobileStylePicker.MSIX.wapproj", "{E000D6E7-54FD-4A0B-8B2B-E2C867EFE159}"
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "SymbolEditor.MSIX", "SymbolEditor.MSIX\SymbolEditor.MSIX.wapproj", "{E000D6E7-54FD-4A0B-8B2B-E2C867EFE159}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

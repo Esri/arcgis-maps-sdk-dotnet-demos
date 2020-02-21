@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MobileStylePicker
+namespace SymbolEditorApp.Controls
 {
     /// <summary>
     /// Interaction logic for SymbolPicker.xaml
@@ -41,7 +41,7 @@ namespace MobileStylePicker
             SymbolStylePicker.ItemsSource = symbols;
             if (symbols.Count == 0)
             {
-                var pro2d = await SymbolStyle.OpenAsync("ArcGISRuntime2D_Pro25.stylx");
+                var pro2d = await SymbolStyle.OpenAsync("Resources/ArcGISRuntime2D_Pro25.stylx");
                 symbols.Add(new SymbolStyleItems() { Style = pro2d, Name = "2D Web Styles" });
                 //var pro3d = await SymbolStyle.OpenAsync("ArcGISRuntime3D_Pro25.stylx");
                 //symbols.Add(new SymbolStyleItems() { Style = pro3d, Name = "3D Web Styles" });

@@ -14,7 +14,7 @@ using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Tasks;
 using Esri.ArcGISRuntime.UI;
 
-namespace MobileStylePicker
+namespace SymbolEditorApp
 {
     /// <summary>
     /// Provides map data to an application
