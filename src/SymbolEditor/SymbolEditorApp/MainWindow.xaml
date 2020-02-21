@@ -7,11 +7,18 @@
         xmlns:local="clr-namespace:SymbolEditorApp"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Symbol Style Picker" Height="768" Width="1024">
-    <mah:MetroWindow.Resources>
-        <local:MapViewModel x:Key="MapViewModel" />
-    </mah:MetroWindow.Resources>
-    <Grid DataContext="{Binding Source={StaticResource MapViewModel}}">
+        Title="ArcGIS Runtime Symbol Editor" Height="768" Width="1024">
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button Click="Settings_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" />
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="settings" />
+                </StackPanel>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+    <Grid DataContext="{Binding Source={x:Static local:MapViewModel.Current}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="5" />
@@ -19,6 +26,6 @@
         </Grid.ColumnDefinitions>
         <esri:MapView Map="{Binding Map}" Grid.Column="2" x:Name="mapView" />
         <GridSplitter Grid.Column="1" ResizeDirection="Auto" />
-        <esri:TableOfContents GeoView="{Binding ElementName=mapView}" Margin="5" TableOfContentContextMenuOpening="TableOfContents_TableOfContentContextMenuOpening"  />
+        <esri:TableOfContents GeoView="{Binding ElementName=mapView}" Margin="0,5,0,0" TableOfContentContextMenuOpening="TableOfContents_TableOfContentContextMenuOpening"  />
     </Grid>
 </mah:MetroWindow>

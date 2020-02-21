@@ -13,6 +13,8 @@ using Esri.ArcGISRuntime.Security;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Tasks;
 using Esri.ArcGISRuntime.UI;
+using MahApps.Metro;
+using System.Windows;
 
 namespace SymbolEditorApp
 {
@@ -21,12 +23,21 @@ namespace SymbolEditorApp
     /// </summary>
     public class MapViewModel : INotifyPropertyChanged
     {
-        public MapViewModel()
+        private static MapViewModel _Current;
+
+        public static MapViewModel Current => _Current ?? (_Current = new MapViewModel());
+
+        private Basemap _darkModeBaseMap = Basemap.CreateDarkGrayCanvasVector();
+        private Basemap _lightModeBaseMap = Basemap.CreateLightGrayCanvasVector();
+
+        private MapViewModel()
         {
+            SetDarkMode(UserSettings.Default.IsDarkModeEnabled);
+            SetTheme(UserSettings.Default.ThemeName);
             _map.OperationalLayers.Add(new FeatureLayer(new Uri("http://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")));
         }
     
-        private Map _map = new Map(Basemap.CreateDarkGrayCanvasVector());
+        private Map _map = new Map();
 
         /// <summary>
         /// Gets or sets the map
@@ -45,5 +56,20 @@ namespace SymbolEditorApp
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void SetDarkMode(bool isDarkEnabled)
+        {
+            ThemeManager.ChangeThemeBaseColor(Application.Current, isDarkEnabled ? ThemeManager.BaseColorDark : ThemeManager.BaseColorLight);
+            _map.Basemap = isDarkEnabled ? _darkModeBaseMap : _lightModeBaseMap;
+            UserSettings.Default.IsDarkModeEnabled = isDarkEnabled;
+            UserSettings.Default.Save();
+        }
+
+        public void SetTheme(string name)
+        {
+            ThemeManager.ChangeThemeColorScheme(Application.Current, name);
+            UserSettings.Default.ThemeName = name;
+            UserSettings.Default.Save();
+        }
     }
 }
