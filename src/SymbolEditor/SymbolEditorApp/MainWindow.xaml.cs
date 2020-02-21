@@ -21,11 +21,11 @@ namespace SymbolEditorApp
         {
             Symbol symbolReference = null;
             Action<Symbol> symbolSetter = null;
-            if(e.LegendInfo != null)
+            if(e.Content is LegendInfo legendInfo)
             {
                 // Find the symbol in the layer that matches the one in the legend
-                var layer = e.TableOfContentItem as Layer;
-                if(layer is FeatureLayer fl)
+                var layer = e.TableOfContentItem.Parent.Content as Layer;
+                if (layer is FeatureLayer fl)
                 {
                     var renderer = fl.Renderer;
                     if(renderer is SimpleRenderer sr)
@@ -36,10 +36,10 @@ namespace SymbolEditorApp
                     else if(renderer is UniqueValueRenderer uvr)
                     {
                         // TODO: Also handle uvr.DefaultSymbol
-                        var uv = uvr.UniqueValues.Where(u => u.Label == e.LegendInfo.Name);
+                        var uv = uvr.UniqueValues.Where(u => u.Label == legendInfo.Name);
                         if(uv.Count() > 1) // In case multiple symbols matches
                         {
-                            uv = uv.Where(u => u.Symbol.ToJson() == e.LegendInfo.Symbol.ToJson());
+                            uv = uv.Where(u => u.Symbol.ToJson() == legendInfo.Symbol.ToJson());
                         }
                         if(uv.Count() == 1)
                         {
@@ -58,7 +58,7 @@ namespace SymbolEditorApp
             if (symbolReference != null && symbolSetter != null)
             {
                 e.MenuItems.Add(new MenuItem() { Header = "Edit symbol... " });
-                e.MenuItems[0].Click += (s,e) =>
+                ((MenuItem)e.MenuItems[0]).Click += (s,e) =>
                 {
                     var editor = new SymbolEditor();
                     editor.Symbol = symbolReference;
