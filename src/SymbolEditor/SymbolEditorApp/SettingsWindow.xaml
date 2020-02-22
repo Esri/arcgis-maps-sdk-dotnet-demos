@@ -21,7 +21,7 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Mode:" Width="100" />
-                    <RadioButton x:Name="DarkModeButton" IsChecked="True" Content="Dark Mode" Width="100" Margin="2,0" GroupName="mode" Checked="SetDarkMode"/>
+                    <RadioButton x:Name="DarkModeButton" Content="Dark Mode" Width="100" Margin="2,0" GroupName="mode" Checked="SetDarkMode"/>
                     <RadioButton x:Name="LightModeButton" Content="Light Mode" Width="100" GroupName="mode" Checked="SetLightMode"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

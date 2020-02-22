@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="SymbolEditorApp.Controls.RendererEditors.UniqueValueRendererEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SymbolEditorApp.Controls.RendererEditors"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+
+        <TextBlock Text="Fields:" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" />
+        <ListView ItemsSource="{Binding Renderer.FieldNames}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                        <TextBlock Text="{Binding}" Width="150" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <DataGrid ItemsSource="{Binding Renderer.UniqueValues}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Symbol">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="Transparent" BorderThickness="0" Click="SymbolButton_Click">
+                                <esri:SymbolDisplay Symbol="{Binding Symbol}" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Values}" Header="Value" />
+                <DataGridTextColumn Binding="{Binding Label}" Header="Label" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</UserControl>

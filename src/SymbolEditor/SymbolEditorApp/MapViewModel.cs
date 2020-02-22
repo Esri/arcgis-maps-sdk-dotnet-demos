@@ -34,7 +34,7 @@ namespace SymbolEditorApp
         {
             SetDarkMode(UserSettings.Default.IsDarkModeEnabled);
             SetTheme(UserSettings.Default.ThemeName);
-            _map.OperationalLayers.Add(new FeatureLayer(new Uri("http://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")));
+            _map.OperationalLayers.Add(new FeatureLayer(new Uri("https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")));
         }
     
         private Map _map = new Map();

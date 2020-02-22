@@ -3,13 +3,12 @@ using Esri.ArcGISRuntime.Symbology;
 using SymbolEditorApp.Controls;
 using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace SymbolEditorApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
     {
         public MainWindow()
@@ -17,31 +16,73 @@ namespace SymbolEditorApp
             InitializeComponent();
         }
 
-        private void TableOfContents_TableOfContentContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.Preview.UI.Controls.TableOfContentsContextMenuEventArgs e)
+        private void TableOfContents_TocItemContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.Preview.UI.Controls.TocItemContextMenuEventArgs e)
         {
-            Symbol symbolReference = null;
-            Action<Symbol> symbolSetter = null;
-            if(e.Content is LegendInfo legendInfo)
+            if(e.Item.Layer is Layer layer)
             {
+                var remove = new MenuItem() { Header = "Remove", Icon = new TextBlock() { Text = "", FontFamily = new FontFamily("Segoe UI Symbol") } };
+                remove.Click += (s, a) =>
+                {
+                    var result = MessageBox.Show("Remove layer " + layer.Name + " ?", "Confirm", MessageBoxButton.OKCancel);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        if (mapView.Map.OperationalLayers.Contains(layer))
+                            mapView.Map.OperationalLayers.Remove(layer);
+                        else if(e.Item.Parent.LayerContent is GroupLayer gl && gl.Layers.Contains(layer))
+                            gl.Layers.Remove(layer);
+                    }
+                };
+                e.MenuItems.Add(remove);
+            }
+            if(e.Item.Layer is FeatureLayer fl)
+            {
+                var symbologyMenu = new MenuItem() { Header = "Symbology" };
+                e.MenuItems.Add(symbologyMenu);
+                symbologyMenu.Click += (s, a) =>
+                {
+                    var editor = new SymbologyEditor() { Renderer = fl.Renderer.Clone() };
+                    var d = new MetroDialog() { Child = editor, SizeToContent = SizeToContent.Manual, Width = 400, Height = 500, ResizeMode = ResizeMode.CanResize, Owner = this, Title = "Symbology Editor" };
+                    if (d.ShowDialog() == true)
+                    {
+                        fl.Renderer = editor.Renderer;
+                        e.Item.RefreshLegend();
+                    }
+                };
+            }
+        }
+
+        private void Settings_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var window = new SettingsWindow() { Owner = this };
+            window.ShowDialog();
+        }
+
+        private async void OnTreeViewItemMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var item = (sender as FrameworkElement).DataContext as Esri.ArcGISRuntime.Toolkit.Preview.UI.TocItem;
+            if(item?.Content is LegendInfo legendInfo)
+            {
+                Symbol symbolReference = null;
+                Action<Symbol> symbolSetter = null;
                 // Find the symbol in the layer that matches the one in the legend
-                var layer = e.TableOfContentItem.Parent.Content as Layer;
+                var layer = item.Layer;
                 if (layer is FeatureLayer fl)
                 {
                     var renderer = fl.Renderer;
-                    if(renderer is SimpleRenderer sr)
+                    if (renderer is SimpleRenderer sr)
                     {
                         symbolReference = sr.Symbol;
-                        symbolSetter = (s) => sr.Symbol = symbolReference;
+                        symbolSetter = (s) => sr.Symbol = s;
                     }
-                    else if(renderer is UniqueValueRenderer uvr)
+                    else if (renderer is UniqueValueRenderer uvr)
                     {
                         // TODO: Also handle uvr.DefaultSymbol
                         var uv = uvr.UniqueValues.Where(u => u.Label == legendInfo.Name);
-                        if(uv.Count() > 1) // In case multiple symbols matches
+                        if (uv.Count() > 1) // In case multiple symbols matches
                         {
                             uv = uv.Where(u => u.Symbol.ToJson() == legendInfo.Symbol.ToJson());
                         }
-                        if(uv.Count() == 1)
+                        if (uv.Count() == 1)
                         {
                             var u = uv.First();
                             symbolReference = u.Symbol;
@@ -53,35 +94,19 @@ namespace SymbolEditorApp
                         // TODO
                     }
                 }
-            }
 
-            if (symbolReference != null && symbolSetter != null)
-            {
-                e.MenuItems.Add(new MenuItem() { Header = "Edit symbol... " });
-                ((MenuItem)e.MenuItems[0]).Click += (s,e) =>
+                if (symbolReference != null && symbolSetter != null)
                 {
                     var editor = new SymbolEditor();
-                    editor.Symbol = symbolReference;
-                    var window = new MahApps.Metro.Controls.MetroWindow()
-                    {
-                        Width = 600,
-                        Height = 500,
-                        Owner = this,
-                        Content = editor,
-                        Title = "Symbol Editor"
-                    };
-                    if (window.ShowDialog() == true)
+                    editor.Symbol = symbolReference?.Clone();
+                    var result = MetroDialog.ShowDialog("Symbol Editor", editor, this);
+                    if (result == true)
                     {
                         symbolSetter(editor.Symbol);
+                        item.Parent.RefreshLegend();
                     }
-                };
+                }
             }
-        }
-
-        private void Settings_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var window = new SettingsWindow() { Owner = this };
-            window.ShowDialog();
         }
     }
 }

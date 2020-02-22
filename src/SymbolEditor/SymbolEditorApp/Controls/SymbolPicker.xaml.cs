@@ -20,7 +20,7 @@ namespace SymbolEditorApp.Controls
     /// <summary>
     /// Interaction logic for SymbolPicker.xaml
     /// </summary>
-    public partial class SymbolPicker : MahApps.Metro.Controls.MetroWindow
+    public partial class SymbolPicker : UserControl
     {
         static ObservableCollection<SymbolStyleItems> symbols = new ObservableCollection<SymbolStyleItems>();
         public class SymbolStyleItems
@@ -150,12 +150,6 @@ namespace SymbolEditorApp.Controls
         private void SymbolStylePicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SymbolStyle = (SymbolStylePicker.SelectedItem as SymbolStyleItems).Style;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = true;
-            this.Close();
         }
     }
 }

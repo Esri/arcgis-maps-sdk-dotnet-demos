@@ -10,24 +10,24 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel>
-            <local:DropDownButton Content="New symbol..." HorizontalAlignment="Left">
-                <local:DropDownButton.ContextMenu>
+            <Button Content="New symbol | ▼" HorizontalAlignment="Left" Click="NewSymbol_Click">
+                <Button.ContextMenu>
                     <ContextMenu >
-                        <MenuItem Foreground="Snow" Header="From Symbol Style..." Click="PickFromSymbolStyle_Click" />
-                        <MenuItem Foreground="Snow" Header="From JSON..."/>
+                        <MenuItem Header="From Symbol Style..." Click="PickFromSymbolStyle_Click" />
+                        <MenuItem Header="New Simple Marker Symbol" Click="NewSimpleMarker_Click" />
+                        <MenuItem Header="New Simple Line Symbol" Click="NewSimpleLine_Click" />
+                        <MenuItem Header="New Simple Fill Symbol" Click="NewSimpleFill_Click" />
+                        <MenuItem Header="From JSON..."/>
                     </ContextMenu>
-                </local:DropDownButton.ContextMenu>
-            </local:DropDownButton>
+                </Button.ContextMenu>
+            </Button>
 
             <Grid Margin="0,20,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel>
-                    <TextBlock Text="Color" />
-                    <TextBlock Text="Size" />
-                </StackPanel>
+                <ContentControl x:Name="SymbolEditorContent" />
                 <local:SymbolViewer Symbol="{Binding Symbol}" 
                   VerticalAlignment="Top" Grid.Column="1"/>
                 

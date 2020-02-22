@@ -33,17 +33,56 @@ namespace SymbolEditorApp.Controls
         }
 
         public static readonly DependencyProperty SymbolProperty =
-            DependencyProperty.Register("Symbol", typeof(Symbol), typeof(SymbolEditor), new PropertyMetadata(null));
+            DependencyProperty.Register("Symbol", typeof(Symbol), typeof(SymbolEditor), new PropertyMetadata(null, OnSymbolPropertyChanged));
+
+        private static void OnSymbolPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((SymbolEditor)d).UpdateSymbolEditor();
+        }
+
+        private void UpdateSymbolEditor()
+        {
+            if (Symbol is SimpleMarkerSymbol sms)
+            {
+                SymbolEditorContent.Content = new SymbolEditors.SimpleMarkerSymbolEditor() { Symbol = sms };
+            }
+            else if (Symbol is Esri.ArcGISRuntime.Symbology.MultilayerSymbol mls)
+            {
+                SymbolEditorContent.Content = new SymbolEditors.MultilayerSymbolEditor() { Symbol = mls };
+            }
+            else
+            {
+                SymbolEditorContent.Content = new TextBlock() { Text = "Symbol type not yet supported " };
+            }
+        }
 
         private void PickFromSymbolStyle_Click(object sender, RoutedEventArgs e)
         {
-            var picker = new SymbolPicker() { Margin = new Thickness(20) };
+            var picker = new SymbolPicker();
 
-            if (picker.ShowDialog() == true)
+            if (MetroDialog.ShowDialog("Symbol Picker", picker, this) == true)
             {
                 var symbol = picker.SelectedItem?.Symbol;
                 if (symbol != null)
                     Symbol = symbol;
+            }
+        }
+
+        private void NewSimpleMarker_Click(object sender, RoutedEventArgs e) => Symbol = new SimpleMarkerSymbol();
+
+        private void NewSimpleLine_Click(object sender, RoutedEventArgs e) => Symbol = new SimpleLineSymbol();
+
+        private void NewSimpleFill_Click(object sender, RoutedEventArgs e) => Symbol = new SimpleFillSymbol();
+
+        private void NewSymbol_Click(object sender, RoutedEventArgs e)
+        {
+            var menu = (sender as Button)?.ContextMenu;
+            if (menu != null)
+            {
+                menu.IsEnabled = true;
+                menu.PlacementTarget = sender as UIElement;
+                menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                menu.IsOpen = true;
             }
         }
     }
