@@ -27,7 +27,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <ContentControl x:Name="SymbolEditorContent" />
+                <!--<ContentControl x:Name="SymbolEditorContent" />-->
+                <ScrollViewer>
+                    <local:AutoPropertyGrid Value="{Binding Path=Symbol, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SymbolEditor}}}"
+                            Margin="0,0,10,0"
+                            KeyColumnWidth="100" Width="300" VerticalAlignment="Top" />
+                </ScrollViewer>
+
                 <local:SymbolViewer Symbol="{Binding Symbol}" 
                   VerticalAlignment="Top" Grid.Column="1"/>
                 

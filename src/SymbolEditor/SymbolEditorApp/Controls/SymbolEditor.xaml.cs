@@ -37,24 +37,26 @@ namespace SymbolEditorApp.Controls
 
         private static void OnSymbolPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SymbolEditor)d).UpdateSymbolEditor();
+          //  ((SymbolEditor)d).UpdateSymbolEditor();
         }
 
-        private void UpdateSymbolEditor()
-        {
-            if (Symbol is SimpleMarkerSymbol sms)
-            {
-                SymbolEditorContent.Content = new SymbolEditors.SimpleMarkerSymbolEditor() { Symbol = sms };
-            }
-            else if (Symbol is Esri.ArcGISRuntime.Symbology.MultilayerSymbol mls)
-            {
-                SymbolEditorContent.Content = new SymbolEditors.MultilayerSymbolEditor() { Symbol = mls };
-            }
-            else
-            {
-                SymbolEditorContent.Content = new TextBlock() { Text = "Symbol type not yet supported " };
-            }
-        }
+        //private void UpdateSymbolEditor()
+        //{
+        //    if (Symbol is SimpleMarkerSymbol sms)
+        //    {
+        //        SymbolEditorContent.Content = new SymbolEditors.SimpleMarkerSymbolEditor() { Symbol = sms };
+        //    }
+        //    else if (Symbol is Esri.ArcGISRuntime.Symbology.MultilayerSymbol mls)
+        //    {
+        //        SymbolEditorContent.Content = new AutoPropertyGrid() { Value = mls };
+        //        //SymbolEditorContent.Content = new SymbolEditors.MultilayerSymbolEditor() { Symbol = mls };
+        //    }
+        //    else
+        //    {
+        //        SymbolEditorContent.Content = new AutoPropertyGrid() { Value = Symbol };
+        //        //SymbolEditorContent.Content = new TextBlock() { Text = "Symbol type not yet supported " };
+        //    }
+        //}
 
         private void PickFromSymbolStyle_Click(object sender, RoutedEventArgs e)
         {
