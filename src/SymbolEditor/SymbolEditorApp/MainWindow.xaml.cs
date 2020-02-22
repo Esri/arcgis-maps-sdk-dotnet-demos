@@ -49,6 +49,17 @@ namespace SymbolEditorApp
                     }
                 };
             }
+
+            if(e.Item.Content is LegendInfo li)
+            {
+                var jsonMenu = new MenuItem() { Header = "View JSON" };
+                e.MenuItems.Add(jsonMenu);
+                jsonMenu.Click += (s, a) =>
+                {
+                    var viewer = new SymbolJsonViewer() { Symbol = li.Symbol, Owner = this };
+                    viewer.Show();
+                };
+            }
         }
 
         private void Settings_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -57,7 +68,7 @@ namespace SymbolEditorApp
             window.ShowDialog();
         }
 
-        private async void OnTreeViewItemMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void OnTreeViewItemMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var item = (sender as FrameworkElement).DataContext as Esri.ArcGISRuntime.Toolkit.Preview.UI.TocItem;
             if(item?.Content is LegendInfo legendInfo)
