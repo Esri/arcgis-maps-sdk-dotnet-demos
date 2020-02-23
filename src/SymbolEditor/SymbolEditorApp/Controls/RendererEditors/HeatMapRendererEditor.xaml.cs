@@ -134,11 +134,11 @@ namespace SymbolEditorApp.Controls.RendererEditors
             public System.Drawing.Color Color
             {
                 get {
-                    return System.Drawing.Color.FromArgb(colorInternal[0], colorInternal[1], colorInternal[2], colorInternal[3]);
+                    return System.Drawing.Color.FromArgb(colorInternal[3], colorInternal[0], colorInternal[1], colorInternal[2]);
                 }
                 set
                 {
-                    colorInternal = new byte[] { value.A, value.R, value.G, value.B };
+                    colorInternal = new byte[] { value.R, value.G, value.B, value.A };
                 }
             }
         }

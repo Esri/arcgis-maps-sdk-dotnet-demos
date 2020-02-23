@@ -31,9 +31,14 @@ namespace SymbolEditorApp.Controls
                 colors.Add(new SolidColorBrush((System.Windows.Media.Color)value.GetValue(null)));
             }
             list.ItemsSource = colors;
+            
         }
 
-
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
+            dropdown.IsOpen = false;
+            base.OnLostFocus(e);
+        }
 
         public System.Drawing.Color Color
         {
@@ -48,12 +53,15 @@ namespace SymbolEditorApp.Controls
         {
             var color = Color;
             Selection.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            alpha.Value = color.A;
             ColorChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void DropdownClick(object sender, RoutedEventArgs e)
         {
             dropdown.IsOpen = !dropdown.IsOpen;
+            if (dropdown.IsOpen)
+                dropdown.Focus();
         }
 
         private void list_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -62,11 +70,22 @@ namespace SymbolEditorApp.Controls
             if (list.SelectedItem != null)
             {
                 var c = (list.SelectedItem as SolidColorBrush).Color;
+                alpha.Value = c.A;
                 Color = System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
                 list.SelectedItem = null;
             }
         }
 
         public event EventHandler ColorChanged;
+
+        private void alpha_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Color = System.Drawing.Color.FromArgb((byte)e.NewValue, Color.R, Color.G, Color.B);
+        }
+
+        private void dropdown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            dropdown.IsOpen = false;
+        }
     }
 }

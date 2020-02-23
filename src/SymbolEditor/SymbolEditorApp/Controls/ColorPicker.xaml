@@ -23,19 +23,28 @@
                 </Grid>
             </Button.Content>
     </Button>
-    <Popup x:Name="dropdown" PlacementTarget="{Binding ElementName=button}" Placement="Bottom">
-        <ListView x:Name="list" SelectionChanged="list_SelectionChanged" MaxHeight="300" BorderBrush="Black" BorderThickness="1">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="8" />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border Width="15" Height="15" Background="{Binding}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Popup>
+    <Popup x:Name="dropdown" 
+           LostFocus="dropdown_LostFocus"
+           PlacementTarget="{Binding ElementName=button}" Placement="Bottom">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Slider Minimum="0" Maximum="255" x:Name="alpha" ValueChanged="alpha_ValueChanged" />
+                <ListView x:Name="list" Grid.Row="1" SelectionChanged="list_SelectionChanged" MaxHeight="300" BorderBrush="Black" BorderThickness="1">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="8" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="15" Height="15" Background="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Popup>
     </Grid>
 </UserControl>
