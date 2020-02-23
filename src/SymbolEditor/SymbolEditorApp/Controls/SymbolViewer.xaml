@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Width="300" Height="320"
              d:DesignHeight="300" d:DesignWidth="320">
-    <Grid>
+    <Grid  MouseWheel="OnMouseWheel" Background="Transparent">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -16,7 +16,7 @@
         <Grid HorizontalAlignment="Stretch">
             <!--<esri:SceneView x:Name="sceneView" BorderBrush="Black" BorderThickness="1" 
              Visibility="Collapsed" IsAttributionTextVisible="False" Background="Transparent" />-->
-            <esri:MapView x:Name="mapView" BorderBrush="Black" BorderThickness="1" 
+            <esri:MapView x:Name="mapView" BorderBrush="Black" BorderThickness="1"
              Visibility="Visible" IsAttributionTextVisible="False" Background="Transparent" />
         </Grid>
         <Grid Grid.Row="1" Margin="0,5,0,0">

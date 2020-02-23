@@ -61,7 +61,7 @@ namespace SymbolEditorApp
 
         private void Settings_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var window = new SettingsWindow() { Owner = this };
+            var window = new SettingsWindow() { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
             window.ShowDialog();
         }
 

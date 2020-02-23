@@ -72,5 +72,16 @@ namespace SymbolEditorApp.Controls
         {
             mapView.SetViewpoint(new Viewpoint(nullIsland, 10000 / e.NewValue));
         }
+
+        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (zoomSlider.Value <= zoomSlider.Minimum && e.Delta < 0 ||
+                zoomSlider.Value >= zoomSlider.Maximum && e.Delta > 0)
+            {
+                return;
+            }
+            zoomSlider.Value += (e.Delta > 0) ? .1 : -.1;
+            e.Handled = true;
+        }
     }
 }
