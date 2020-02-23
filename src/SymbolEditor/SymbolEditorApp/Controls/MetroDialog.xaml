@@ -25,8 +25,8 @@
             Content="{Binding Child, RelativeSource={RelativeSource AncestorType={x:Type local:MetroDialog}}}" />
 
         <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Right" Grid.Row="1">
-            <Button Content="Accept" Click="Button_Click" />
-            <Button Content="Cancel" IsCancel="True" />
+            <Button Content="Accept" Click="Button_Click" x:Name="acceptButton" />
+            <Button Content="Cancel" IsCancel="True" x:Name="cancelButton" />
         </StackPanel>
     </Grid>
 

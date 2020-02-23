@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -36,14 +37,14 @@ namespace SymbolEditorApp.Controls
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var value = (sender as Button).DataContext;
-            MetroDialog.ShowDialog(value.GetType().Name, new AutoPropertyGrid() { Value = value, MaxWidth = 400 }, this);
+            MetroDialog.ShowDialog(value.GetType().Name, new AutoPropertyGrid() { Value = value, MaxWidth = 400, MinWidth = 300 }, this, showCancel: false);
         }
     }
     public class TypeNameConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value?.GetType().Name;
+            return Regex.Replace(value?.GetType().Name ?? "", "(\\B[A-Z])", " $1");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

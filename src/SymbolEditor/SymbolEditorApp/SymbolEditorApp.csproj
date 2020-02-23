@@ -5,6 +5,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>SymbolEditorApp</AssemblyName>
+    <!--<Platforms>AnyCPU;x64;x86</Platforms>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release' AND '$(RuntimeIdentifier)' != ''">
+    <!--<SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+    <PublishSingleFile>false</PublishSingleFile>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +30,9 @@
     <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="100.7.0" />
     <PackageReference Include="Esri.ArcGISRuntime.Toolkit" Version="100.7.1-20.g67469835d0" />
     <PackageReference Include="Esri.ArcGISRuntime.Toolkit.Preview" Version="100.7.1-20.g67469835d0" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
+    <!--<PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />-->
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
+    <PackageReference Include="UniversalWPF" Version="0.9.0" />
   </ItemGroup>
 
   <ItemGroup>

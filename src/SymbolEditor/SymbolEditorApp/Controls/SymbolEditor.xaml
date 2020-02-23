@@ -3,41 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:SymbolEditorApp.Controls"
-             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="650" d:DesignWidth="300">
     <Grid>
-        <StackPanel>
-            <Button Content="New symbol | ▼" HorizontalAlignment="Left" Click="NewSymbol_Click">
-                <Button.ContextMenu>
-                    <ContextMenu >
-                        <MenuItem Header="From Symbol Style..." Click="PickFromSymbolStyle_Click" />
-                        <MenuItem Header="New Simple Marker Symbol" Click="NewSimpleMarker_Click" />
-                        <MenuItem Header="New Simple Line Symbol" Click="NewSimpleLine_Click" />
-                        <MenuItem Header="New Simple Fill Symbol" Click="NewSimpleFill_Click" />
-                        <MenuItem Header="From JSON..."/>
-                    </ContextMenu>
-                </Button.ContextMenu>
-            </Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Button Content="New symbol | ▼" HorizontalAlignment="Left" Click="NewSymbol_Click">
+            <Button.ContextMenu>
+                <ContextMenu >
+                    <MenuItem Header="From Symbol Style..." Click="PickFromSymbolStyle_Click" />
+                    <MenuItem Header="New Simple Marker Symbol" Click="NewSimpleMarker_Click" />
+                    <MenuItem Header="New Simple Line Symbol" Click="NewSimpleLine_Click" />
+                    <MenuItem Header="New Simple Fill Symbol" Click="NewSimpleFill_Click" />
+                    <MenuItem Header="From JSON..."/>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
 
-            <Grid Margin="0,20,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <!--<ContentControl x:Name="SymbolEditorContent" />-->
-                <ScrollViewer>
-                    <local:AutoPropertyGrid Value="{Binding Path=Symbol, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SymbolEditor}}}"
-                            Margin="0,0,10,0"
-                            KeyColumnWidth="100" Width="300" VerticalAlignment="Top" />
-                </ScrollViewer>
+        <ScrollViewer Grid.Row="1">
+            <local:AutoPropertyGrid Value="{Binding Path=Symbol, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SymbolEditor}}}"
+                    Margin="0,0,10,0" VerticalAlignment="Top" />
+        </ScrollViewer>
 
-                <local:SymbolViewer Symbol="{Binding Symbol}" 
-                  VerticalAlignment="Top" Grid.Column="1"/>
+        <local:SymbolViewer Symbol="{Binding Symbol}" 
+            VerticalAlignment="Top" Grid.Row="2"/>
                 
-            </Grid>
-        </StackPanel>
     </Grid>
 </UserControl>

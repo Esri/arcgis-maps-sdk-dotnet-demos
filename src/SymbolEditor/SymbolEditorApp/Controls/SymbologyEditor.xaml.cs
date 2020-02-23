@@ -51,10 +51,20 @@ namespace SymbolEditorApp.Controls
                     return;
                 }
             }
+            else if (RendererType.SelectedIndex == 3)
+            {
+                if ((Renderer is null) || HeatMapRendererEditor.HeatMapRendererModel.FromRenderer(Renderer).type != "heatmap")
+                {
+                    Renderer = new HeatMapRendererEditor.HeatMapRendererModel().AsRenderer();
+                    return;
+                }
+            }
         }
 
         private void OnRendererChanged()
         {
+            if (settingRenderer)
+                return;
             if(Renderer == null)
             {
                 Renderer = new SimpleRenderer(new SimpleMarkerSymbol());
@@ -80,8 +90,22 @@ namespace SymbolEditorApp.Controls
                 MessageBox.Show("Dictionary Renderer is not yet supported");
                 System.Diagnostics.Debugger.Break();
             }
+            else if (Renderer?.GetType()?.Name == "UnknownRenderer" && HeatMapRendererEditor.HeatMapRendererModel.FromRenderer(Renderer) is HeatMapRendererEditor.HeatMapRendererModel model && model.type == "heatmap")
+            {
+                if (RendererEditorView.Content is HeatMapRendererEditor e && e.Renderer == Renderer)
+                { }
+                else
+                {
+                    RendererType.SelectedIndex = 3;
+                    RendererEditorView.Content = new HeatMapRendererEditor() { Renderer = model };
+                    settingRenderer = true;
+                    SetBinding(RendererProperty, new Binding("Renderer") { Mode = BindingMode.OneWay, Source = RendererEditorView.Content });
+                    settingRenderer = false;
+                    return;
+                }
+            }
         }
-
+        bool settingRenderer;
 
         public Renderer Renderer
         {

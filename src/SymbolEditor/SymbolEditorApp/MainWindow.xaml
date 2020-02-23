@@ -19,14 +19,20 @@
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <Grid DataContext="{Binding Source={x:Static local:MapViewModel.Current}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="225" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <esri:MapView Map="{Binding Map}" Grid.Column="2" x:Name="mapView" />
-        <GridSplitter Grid.Column="1" ResizeDirection="Auto" />
-        <esri:TableOfContents GeoView="{Binding ElementName=mapView}" Margin="0,5,0,0" TocItemContextMenuOpening="TableOfContents_TocItemContextMenuOpening" >
+        <esri:MapView Map="{Binding Map}" Grid.Row="1" Grid.Column="2" x:Name="mapView" />
+        <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Auto" />
+        <esri:TableOfContents GeoView="{Binding ElementName=mapView}" Margin="0,5,0,0" Grid.Row="1" TocItemContextMenuOpening="TableOfContents_TocItemContextMenuOpening" >
             <esri:TableOfContents.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding Path=IsExpanded, Mode=TwoWay}" />
@@ -132,5 +138,23 @@
                 </Style>
             </esri:TableOfContents.ItemContainerStyle>
         </esri:TableOfContents>
+
+        <GridSplitter Grid.Column="3" Grid.Row="1" ResizeDirection="Auto" x:Name="SidePanelResizer" />
+        <Grid Grid.Column="4" Grid.Row="1" MinWidth="300" x:Name="SidePanelContainer" >
+            <ContentControl x:Name="SidePanel" Margin="10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+
+            <Button Content="X"  Click="CloseSidePanel_Click"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Height="20" 
+                    Background="Transparent" BorderBrush="Transparent" />
+        </Grid>
+        <!--<Menu Grid.ColumnSpan="5">
+            <MenuItem Header="_File" >
+                <MenuItem Header="E_xit" />
+            </MenuItem>
+            <MenuItem Header="Layers">
+                <MenuItem Header="Remove Selected Layer" />
+                <MenuItem Header="Edit symbology" />
+            </MenuItem>
+        </Menu>-->
     </Grid>
 </mah:MetroWindow>

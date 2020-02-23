@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:local="clr-namespace:SymbolEditorApp.Controls"
         mc:Ignorable="d"
         Title="Symbol JSON" Height="450" Width="800">
     <Grid Margin="10">

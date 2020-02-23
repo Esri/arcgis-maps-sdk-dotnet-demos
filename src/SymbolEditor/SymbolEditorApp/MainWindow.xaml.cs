@@ -3,6 +3,7 @@ using Esri.ArcGISRuntime.Symbology;
 using SymbolEditorApp.Controls;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,6 +15,7 @@ namespace SymbolEditorApp
         public MainWindow()
         {
             InitializeComponent();
+            ShowSidePanel(null);
         }
 
         private void TableOfContents_TocItemContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.Preview.UI.Controls.TocItemContextMenuEventArgs e)
@@ -41,12 +43,7 @@ namespace SymbolEditorApp
                 symbologyMenu.Click += (s, a) =>
                 {
                     var editor = new SymbologyEditor() { Renderer = fl.Renderer.Clone() };
-                    var d = new MetroDialog() { Child = editor, SizeToContent = SizeToContent.Manual, Width = 400, Height = 500, ResizeMode = ResizeMode.CanResize, Owner = this, Title = "Symbology Editor" };
-                    if (d.ShowDialog() == true)
-                    {
-                        fl.Renderer = editor.Renderer;
-                        e.Item.RefreshLegend();
-                    }
+                    ShowSidePanelDialog(editor, () => { fl.Renderer = editor.Renderer; e.Item.RefreshLegend(); });
                 };
             }
 
@@ -110,14 +107,40 @@ namespace SymbolEditorApp
                 {
                     var editor = new SymbolEditor();
                     editor.Symbol = symbolReference?.Clone();
-                    var result = MetroDialog.ShowDialog("Symbol Editor", editor, this);
-                    if (result == true)
-                    {
-                        symbolSetter(editor.Symbol);
-                        item.Parent.RefreshLegend();
-                    }
+                    ShowSidePanelDialog(editor, () => { symbolSetter(editor.Symbol); item.Parent.RefreshLegend(); });
                 }
             }
+        }
+
+        public void ShowSidePanel(UIElement panel)
+        {
+            SidePanel.Content = panel;
+            SidePanelContainer.Visibility = panel != null ? Visibility.Visible : Visibility.Collapsed;
+            SidePanelResizer.Visibility = panel != null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void ShowSidePanelDialog(UIElement panel, Action onComplete)
+        {
+            Grid g = new Grid();
+            g.RowDefinitions.Add(new RowDefinition());
+            g.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
+            g.Children.Add(panel);
+            StackPanel sp = new StackPanel() { Orientation = Orientation.Horizontal, HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Margin = new Thickness(0,10,0,0) };
+            Grid.SetRow(sp, 1);
+            var cancelButton = new Button() { Content = "Cancel" };
+            cancelButton.Click += (s, e) => ShowSidePanel(null);
+            var applyButton = new Button() { Content = "Apply" };
+            applyButton.Click += (s,e) => onComplete();
+            sp.Children.Add(cancelButton);
+            sp.Children.Add(applyButton);            
+            g.Children.Add(sp);
+
+            ShowSidePanel(g);
+        }
+
+        private void CloseSidePanel_Click(object sender, RoutedEventArgs e)
+        {
+            ShowSidePanel(null);
         }
     }
 }

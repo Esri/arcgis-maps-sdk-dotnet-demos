@@ -24,10 +24,11 @@ namespace SymbolEditorApp.Controls
     {
         public MetroDialog()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
             InitializeComponent();
         }
 
-        public static bool? ShowDialog(string title, UIElement content, UIElement parent)
+        public static bool? ShowDialog(string title, UIElement content, UIElement parent, bool showCancel = true, bool showAccept = true)
         {
             var window = parent as Window;
             while(window is null && parent != null)
@@ -36,6 +37,8 @@ namespace SymbolEditorApp.Controls
                 window = parent as Window;
             }
             var d = new MetroDialog() { Child = content, Title = title, Owner = window };
+            d.acceptButton.Visibility = showAccept ? Visibility.Visible : Visibility.Collapsed;
+            d.cancelButton.Visibility = showCancel ? Visibility.Visible : Visibility.Collapsed;
             var result = d.ShowDialog();
             d.Child = null;
             return result;

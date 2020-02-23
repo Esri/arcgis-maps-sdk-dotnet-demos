@@ -13,14 +13,22 @@ namespace SymbolEditorApp.Controls
         {
             double colWidth1 = double.NaN;
             double colWidth2 = double.NaN;
+            double maxWidth1 = 0;
+            double maxWidth2 = 0;
             if (KeyColumnWidth.IsAbsolute)
                 colWidth1 = KeyColumnWidth.Value;
+            else if (KeyColumnWidth.IsAuto)
+                colWidth1 = colWidth2 = availableSize.Width;
             if (ValueColumnWidth.IsAbsolute)
                 colWidth2 = KeyColumnWidth.Value;
-            if(double.IsNaN(colWidth1) || double.IsNaN(colWidth2))
+            else if (ValueColumnWidth.IsAuto)
+                colWidth1 = colWidth2 = availableSize.Width;
+            if (double.IsNaN(colWidth1) || double.IsNaN(colWidth2))
             {
                 if (!double.IsNaN(colWidth2))
+                {
                     colWidth1 = availableSize.Width - colWidth2;
+                }
                 else if (!double.IsNaN(colWidth1))
                 {
                     colWidth2 = availableSize.Width - colWidth1;
@@ -51,8 +59,10 @@ namespace SymbolEditorApp.Controls
                     value?.Measure(new Size(colWidth2, availableSize.Height - y));
                 }
                 y += Math.Max(key.DesiredSize.Height, value?.DesiredSize.Height ?? 0);
+                maxWidth1 = Math.Max(key.DesiredSize.Width, maxWidth1);
+                maxWidth2 = Math.Max(value?.DesiredSize.Width ?? 0, maxWidth1);
             }
-            return new Size(colWidth1 + colWidth2, y);
+            return new Size(Math.Min(colWidth1 + colWidth2, maxWidth1 + maxWidth2), y);
         }
         protected override Size ArrangeOverride(Size finalSize)
         {
@@ -60,8 +70,24 @@ namespace SymbolEditorApp.Controls
             double colWidth2 = double.NaN;
             if (KeyColumnWidth.IsAbsolute)
                 colWidth1 = KeyColumnWidth.Value;
+            else if (KeyColumnWidth.IsAuto)
+            {
+                colWidth1 = 0;
+                for (int i = 0; i < Children.Count; i+=2)
+                {
+                    colWidth1 = Math.Max(colWidth1, Children[i].DesiredSize.Width);
+                }
+            }
             if (ValueColumnWidth.IsAbsolute)
                 colWidth2 = KeyColumnWidth.Value;
+            else if (ValueColumnWidth.IsAuto)
+            {
+                colWidth2 = 0;
+                for (int i = 1; i < Children.Count; i += 2)
+                {
+                    colWidth2 = Math.Max(colWidth2, Children[i].DesiredSize.Width);
+                }
+            }
             if (double.IsNaN(colWidth1) || double.IsNaN(colWidth2))
             {
                 if (!double.IsNaN(colWidth2))
@@ -110,7 +136,7 @@ namespace SymbolEditorApp.Controls
         }
 
         public static readonly DependencyProperty KeyColumnWidthProperty =
-            DependencyProperty.Register("KeyColumnWidth", typeof(GridLength), typeof(KeyValuePanel), new PropertyMetadata(new GridLength(1, GridUnitType.Star), InvalidateMeasure));
+            DependencyProperty.Register("KeyColumnWidth", typeof(GridLength), typeof(KeyValuePanel), new PropertyMetadata(new GridLength(1, GridUnitType.Auto), InvalidateMeasure));
 
         public GridLength ValueColumnWidth
         {

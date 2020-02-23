@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="SymbolEditorApp.Controls.RendererEditors.HeatMapRendererEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SymbolEditorApp.Controls.RendererEditors"
+             xmlns:ctrls="clr-namespace:SymbolEditorApp.Controls"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+        <StackPanel>
+        <!--<StackPanel.Resources>
+            <DecimalFormatter x:Key="formatter">
+                <DecimalFormatter.FractionDigits>
+                    <sys:Int32>3</sys:Int32>
+                </DecimalFormatter.FractionDigits>
+            </DecimalFormatter>
+        </StackPanel.Resources>-->
+
+        <ctrls:AutoPropertyGrid>
+            <TextBlock Text="Blur Radius" VerticalAlignment="Center" />
+            <NumberBox Value="{Binding Model.blurRadius, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:HeatMapRendererEditor}}}" Minimum="1" Maximum="100" AcceptsExpression="True" SpinButtonPlacementMode="Inline"
+                       ValueChanged="ValueChanged" />
+
+            <TextBlock Text="Minimum Pixel Intensity" VerticalAlignment="Center" />
+            <NumberBox Value="{Binding Model.minPixelIntensity, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:HeatMapRendererEditor}}}" Minimum="0" AcceptsExpression="True" SpinButtonPlacementMode="Inline" ValueChanged="ValueChanged" />
+
+            <TextBlock Text="Maximum Pixel Intensity" VerticalAlignment="Center" />
+            <NumberBox Value="{Binding Model.maxPixelIntensity, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:HeatMapRendererEditor}}}" Minimum="0" AcceptsExpression="True" SpinButtonPlacementMode="Inline" ValueChanged="ValueChanged" />
+        </ctrls:AutoPropertyGrid>
+        <ItemsControl ItemsSource="{Binding Model.ColorStops, RelativeSource={RelativeSource AncestorType={x:Type local:HeatMapRendererEditor}}}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ctrls:KeyValuePanel Margin="0,2">
+                        <TextBlock Text="Color: " VerticalAlignment="Center" />
+                        <ctrls:ColorPicker Color="{Binding Color, Mode=TwoWay}" ColorChanged="ValueChanged" />
+                        <TextBlock Text="Ratio" VerticalAlignment="Center" />
+                        <NumberBox Value="{Binding ratio, Mode=TwoWay}" Loaded="NumberBox_Loaded"
+                                   Minimum="0" Maximum="1" SmallChange="0.01" LargeChange="0.1" AcceptsExpression="True" SpinButtonPlacementMode="Inline" ValueChanged="ValueChanged" />
+                    </ctrls:KeyValuePanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+            
+        </StackPanel>       
+</UserControl>
