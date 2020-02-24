@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Esri.ArcGISRuntime.Symbology;
 using Xamarin.Forms;
 
 namespace ARParallaxGuidelines.Forms
@@ -70,13 +71,37 @@ namespace ARParallaxGuidelines.Forms
         {
             try
             {
-                var scene = new Scene(Basemap.CreateImagery());
-                scene.BaseSurface = new Surface();
-                scene.BaseSurface.BackgroundGrid.IsVisible = false;
-                scene.BaseSurface.ElevationSources.Add(new ArcGISTiledElevationSource(new Uri("https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")));
-                scene.BaseSurface.NavigationConstraint = NavigationConstraint.None;
-                await scene.LoadAsync();
-                arSceneView.Scene = scene;
+                // Create and add the scene.
+                arSceneView.Scene = new Scene(Basemap.CreateImagery());
+
+                // Add the location data source to the AR view.
+                arSceneView.LocationDataSource = _locationSource;
+
+                // Create and add the elevation source.
+                _elevationSource = new ArcGISTiledElevationSource(new Uri("https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"));
+                _elevationSurface = new Surface();
+                _elevationSurface.ElevationSources.Add(_elevationSource);
+                arSceneView.Scene.BaseSurface = _elevationSurface;
+
+                // Configure the surface for AR: no navigation constraint and hidden by default.
+                _elevationSurface.NavigationConstraint = NavigationConstraint.None;
+                _elevationSurface.Opacity = 0;
+
+                // Configure scene view display for real-scale AR: no space effect or atmosphere effect.
+                arSceneView.SpaceEffect = SpaceEffect.None;
+                arSceneView.AtmosphereEffect = AtmosphereEffect.None;
+
+                ConfigureAndAddPipes();
+
+                ConfigureAndAddShadows();
+
+                ConfigureAndAddLeaders();
+
+                // Disable scene interaction.
+                arSceneView.InteractionOptions = new SceneViewInteractionOptions() { IsEnabled = false };
+
+                // Enable the calibration button.
+                CalibrateButton.IsEnabled = true;
             }
             catch (System.Exception ex)
             {
@@ -86,10 +111,76 @@ namespace ARParallaxGuidelines.Forms
 
         }
 
+        private void ConfigureAndAddPipes()
+        {
+            // Create a graphics overlay for the pipes.
+            GraphicsOverlay pipesOverlay = new GraphicsOverlay();
+
+            // Use absolute surface placement to see the graphics at the correct altitude.
+            pipesOverlay.SceneProperties.SurfacePlacement = SurfacePlacement.Absolute;
+
+            // Add graphics for the pipes.
+            pipesOverlay.Graphics.AddRange(_pipeGraphics);
+
+            // Display routes as red 3D tubes.
+            SolidStrokeSymbolLayer strokeSymbolLayer = new SolidStrokeSymbolLayer(0.3, System.Drawing.Color.Red, null, StrokeSymbolLayerLineStyle3D.Tube) { CapStyle = StrokeSymbolLayerCapStyle.Round };
+            MultilayerPolylineSymbol tubeSymbol = new MultilayerPolylineSymbol(new[] { strokeSymbolLayer });
+            pipesOverlay.Renderer = new SimpleRenderer(tubeSymbol);
+
+            // Add the graphics overlay to the scene.
+            arSceneView.GraphicsOverlays.Add(pipesOverlay);
+        }
+
+        private void ConfigureAndAddShadows()
+        {
+            // Create a graphics overlay for the pipe shadows.
+            GraphicsOverlay shadowOverlay = new GraphicsOverlay();
+
+            // Place the graphics directly on the ground regardless of elevation.
+            shadowOverlay.SceneProperties.SurfacePlacement = SurfacePlacement.DrapedFlat;
+
+            // Configure the renderer.
+            shadowOverlay.Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, System.Drawing.Color.Yellow, 0.3));
+
+            // Add all underground graphics.
+            _shadowPipes = _pipeGraphics.Where(g => (double)g.Attributes["ElevationOffset"] < 0).Select(g => new Graphic(g.Geometry, g.Attributes));
+            shadowOverlay.Graphics.AddRange(_shadowPipes);
+
+            // Add the overlay to the view.
+            arSceneView.GraphicsOverlays.Add(shadowOverlay);
+        }
+
+        private void ConfigureAndAddLeaders()
+        {
+            GraphicsOverlay leadersOverlay = new GraphicsOverlay();
+            leadersOverlay.SceneProperties.SurfacePlacement = SurfacePlacement.Absolute;
+            leadersOverlay.Renderer = new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, System.Drawing.Color.Red, 0.3));
+
+            foreach (Graphic pipeGraphic in _pipeGraphics)
+            {
+                Polyline pipePolyline = (Polyline)pipeGraphic.Geometry;
+                double offset = (double)pipeGraphic.Attributes["ElevationOffset"];
+
+                foreach (var part in pipePolyline.Parts)
+                {
+                    foreach (var point in part.Points)
+                    {
+                        MapPoint offsetPoint = new MapPoint(point.X, point.Y, point.Z - offset);
+                        Polyline leaderLine = new Polyline(new[] { point, offsetPoint });
+                        leadersOverlay.Graphics.Add(new Graphic(leaderLine));
+                    }
+                }
+            }
+
+            arSceneView.GraphicsOverlays.Add(leadersOverlay);
+        }
+
         protected override void OnAppearing()
         {
-            Status.Text = "Move your device in a circular motion to detect surfaces";
+            Status.Text = "Calibrate before viewing infrastructure.";
             arSceneView.StartTrackingAsync();
+
+            InitializeScene();
             base.OnAppearing();
         }
 
@@ -97,6 +188,11 @@ namespace ARParallaxGuidelines.Forms
         {
             arSceneView.StopTrackingAsync();
             base.OnDisappearing();
+        }
+
+        private void CalibrateButton_OnClicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

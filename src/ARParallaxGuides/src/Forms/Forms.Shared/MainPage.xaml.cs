@@ -59,7 +59,9 @@ namespace ARParallaxGuidelines.Forms
         private async void Button_Clicked_2(object sender, EventArgs e)
         {
             var graphics = _pipesOverlay.Graphics.Select(x => new Graphic(x.Geometry, x.Attributes));
-            var _ = Navigation.PushAsync(new ARPage() { _pipeGraphics = graphics });
+            var page = new ARPage();
+            page._pipeGraphics = graphics;
+            _ = Navigation.PushAsync(page);
         }
 
         private async void Button_Clicked_1(object sender, EventArgs e)

@@ -10,12 +10,15 @@
              x:Class="ARParallaxGuidelines.Forms.ARPage">
     <Grid>
         <esri:ARSceneView x:Name="arSceneView"
-                      PlanesDetectedChanged="PlanesDetectedChanged"
-                      RenderPlanes="True"
-                      GeoViewDoubleTapped="DoubleTap_ToPlace" />
+                      RenderPlanes="True" />
 
         <Label HorizontalOptions="Center" VerticalOptions="Start" Margin="30"
                x:Name="Status" TextColor="Yellow" FontSize="18" ios:Page.UseSafeArea="True">
         </Label>
+        <Button x:Name="CalibrateButton" 
+                Text="Calibrate"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Clicked="CalibrateButton_OnClicked" />
     </Grid>
 </ContentPage>
