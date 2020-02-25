@@ -9,13 +9,47 @@
              mc:Ignorable="d"
              x:Class="ARParallaxGuidelines.Forms.ARPage">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <esri:ARSceneView x:Name="arSceneView"
-                      RenderPlanes="True" />
+                          RenderPlanes="False"
+                          Grid.Row="0" Grid.RowSpan="4"/>
+        <Grid x:Name="CalibrationView" 
+              Grid.Row="0" 
+              BackgroundColor="White" Opacity="0.5"
+              IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Text="Heading:" Grid.Row="0" Grid.Column="0" />
+            <Label Text="Elevation:" Grid.Row="1" Grid.Column="0" />
+            <Slider x:Name="HeadingSlider" Grid.Row="0" Grid.Column="1" 
+                    Minimum="-10"
+                    Maximum="10"
+                    DragStarted="CalibrationSlider_DragStarted"
+                    DragCompleted="CalibrationSlider_DragCompleted"/>
+            <Slider x:Name="ElevationSlider" Grid.Row="1" Grid.Column="1" 
+                    Minimum="-10"
+                    Maximum="10"
+                    DragStarted="CalibrationSlider_DragStarted"
+                    DragCompleted="CalibrationSlider_DragCompleted"/>
+        </Grid>
 
         <Label HorizontalOptions="Center" VerticalOptions="Start" Margin="30"
+               Grid.Row="1"
                x:Name="Status" TextColor="Yellow" FontSize="18" ios:Page.UseSafeArea="True">
         </Label>
         <Button x:Name="CalibrateButton" 
+                Grid.Row="3"
                 Text="Calibrate"
                 HorizontalOptions="Center"
                 VerticalOptions="End"

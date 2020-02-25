@@ -13,9 +13,20 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <forms:MapView Grid.Row="0" x:Name="MyMapView" />
-            <Grid Grid.Row="1" ios:Page.UseSafeArea="True">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="Elevation:" Grid.Column="0" />
+                <Slider Minimum="-10" Maximum="10"
+                        Grid.Column="1" 
+                        Value="{Binding ElevationOffset, Mode=TwoWay}"/>
+            </Grid>
+            <Grid Grid.Row="2" ios:Page.UseSafeArea="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />

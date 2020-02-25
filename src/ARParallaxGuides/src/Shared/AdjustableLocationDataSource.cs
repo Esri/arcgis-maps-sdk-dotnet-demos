@@ -26,8 +26,26 @@ namespace ARParallaxGuidelines
             }
         }
 
+        private double _headingOffset;
+
+        public double HeadingOffset
+        {
+            get => _headingOffset;
+
+            set
+            {
+                _headingOffset = value;
+
+                if (_lastHeading != null)
+                {
+                    _baseSource_HeadingChanged(this, _lastHeading.Value + HeadingOffset);
+                }
+            }
+        }
+
         // Track the last location provided by the system.
         private Location _lastLocation;
+        private double? _lastHeading;
 
         // The system's location data source.
         private LocationDataSource _baseSource;
@@ -57,6 +75,10 @@ namespace ARParallaxGuidelines
 
         private void _baseSource_HeadingChanged(object sender, double e)
         {
+            if (_lastHeading == null)
+            {
+                _lastHeading = e;
+            }
             UpdateHeading(e);
         }
 

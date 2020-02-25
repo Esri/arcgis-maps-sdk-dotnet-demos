@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
+using Esri.ArcGISRuntime.ARToolkit;
 using Esri.ArcGISRuntime.Symbology;
 using Xamarin.Forms;
 
@@ -49,6 +51,8 @@ namespace ARParallaxGuidelines.Forms
 
                         // Enable scene interaction.
                         arSceneView.InteractionOptions.IsEnabled = true;
+
+                        CalibrationView.IsVisible = true;
                     }
                     else
                     {
@@ -57,14 +61,23 @@ namespace ARParallaxGuidelines.Forms
 
                         // Disable scene interaction.
                         arSceneView.InteractionOptions.IsEnabled = false;
+
+                        CalibrationView.IsVisible = false;
                     }
                 }
             }
         }
 
+        private Timer _headingJoystickTimer = new Timer(100);
+        private Timer _elevationJoystickTimer = new Timer(100);
+
         public ARPage()
         {
             InitializeComponent();
+
+            // Used to implement a joystick effect during calibration.
+            _headingJoystickTimer.Elapsed += _headingJoystickTimer_Elapsed;
+            _elevationJoystickTimer.Elapsed += _elevationJoystickTimer_Elapsed;
         }
 
         private async void InitializeScene()
@@ -178,7 +191,7 @@ namespace ARParallaxGuidelines.Forms
         protected override void OnAppearing()
         {
             Status.Text = "Calibrate before viewing infrastructure.";
-            arSceneView.StartTrackingAsync();
+            arSceneView.StartTrackingAsync(ARLocationTrackingMode.Continuous);
 
             InitializeScene();
             base.OnAppearing();
@@ -192,7 +205,56 @@ namespace ARParallaxGuidelines.Forms
 
         private void CalibrateButton_OnClicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            IsCalibrating = !IsCalibrating;
+        }
+
+        private void CalibrationSlider_DragStarted(object sender, EventArgs e)
+        {
+            if (sender == ElevationSlider)
+            {
+                _elevationJoystickTimer.Start();
+            }
+            else
+            {
+                _headingJoystickTimer.Start();
+            }
+        }
+
+        private void CalibrationSlider_DragCompleted(object sender, EventArgs e)
+        {
+            if (sender == ElevationSlider)
+            {
+                _elevationJoystickTimer.Stop();
+                ElevationSlider.Value = 0;
+            }
+            else
+            {
+                _headingJoystickTimer.Stop();
+                HeadingSlider.Value = 0;
+            }
+        }
+
+        private void _elevationJoystickTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            // Calculate the altitude offset
+            var newValue = _locationSource.AltitudeOffset += JoystickConverter(ElevationSlider.Value);
+
+            // Set the altitude offset on the location data source.
+            _locationSource.AltitudeOffset = newValue;
+        }
+
+        private void _headingJoystickTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            // Calculate the altitude offset
+            var newValue = _locationSource.HeadingOffset += JoystickConverter(HeadingSlider.Value);
+
+            // Set the altitude offset on the location data source.
+            _locationSource.HeadingOffset = newValue;
+        }
+
+        private double JoystickConverter(double value)
+        {
+            return Math.Pow(value, 2) / 25 * (value < 0 ? -1.0 : 1.0);
         }
     }
 }
