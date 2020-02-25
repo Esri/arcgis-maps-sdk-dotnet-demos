@@ -28,7 +28,7 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition MinWidth="300" Width="Auto" x:Name="panelColumn" />
         </Grid.ColumnDefinitions>
         <esri:MapView Map="{Binding Map}" Grid.Row="1" Grid.Column="2" x:Name="mapView" />
         <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Auto" />
@@ -140,7 +140,7 @@
         </esri:TableOfContents>
 
         <GridSplitter Grid.Column="3" Grid.Row="1" ResizeDirection="Auto" x:Name="SidePanelResizer" />
-        <Grid Grid.Column="4" Grid.Row="1" MinWidth="300" x:Name="SidePanelContainer" >
+        <Grid Grid.Column="4" Grid.Row="1" x:Name="SidePanelContainer" >
             <ContentControl x:Name="SidePanel" Margin="10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
 
             <Button Content="X"  Click="CloseSidePanel_Click"

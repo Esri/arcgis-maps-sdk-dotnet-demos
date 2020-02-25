@@ -117,6 +117,7 @@ namespace SymbolEditorApp
             SidePanel.Content = panel;
             SidePanelContainer.Visibility = panel != null ? Visibility.Visible : Visibility.Collapsed;
             SidePanelResizer.Visibility = panel != null ? Visibility.Visible : Visibility.Collapsed;
+            panelColumn.MinWidth = panel != null ? 300 : 0;
         }
 
         public void ShowSidePanelDialog(UIElement panel, Action onComplete)

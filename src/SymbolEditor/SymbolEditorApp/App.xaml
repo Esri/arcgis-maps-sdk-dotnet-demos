@@ -3,10 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SymbolEditorApp"
              xmlns:conv="clr-namespace:SymbolEditorApp.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Startup="Application_Startup"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        
         <ResourceDictionary>
+
+            <!-- Set your license key here to get rid of the watermark. Visit developers.arcgis.com and sign-in to get your free keey -->
+            <sys:String x:Key="ArcGISRuntimeLicenseKey"></sys:String>
+            
             <conv:ColorConverter x:Key="ColorConverter" />
                 <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->

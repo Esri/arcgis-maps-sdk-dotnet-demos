@@ -21,6 +21,14 @@ namespace SymbolEditorApp
                 // Deployed applications must be licensed at the Lite level or greater. 
                 // See https://developers.arcgis.com/licensing for further details.
 
+                // Pull license key listed in App.xaml
+                var licenseKey = Application.Current.Resources["ArcGISRuntimeLicenseKey"] as string;
+                if(!string.IsNullOrEmpty(licenseKey))
+                {
+                    ArcGISRuntimeEnvironment.SetLicense(licenseKey);
+                }
+
+
                 // Initialize the ArcGIS Runtime before any components are created.
                 ArcGISRuntimeEnvironment.Initialize();
             }

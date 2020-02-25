@@ -8,9 +8,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel>
-            <TextBlock Text="Primary Symbology" FontSize="16" Style="{DynamicResource MahApps.Styles.TextBlock}"
-                       Margin="0,5" FontWeight="Bold"
-                       />
+            <TextBlock Text="Primary Symbology" 
+                       FontSize="16" 
+                       Style="{DynamicResource MahApps.Styles.TextBlock}"
+                       Margin="0,5" FontWeight="Bold" />
             <ComboBox x:Name="RendererType" SelectionChanged="RendererType_SelectionChanged">
                 <ComboBoxItem>Single Symbol</ComboBoxItem>
                 <ComboBoxItem>Unique Values</ComboBoxItem>

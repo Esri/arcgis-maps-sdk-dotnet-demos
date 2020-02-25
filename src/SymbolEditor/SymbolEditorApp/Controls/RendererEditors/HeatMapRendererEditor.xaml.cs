@@ -75,11 +75,11 @@ namespace SymbolEditorApp.Controls.RendererEditors
 
             public HeatMapRendererModel()
             {
-                blurRadius = 10;
+                blurRadius = 20;
                 ColorStops = new ObservableCollection<ColorStop>();
-                ColorStops.Add(new ColorStop() { colorInternal = new byte[] { 133, 193, 200, 0 } });
-                ColorStops.Add(new ColorStop() { colorInternal = new byte[] { 133, 193, 200, 0 }, ratio = 0.01 });
-                maxPixelIntensity = 1249.2897582229123;
+                ColorStops.Add(new ColorStop() { colorInternal = new byte[] { 255, 0, 0, 0 } });
+                ColorStops.Add(new ColorStop() { colorInternal = new byte[] { 255, 255, 0, 255 }, ratio = 0.05 });
+                maxPixelIntensity = 1000;
                 minPixelIntensity = 0;
             }
 
