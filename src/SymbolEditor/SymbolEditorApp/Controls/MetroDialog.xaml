@@ -10,6 +10,7 @@
              ShowMinButton="False" 
              ShowMaxRestoreButton="False" 
              SizeToContent="WidthAndHeight"
+             TitleCharacterCasing="Normal"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="350">
 

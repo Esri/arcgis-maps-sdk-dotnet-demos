@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:SymbolEditorApp"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
+        TitleCharacterCasing="Normal"
         Title="ArcGIS Runtime Symbol Editor" Height="768" Width="1024">
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
