@@ -23,7 +23,7 @@ namespace SymbolEditorApp
 
                 // Pull license key listed in App.xaml
                 var licenseKey = Application.Current.Resources["ArcGISRuntimeLicenseKey"] as string;
-                if(!string.IsNullOrEmpty(licenseKey))
+                if(!string.IsNullOrEmpty(licenseKey) && licenseKey != "INSERT_KEY_HERE")
                 {
                     ArcGISRuntimeEnvironment.SetLicense(licenseKey);
                 }

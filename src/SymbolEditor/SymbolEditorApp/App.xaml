@@ -11,7 +11,7 @@
         <ResourceDictionary>
 
             <!-- Set your license key here to get rid of the watermark. Visit developers.arcgis.com and sign-in to get your free keey -->
-            <sys:String x:Key="ArcGISRuntimeLicenseKey"></sys:String>
+            <sys:String x:Key="ArcGISRuntimeLicenseKey">INSERT_KEY_HERE</sys:String>
             
             <conv:ColorConverter x:Key="ColorConverter" />
                 <ResourceDictionary.MergedDictionaries>
