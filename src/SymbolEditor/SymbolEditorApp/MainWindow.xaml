@@ -29,7 +29,7 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition MinWidth="300" Width="Auto" x:Name="panelColumn" />
+            <ColumnDefinition Width="310" x:Name="panelColumn" />
         </Grid.ColumnDefinitions>
         <esri:MapView Map="{Binding Map}" Grid.Row="1" Grid.Column="2" x:Name="mapView" />
         <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Auto" />

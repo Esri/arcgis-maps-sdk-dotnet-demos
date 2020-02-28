@@ -24,7 +24,7 @@
             </Button.ContextMenu>
         </Button>
 
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <local:AutoPropertyGrid Value="{Binding Path=Symbol, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SymbolEditor}}}"
                     Margin="0,0,10,0" VerticalAlignment="Top" />
         </ScrollViewer>
