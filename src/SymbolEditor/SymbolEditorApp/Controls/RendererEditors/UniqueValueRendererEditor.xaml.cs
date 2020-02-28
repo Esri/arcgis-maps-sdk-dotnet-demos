@@ -49,4 +49,28 @@ namespace SymbolEditorApp.Controls.RendererEditors
             }
         }
     }
+
+    public class ObjectCollectionToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if(!(value is string) && value is IEnumerable ie)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach(var item in ie)
+                {
+                    if (sb.Length > 0)
+                        sb.Append(',');
+                    sb.Append(item.ToString());
+                }
+                return sb.ToString();
+            }
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

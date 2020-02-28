@@ -8,6 +8,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
+        <StackPanel.Resources>
+            <local:ObjectCollectionToStringConverter x:Key="conv" />
+
+        </StackPanel.Resources>
 
         <TextBlock Text="Fields:" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" />
         <ListView ItemsSource="{Binding Renderer.FieldNames}">
@@ -29,7 +33,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Values}" Header="Value" />
+                <DataGridTextColumn Binding="{Binding Values, Converter={StaticResource conv}}" Header="Value" />
                 <DataGridTextColumn Binding="{Binding Label}" Header="Label" />
             </DataGrid.Columns>
         </DataGrid>
