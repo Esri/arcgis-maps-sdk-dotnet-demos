@@ -89,8 +89,19 @@ namespace SymbolEditorApp.Controls
                     }
                     else if (property.PropertyType == typeof(Esri.ArcGISRuntime.Geometry.Geometry))
                     {
-                        var d = new TextBlock();
-                        d.Text = (property.GetValue(Value) as Esri.ArcGISRuntime.Geometry.Geometry)?.ToJson();
+                        var d = new Button();
+                        d.Content = (property.GetValue(Value) as Esri.ArcGISRuntime.Geometry.Geometry)?.ToJson();
+                        d.Click += (s, e) =>
+                        {
+                            var editor = new GeometryEditor() { Width = 400, Height = 400 };
+                            if (editor.ShowDialog() == true)
+                            {
+                                if (editor.Geometry != null)
+                                {
+                                    property.SetValue(Value, editor.Geometry);
+                                }
+                            }
+                        };
                         //d.SetBinding(ColorPicker.ColorProperty, new Binding() { Path = new PropertyPath(name), Source = Value, Mode = BindingMode.TwoWay });
                         editor = d;
                     }
