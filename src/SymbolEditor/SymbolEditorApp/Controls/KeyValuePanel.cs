@@ -46,8 +46,6 @@ namespace SymbolEditorApp.Controls
                 UIElement key = Children[i] as UIElement;
                 var span = Grid.GetColumnSpan(key);
                 UIElement value = null;
-                if (Children.Count > i && span < 2)
-                    value = Children[i + 1];
                 if (span > 1)
                 {
                     key.Measure(new Size(availableSize.Width, availableSize.Height - y));
@@ -55,14 +53,18 @@ namespace SymbolEditorApp.Controls
                 }
                 else
                 {
+                    if (Children.Count > i + 1)
+                        value = Children[i + 1];
                     key.Measure(new Size(colWidth1, availableSize.Height - y));
                     value?.Measure(new Size(colWidth2, availableSize.Height - y));
                 }
+                if (y > 0)
+                    y += VerticalCellSpacing;
                 y += Math.Max(key.DesiredSize.Height, value?.DesiredSize.Height ?? 0);
                 maxWidth1 = Math.Max(key.DesiredSize.Width, maxWidth1);
                 maxWidth2 = Math.Max(value?.DesiredSize.Width ?? 0, maxWidth1);
             }
-            return new Size(Math.Min(colWidth1 + colWidth2, maxWidth1 + maxWidth2), y);
+            return new Size(Math.Min(colWidth1 + colWidth2, maxWidth1 + maxWidth2) + HorizontalCellSpacing, y);
         }
         protected override Size ArrangeOverride(Size finalSize)
         {
@@ -109,9 +111,9 @@ namespace SymbolEditorApp.Controls
                 UIElement key = Children[i] as UIElement;
                 var span = Grid.GetColumnSpan(key);
                 UIElement value = null;
-                if (Children.Count > i && span < 2)
-                    value = Children[i + 1];
                 double rowHeight = 0;
+                if (y > 0)
+                    y += VerticalCellSpacing;
                 if (span > 1)
                 {
                     key.Arrange(new Rect(0, y, finalSize.Width, key.DesiredSize.Height));
@@ -120,13 +122,15 @@ namespace SymbolEditorApp.Controls
                 }
                 else
                 {
+                    if (Children.Count > i + 1)
+                        value = Children[i + 1];
                     rowHeight = Math.Max(key.DesiredSize.Height, value?.DesiredSize.Height ?? 0);
                     key.Arrange(new Rect(0, y, colWidth1, rowHeight));
-                    value?.Arrange(new Rect(colWidth1, y, colWidth2, rowHeight));
+                    value?.Arrange(new Rect(colWidth1 + HorizontalCellSpacing, y, colWidth2, rowHeight));
                 }
                 y += rowHeight;
             }
-            return new Size(colWidth1 + colWidth2, y);
+            return new Size(colWidth1 + colWidth2 + HorizontalCellSpacing, y);
         }
 
         public GridLength KeyColumnWidth
@@ -146,6 +150,24 @@ namespace SymbolEditorApp.Controls
 
         public static readonly DependencyProperty ValueColumnWidthProperty =
             DependencyProperty.Register("ValueColumnWidth", typeof(GridLength), typeof(KeyValuePanel), new PropertyMetadata(new GridLength(1, GridUnitType.Star), InvalidateMeasure));
+
+        public double VerticalCellSpacing
+        {
+            get { return (double)GetValue(VerticalCellSpacingProperty); }
+            set { SetValue(VerticalCellSpacingProperty, value); }
+        }
+
+        public static readonly DependencyProperty VerticalCellSpacingProperty =
+            DependencyProperty.Register("VerticalCellSpacing", typeof(double), typeof(KeyValuePanel), new PropertyMetadata(0d, InvalidateMeasure));
+
+        public double HorizontalCellSpacing
+        {
+            get { return (double)GetValue(HorizontalCellSpacingProperty); }
+            set { SetValue(HorizontalCellSpacingProperty, value); }
+        }
+
+        public static readonly DependencyProperty HorizontalCellSpacingProperty =
+            DependencyProperty.Register("HorizontalCellSpacing", typeof(double), typeof(KeyValuePanel), new PropertyMetadata(0d, InvalidateMeasure));
 
         private static void InvalidateMeasure(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((KeyValuePanel)d).InvalidateMeasure();
     }

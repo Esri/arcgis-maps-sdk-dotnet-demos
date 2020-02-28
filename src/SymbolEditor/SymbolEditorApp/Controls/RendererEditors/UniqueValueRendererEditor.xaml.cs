@@ -1,6 +1,9 @@
-﻿using Esri.ArcGISRuntime.Symbology;
+﻿using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Symbology;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +28,17 @@ namespace SymbolEditorApp.Controls.RendererEditors
             DataContext = this;
         }
 
+        private void DefaultSymbolButton_Click(object sender, RoutedEventArgs e)
+        {
+            var editor = new SymbolEditor();
+            editor.Symbol = Renderer.DefaultSymbol?.Clone() ?? new SimpleMarkerSymbol();
+            var result = MetroDialog.ShowDialog("Symbol Editor", editor, this);
+            if (result == true)
+            {
+                Renderer.DefaultSymbol = editor.Symbol;
+            }
+        }
+
         public UniqueValueRenderer Renderer
         {
             get { return (UniqueValueRenderer)GetValue(RendererProperty); }
@@ -33,7 +47,6 @@ namespace SymbolEditorApp.Controls.RendererEditors
 
         public static readonly DependencyProperty RendererProperty =
             DependencyProperty.Register("Renderer", typeof(UniqueValueRenderer), typeof(UniqueValueRendererEditor), new PropertyMetadata(null));
-
 
         private void SymbolButton_Click(object sender, RoutedEventArgs e)
         {
@@ -46,6 +59,18 @@ namespace SymbolEditorApp.Controls.RendererEditors
             if (result == true)
             {
                 value.Symbol = editor.Symbol;
+            }
+        }
+
+        private void DataGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                var dg = sender as DataGrid;
+                if (dg?.SelectedItem is UniqueValue uv)
+                {
+                    Renderer.UniqueValues.Remove(uv);
+                }
             }
         }
     }
