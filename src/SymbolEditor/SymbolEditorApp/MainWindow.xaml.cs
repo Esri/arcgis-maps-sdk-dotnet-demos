@@ -43,7 +43,7 @@ namespace SymbolEditorApp
                 symbologyMenu.Click += (s, a) =>
                 {
                     var editor = new SymbologyEditor() { Renderer = fl.Renderer.Clone() };
-                    ShowSidePanelDialog(editor, () => { fl.Renderer = editor.Renderer; e.Item.RefreshLegend(); });
+                    ShowSidePanelDialog(editor, () => { fl.Renderer = editor.Renderer.Clone(); e.Item.RefreshLegend(); });
                 };
             }
 
