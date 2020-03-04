@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,9 +44,18 @@ namespace SymbolEditorApp.Controls
                     FrameworkElement editor = null;
                     if (isCollection)
                     {
-                        var d = new CollectionPropertyGrid();
-                        d.SetBinding(CollectionPropertyGrid.ValuesProperty, new Binding() { Path = new PropertyPath(name), Source = Value, Mode = property.CanWrite ? BindingMode.TwoWay : BindingMode.OneTime });
-                        editor = d;
+                        if (property.PropertyType == typeof(IList<Esri.ArcGISRuntime.Symbology.SymbolLayer>))
+                        {
+                            var list = new SymbolLayersList();
+                            list.SetBinding(SymbolLayersList.SymbolProperty, new Binding() { Source = Value, Mode = BindingMode.OneWay });
+                            editor = list;
+                        }
+                        else
+                        {
+                            var d = new CollectionPropertyGrid();
+                            d.SetBinding(CollectionPropertyGrid.ValuesProperty, new Binding() { Path = new PropertyPath(name), Source = Value, Mode = property.CanWrite ? BindingMode.TwoWay : BindingMode.OneTime });
+                            editor = d;
+                        }
                     }
                     else if (property.PropertyType == typeof(double))
                     {
