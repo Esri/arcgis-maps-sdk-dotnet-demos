@@ -25,7 +25,7 @@ namespace SymbolEditorApp.Controls
         {
             InitializeComponent();
             mapView.BackgroundGrid.Color = System.Drawing.Color.White;
-            mapView.BackgroundGrid.GridLineWidth = .5f;
+            mapView.BackgroundGrid.GridLineWidth = 0f;
             mapView.Map = new Esri.ArcGISRuntime.Mapping.Map(SpatialReferences.Wgs84) { InitialViewpoint = new Esri.ArcGISRuntime.Mapping.Viewpoint(new Envelope(0, 0, 10, 10, SpatialReferences.Wgs84)) };
             mapView.InteractionOptions = new Esri.ArcGISRuntime.UI.MapViewInteractionOptions() { IsZoomEnabled = false, IsPanEnabled = false };
             mapView.GraphicsOverlays.Add(new Esri.ArcGISRuntime.UI.GraphicsOverlay() { Renderer = new SimpleRenderer(new SimpleFillSymbol() { Color = System.Drawing.Color.Red }) });
