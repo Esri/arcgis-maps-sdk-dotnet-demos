@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="SymbolEditorApp.Controls.RendererEditors.UniqueValueRendererEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SymbolEditorApp.Controls.RendererEditors"
+             xmlns:ctrls="clr-namespace:SymbolEditorApp.Controls"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <StackPanel.Resources>
+            <local:ObjectCollectionToStringConverter x:Key="conv" />
+        </StackPanel.Resources>
+
+        <ctrls:KeyValuePanel KeyColumnWidth="Auto" VerticalCellSpacing="5" Margin="0,10" HorizontalCellSpacing="10">
+            <TextBlock Text="Fields:" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding Renderer.FieldNames, Converter={StaticResource conv}, Mode=OneWay}" IsReadOnly="True" />
+
+            <TextBlock Text="Unique Values:" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="0,5  " Grid.ColumnSpan="2" />
+
+            <DataGrid ItemsSource="{Binding Renderer.UniqueValues}" AutoGenerateColumns="False" Grid.ColumnSpan="2"
+                      KeyDown="DataGrid_KeyDown" CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Symbol">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Background="Transparent" BorderThickness="0" Click="SymbolButton_Click">
+                                    <esri:SymbolDisplay Symbol="{Binding Symbol}" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Values, Converter={StaticResource conv}}" Header="Value" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Label}" Header="Label" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Content="Add Unique Value" HorizontalAlignment="Left" Grid.ColumnSpan="2" />
+            <Rectangle Height="1" Fill="Gray" Grid.ColumnSpan="2" Margin="0,5" />
+
+
+            <TextBlock Text="Default Symbol:" VerticalAlignment="Center" />
+            <Button Background="Transparent" BorderThickness="1" HorizontalAlignment="Left" Width="40" Height="40" Click="DefaultSymbolButton_Click">
+                <esri:SymbolDisplay Symbol="{Binding Renderer.DefaultSymbol}" />
+            </Button>
+            <TextBlock Text="Default Label:" VerticalAlignment="Center" />
+            <TextBox Text="{Binding Renderer.DefaultLabel, Mode=TwoWay}" />
+        </ctrls:KeyValuePanel>
+    </StackPanel>
+</UserControl>

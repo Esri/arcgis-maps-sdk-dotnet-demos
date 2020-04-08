@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="SymbolEditorApp.Controls.SymbolEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SymbolEditorApp.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="650" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Button Content="New symbol | ▼" HorizontalAlignment="Left" Click="NewSymbol_Click">
+            <Button.ContextMenu>
+                <ContextMenu >
+                    <MenuItem Header="From Symbol Style..." Click="PickFromSymbolStyle_Click" />
+                    <MenuItem Header="New Simple Marker Symbol" Click="NewSimpleMarker_Click" />
+                    <MenuItem Header="New Simple Line Symbol" Click="NewSimpleLine_Click" />
+                    <MenuItem Header="New Simple Fill Symbol" Click="NewSimpleFill_Click" />
+                    <MenuItem Header="From JSON..."/>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <local:AutoPropertyGrid Value="{Binding Path=Symbol, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SymbolEditor}}}"
+                    Margin="0,0,10,0" VerticalAlignment="Top" />
+        </ScrollViewer>
+
+        <local:SymbolViewer Symbol="{Binding Symbol}" 
+            VerticalAlignment="Top" Grid.Row="2"/>
+                
+    </Grid>
+</UserControl>
