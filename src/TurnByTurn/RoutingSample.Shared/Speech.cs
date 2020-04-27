@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 #if XAMARIN
 using Xamarin.Essentials;
-#elif WINDOWS_UWP
+#elif NETFX_CORE
 using System.Linq;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Media.SpeechSynthesis;
-#elif WINDOWS_WPF
+#else
 using System.Speech.Synthesis;
 #endif
 
@@ -18,7 +19,7 @@ namespace RoutingSample
     {
 #if XAMARIN
         private static SpeechOptions _speechOptions;
-#elif WINDOWS_WPF || WINDOWS_UWP
+#else
         private static readonly SpeechSynthesizer _speechSynthesizer;
 #endif
 
@@ -31,11 +32,11 @@ namespace RoutingSample
                 Volume = 0.95f,
                 Pitch = 1.0f,
             };
-#elif WINDOWS_UWP
+#elif NETFX_CORE
             _speechSynthesizer = new SpeechSynthesizer();
             _speechSynthesizer.Voice = SpeechSynthesizer.AllVoices.Where(voice => voice.Gender == VoiceGender.Female)
                 .FirstOrDefault() ?? SpeechSynthesizer.DefaultVoice;
-#elif WINDOWS_WPF
+#else
             _speechSynthesizer = new SpeechSynthesizer();
             _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female);
 #endif
@@ -53,7 +54,7 @@ namespace RoutingSample
 
 #if XAMARIN
             await TextToSpeech.SpeakAsync(text, _speechOptions);
-#elif WINDOWS_UWP
+#elif NETFX_CORE
             // Doesn't seem to work all the time.
             using (var stream = await _speechSynthesizer.SynthesizeTextToStreamAsync(text))
             using (var source = MediaSource.CreateFromStream(stream, stream.ContentType))
@@ -64,7 +65,7 @@ namespace RoutingSample
                 mediaPlayer.IsLoopingEnabled = false;
                 mediaPlayer.Play();
             }
-#elif WINDOWS_WPF
+#else
             await Task.Run(() => _speechSynthesizer.Speak(text));
 #endif
         }

@@ -39,8 +39,8 @@ namespace RoutingSample.Desktop
 
         private void MapView_GeoViewTapped(object sender, GeoViewInputEventArgs e)
         {
-            // Set the destination
-            _mainViewModel.Destination = MapView.ScreenToLocation(e.Position);
+            //// Set the destination
+            //_mainViewModel.Destination = MapView.ScreenToLocation(e.Position);
         }
     }
 }

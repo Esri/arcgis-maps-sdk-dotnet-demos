@@ -1,15 +1,15 @@
-﻿using System;
+﻿#if !XAMARIN
+using System;
 
-#if WINDOWS_UWP
+#if NETFX_CORE
 using Windows.UI.Xaml;
-#elif WINDOWS_WPF
+#else
 using System.Windows;
 #endif
 
 namespace RoutingSample.Converters
 {
-#if WINDOWS_WPF || WINDOWS_UWP
-    public class NullToCollapsedConverter : ValueConverterBase
+    public class NullToCollapsedConverter : ValueConverter
 	{
 		protected override object Convert(object value, Type targetType, object parameter, string language)
 		{
@@ -21,5 +21,5 @@ namespace RoutingSample.Converters
 			throw new NotImplementedException();
 		}
 	}
-#endif
 }
+#endif

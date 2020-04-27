@@ -2,9 +2,9 @@
 
 namespace RoutingSample.Converters
 {
-    public class TimeFormatter : ValueConverterBase
+    public class TimeFormatter : StringFormatter
     {
-        protected override object Convert(object value, Type targetType, object paramter, string language)
+        protected override string Format(object value, object paramter, string language)
         {
             if (value == null)
             {
@@ -31,11 +31,6 @@ namespace RoutingSample.Converters
                 }
             }
 
-            throw new NotSupportedException();
-        }
-
-        protected override object ConvertBack(object value, Type targetType, object paramter, string language)
-        {
             throw new NotSupportedException();
         }
     }

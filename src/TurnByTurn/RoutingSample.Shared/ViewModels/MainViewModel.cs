@@ -9,14 +9,19 @@ using RoutingSample.Models;
 using RoutingSample.Services;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
+/*
+#if !XAMARIN
 #if WINDOWS_UWP
 using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
-#elif WINDOWS_WPF
+#else
 using System.Media;
 #endif
+#endif
+*/
 
 using Color = System.Drawing.Color;
 
@@ -40,6 +45,7 @@ namespace RoutingSample.ViewModels
             new MapPoint(-117.0018724, 32.5738892, 0, SpatialReferences.Wgs84)
         );
 
+        private string _address;
         private MapPoint _destination;
 
         // Routing
@@ -59,6 +65,7 @@ namespace RoutingSample.ViewModels
         private DelegateCommand _followCommand;
         private DelegateCommand _wanderCommand;
         private DelegateCommand _stopCommand;
+        private DelegateCommand _navigateCommand;
 
         #endregion
 
@@ -80,8 +87,7 @@ namespace RoutingSample.ViewModels
             else
             {
                 // We begin the simulation outside of the Living Coast Discovery Center
-                //_simulator = new SimulatedLocationDataSource(new MapPoint(-117.1109159, 32.6400714, 0, SpatialReferences.Wgs84));
-                Simulation = new Simulation(new MapPoint(-117.1109159, 32.6400714, 0, SpatialReferences.Wgs84));
+                Simulation = new SimulatedLocationDataSource(new MapPoint(-117.1109159, 32.6400714, 0, SpatialReferences.Wgs84));
 
                 // Create the maneuver
                 _maneuver = new Maneuver
@@ -106,13 +112,25 @@ namespace RoutingSample.ViewModels
             get => _destination;
             set
             {
-                if (Simulation.State == SimulationState.Stopped &&
-                    SetProperty(ref _destination, value))
+                if (SetProperty(ref _destination, value))
                 {
                     ChangeRoute();
                 }
             }
 		}
+
+        /// <summary>
+        /// Gets or sets the address.
+        /// </summary>
+        public string Address
+        {
+            get => _address;
+            set
+            {
+                // TODO?
+                SetProperty(ref _address, value);
+            }
+        }
 
         /// <summary>
         /// Gets the current route.
@@ -237,7 +255,7 @@ namespace RoutingSample.ViewModels
                     if (_locationDisplay != null)
                     {
                         _locationDisplay.PropertyChanged += LocationDisplay_PropertyChanged;
-                        _locationDisplay.DataSource = Simulation.Simulator;
+                        _locationDisplay.DataSource = Simulation;
                         _locationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
                         _locationDisplay.IsEnabled = true;
                     }
@@ -259,11 +277,11 @@ namespace RoutingSample.ViewModels
                     _graphicsOverlays = new GraphicsOverlayCollection();
 
                     // Current route
-                    _graphicsOverlays.Add(new GraphicsOverlay()
+                    _graphicsOverlays.Add(new GraphicsOverlay
                     {
-                        Renderer = new SimpleRenderer()
+                        Renderer = new SimpleRenderer
                         {
-                            Symbol = new SimpleLineSymbol()
+                            Symbol = new SimpleLineSymbol
                             {
                                 Width = 4,
                                 Color = Color.FromArgb(232, 0, 122, 194)
@@ -272,11 +290,11 @@ namespace RoutingSample.ViewModels
                     });
 
                     // Traversed route
-                    _graphicsOverlays.Add(new GraphicsOverlay()
+                    _graphicsOverlays.Add(new GraphicsOverlay
                     {
-                        Renderer = new SimpleRenderer()
+                        Renderer = new SimpleRenderer
                         {
-                            Symbol = new SimpleLineSymbol()
+                            Symbol = new SimpleLineSymbol
                             {
                                 Width = 6,
                                 Color = Color.LightGray
@@ -297,80 +315,102 @@ namespace RoutingSample.ViewModels
         /// <summary>
         /// Gets the simulation.
         /// </summary>
-        public Simulation Simulation { get; }
+        public SimulatedLocationDataSource Simulation { get; }
+
+#if DEBUG
 
         /// <summary>
         /// Gets the Go command, which starts routing.
         /// </summary>
-        public DelegateCommand FollowCommand => _followCommand ?? (_followCommand = new DelegateCommand(OnFollowCommand, CanExecuteFollowCommand));
+        public DelegateCommand FollowCommand => null; // _followCommand ?? (_followCommand = new DelegateCommand(OnFollowCommand, CanExecuteFollowCommand));
 
         /// <summary>
         /// Gets the Stop command, which stops routing.
         /// </summary>
-        public DelegateCommand StopCommand => _stopCommand ?? (_stopCommand = new DelegateCommand(OnStopCommand, CanExecuteStopCommand));
+        public DelegateCommand StopCommand => null; // _stopCommand ?? (_stopCommand = new DelegateCommand(OnStopCommand, CanExecuteStopCommand));
 
         /// <summary>
         /// Gets the Wander command.
         /// </summary>
-        public DelegateCommand WanderCommand => _wanderCommand ?? (_wanderCommand = new DelegateCommand(OnWanderCommand, CanExecuteWanderCommand));
+        public DelegateCommand WanderCommand => null; // _wanderCommand ?? (_wanderCommand = new DelegateCommand(OnWanderCommand, CanExecuteWanderCommand));
+
+        /// <summary>
+        /// Gets the navigate command.
+        /// </summary>
+        public DelegateCommand NavigateCommand => _navigateCommand ?? (_navigateCommand = new DelegateCommand(OnNavigate));
+
+#endif
 
         #endregion
 
         #region Methods
 
+#if DEBUG
+
         private void OnFollowCommand(object parameter)
         {
-            // Resume the simulation
-            Simulation.StartFollowing();
+            //// Resume the simulation
+            //Simulation.StartFollowing();
             
-            // Update commands
-            FollowCommand.RaiseCanExecuteChanged();
-            WanderCommand.RaiseCanExecuteChanged();
-            StopCommand.RaiseCanExecuteChanged();
+            //// Update commands
+            //FollowCommand.RaiseCanExecuteChanged();
+            //WanderCommand.RaiseCanExecuteChanged();
+            //StopCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteFollowCommand(object parameter)
         {
-            return !IsRerouting
-                && !IsRerouting
-                && (Simulation.State == SimulationState.Stopped || Simulation.State == SimulationState.Wandering)
-                && RouteTracker != null;
+            //return !IsRerouting
+            //    && !IsRerouting
+            //    && (Simulation.State == SimulationState.Stopped || Simulation.State == SimulationState.Wandering)
+            //    && RouteTracker != null;
+
+            return false;
         }
 
         private void OnWanderCommand(object parameter)
         {
-            // Resume the simulation
-            Simulation.StartWandering();
+            //// Resume the simulation
+            //Simulation.StartWandering();
 
-            // Update commands
-            FollowCommand.RaiseCanExecuteChanged();
-            WanderCommand.RaiseCanExecuteChanged();
-            StopCommand.RaiseCanExecuteChanged();
+            //// Update commands
+            //FollowCommand.RaiseCanExecuteChanged();
+            //WanderCommand.RaiseCanExecuteChanged();
+            //StopCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteWanderCommand(object parameter)
         {
-            return !IsRouting
-                && !IsRerouting
-                && Simulation.State != SimulationState.Wandering
-                && RouteTracker != null;
+            //return !IsRouting
+            //    && !IsRerouting
+            //    && Simulation.State != SimulationState.Wandering
+            //    && RouteTracker != null;
+
+            return false;
         }
 
         private void OnStopCommand(object parameter)
         {
             // Pause the simulation
-            Simulation.Stop();
+            Simulation.SetRoute(null);
 
             // Update commands
-            FollowCommand.RaiseCanExecuteChanged();
-            WanderCommand.RaiseCanExecuteChanged();
+            //FollowCommand.RaiseCanExecuteChanged();
+            //WanderCommand.RaiseCanExecuteChanged();
             StopCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteStopCommand(object parameter)
         {
-            return !IsRouting && Simulation.State != SimulationState.Stopped;
+            return !IsRouting && Simulation.Route != null; // && Simulation.State != SimulationState.Stopped;
         }
+
+        private void OnNavigate(object parameter)
+        {
+            // TODO
+        }
+
+#endif
 
         // Updates the current route (based on destination changes)
         private async void ChangeRoute()
@@ -399,8 +439,8 @@ namespace RoutingSample.ViewModels
                     DisplayRoute();
 
                     // Restart the simulation
-                    Simulation.Simulator.SetRoute(RouteResult.Routes[0]);
-                    Simulation.Restart();
+                    Simulation.SetRoute(RouteResult.Routes[0]);
+                    //Simulation.Restart();
                 }
                 catch (Exception ex)
                 {
@@ -445,6 +485,8 @@ namespace RoutingSample.ViewModels
 
         private void RouteTracker_RerouteStarted(object sender, EventArgs e)
         {
+            Debug.WriteLine("Reroute starting...");
+
             if (IsRouting || IsRerouting)
             {
                 return;
@@ -456,6 +498,8 @@ namespace RoutingSample.ViewModels
 
         private void RouteTracker_RerouteCompleted(object sender, RouteTrackerRerouteCompletedEventArgs e)
         {
+            Debug.WriteLine("Reroute completed.");
+
             var trackingStatus = e.TrackingStatus;
             if (trackingStatus.RouteResult != null)
             {
@@ -466,7 +510,7 @@ namespace RoutingSample.ViewModels
                 DisplayRoute();
 
                 // Update the simulator (behavior does not change, however)
-                Simulation.Simulator.SetRoute(RouteResult.Routes[0]);
+                Simulation.SetRoute(RouteResult.Routes[0]);
             }
 
             IsRerouting = false;
@@ -481,19 +525,22 @@ namespace RoutingSample.ViewModels
             }
             else
             {
-                // Play a beep at the turns
-#if XAMARIN
-                // TODO
-#elif WINDOWS_UWP
+                Debug.WriteLine("Arrived at maneuver");
+
+                /*
+#if !XAMARIN
+#if NETFX_CORE
                 using (var player = new MediaPlayer())
                 using (var source = MediaSource.CreateFromUri(new Uri("ms-winsoundevent:Notification.Default")))
                 {
                     player.Source = source;
                     player.Play();
                 }
-#elif WINDOWS_WPF
+#else
                 SystemSounds.Exclamation.Play();
 #endif
+#endif
+                */
             }
         }
 
@@ -506,7 +553,7 @@ namespace RoutingSample.ViewModels
             // Update the directions
             // We use the next maneuver to inform the user what their next action will be
             var nextManeuverIndex = currentManeuverIndex + 1;
-            if (currentManeuverIndex >= route.DirectionManeuvers.Count)
+            if (nextManeuverIndex >= route.DirectionManeuvers.Count)
                 nextManeuverIndex = route.DirectionManeuvers.Count - 1;
 
             var nextManeuver = route.DirectionManeuvers[nextManeuverIndex];
@@ -531,7 +578,7 @@ namespace RoutingSample.ViewModels
             }
 
             // Update the simulation
-            Simulation.Simulator.UpdateTrackingStatus(trackingStatus);
+            //Simulation.Simulator.UpdateTrackingStatus(trackingStatus);
         }
 
         private async void LocationDisplay_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -544,6 +591,7 @@ namespace RoutingSample.ViewModels
                     await _routeTracker.TrackLocationAsync(location);
 			}
 		}
-#endregion
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Esri.ArcGISRuntime.Portal;
+﻿#if DEBUG
+using Esri.ArcGISRuntime.Portal;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -44,9 +45,9 @@ namespace RoutingSample
         {
 #if XAMARIN
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);;
-#elif WINDOWS_UWP
+#elif NETFX_CORE
             var appData = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-#elif WINDOWS_WPF
+#else
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 #endif
 
@@ -112,3 +113,4 @@ namespace RoutingSample
         }
     }
 }
+#endif

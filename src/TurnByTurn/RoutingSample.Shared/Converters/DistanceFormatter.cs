@@ -4,9 +4,9 @@ using System;
 
 namespace RoutingSample.Converters
 {
-    public class DistanceFormatter : ValueConverterBase
+    public class DistanceFormatter : StringFormatter
     {
-        protected override object Convert(object value, Type targetType, object paramter, string language)
+        protected override string Format(object value, object paramter, string language)
         {
             if (value == null)
             {
@@ -22,6 +22,7 @@ namespace RoutingSample.Converters
             throw new NotSupportedException();
         }
 
+        /*
         private double ToMiles(TrackingDistance distance)
         {
             switch (distance.DisplayTextUnits.Name)
@@ -37,13 +38,8 @@ namespace RoutingSample.Converters
                     return distance.Distance;
             }
 
-            // We won't bother
             throw new NotSupportedException();
         }
-
-        protected override object ConvertBack(object value, Type targetType, object paramter, string language)
-        {
-            throw new NotSupportedException();
-        }
+        */
     }
 }

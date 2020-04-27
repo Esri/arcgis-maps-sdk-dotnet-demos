@@ -78,6 +78,7 @@
         </Border>
 
         <!-- Simulation -->
+        <!--
         <Border Grid.Row="2" Width="96"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
@@ -95,6 +96,36 @@
                     <Button Command="{Binding StopCommand}" Content="Stop" />
                 </StackPanel>
             </StackPanel>
+        </Border>
+        -->
+
+        <!-- NAVIGATION -->
+        <Border Grid.Row="2" Width="320"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="8,8,8,28"
+                Padding="4"
+                Background="White"
+                BorderBrush="LightGray"
+                BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="4" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="4" />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="NAVIGATION" FontWeight="SemiBold" FontSize="12" />
+                <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding Address, Mode=TwoWay}" />
+                <Button Grid.Row="2" Grid.Column="2" Content="Go" Command="{Binding NavigateCommand}" />
+
+            </Grid>
         </Border>
 
     </Grid>

@@ -1,9 +1,12 @@
-﻿using Esri.ArcGISRuntime;
+﻿#define USE_DATA_MANAGER
+using Esri.ArcGISRuntime;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Http;
+using Esri.ArcGISRuntime.Tasks.Geocoding;
 using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RoutingSample.Services
@@ -28,16 +31,39 @@ namespace RoutingSample.Services
 
     public class NavigationService
     {
-        private readonly string _database, _networkName;
+#if USE_DATA_MANAGER
+        private const string Database = "sandiego.geodatabase";
+        private const string NetworkName = "Streets_ND";
+#else
+        private const string LocatorService = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+		private const string RouteService = "http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
+        private static readonly Uri s_locatorService = new Uri(LocatorService);
+        private static readonly Uri s_routeService = new Uri(RouteService);
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationService"/> class.
         /// </summary>
         public NavigationService()
         {
-            _database = "sandiego.geodatabase";
-            _networkName = "Streets_ND";
+
         }
+
+#if !USE_DATA_MANAGER
+        /// <summary>
+        /// Returns the location of the specified address.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<MapPoint> Geocode(string address, CancellationToken cancellationToken)
+        {
+            var locator = await LocatorTask.CreateAsync(s_locatorService);
+            var result = await locator.GeocodeAsync(address, cancellationToken).ConfigureAwait(false);
+            return result?.FirstOrDefault()?.RouteLocation;
+        }
+#endif
 
         /// <summary>
         /// Returns a route between the specified stops.
@@ -55,8 +81,13 @@ namespace RoutingSample.Services
                 // Ensure the sample data is ready to go
                 await DataManager.EnsureDataPresent();
 
+#if USE_DATA_MANAGER
                 // Create a new route using the offline database
-                routeTask = await RouteTask.CreateAsync(DataManager.GetDataFolder(_database), _networkName);
+                routeTask = await RouteTask.CreateAsync(DataManager.GetDataFolder(Database), NetworkName);
+#else
+                // Create a new route using the onling routing service
+                routeTask = await RouteTask.CreateAsync(s_routeService);
+#endif
 
                 // Configure the route and set the stops
                 routeParameters = await routeTask.CreateDefaultParametersAsync();
