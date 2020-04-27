@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ArcGIS Runtime SDK Demo - Windows Desktop" Height="600" Width="900"
 		xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
-		ResizeMode="CanResizeWithGrip"
+		ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
 		xmlns:vm="clr-namespace:PortalBrowser.ViewModels" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
 		>
     <!-- Resources to be used by the control-->
@@ -22,70 +22,60 @@
 					</Border.Effect>
 					<Image Source="{Binding ThumbnailUri}" />
 				</Border>
-				<Border Grid.Row="1" 
-						Padding="5" ToolTipService.ToolTip="{Binding Description}">
+				<Border Grid.Row="1" Padding="5"  ToolTipService.ToolTip="{Binding Description}">
 					<TextBlock Text="{Binding Title}"
 							   HorizontalAlignment="Center" 
-							   TextTrimming="CharacterEllipsis"
-							  />
+							   TextTrimming="CharacterEllipsis" />
 				</Border>
 			</Grid>
 		</DataTemplate>
 	</Window.Resources>
+    
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="160"/>
 			<ColumnDefinition Width="725*"/>
 		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		<!--Menu-->
-		<Menu Grid.ColumnSpan="3">
-			<!--This menu is mostly empty and just here for show-->
-			<MenuItem Header="File">
-				<MenuItem Header="Exit" Click="Exit_Clicked" />
-			</MenuItem>
-			<MenuItem Header="Edit" />
-			<MenuItem Header="View" />
-			<MenuItem Header="Help" />
-		</Menu>
-		<!--StatusBar-->
-		<StatusBar Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 	 >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- StatusBar -->
+		<StatusBar Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 	 >
 			<StatusBarItem >
 				<TextBlock Text="{Binding StatusMessage, Source={StaticResource portalVM}}" />
 			</StatusBarItem>
-			<Separator Opacity=".5"/>
-				<TextBlock Text="{Binding StatusMessage, Source={StaticResource mapVM}}" Grid.Column="1"
-						   HorizontalAlignment="Right" />
+            <Separator Opacity=".5"/>
+            <TextBlock Text="{Binding StatusMessage, Source={StaticResource mapVM}}"
+                       Grid.Column="1" 
+                       HorizontalAlignment="Right" />
 		</StatusBar>
-		<!--Side panel map list-->
-		<Grid DataContext="{StaticResource portalVM}" Grid.Row="2">
-			<TabControl>
-				<TabItem Header="Basemaps">
-					<ListBox ItemsSource="{Binding Basemaps}"
-					  SelectedItem="{Binding PortalItem, Mode=TwoWay, Source={StaticResource mapVM}}"
-					 ItemTemplate="{StaticResource mapItemsTemplate}" />
-				</TabItem>
-				<TabItem Header="Featured">
-					<ListBox ItemsSource="{Binding Featured}"
-					  SelectedItem="{Binding PortalItem, Mode=TwoWay, Source={StaticResource mapVM}}"
-					 ItemTemplate="{StaticResource mapItemsTemplate}" />
-				</TabItem>
-			</TabControl>
-			
-		</Grid>
-		<!--Map-->
+        
+		<!-- Side panel map list -->
+		<Grid DataContext="{StaticResource portalVM}" Grid.Row="1">
+            <TabControl>
+                <TabItem Header="Basemaps">
+                    <ListBox ItemsSource="{Binding Basemaps}"
+                             SelectedItem="{Binding PortalItem, Mode=TwoWay, Source={StaticResource mapVM}}"
+                             ItemTemplate="{StaticResource mapItemsTemplate}" />
+                </TabItem>
+                <TabItem Header="Featured">
+                    <ListBox ItemsSource="{Binding Featured}"
+                             SelectedItem="{Binding PortalItem, Mode=TwoWay, Source={StaticResource mapVM}}"
+                             ItemTemplate="{StaticResource mapItemsTemplate}" />
+                </TabItem>
+            </TabControl>
+        </Grid>
+        
+		<!-- Map -->
 		<TextBlock Text="{Binding PortalItem.Title, Source={StaticResource mapVM}}"
-				   Grid.Column="1" Grid.Row="1" FontSize="24"
+				   Grid.Column="1" Grid.Row="0" FontSize="24"
 				   HorizontalAlignment="Center" />
-		<Grid Grid.Column="2" Grid.Row="2" DataContext="{StaticResource mapVM}" >
-            <esri:MapView x:Name="MyMapView"
-                          Map="{Binding Map}"/>
-		</Grid>
-		
-	</Grid>
+
+        <Grid Grid.Column="2" Grid.Row="1" DataContext="{StaticResource mapVM}" >
+            <esri:MapView x:Name="MyMapView" Map="{Binding Map}"/>
+        </Grid>
+    </Grid>
 </Window>

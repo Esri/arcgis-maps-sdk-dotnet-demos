@@ -6,33 +6,40 @@ using System.Threading.Tasks;
 
 namespace PortalBrowser.ViewModels
 {
-
-    
-    /// <summary>
-    /// Portal View Model that handles all logic related to the portal object
-    /// </summary>
+	/// <summary>
+	/// Portal View Model that handles all logic related to the portal object.
+	/// </summary>
 	public class PortalVM : BaseViewModel
 	{
-        public PortalVM()
-        {
-            Initialize();
-        }
+		private PortalInfo _portalInfo;
+		private IEnumerable<MapGroup> _groups;
+		private IEnumerable<PortalItem> _basemaps;
+		private IEnumerable<PortalItem> _featured;
+		private string _statusMessage = "OK";
+		private bool _isLoadingPortal = true;
+		private bool _isLoadingBasemaps = true;
 
-        private async void Initialize()
-        {
-            try
-            {
-                await LoadPortal();
-            }
-            catch (System.Exception ex)
-            {
-                StatusMessage = ex.Message;
-            }
-        }
-            /// <summary>
-            /// Async task to load a portal instance
-            /// </summary>
-            private async Task LoadPortal()
+		public PortalVM()
+		{
+			Initialize();
+		}
+
+		private async void Initialize()
+		{
+			try
+			{
+				await LoadPortal();
+			}
+			catch (System.Exception ex)
+			{
+				StatusMessage = ex.Message;
+			}
+		}
+
+		/// <summary>
+		/// Async task to load a portal instance
+		/// </summary>
+		private async Task LoadPortal()
 		{
 			StatusMessage = "Initializing Portal...";
 			var portal = await ArcGISPortal.CreateAsync();
@@ -41,141 +48,134 @@ namespace PortalBrowser.ViewModels
 			await LoadMaps(portal);
 		}
 
-        /// <summary>
-        /// Async task to load maps from the portal instance and put them in groups
-        /// </summary>
-        /// <param name="portal">Portal instance</param>
-        /// <returns></returns>
+		/// <summary>
+		/// Async task to load maps from the portal instance and put them in groups
+		/// </summary>
+		/// <param name="portal">Portal instance</param>
+		/// <returns></returns>
 		private async Task LoadMaps(ArcGISPortal portal)
-        {
-            StatusMessage = "Loading maps...";
-
-            var task1 = portal.GetBasemapsAsync();
-            var items = await task1;
-            Basemaps = items.Select(b => b.Item).OfType<PortalItem>();
-            var groups = new ObservableCollection<MapGroup>();
-            Groups = groups;
-            groups.Add(new MapGroup() { Name = "Base maps", Items = Basemaps });
-            IsLoadingBasemaps = false;
-            StatusMessage = string.Format("Connected to {0} ({1})", portal.PortalInfo.PortalName, portal.PortalInfo.PortalName);
-            foreach(var item in await portal.GetFeaturedGroupsAsync())
-            {
-                var query = PortalQueryParameters.CreateForItemsOfTypeInGroup(PortalItemType.WebMap, item.GroupId);
-                query.Limit = 20;
-                var result = await portal.FindItemsAsync(query);
-                if (result.TotalResultsCount > 0)
-                {
-                    groups.Add(new MapGroup() { Name = item.Title, Items = result.Results });
-                    if (Featured == null)
-                        Featured = result.Results;
-                }
-            }
-        }
-
-		private PortalInfo m_portalInfo;
-        /// <summary>
-        /// Property holds information about the loaded portal 
-        /// </summary>
-		public PortalInfo PortalInfo
 		{
-			get { return m_portalInfo; }
-			set
-			{
-				m_portalInfo = value;
-				OnPropertyChanged("PortalInfo");
-			}
-		}
+			StatusMessage = "Loading maps...";
 
-		private IEnumerable<MapGroup> m_groups;
-        /// <summary>
-        /// Groups property to hold the map groups created from the portal
-        /// </summary>
-		public IEnumerable<MapGroup> Groups
-		{
-			get { return m_groups; }
-			set
+			var task1 = portal.GetBasemapsAsync();
+			var items = await task1;
+			Basemaps = items.Select(b => b.Item).OfType<PortalItem>();
+			var groups = new ObservableCollection<MapGroup>();
+			Groups = groups;
+			groups.Add(new MapGroup() { Name = "Base maps", Items = Basemaps });
+			IsLoadingBasemaps = false;
+			StatusMessage = $"Connected to {portal.PortalInfo.PortalName} ({portal.PortalInfo.PortalName})";
+			foreach (var item in await portal.GetFeaturedGroupsAsync())
 			{
-				m_groups = value;
-				OnPropertyChanged("Groups");
+				var query = PortalQueryParameters.CreateForItemsOfTypeInGroup(PortalItemType.WebMap, item.GroupId);
+				query.Limit = 20;
+				var result = await portal.FindItemsAsync(query);
+				if (result.TotalResultsCount > 0)
+				{
+					groups.Add(new MapGroup() { Name = item.Title, Items = result.Results });
+					if (Featured == null)
+						Featured = result.Results;
+				}
 			}
 		}
 		
-		private IEnumerable<PortalItem> m_Basemaps;
-        /// <summary>
-        /// Property holding the list of basemaps to be added to the UI
-        /// </summary>
+		/// <summary>
+		/// Gets or sets information about the loaded portal.
+		/// </summary>
+		public PortalInfo PortalInfo
+		{
+			get { return _portalInfo; }
+			set
+			{
+				_portalInfo = value;
+				OnPropertyChanged(nameof(PortalInfo));
+			}
+		}
+		
+		/// <summary>
+		/// Gets or sets the list of map groups created from the portal.
+		/// </summary>
+		public IEnumerable<MapGroup> Groups
+		{
+			get { return _groups; }
+			set
+			{
+				_groups = value;
+				OnPropertyChanged(nameof(Groups));
+			}
+		}
+		
+		/// <summary>
+		/// Gets or sets the list of basemaps.
+		/// </summary>
 		public IEnumerable<PortalItem> Basemaps
 		{
-			get { return m_Basemaps; }
+			get { return _basemaps; }
 			set
 			{
-				m_Basemaps = value;
-				OnPropertyChanged("Basemaps");
+				_basemaps = value;
+				OnPropertyChanged(nameof(Basemaps));
 			}
 		}
-
-		private IEnumerable<PortalItem> m_Featured;
-        /// <summary>
-        /// Property holding the list of featured maps to be added to the UI
-        /// </summary>
+		
+		/// <summary>
+		/// Gets or setsthe list of featured maps.
+		/// </summary>
 		public IEnumerable<PortalItem> Featured
 		{
-			get { return m_Featured; }
+			get { return _featured; }
 			set
 			{
-				m_Featured = value;
-				OnPropertyChanged("Featured");
+				_featured = value;
+				OnPropertyChanged(nameof(Featured));
 			}
 		}
 
-		private string m_StatusMessage = "OK";
-        /// <summary>
-        /// Property holding the status message to inform user of progress
-        /// </summary>
+		
+		/// <summary>
+		/// Gets or sets the status message to inform the user of progress.
+		/// </summary>
 		public string StatusMessage
 		{
-			get { return m_StatusMessage; }
+			get { return _statusMessage; }
 			set
 			{
-				m_StatusMessage = value;
-				OnPropertyChanged("StatusMessage");
-				System.Diagnostics.Debug.WriteLine(value);
+				_statusMessage = value;
+				OnPropertyChanged(nameof(StatusMessage));
 			}
 		}
-
-		private bool m_IsLoadingPortal = true;
-        /// <summary>
-        /// Boolean to reflect whether the portal has finished loading
-        /// </summary>
+		
+		/// <summary>
+		/// Gets or sets a value that indicates whether the portal has finished loading.
+		/// </summary>
 		public bool IsLoadingPortal
 		{
-			get { return m_IsLoadingPortal; }
+			get { return _isLoadingPortal; }
 			set
 			{
-				m_IsLoadingPortal = value;
-				OnPropertyChanged("IsLoadingPortal");
-				OnPropertyChanged("IsLoading");
+				_isLoadingPortal = value;
+				OnPropertyChanged(nameof(IsLoadingPortal));
+				OnPropertyChanged(nameof(IsLoading));
 			}
 		}
-
-		private bool m_IsLoadingBasemaps = true;
-        /// <summary>
-        /// Boolean to reflect whether the basemaps have finished loading
-        /// </summary>
+		
+		/// <summary>
+		/// Gets or sets a value that indicates whether the basemaps have finished loading.
+		/// </summary>
 		public bool IsLoadingBasemaps
 		{
-			get { return m_IsLoadingBasemaps; }
+			get { return _isLoadingBasemaps; }
 			set
 			{
-				m_IsLoadingBasemaps = value;
-				OnPropertyChanged("IsLoadingBasemaps");
-				OnPropertyChanged("IsLoading");
+				_isLoadingBasemaps = value;
+				OnPropertyChanged(nameof(IsLoadingBasemaps));
+				OnPropertyChanged(nameof(IsLoading));
 			}
 		}
 
-        /// <summary>
-        /// Composite property to reflect if any item is currently loading
-        /// </summary>
+		/// <summary>
+		/// Gets a value that indicates whether any item is currently loading.
+		/// </summary>
 		public bool IsLoading
 		{
 			get
@@ -184,12 +184,13 @@ namespace PortalBrowser.ViewModels
 			}
 		}
 	}
-    /// <summary>
-    /// Class that holds map groups with name and map items
-    /// </summary>
+	/// <summary>
+	/// Class that holds map groups with name and map items
+	/// </summary>
 	public class MapGroup
 	{
 		public string Name { get; set; }
+
 		public IEnumerable<PortalItem> Items { get; set; }
 	}
 }

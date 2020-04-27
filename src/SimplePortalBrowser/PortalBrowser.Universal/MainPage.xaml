@@ -40,9 +40,9 @@
             <SemanticZoom>
                 <SemanticZoom.ZoomedInView>
                     <GridView Padding="20,20,40,46" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
-						ItemsSource="{Binding Source={StaticResource collection}}" 
-					  SelectionMode="None" IsSwipeEnabled="False" 
-					  IsItemClickEnabled="True" ItemClick="GridView_ItemClick">
+                              ItemsSource="{Binding Source={StaticResource collection}}" 
+                              SelectionMode="None" IsSwipeEnabled="False" 
+                              IsItemClickEnabled="True" ItemClick="GridView_ItemClick">
                         <!--<GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
@@ -57,10 +57,9 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Image Source="{Binding ThumbnailUri}" Grid.RowSpan="2" Stretch="UniformToFill" />
-                                    <Border Grid.Row="1" Background="#AA000000"
-									Padding="5" ToolTipService.ToolTip="{Binding Description}">
-                                        <TextBlock Foreground="White"
-									Text="{Binding Title}" FontWeight="Bold"/>
+                                    <Border Grid.Row="1" Background="#AA000000" 
+                                            Padding="5" ToolTipService.ToolTip="{Binding Description}">
+                                        <TextBlock Foreground="White" Text="{Binding Title}" FontWeight="Bold"/>
                                     </Border>
                                 </Grid>
                             </DataTemplate>
@@ -71,9 +70,10 @@
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
                                         <Grid Margin="0">
-                                            <TextBlock Text='{Binding Name}' 
-                                   Margin="0,0,0,20" TextWrapping="NoWrap" 
-                                   Style="{StaticResource SubheaderTextBlockStyle}"/>
+                                            <TextBlock Text='{Binding Name}'
+                                                       Margin="0,0,0,20"
+                                                       TextWrapping="NoWrap" 
+                                                       Style="{StaticResource SubheaderTextBlockStyle}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
@@ -100,10 +100,7 @@
 							  Padding="116,20,40,46" >
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock 
-                                Text="{Binding Name}" 
-                                FontFamily="Segoe UI Light" 
-                                FontSize="24"/>
+                                <TextBlock Text="{Binding Name}"  FontFamily="Segoe UI Light" FontSize="24"/>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                         <GridView.ItemsPanel>
@@ -121,17 +118,16 @@
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
                             </Style>
                         </GridView.ItemContainerStyle>
-
                     </GridView>
                 </SemanticZoom.ZoomedOutView>
             </SemanticZoom>
 
             <ProgressRing HorizontalAlignment="Center"
-					  VerticalAlignment="Center"
-					  Grid.Row="1" Width="67" Height="67"
-					  Foreground="White"
-					  IsActive="{Binding IsLoading}"
-					  IsHitTestVisible="False" />
+                          VerticalAlignment="Center"
+                          Grid.Row="1" Width="67" Height="67"
+                          Foreground="White"
+                          IsActive="{Binding IsLoading}"
+                          IsHitTestVisible="False" />
         </Grid>
     </Grid>
 </Page>

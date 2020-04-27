@@ -15,7 +15,6 @@ namespace PortalBrowser
         public MapPage()
         {
             this.InitializeComponent();
-            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -25,8 +24,8 @@ namespace PortalBrowser
             var item = e.Parameter as PortalItem;
             var vm = Resources["mapVM"] as ViewModels.MapVM;            
             vm.PortalItem = item;
-            
         }
+
         private void GoBack(object sender, RoutedEventArgs e)
         {
             if (this.Frame != null && this.Frame.CanGoBack) this.Frame.GoBack();
