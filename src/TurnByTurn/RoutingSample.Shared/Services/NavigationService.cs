@@ -1,7 +1,7 @@
-﻿#define USE_DATA_MANAGER
-using Esri.ArcGISRuntime;
+﻿using Esri.ArcGISRuntime;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Http;
+using Esri.ArcGISRuntime.Security;
 using Esri.ArcGISRuntime.Tasks.Geocoding;
 using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using System;
@@ -31,39 +31,33 @@ namespace RoutingSample.Services
 
     public class NavigationService
     {
-#if USE_DATA_MANAGER
-        private const string Database = "sandiego.geodatabase";
-        private const string NetworkName = "Streets_ND";
-#else
         private const string LocatorService = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
 		private const string RouteService = "http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
 
         private static readonly Uri s_locatorService = new Uri(LocatorService);
         private static readonly Uri s_routeService = new Uri(RouteService);
-#endif
+        private readonly Credential _credential;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationService"/> class.
         /// </summary>
         public NavigationService()
         {
-
+            _credential = AuthenticationManager.Current.FindCredential(new Uri("http://www.arcgis.com/sharing/rest"));
         }
 
-#if !USE_DATA_MANAGER
         /// <summary>
         /// Returns the location of the specified address.
         /// </summary>
         /// <param name="address"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<MapPoint> Geocode(string address, CancellationToken cancellationToken)
+        public async Task<MapPoint> GeocodeAsync(string address)
         {
             var locator = await LocatorTask.CreateAsync(s_locatorService);
-            var result = await locator.GeocodeAsync(address, cancellationToken).ConfigureAwait(false);
+            var result = await locator.GeocodeAsync(address).ConfigureAwait(false);
             return result?.FirstOrDefault()?.RouteLocation;
         }
-#endif
 
         /// <summary>
         /// Returns a route between the specified stops.
@@ -78,16 +72,8 @@ namespace RoutingSample.Services
 
             try
             {
-                // Ensure the sample data is ready to go
-                await DataManager.EnsureDataPresent();
-
-#if USE_DATA_MANAGER
-                // Create a new route using the offline database
-                routeTask = await RouteTask.CreateAsync(DataManager.GetDataFolder(Database), NetworkName);
-#else
                 // Create a new route using the onling routing service
-                routeTask = await RouteTask.CreateAsync(s_routeService);
-#endif
+                routeTask = await RouteTask.CreateAsync(s_routeService, _credential);
 
                 // Configure the route and set the stops
                 routeParameters = await routeTask.CreateDefaultParametersAsync();
@@ -102,12 +88,12 @@ namespace RoutingSample.Services
                 // Solve the route
                 routeResult = await routeTask.SolveRouteAsync(routeParameters);
             }
-            catch (Exception ex)
+            catch (ArcGISWebException ex)
             {
-                if (!(ex is ArcGISWebException web && web.Details.FirstOrDefault()?.Contains("Unlocated") == true))
+                // Any error other than failure to locate is rethrown
+                if (ex.Details.FirstOrDefault()?.Contains("Unlocated") != true)
                 {
-                    // There was some other error.
-                    throw;
+                    throw ex;
                 }
             }
 

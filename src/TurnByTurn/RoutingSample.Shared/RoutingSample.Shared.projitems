@@ -28,11 +28,9 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\DistanceFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EnumFormatter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DataManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GeometryHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Maneuver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Simulation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TimeFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueConverterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NullToCollapsedConverter.cs" />

@@ -10,19 +10,6 @@ using RoutingSample.Services;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-
-/*
-#if !XAMARIN
-#if WINDOWS_UWP
-using Windows.Media;
-using Windows.Media.Core;
-using Windows.Media.Playback;
-#else
-using System.Media;
-#endif
-#endif
-*/
-
 using Color = System.Drawing.Color;
 
 namespace RoutingSample.ViewModels
@@ -39,15 +26,6 @@ namespace RoutingSample.ViewModels
         private Map _map;
         private LocationDisplay _locationDisplay;
 
-        // The region defined by the sample data for routing
-        private readonly Envelope _routableArea = new Envelope(
-            new MapPoint(-117.1883928, 32.7707247, 0, SpatialReferences.Wgs84),
-            new MapPoint(-117.0018724, 32.5738892, 0, SpatialReferences.Wgs84)
-        );
-
-        private string _address;
-        private MapPoint _destination;
-
         // Routing
         private RouteResult _routeResult;
         private RouteTask _routeTask;
@@ -62,9 +40,7 @@ namespace RoutingSample.ViewModels
         private Maneuver _maneuver;
 
         // Simulation
-        private DelegateCommand _followCommand;
-        private DelegateCommand _wanderCommand;
-        private DelegateCommand _stopCommand;
+        private string _address;
         private DelegateCommand _navigateCommand;
 
         #endregion
@@ -89,10 +65,13 @@ namespace RoutingSample.ViewModels
                 // We begin the simulation outside of the Living Coast Discovery Center
                 Simulation = new SimulatedLocationDataSource(new MapPoint(-117.1109159, 32.6400714, 0, SpatialReferences.Wgs84));
 
+                // And here's an example destination
+                Address = "LEGOLAND California, One Legoland Dr, Carlsbad, CA 92008";
+
                 // Create the maneuver
                 _maneuver = new Maneuver
                 {
-                    Text = "SELECT A DESTINATION TO START"
+                    Text = "ENTER A DESTINATION TO START",
                 };
             }
         }
@@ -105,31 +84,12 @@ namespace RoutingSample.ViewModels
         public Map Map => _map ?? (_map = new Map(Basemap.CreateNavigationVector()));
 
         /// <summary>
-        /// Gets or sets the destination point.
-        /// </summary>
-        public MapPoint Destination
-		{
-            get => _destination;
-            set
-            {
-                if (SetProperty(ref _destination, value))
-                {
-                    ChangeRoute();
-                }
-            }
-		}
-
-        /// <summary>
         /// Gets or sets the address.
         /// </summary>
         public string Address
         {
             get => _address;
-            set
-            {
-                // TODO?
-                SetProperty(ref _address, value);
-            }
+            set => SetProperty(ref _address, value);
         }
 
         /// <summary>
@@ -301,11 +261,6 @@ namespace RoutingSample.ViewModels
                             }
                         }
                     });
-
-                    // Routable area boundary
-                    var routableAreaOverlay = new GraphicsOverlay();
-                    routableAreaOverlay.Graphics.Add(new Graphic(_routableArea, new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, Color.Red, 3)));
-                    _graphicsOverlays.Add(routableAreaOverlay);
                 }
 
                 return _graphicsOverlays;
@@ -317,105 +272,24 @@ namespace RoutingSample.ViewModels
         /// </summary>
         public SimulatedLocationDataSource Simulation { get; }
 
-#if DEBUG
-
-        /// <summary>
-        /// Gets the Go command, which starts routing.
-        /// </summary>
-        public DelegateCommand FollowCommand => null; // _followCommand ?? (_followCommand = new DelegateCommand(OnFollowCommand, CanExecuteFollowCommand));
-
-        /// <summary>
-        /// Gets the Stop command, which stops routing.
-        /// </summary>
-        public DelegateCommand StopCommand => null; // _stopCommand ?? (_stopCommand = new DelegateCommand(OnStopCommand, CanExecuteStopCommand));
-
-        /// <summary>
-        /// Gets the Wander command.
-        /// </summary>
-        public DelegateCommand WanderCommand => null; // _wanderCommand ?? (_wanderCommand = new DelegateCommand(OnWanderCommand, CanExecuteWanderCommand));
-
         /// <summary>
         /// Gets the navigate command.
         /// </summary>
         public DelegateCommand NavigateCommand => _navigateCommand ?? (_navigateCommand = new DelegateCommand(OnNavigate));
 
-#endif
-
         #endregion
 
         #region Methods
 
-#if DEBUG
-
-        private void OnFollowCommand(object parameter)
-        {
-            //// Resume the simulation
-            //Simulation.StartFollowing();
-            
-            //// Update commands
-            //FollowCommand.RaiseCanExecuteChanged();
-            //WanderCommand.RaiseCanExecuteChanged();
-            //StopCommand.RaiseCanExecuteChanged();
-        }
-
-        private bool CanExecuteFollowCommand(object parameter)
-        {
-            //return !IsRerouting
-            //    && !IsRerouting
-            //    && (Simulation.State == SimulationState.Stopped || Simulation.State == SimulationState.Wandering)
-            //    && RouteTracker != null;
-
-            return false;
-        }
-
-        private void OnWanderCommand(object parameter)
-        {
-            //// Resume the simulation
-            //Simulation.StartWandering();
-
-            //// Update commands
-            //FollowCommand.RaiseCanExecuteChanged();
-            //WanderCommand.RaiseCanExecuteChanged();
-            //StopCommand.RaiseCanExecuteChanged();
-        }
-
-        private bool CanExecuteWanderCommand(object parameter)
-        {
-            //return !IsRouting
-            //    && !IsRerouting
-            //    && Simulation.State != SimulationState.Wandering
-            //    && RouteTracker != null;
-
-            return false;
-        }
-
-        private void OnStopCommand(object parameter)
-        {
-            // Pause the simulation
-            Simulation.SetRoute(null);
-
-            // Update commands
-            //FollowCommand.RaiseCanExecuteChanged();
-            //WanderCommand.RaiseCanExecuteChanged();
-            StopCommand.RaiseCanExecuteChanged();
-        }
-
-        private bool CanExecuteStopCommand(object parameter)
-        {
-            return !IsRouting && Simulation.Route != null; // && Simulation.State != SimulationState.Stopped;
-        }
-
         private void OnNavigate(object parameter)
         {
-            // TODO
+            ChangeRoute();
         }
-
-#endif
 
         // Updates the current route (based on destination changes)
         private async void ChangeRoute()
         {
-            if (Destination != null && LocationDisplay != null && LocationDisplay.Location != null)
+            if (!string.IsNullOrEmpty(Address) && LocationDisplay != null && LocationDisplay.Location != null)
             {
                 ErrorMessage = null;
                 IsRouting = true;
@@ -423,12 +297,16 @@ namespace RoutingSample.ViewModels
 
                 try
                 {
-                    // We must create a new from point to eliminate z-axis from the current location
-                    var from = (MapPoint)GeometryEngine.RemoveZ(LocationDisplay.Location.Position);
-                    var to = Destination;
+                    var navigationService = new NavigationService();
+
+                    // Determine the location of the destination
+                    var destination = await navigationService.GeocodeAsync(Address);
+
+                    // Determine the our current location from the display
+                    var start = (MapPoint)GeometryEngine.RemoveZ(LocationDisplay.Location.Position);
 
                     // Determine the route
-                    var result = await new NavigationService().SolveRouteAsync(from, to);
+                    var result = await navigationService.SolveRouteAsync(start, destination);
 
                     // Copy the result from the service
                     RouteParameters = result.Parameters;
@@ -440,33 +318,29 @@ namespace RoutingSample.ViewModels
 
                     // Restart the simulation
                     Simulation.SetRoute(RouteResult.Routes[0]);
-                    //Simulation.Restart();
                 }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine("Error: " + ex);
                     ErrorMessage = ex.Message;
                 }
                 finally
                 {
                     IsRouting = false;
                     IsRerouting = false;
-
-                    FollowCommand.RaiseCanExecuteChanged();
-                    WanderCommand.RaiseCanExecuteChanged();
-                    StopCommand.RaiseCanExecuteChanged();
                 }
             }
         }
 
         // Creates a new RouteTracker for the current route
-        private async void CreateTracker()
+        private void CreateTracker()
         {
             // Creates a new tracker for a route
             RouteTracker = new RouteTracker(RouteResult, 0);
             RouteTracker.VoiceGuidanceUnitSystem = UnitSystem.Imperial;
 
-            // Configure rerouting for our journey
-            await RouteTracker.EnableReroutingAsync(RouteTask, RouteParameters, ReroutingStrategy.ToNextWaypoint, false);
+            // If rerouting is supported for your service, you can enable it
+            //await RouteTracker.EnableReroutingAsync(RouteTask, RouteParameters, ReroutingStrategy.ToNextWaypoint, false);
         }
 
         // Adds the specified route to the graphics overlay
@@ -525,22 +399,7 @@ namespace RoutingSample.ViewModels
             }
             else
             {
-                Debug.WriteLine("Arrived at maneuver");
-
-                /*
-#if !XAMARIN
-#if NETFX_CORE
-                using (var player = new MediaPlayer())
-                using (var source = MediaSource.CreateFromUri(new Uri("ms-winsoundevent:Notification.Default")))
-                {
-                    player.Source = source;
-                    player.Play();
-                }
-#else
-                SystemSounds.Exclamation.Play();
-#endif
-#endif
-                */
+                Debug.WriteLine("Arrived at maneuver.");
             }
         }
 
@@ -576,9 +435,6 @@ namespace RoutingSample.ViewModels
             {
                 progressOverlay.Graphics[0].Geometry = e.TrackingStatus.DestinationProgress.TraversedGeometry;
             }
-
-            // Update the simulation
-            //Simulation.Simulator.UpdateTrackingStatus(trackingStatus);
         }
 
         private async void LocationDisplay_PropertyChanged(object sender, PropertyChangedEventArgs e)
