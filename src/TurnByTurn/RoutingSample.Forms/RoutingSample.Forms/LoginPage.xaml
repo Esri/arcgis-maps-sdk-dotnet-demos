@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="RoutingSample.Forms.LoginPage">
+    <ContentPage.Content>
+        <Grid Padding="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label Text="This sample requires an ArcGIS Online subsciption in order to use the Global Routing Service."
+                   Grid.Row="0" Grid.Column="0"
+                   HorizontalTextAlignment="Center" />
+
+            <Frame Grid.Row="1" Padding="8" BorderColor="LightGray" CornerRadius="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="2" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="ArcGIS Online Sign In" FontSize="Title" FontAttributes="Bold" />
+                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" HorizontalOptions="Fill" />
+                    <Label Grid.Row="2" Grid.Column="0" Text="Username" VerticalTextAlignment="Center" />
+                    <Entry x:Name="Username" Grid.Row="2" Grid.Column="1" />
+                    <Label Grid.Row="3" Grid.Column="0" Text="Password" VerticalTextAlignment="Center" />
+                    <Entry x:Name="Password" Grid.Row="3" Grid.Column="1" />
+                    <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Sign In" Clicked="Button_Clicked" />
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

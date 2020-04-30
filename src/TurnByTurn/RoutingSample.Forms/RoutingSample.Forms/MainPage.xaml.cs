@@ -40,31 +40,18 @@ namespace RoutingSample.Forms
 
         private async void ButtonSimulation_Clicked(object sender, EventArgs e)
         {
-            var action = await DisplayActionSheet("Change Simulation Behavior", "Close",
-                null, "Follow", "Wander", "Stop");
-            //switch (action)
-            //{
-            //    case "Follow":
-            //        if (_mainViewModel.FollowCommand.CanExecute(null))
-            //        {
-            //            _mainViewModel.FollowCommand.Execute(null);
-            //        }
-            //        break;
+            var destination = await DisplayPromptAsync(
+                "Navigation",
+                "Enter your destination:",
+                accept: "Go",
+                initialValue: _mainViewModel.Address ?? string.Empty);
 
-            //    case "Wander":
-            //        if (_mainViewModel.WanderCommand.CanExecute(null))
-            //        {
-            //            _mainViewModel.WanderCommand.Execute(null);
-            //        }
-            //        break;
-
-            //    case "Stop":
-            //        if (_mainViewModel.StopCommand.CanExecute(null))
-            //        {
-            //            _mainViewModel.StopCommand.Execute(null);
-            //        }
-            //        break;
-            //}
+            if (destination != null)
+            {
+                _mainViewModel.Address = destination;
+                if (_mainViewModel.NavigateCommand.CanExecute(null))
+                    _mainViewModel.NavigateCommand.Execute(null);
+            }
         }
     }
 }
