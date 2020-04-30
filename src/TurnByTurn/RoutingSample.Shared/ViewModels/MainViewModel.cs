@@ -333,14 +333,25 @@ namespace RoutingSample.ViewModels
         }
 
         // Creates a new RouteTracker for the current route
-        private void CreateTracker()
+        private async void CreateTracker()
         {
             // Creates a new tracker for a route
             RouteTracker = new RouteTracker(RouteResult, 0);
             RouteTracker.VoiceGuidanceUnitSystem = UnitSystem.Imperial;
 
-            // If rerouting is supported for your service, you can enable it
-            //await RouteTracker.EnableReroutingAsync(RouteTask, RouteParameters, ReroutingStrategy.ToNextWaypoint, false);
+            // Before enabling rerouting, you should check that it is supported
+            if (RouteTask.RouteTaskInfo.SupportsRerouting)
+            {
+                try
+                {
+                    await RouteTracker.EnableReroutingAsync(RouteTask, RouteParameters, ReroutingStrategy.ToNextWaypoint, false);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Failed to enable rerouting:");
+                    Debug.WriteLine(ex);
+                }
+            }
         }
 
         // Adds the specified route to the graphics overlay

@@ -11,20 +11,6 @@ namespace RoutingSample.Converters
 
             try
             {
-                //if (value is SimulationState state)
-                //{
-                //    switch (state)
-                //    {
-                //        case SimulationState.Stopped:
-                //            return "Stopped";
-                //        case SimulationState.Following:
-                //        case SimulationState.Seeking:
-                //            return "Following";
-                //        case SimulationState.Wandering:
-                //            return "Wandering";
-                //    }
-                //}
-
                 return Enum.GetName(value.GetType(), value);
             }
             catch

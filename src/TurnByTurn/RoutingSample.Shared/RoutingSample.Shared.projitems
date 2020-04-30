@@ -32,7 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)GeometryHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Maneuver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TimeFormatter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueConverterBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NullToCollapsedConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\NavigationService.cs" />
