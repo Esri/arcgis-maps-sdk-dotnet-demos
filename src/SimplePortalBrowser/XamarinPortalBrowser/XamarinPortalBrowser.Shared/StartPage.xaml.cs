@@ -8,25 +8,31 @@ namespace XamarinPortalBrowser
 {
     public partial class StartPage : TabbedPage
     {
+        //public MapVM mapVM;
         public StartPage()
         {
+            //mapVM = new MapVM();
             InitializeComponent();
+            
+           
         }
 
         private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            var listView = sender as ListView;
-            var mapVM = new MapVM();
+            ListView listView = sender as ListView;
+            MapVM mapVM = new MapVM();
            
             try
             {
-                Navigation.PushAsync(new MapPage(mapVM));
+                //MapVM mapVM = (MapVM)this.Resources["mapVM"];
+                //MapPage mapPage = new MapPage((MapVM)this.Resources["mapVM"]);
+                this.Navigation.PushAsync(new MapPage(mapVM));
                 if (listView.SelectedItem != null)
                     mapVM.PortalItem = listView.SelectedItem as PortalItem;
             }
-            catch
-            { 
-            }
+            catch (Exception ex)
+            { }
+            
         }
     }
 }

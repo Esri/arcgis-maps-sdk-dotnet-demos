@@ -25,5 +25,10 @@ namespace PortalBrowser.WPF
 			InitializeComponent();
             MyMapView.LocationDisplay.IsEnabled = true;
 		}
+
+		private void Exit_Clicked(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+		}
 	}
 }

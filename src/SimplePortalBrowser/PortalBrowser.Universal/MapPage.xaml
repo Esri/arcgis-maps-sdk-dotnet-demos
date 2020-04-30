@@ -26,24 +26,27 @@
 
         <!-- Back button and page title -->
         <Grid>
+
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding PortalItem.Title}" Style="{StaticResource HeaderTextBlockStyle}"
 					   IsHitTestVisible="false" TextWrapping="NoWrap" Margin="20,10" VerticalAlignment="Center" />
         </Grid>
 
         <esri:MapView Grid.Row="1"
                       x:Name="MyMapView"
-                      Map="{Binding Map}" />
+                      Map="{Binding Map}"/>
+
 
         <StackPanel HorizontalAlignment="Center"
-					VerticalAlignment="Center"
-					Grid.Row="1"
-                    IsHitTestVisible="False">
+					  VerticalAlignment="Center"
+					  Grid.Row="1" IsHitTestVisible="False" >
             <ProgressRing Width="67" Height="67"
 					  Foreground="White"
-					  IsActive="{Binding IsLoadingWebMap}" />
+					  IsActive="{Binding IsLoadingWebMap}"
+					  />
             <TextBlock HorizontalAlignment="Center" 
-                       Text="{Binding StatusMessage}"
+				   Text="{Binding StatusMessage}"
 					   FontSize="24" Margin="12" />
+
         </StackPanel>
     </Grid>
 </Page>

@@ -8,15 +8,17 @@ namespace PortalBrowser.ViewModels
     /// </summary>
 	public class MapVM : BaseViewModel
 	{
-		private PortalItem _portalItem;
-		private Map _map;
-		private string _statusMessage;
-		private bool _isLoadingWebMap = true;
+		private PortalItem m_portalItem;
 
-		/// <summary>
-		/// Method runs when a portal item is selected by the user
-		/// </summary>
-		/// <param name="item">Item selected by user</param>
+		public PortalItem PortalItem
+		{
+			get { return m_portalItem; }
+			set { m_portalItem = value; LoadPortalItem(value); OnPropertyChanged("PortalItem"); }
+		}
+        /// <summary>
+        /// Method runs when a portal item is selected by the user
+        /// </summary>
+        /// <param name="item">Item selected by user</param>
 		private async void LoadPortalItem(PortalItem item)
 		{
 			try
@@ -42,53 +44,48 @@ namespace PortalBrowser.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets the selected PortalItem.
-		/// </summary>
-		public PortalItem PortalItem
-		{
-			get { return _portalItem; }
-			set { _portalItem = value; LoadPortalItem(value); OnPropertyChanged("PortalItem"); }
-		}
+		private Map m_Map;
 
-		/// <summary>
-		/// Gets or sets the map item used by the MapView.
-		/// </summary>
+        /// <summary>
+        /// Property holding the map item used by the MapView
+        /// </summary>
 		public Map Map
         {
-			get { return _map; }
+			get { return m_Map; }
 			set
 			{
-                if (_map != value)
+                if (m_Map != value)
                 {
-                    _map = value;
+                    m_Map = value;
                     OnPropertyChanged("Map");
                 }
 			}
 		}
-		
+
+		private string m_StatusMessage;
         /// <summary>
-        /// Gets or sets a status message to inform user of loading progress.
+        /// Status message to inform user or loading progress
         /// </summary>
 		public string StatusMessage
 		{
-			get { return _statusMessage; }
+			get { return m_StatusMessage; }
 			set
 			{
-				_statusMessage = value;
+				m_StatusMessage = value;
 				OnPropertyChanged("StatusMessage");
 			}
 		}
 
+		private bool m_IsLoadingWebMap = true;
         /// <summary>
-        /// Gets or sets a value that indicates whether the map has finished loading.
+        /// Boolean to reflect whether the map has finished loading
         /// </summary>
 		public bool IsLoadingWebMap
 		{
-			get { return _isLoadingWebMap; }
+			get { return m_IsLoadingWebMap; }
 			set
 			{
-				_isLoadingWebMap = value;
+				m_IsLoadingWebMap = value;
 				OnPropertyChanged("IsLoadingWebMap");
 			}
 		}
