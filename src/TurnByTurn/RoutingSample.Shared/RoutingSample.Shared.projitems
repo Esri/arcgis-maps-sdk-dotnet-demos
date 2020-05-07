@@ -38,7 +38,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\NavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RestoreAutoPanMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SimulatedLocationDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Speech.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />

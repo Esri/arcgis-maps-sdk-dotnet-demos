@@ -38,7 +38,6 @@
             <Grid x:Uid="MapPanel" Grid.Column="1" >
                 <esriCtrls:MapView x:Name="MapView" Map="{Binding Map}"
                                    GraphicsOverlays="{Binding RouteGraphicsOverlays, Mode=OneWay}"
-                                   GeoViewTapped="MapView_GeoViewTapped"
                                    >
                     <!--Restores the map pan mode after interacting with the map-->
                     <local:RestoreAutoPanMode.RestoreAutoPanSettings>

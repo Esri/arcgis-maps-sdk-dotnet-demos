@@ -44,8 +44,7 @@
         <esri:MapView x:Name="MapView"
                       Map="{Binding Map}"
                       GraphicsOverlays="{Binding RouteGraphicsOverlays}"
-                      Grid.Row="2"
-                      GeoViewTapped="MapView_GeoViewTapped">
+                      Grid.Row="2">
             <local:RestoreAutoPanMode.RestoreAutoPanSettings>
                 <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True"/>
             </local:RestoreAutoPanMode.RestoreAutoPanSettings>

@@ -36,9 +36,5 @@ namespace RoutingSample.Desktop
             MessageBox.Show("Turn-by-Turn Sample App",
                 "About Turn-by-Turn Sample App", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
-        private void MapView_GeoViewTapped(object sender, GeoViewInputEventArgs e)
-        {
-        }
     }
 }

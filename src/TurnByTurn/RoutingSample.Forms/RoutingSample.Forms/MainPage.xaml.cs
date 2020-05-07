@@ -33,11 +33,6 @@ namespace RoutingSample.Forms
             base.OnAppearing();
         }
 
-        private void MapView_GeoViewTapped(object sender, GeoViewInputEventArgs e)
-        {
-            //_mainViewModel.Destination = mapView.ScreenToLocation(e.Position);
-        }
-
         private async void ButtonSimulation_Clicked(object sender, EventArgs e)
         {
             var destination = await DisplayPromptAsync(

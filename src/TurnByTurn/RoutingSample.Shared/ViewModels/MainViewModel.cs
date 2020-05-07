@@ -1,5 +1,6 @@
 ﻿using Esri.ArcGISRuntime;
 using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Navigation;
 using Esri.ArcGISRuntime.Symbology;
@@ -21,6 +22,9 @@ namespace RoutingSample.ViewModels
 	{
         #region Fields
 
+        // The default speed of the simulation in KPH.
+        private const int DefaultSpeed = 50;
+
         // Map
         private GraphicsOverlayCollection _graphicsOverlays;
         private Map _map;
@@ -30,16 +34,13 @@ namespace RoutingSample.ViewModels
         private RouteResult _routeResult;
         private RouteTask _routeTask;
         private RouteParameters _routeParameters;
-        
         private bool _isRouting;
         private bool _isRerouting;
         private string _errorMessage;
 
-        // Tracking
+        // Tracking / Simulation
         private RouteTracker _routeTracker;
         private Maneuver _maneuver;
-
-        // Simulation
         private string _address;
         private DelegateCommand _navigateCommand;
 
@@ -63,7 +64,11 @@ namespace RoutingSample.ViewModels
             else
             {
                 // We begin the simulation outside of the Living Coast Discovery Center
-                Simulation = new SimulatedLocationDataSource(new MapPoint(-117.1109159, 32.6400714, 0, SpatialReferences.Wgs84));
+                Simulation = new SimulatedLocationDataSource();
+                Simulation.SetLocationsWithPolyline(new Polyline(new[]
+                {
+                    new MapPoint(-117.1109159, 32.6400714, 0, SpatialReferences.Wgs84)
+                }));
 
                 // And here's an example destination
                 Address = "LEGOLAND California, One Legoland Dr, Carlsbad, CA 92008";
@@ -317,7 +322,10 @@ namespace RoutingSample.ViewModels
                     DisplayRoute();
 
                     // Restart the simulation
-                    Simulation.SetRoute(RouteResult.Routes[0]);
+                    Simulation.SetLocationsWithPolyline(RouteResult.Routes[0].RouteGeometry, new SimulationParameters
+                    {
+                        Velocity = DefaultSpeed
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -388,14 +396,16 @@ namespace RoutingSample.ViewModels
             var trackingStatus = e.TrackingStatus;
             if (trackingStatus.RouteResult != null)
             {
-                //var route = trackingStatus.RouteResult.Routes[0];
                 RouteResult = trackingStatus.RouteResult;
 
                 // Display the new route
                 DisplayRoute();
 
                 // Update the simulator (behavior does not change, however)
-                Simulation.SetRoute(RouteResult.Routes[0]);
+                Simulation.SetLocationsWithPolyline(RouteResult.Routes[0].RouteGeometry, new SimulationParameters
+                {
+                    Velocity = DefaultSpeed
+                });
             }
 
             IsRerouting = false;
