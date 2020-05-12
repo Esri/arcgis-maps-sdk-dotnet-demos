@@ -36,5 +36,9 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is needed to start the simulation.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is needed to start the simulation.</string>
 </dict>
 </plist>

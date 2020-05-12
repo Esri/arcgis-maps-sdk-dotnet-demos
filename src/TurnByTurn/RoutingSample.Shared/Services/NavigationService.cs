@@ -43,7 +43,7 @@ namespace RoutingSample.Services
         /// </summary>
         public NavigationService()
         {
-            _credential = AuthenticationManager.Current.FindCredential(new Uri("http://www.arcgis.com/sharing/rest"));
+            _credential = AuthenticationManager.Current.FindCredential(new Uri("https://www.arcgis.com/sharing/rest"));
         }
 
         /// <summary>
