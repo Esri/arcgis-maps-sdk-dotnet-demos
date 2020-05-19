@@ -31,8 +31,8 @@ namespace RoutingSample.Services
 
     public class NavigationService
     {
-        private const string LocatorService = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
-		private const string RouteService = "http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+        private const string LocatorService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+		private const string RouteService = "https://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
 
         private static readonly Uri s_locatorService = new Uri(LocatorService);
         private static readonly Uri s_routeService = new Uri(RouteService);

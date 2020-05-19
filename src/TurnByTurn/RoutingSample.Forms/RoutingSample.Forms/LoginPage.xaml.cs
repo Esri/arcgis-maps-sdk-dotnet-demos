@@ -26,7 +26,7 @@ namespace RoutingSample.Forms
             {
                 var credential = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri("https://www.arcgis.com/sharing/rest"), username, password);
                 AuthenticationManager.Current.AddCredential(credential);
-                await Navigation.PopAsync();
+                await Navigation.PopModalAsync();
             }
             catch (Exception ex)
             {

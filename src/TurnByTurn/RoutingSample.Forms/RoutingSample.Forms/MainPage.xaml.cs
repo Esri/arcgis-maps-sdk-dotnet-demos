@@ -23,6 +23,7 @@ namespace RoutingSample.Forms
 
         protected override async void OnAppearing()
         {
+            // Make sure we have location permissions
             var status = await DependencyService.Get<ILocationAccessService>().RequestAsync();
             if (status == LocationAccessStatus.Granted)
             {
@@ -32,18 +33,18 @@ namespace RoutingSample.Forms
             _mainViewModel.LocationDisplay = mapView.LocationDisplay;
             _mainViewModel.LocationDisplay.NavigationPointHeightFactor = 0.5;
 
+            // Make sure user is signed in
+            var credential = AuthenticationManager.Current.FindCredential(new Uri("https://www.arcgis.com/sharing/rest"));
+            if (credential == null)
+            {
+                await Navigation.PushModalAsync(new LoginPage());
+            }
+
             base.OnAppearing();
         }
 
         private async void ButtonSimulation_Clicked(object sender, EventArgs e)
         {
-            // Make sure user is signed in
-            var credential = AuthenticationManager.Current.FindCredential(new Uri("https://www.arcgis.com/sharing/rest"));
-            if (credential == null)
-            {
-                await Navigation.PushAsync(new LoginPage());
-            }
-
             // Prompt user for a destination
             var destination = await DisplayPromptAsync(
                 "Navigation",
