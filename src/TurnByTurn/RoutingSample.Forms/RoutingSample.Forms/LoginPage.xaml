@@ -25,6 +25,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -39,6 +40,7 @@
                     <Label Grid.Row="3" Grid.Column="0" Text="Password" VerticalTextAlignment="Center" />
                     <Entry x:Name="Password" Grid.Row="3" Grid.Column="1" IsPassword="True" />
                     <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Sign In" Clicked="Button_Clicked" />
+                    <Label x:Name="LoginStatus" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" FontSize="Small" />
                 </Grid>
             </Frame>
         </Grid>
