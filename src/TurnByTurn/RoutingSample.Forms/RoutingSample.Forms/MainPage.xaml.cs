@@ -1,7 +1,9 @@
-﻿using Esri.ArcGISRuntime.Xamarin.Forms;
+﻿using Esri.ArcGISRuntime.Security;
+using Esri.ArcGISRuntime.Xamarin.Forms;
 using RoutingSample.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace RoutingSample.Forms
@@ -21,49 +23,40 @@ namespace RoutingSample.Forms
 
         protected override async void OnAppearing()
         {
+            // Make sure we have location permissions
             var status = await DependencyService.Get<ILocationAccessService>().RequestAsync();
             if (status == LocationAccessStatus.Granted)
             {
                 await mapView.LocationDisplay.DataSource.StartAsync();
             }
-            
+
             _mainViewModel.LocationDisplay = mapView.LocationDisplay;
             _mainViewModel.LocationDisplay.NavigationPointHeightFactor = 0.5;
+
+            // Make sure user is signed in
+            var credential = AuthenticationManager.Current.FindCredential(new Uri("https://www.arcgis.com/sharing/rest"));
+            if (credential == null)
+            {
+                await Navigation.PushModalAsync(new LoginPage());
+            }
 
             base.OnAppearing();
         }
 
-        private void MapView_GeoViewTapped(object sender, GeoViewInputEventArgs e)
-        {
-            _mainViewModel.Destination = mapView.ScreenToLocation(e.Position);
-        }
-
         private async void ButtonSimulation_Clicked(object sender, EventArgs e)
         {
-            var action = await DisplayActionSheet("Change Simulation Behavior", "Close",
-                null, "Follow", "Wander", "Stop");
-            switch (action)
+            // Prompt user for a destination
+            var destination = await DisplayPromptAsync(
+                "Navigation",
+                "Enter your destination:",
+                accept: "Go",
+                initialValue: _mainViewModel.Address ?? string.Empty);
+
+            if (destination != null)
             {
-                case "Follow":
-                    if (_mainViewModel.FollowCommand.CanExecute(null))
-                    {
-                        _mainViewModel.FollowCommand.Execute(null);
-                    }
-                    break;
-
-                case "Wander":
-                    if (_mainViewModel.WanderCommand.CanExecute(null))
-                    {
-                        _mainViewModel.WanderCommand.Execute(null);
-                    }
-                    break;
-
-                case "Stop":
-                    if (_mainViewModel.StopCommand.CanExecute(null))
-                    {
-                        _mainViewModel.StopCommand.Execute(null);
-                    }
-                    break;
+                _mainViewModel.Address = destination;
+                if (_mainViewModel.NavigateCommand.CanExecute(null))
+                    _mainViewModel.NavigateCommand.Execute(null);
             }
         }
     }

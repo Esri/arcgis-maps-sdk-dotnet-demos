@@ -38,7 +38,6 @@
             <Grid x:Uid="MapPanel" Grid.Column="1" >
                 <esriCtrls:MapView x:Name="MapView" Map="{Binding Map}"
                                    GraphicsOverlays="{Binding RouteGraphicsOverlays, Mode=OneWay}"
-                                   GeoViewTapped="MapView_GeoViewTapped"
                                    >
                     <!--Restores the map pan mode after interacting with the map-->
                     <local:RestoreAutoPanMode.RestoreAutoPanSettings>
@@ -49,23 +48,29 @@
 
             <!-- Simulation Controls -->
             <Border VerticalAlignment="Bottom"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     Margin="8,8,8,28"
                     Padding="8"
                     Background="#AAFFFFFF"
                     BorderBrush="Black"
                     BorderThickness="0"
                     CornerRadius="8"
-                    Visibility="{Binding RouteResult, Converter={StaticResource NullToCollapsedConverter}}"
-                    RequestedTheme="Light"
-                    >
-                <StackPanel Spacing="4" >
-                    <TextBlock Text="SIMULATION" Width="100" TextAlignment="Center" FontWeight="SemiBold" />
-                    <TextBlock Text="{Binding Simulation.State, Converter={StaticResource EnumFormatter}}" TextAlignment="Center" />
-                    <Button Command="{Binding FollowCommand}" Content="Follow" Width="100" />
-                    <Button Command="{Binding WanderCommand}" Content="Wander" Width="100" />
-                    <Button Command="{Binding StopCommand}" Content="Stop" Width="100" />
-                </StackPanel>
+                    RequestedTheme="Light">
+                <Grid ColumnSpacing="4" RowSpacing="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="NAVIGATION" FontWeight="SemiBold" />
+                    <TextBox Grid.Row="1" Grid.Column="0" Width="300" Text="{Binding Address, Mode=TwoWay}" />
+                    <Button Grid.Row="1" Grid.Column="1" Content="Go" Command="{Binding NavigateCommand}" />
+                </Grid>
             </Border>
         </Grid>
     </Grid>

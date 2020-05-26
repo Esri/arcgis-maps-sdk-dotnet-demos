@@ -25,8 +25,7 @@
                    Grid.Column="0"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
-                   Source="{Binding Maneuver.ImageSource}"
-                   />
+                   Source="{Binding Maneuver.ImageSource}" />
             <StackLayout Grid.Column="2" VerticalOptions="End" BindingContext="{Binding Maneuver}">
                 <Label Text="{Binding Text}" FontAttributes="Bold" TextColor="White"/>
                 <StackLayout Orientation="Horizontal" Spacing="4">
@@ -41,9 +40,7 @@
 
         <esri:MapView x:Name="mapView" Grid.Row="1"
                       Map="{Binding Map}"
-                      GraphicsOverlays="{Binding RouteGraphicsOverlays}"
-                      GeoViewTapped="MapView_GeoViewTapped"
-                      >
+                      GraphicsOverlays="{Binding RouteGraphicsOverlays}">
             <local:RestoreAutoPanMode.RestoreAutoPanSettings>
                 <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True"/>
             </local:RestoreAutoPanMode.RestoreAutoPanSettings>
@@ -55,9 +52,8 @@
                 HorizontalOptions="End"
                 VerticalOptions="End"
                 Margin="0,0,0,22"
-                Text="{Binding Simulation.State, Converter={StaticResource EnumFormatter}}"
-                Clicked="ButtonSimulation_Clicked"
-                />
+                Text="Navigation"
+                Clicked="ButtonSimulation_Clicked" />
     </Grid>
 
 </ContentPage>

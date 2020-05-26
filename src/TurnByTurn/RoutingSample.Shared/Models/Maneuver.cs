@@ -43,9 +43,9 @@ namespace RoutingSample.Models
 
 #if XAMARIN
                     ImageSource = $"{_type}.png";
-#elif WINDOWS_UWP
+#elif NETFX_CORE
                     ImageUri = new Uri($"ms-appx:///Assets/Maneuvers/{_type}.png");
-#elif WINDOWS_WPF
+#else
                     ImageUri = new Uri($"pack://application:,,,/Assets/Maneuvers/{_type}.png");
 #endif
                 }

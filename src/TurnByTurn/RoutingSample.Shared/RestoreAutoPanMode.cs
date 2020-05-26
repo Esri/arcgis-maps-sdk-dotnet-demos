@@ -2,13 +2,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 #if XAMARIN
 using Esri.ArcGISRuntime.Xamarin.Forms;
 using Xamarin.Forms;
-#elif WINDOWS_UWP
+#elif NETFX_CORE
 using Esri.ArcGISRuntime.UI.Controls;
 using Windows.UI.Xaml;
-#elif WINDOWS_WPF
+#else
 using Esri.ArcGISRuntime.UI.Controls;
 using System.Windows;
 #endif

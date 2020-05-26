@@ -11,9 +11,9 @@
             {
 #if XAMARIN
                 return Xamarin.Forms.DesignMode.IsDesignModeEnabled;
-#elif WINDOWS_UWP
+#elif NETFX_CORE
                 return Windows.ApplicationModel.DesignMode.DesignModeEnabled;
-#elif WINDOWS_WPF
+#else
                 return System.ComponentModel.DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject());
 #endif
             }

@@ -28,19 +28,16 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\DistanceFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EnumFormatter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DataManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GeometryHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Maneuver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Simulation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TimeFormatter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueConverterBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NullToCollapsedConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\NavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RestoreAutoPanMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SimulatedLocationDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Speech.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />

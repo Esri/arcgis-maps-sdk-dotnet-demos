@@ -22,10 +22,5 @@ namespace RoutingSample
 
             DataContext = _mainViewModel;
         }
-
-        private void MapView_GeoViewTapped(object sender, Esri.ArcGISRuntime.UI.Controls.GeoViewInputEventArgs e)
-        {
-            _mainViewModel.Destination = MapView.ScreenToLocation(e.Position);
-        }
     }
 }
