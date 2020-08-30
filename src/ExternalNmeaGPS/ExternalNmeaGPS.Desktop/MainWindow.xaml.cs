@@ -51,7 +51,7 @@ namespace ExternalNmeaGPS
 
 			currentNmeaDevice = device;
 			currentNmeaDevice.MessageReceived += device_MessageReceived;
-			mapView.LocationDisplay.DataSource = new NmeaLocationProvider(currentNmeaDevice);
+			mapView.LocationDisplay.DataSource = new NmeaLocationDataSource(currentNmeaDevice);
 			mapView.LocationDisplay.IsEnabled = true;
 			mapView.LocationDisplay.DataSource.LocationChanged += LocationProvider_LocationChanged;
 		}
