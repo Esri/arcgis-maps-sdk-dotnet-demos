@@ -22,7 +22,7 @@ namespace KmlViewer
 {
     public sealed partial class FindLocationControl : UserControl
     {
-		private Uri serviceUri = new Uri("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer", UriKind.Absolute);
+		private Uri serviceUri = new Uri("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer", UriKind.Absolute);
 
         public FindLocationControl()
         {

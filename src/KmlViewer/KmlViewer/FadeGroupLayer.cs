@@ -164,7 +164,7 @@ namespace KmlViewer
             if(value is Layer l)
             {
                 if (l is OpenStreetMapLayer)
-                    return new Uri("http://c.tile.openstreetmap.org/16/19294/24640.png");
+                    return new Uri("https://c.tile.openstreetmap.org/16/19294/24640.png");
                 if (l is ArcGISTiledLayer atl)
                 {
                     if(atl.Source.OriginalString.Contains("/USA_Topo_Maps/"))

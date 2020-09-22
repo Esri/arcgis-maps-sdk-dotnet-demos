@@ -40,14 +40,14 @@ namespace KmlViewer
             SampleData.Add(new KmlSample()
             {
                 Title = "Recent Earthquakes",
-                Path = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age_link.kml",
+                Path = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age_link.kml",
                 Thumbnail = new Uri("ms-appx:///SampleData/EarthquakesPreview.png"),
                 InitialViewpoint = new Viewpoint(new MapPoint(-144.496, 21.68, SpatialReferences.Wgs84), 75555135, new Camera(-144.496, 21.68, 75555135, 21.714728, -144.5060788, 0))
             });
             SampleData.Add(new KmlSample()
             {
                 Title = "Live Plane Tracker",
-                Path = "http://radar.vlieghinder.nl/",
+                Path = "https://radar.vlieghinder.nl/",
                 Thumbnail = new Uri("ms-appx:///SampleData/RadarPreview.png"),
                 InitialViewpoint = new Viewpoint(new MapPoint(52.0867, 3.919440, SpatialReferences.Wgs84), 134430, new Camera(52.0867, 3.919440, 10062, 69, 76.6, 0))
             });
