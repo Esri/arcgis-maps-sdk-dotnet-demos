@@ -242,7 +242,7 @@ namespace LocalNetworkSample
         {
             if (UseOnlineService)
             {
-                return await RouteTask.CreateAsync(new Uri("http://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/Route"));
+                return await RouteTask.CreateAsync(new Uri("https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/Route"));
             }
             try
             {
@@ -289,7 +289,7 @@ namespace LocalNetworkSample
         {
             if (UseOnlineService)
             {
-                return await LocatorTask.CreateAsync(new Uri("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"));
+                return await LocatorTask.CreateAsync(new Uri("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"));
             }
             try
             {

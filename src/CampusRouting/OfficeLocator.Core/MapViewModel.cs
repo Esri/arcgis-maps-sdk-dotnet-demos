@@ -126,11 +126,11 @@ namespace OfficeLocator
                 BaseSurface = new Surface(),
                 InitialViewpoint = new Viewpoint(new MapPoint(-13046209, 4036456, SpatialReferences.WebMercator), 30000),
             };
-            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("http://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Building_Wireframes/SceneServer/layers/0"))); //Building outlines
-            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("http://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/BuildingInteriorSpace_ET_1/SceneServer/layers/0"))); //1st floor
-            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("http://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/BuildingInteriorSpace_ET_2/SceneServer/layers/0")) { Opacity = .5 }); //2nd floor
-            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("http://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/BuildingInteriorSpace_ET_3/SceneServer/layers/0")) { Opacity = .5 }); //3rd floor
-            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("http://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Building_Textured/SceneServer/layers/0")) { Opacity = .35 }); //Facades                                                                                                                                                                                                       //Scene.BaseSurface.ElevationSources.Add(new ArcGISTiledElevationSource(new Uri("http://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")));
+            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Building_Wireframes/SceneServer/layers/0"))); //Building outlines
+            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/BuildingInteriorSpace_ET_1/SceneServer/layers/0"))); //1st floor
+            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/BuildingInteriorSpace_ET_2/SceneServer/layers/0")) { Opacity = .5 }); //2nd floor
+            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/BuildingInteriorSpace_ET_3/SceneServer/layers/0")) { Opacity = .5 }); //3rd floor
+            Scene.OperationalLayers.Add(new ArcGISSceneLayer(new Uri("https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Building_Textured/SceneServer/layers/0")) { Opacity = .35 }); //Facades                                                                                                                                                                                                       //Scene.BaseSurface.ElevationSources.Add(new ArcGISTiledElevationSource(new Uri("http://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Scene)));
         }
 

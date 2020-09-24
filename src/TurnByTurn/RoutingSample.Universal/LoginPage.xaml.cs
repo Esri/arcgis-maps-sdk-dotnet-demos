@@ -37,7 +37,7 @@ namespace RoutingSample
             var password = Password.Password.Trim();
             try
             {
-                var credential = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri("http://www.arcgis.com/sharing/rest"), username, password);
+                var credential = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri("https://www.arcgis.com/sharing/rest"), username, password);
                 AuthenticationManager.Current.AddCredential(credential);
                 LoginStatus.Text = "Success! Signed in as: " + credential.UserName;
                 Frame.Navigate(typeof(MainPage));
