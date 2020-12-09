@@ -4,6 +4,8 @@
 		xmlns:local="clr-namespace:ExternalNmeaGPS"
 		xmlns:ctrls="clr-namespace:ExternalNmeaGPS.Controls"
 		xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+		xmlns:esrimapping="clr-namespace:Esri.ArcGISRuntime.Mapping;assembly=Esri.ArcGISRuntime"
+		xmlns:esriui="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"
         
         Title="GPS Parser Sample" Height="350" Width="525">
 	<Grid>
@@ -21,7 +23,6 @@
 			<MenuItem Header="File" >
                 <MenuItem Header="Exit" Click="MenuItemFileExit_Click" />
             </MenuItem>
-			<MenuItem Header="NMEA Messages" Click="MenuItemShowMessages_Click" />
 			<MenuItem Header="Sky view" Click="MenuItemShowSkyView_Click" />
 		</Menu>
 
@@ -29,15 +30,17 @@
 			<local:RestoreAutoPanMode.RestoreAutoPanSettings>
 				<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" RestoreScale="5000" />
 			</local:RestoreAutoPanMode.RestoreAutoPanSettings>
-			<esri:Map>
-                <esri:Map.Basemap>
-                    <esri:Basemap>
-                        <esri:ArcGISTiledLayer Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                    </esri:Basemap>
-                </esri:Map.Basemap>
-			</esri:Map>
+			<esrimapping:Map>
+                <esrimapping:Map.Basemap>
+                    <esrimapping:Basemap>
+                        <esrimapping:Basemap.BaseLayers>
+                            <esrimapping:ArcGISTiledLayer Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
+                        </esrimapping:Basemap.BaseLayers>
+                    </esrimapping:Basemap>
+                </esrimapping:Map.Basemap>
+			</esrimapping:Map>
             <esri:MapView.GraphicsOverlays>
-                <esri:GraphicsOverlay />
+                <esriui:GraphicsOverlay />
             </esri:MapView.GraphicsOverlays>
 		</esri:MapView>
 		
@@ -74,7 +77,6 @@
 								<Button Grid.Column="1" Content="..." Click="BrowseForNmeaFile_Click" Padding="5,0" Margin="5,0,0,0" />
 							
 							</Grid>
-							<Button Content="Load Log Into Layer" Click="LoadAsLayer_Click" />
 						</StackPanel>
 					</Border>
 

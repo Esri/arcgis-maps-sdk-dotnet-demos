@@ -25,22 +25,22 @@ namespace ExternalNmeaGPS.Controls
 			InitializeComponent();
 		}
 
-		public NmeaParser.Messages.Gsv GsvMessage
+		public IReadOnlyList<Esri.ArcGISRuntime.Location.NmeaSatelliteInfo> SatelliteInfos
 		{
-			get { return (NmeaParser.Messages.Gsv)GetValue(GsvMessageProperty); }
+			get { return (IReadOnlyList<Esri.ArcGISRuntime.Location.NmeaSatelliteInfo>)GetValue(GsvMessageProperty); }
 			set { SetValue(GsvMessageProperty, value); }
 		}
 
 		public static readonly DependencyProperty GsvMessageProperty =
-			DependencyProperty.Register(nameof(GsvMessage), typeof(NmeaParser.Messages.Gsv), typeof(SatelliteView), new PropertyMetadata(null, OnGsvMessagePropertyChanged));
+			DependencyProperty.Register(nameof(SatelliteInfos), typeof(IReadOnlyList<Esri.ArcGISRuntime.Location.NmeaSatelliteInfo>), typeof(SatelliteView), new PropertyMetadata(null, OnGsvMessagePropertyChanged));
 
 		private static void OnGsvMessagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var sats = e.NewValue as NmeaParser.Messages.Gsv;
+			var sats = e.NewValue as IReadOnlyList<Esri.ArcGISRuntime.Location.NmeaSatelliteInfo>;
 			if (sats == null)
 				((SatelliteView)d).satellites.ItemsSource = null;
 			else
-				((SatelliteView)d).satellites.ItemsSource = sats.SVs;
+				((SatelliteView)d).satellites.ItemsSource = sats;
 		}		
 	}
 	public class PolarPlacementItem : ContentControl
