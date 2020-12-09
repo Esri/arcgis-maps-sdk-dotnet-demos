@@ -9,7 +9,11 @@
     <nullable>enable</nullable>
     <RootNamespace>ExternalNmeaGPS</RootNamespace>
   </PropertyGroup>
-
+  
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0-windows10.0.19041'">
+    <SupportedOSPlatformVersion>8.1</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.WPF">
       <Version>100.10.0</Version>

@@ -48,12 +48,22 @@ namespace ExternalNmeaGPS
 			if (ports.Any())
 				PortsList.SelectedIndex = 0;
 			//Get list of bluetooth devices 
-			string serialDeviceType = RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort);
-			var devices = await DeviceInformation.FindAllAsync(serialDeviceType); // Select a bluetooth serial port from this list 
-			List<Device> list = new List<Device>(devices.Select(t => new Device() { DeviceInfo = t, Name = t.Name }));
-			// Get a list of serial devices
-			devices = await DeviceInformation.FindAllAsync(SerialDevice.GetDeviceSelector());
-			list.AddRange(devices.Select(t => new Device() { DeviceInfo = t, Name = t.Name }));
+			List<Device> list = new List<Device>();
+			if (Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Devices.Enumeration.DeviceInformation", "FindAllAsync")) // Ensure we are on an OS where these WinRT APIs are supported
+			{
+				if (Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Devices.Bluetooth.Rfcomm.RfcommDeviceService", "GetDeviceSelector"))
+				{
+					string serialDeviceType = RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort);
+					var devices = await DeviceInformation.FindAllAsync(serialDeviceType); // Select a bluetooth serial port from this list 
+					list.AddRange(devices.Select(t => new Device() { DeviceInfo = t, Name = t.Name }));
+				}
+				if (Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Devices.SerialCommunication.SerialDevice", "GetDeviceSelector"))
+				{
+					// Get a list of serial devices
+					var devices = await DeviceInformation.FindAllAsync(SerialDevice.GetDeviceSelector());
+					list.AddRange(devices.Select(t => new Device() { DeviceInfo = t, Name = t.Name }));
+				}
+			}
 			PortsList.ItemsSource = list;
 		}
 #else
