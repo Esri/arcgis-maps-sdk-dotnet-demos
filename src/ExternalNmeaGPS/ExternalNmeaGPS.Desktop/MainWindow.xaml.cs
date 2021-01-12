@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
 #if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
 using Windows.Devices.Bluetooth.Rfcomm;
@@ -20,103 +23,108 @@ namespace ExternalNmeaGPS
 	{
 		private readonly Controls.SatelliteViewWindow skyViewWindow = new Controls.SatelliteViewWindow();
 		private NmeaLocationDataSource? currentNmeaDevice;
-		private string? currentNmeaFile;
 
-		public class Device
-        {
-			public string? Name { get; set; }
-#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
-			public DeviceInformation? DeviceInfo { get; set; }
-#endif
-			public override string ToString() => Name!;
-        }
 		public MainWindow()
 		{
 			InitializeComponent();
-			currentNmeaFile = "NmeaSampleData.txt";
+			mapView.LocationDisplay.AutoPanMode = Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode.Navigation;
+			mapView.LocationDisplay.InitialZoomScale = 5000;
+			this.Closing += (s, e) => { mapView.LocationDisplay.IsEnabled = false; }; // Ensure datasource gets stopped on shutdown
 			var device = NmeaLocationDataSource.FromStreamCreator(
-				(s) => Task.FromResult<Stream>(new BufferedFileStream(new System.IO.StreamReader(currentNmeaFile), new BurstEmulationSettings())));
-			LoadDevice(device);
+			 	(s) => Task.FromResult<Stream>(new BufferedFileStream(new System.IO.StreamReader("NmeaSampleData.txt"), new BurstEmulationSettings())));
 			LoadPorts();
+			LoadDevice(device);
+
+#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
+			// Monitor for added or removed serial and bluetooth devices
+			var watcher = DeviceInformation.CreateWatcher(SerialDevice.GetDeviceSelector());
+			watcher.Added += (s, e) => Dispatcher.InvokeAsync(LoadPorts);
+			watcher.Removed += (s, e) => Dispatcher.InvokeAsync(LoadPorts);
+			watcher.Start();
+			watcher = DeviceInformation.CreateWatcher(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
+			watcher.Added += (s, e) => Dispatcher.InvokeAsync(LoadPorts);
+			watcher.Removed += (s, e) => Dispatcher.InvokeAsync(LoadPorts);
+			watcher.Start();
+#endif
 		}
+
+		#region Get list of available devices
+
+		/// <summary>
+		/// Class to hold information about available devices
+		/// </summary>
+		public class Device
+		{
+			public Device(string name) { Name = name; }
+			public string Name { get; }
+
+#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
+			public DeviceInformation? DeviceInfo { get; set; }
+#endif
+			public bool IsSerialPort { get; set; } = true;
+			public override string ToString() => Name!;
+		}
+
 #if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
 		// Use WinRT APIs instead
 		public async void LoadPorts()
 		{
-			var ports = System.IO.Ports.SerialPort.GetPortNames();
-			PortsList.ItemsSource = ports;
-			if (ports.Any())
-				PortsList.SelectedIndex = 0;
-			//Get list of bluetooth devices 
 			List<Device> list = new List<Device>();
 			if (Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Devices.Enumeration.DeviceInformation", "FindAllAsync")) // Ensure we are on an OS where these WinRT APIs are supported
 			{
-				if (Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Devices.Bluetooth.Rfcomm.RfcommDeviceService", "GetDeviceSelector"))
-				{
-					string serialDeviceType = RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort);
-					var devices = await DeviceInformation.FindAllAsync(serialDeviceType); // Select a bluetooth serial port from this list 
-					list.AddRange(devices.Select(t => new Device() { DeviceInfo = t, Name = t.Name }));
-				}
+				//Get list of serial port devices 
 				if (Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Devices.SerialCommunication.SerialDevice", "GetDeviceSelector"))
 				{
 					// Get a list of serial devices
 					var devices = await DeviceInformation.FindAllAsync(SerialDevice.GetDeviceSelector());
-					list.AddRange(devices.Select(t => new Device() { DeviceInfo = t, Name = t.Name }));
+					list.AddRange(devices.Where(t => t.IsEnabled).Select(t => new Device(t.Name) { DeviceInfo = t, IsSerialPort = !t.Id.Contains("\\BTHENUM#") }));
+				}
+				//Get list of bluetooth devices 
+				if (Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.Devices.Bluetooth.Rfcomm.RfcommDeviceService", "GetDeviceSelector"))
+				{
+					string serialDeviceType = RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort);
+					var devices = await DeviceInformation.FindAllAsync(serialDeviceType); // Select a bluetooth serial port from this list 
+					list.AddRange(devices.Where(t => t.IsEnabled).Select(t => new Device(t.Name) { DeviceInfo = t, IsSerialPort = false }));
 				}
 			}
 			PortsList.ItemsSource = list;
+			if (list.Any())
+				PortsList.SelectedIndex = 0;
+
 		}
 #else
 		public void LoadPorts()
 		{ 
 			var ports = System.IO.Ports.SerialPort.GetPortNames();
-		 	PortsList.ItemsSource = ports.Select(p=> new Device() { Name = p });
+			PortsList.ItemsSource = ports.Select(p => new Device(p)).OrderBy(p => p.Name);
 			if(ports.Any())
 				PortsList.SelectedIndex = 0;
 		}
 #endif
+		#endregion Get list of available devices
 
 		private void LoadDevice(NmeaLocationDataSource device)
 		{
-			if (mapView.LocationDisplay.DataSource != null)
-				mapView.LocationDisplay.DataSource.LocationChanged -= Device_LocationChanged;
-
+			if (currentNmeaDevice != null)
+			{
+				currentNmeaDevice.SatellitesChanged -= Device_SatellitesChanged;
+				currentNmeaDevice.StopAsync();
+			}
 			currentNmeaDevice = device;
 			mapView.LocationDisplay.DataSource = currentNmeaDevice;
 			mapView.LocationDisplay.IsEnabled = true;
-			mapView.LocationDisplay.DataSource.LocationChanged += Device_LocationChanged;
             device.SatellitesChanged += Device_SatellitesChanged;
-		}
-
-        private void Device_LocationChanged(object? sender, Esri.ArcGISRuntime.Location.Location e)
-		{
-			Dispatcher.BeginInvoke((Action)delegate()
-			{
-				//Zoom in on first location fix
-				((LocationDataSource)sender!).LocationChanged -= Device_LocationChanged;
-				mapView.SetViewpointCenterAsync(e.Position, 5000);
-				mapView.LocationDisplay.AutoPanMode = Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode.Navigation;
-			});
 		}
 
 		private void Device_SatellitesChanged(object? sender, IReadOnlyList<NmeaSatelliteInfo> satellites)
 		{
-			Dispatcher.BeginInvoke((Action)delegate ()
-			{
-				skyViewWindow.SatelliteInfos = satellites;
-			});
-		}
-
-		private void MenuItemShowSkyView_Click(object sender, RoutedEventArgs e)
-		{
-			skyViewWindow.Show();
-			skyViewWindow.Activate();
-			skyViewWindow.Owner = this;
+			// Update sky view window
+			Dispatcher.InvokeAsync(() => { skyViewWindow.SatelliteInfos = satellites; });
 		}
 
 		private async void SerialPortOpen_Click(object sender, RoutedEventArgs e)
 		{
-			if(PortsList.SelectedItem != null)
+			if (PortsList.SelectedItem != null)
 			{
 				mapView.GraphicsOverlays!.First().Graphics.Clear();
 				var deviceInfo = (Device)PortsList.SelectedItem;
@@ -128,6 +136,10 @@ namespace ExternalNmeaGPS
 				else 
 					device = NmeaLocationDataSource.FromSerialPort(deviceInfo.DeviceInfo, uint.Parse(BaudRate.Text));
 #else
+				//Use custom datasource
+				var device = new SerialPortLocationDataSource(deviceInfo.Name, int.Parse(BaudRate.Text));
+				// Or use stream creator approach:
+				/*
 				var port = new System.IO.Ports.SerialPort(deviceInfo.Name, int.Parse(BaudRate.Text));
 				var device = NmeaLocationDataSource.FromStreamCreator((s) =>
 				{
@@ -138,9 +150,8 @@ namespace ExternalNmeaGPS
 				{
 					port.Close();
 					return Task.CompletedTask;
-				});
+				});*/
 #endif
-				currentNmeaFile = null;
 				LoadDevice(device);
 			}
 		}
@@ -151,18 +162,133 @@ namespace ExternalNmeaGPS
 			var result = dialog.ShowDialog();
 			if(result.HasValue && result.Value)
 			{
-				currentNmeaFile = dialog.FileName;
                 mapView.GraphicsOverlays!.First().Graphics.Clear();
 				var device = NmeaLocationDataSource.FromStreamCreator(
-					(s) => Task.FromResult<Stream>(new BufferedFileStream(new System.IO.StreamReader(currentNmeaFile), new BurstEmulationSettings())));
+					(s) => Task.FromResult<Stream>(new BufferedFileStream(new System.IO.StreamReader(dialog.FileName), new BurstEmulationSettings())));
 				LoadDevice(device);
-				SelectedFileName.Text = new System.IO.FileInfo(currentNmeaFile).Name;
 			}
 		}
 
-        private void MenuItemFileExit_Click(object sender, RoutedEventArgs e)
+        #region NTRIP
+
+        private NtripClient? client;
+		private Stream? currentNtripStream;
+
+		private async void GetNtripStreams_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Shutdown();
+			client = new NtripClient(ntripEndpoint.Text, int.Parse(ntripPort.Text), ntripUsername.Text, ntripPassword.Password);
+			try
+			{
+				ntripStreamList.ItemsSource = null;
+				var streams = await client.GetAvailableStreamsAsync();
+				ntripStreamList.ItemsSource = streams;
+				if (streams.Any())
+					ntripStreamList.IsDropDownOpen = true;
+			}
+			catch (System.Exception ex)
+			{
+				MessageBox.Show($"Failed to get stream list: " + ex.Message);
+			}
         }
+
+
+		private long bytesTransferred = 0;
+
+        private void NtripConnect_Click(object sender, RoutedEventArgs e)
+        {
+			var ntripstream = ntripStreamList.SelectedItem as NtripStream;
+			if(ntripstream != null && client != null)
+            {
+				var ds = mapView.LocationDisplay.DataSource as NmeaLocationDataSource;
+				if (ds is null)
+				{
+					MessageBox.Show("No location datasource");
+					return;
+				}
+				var devicestream = ds.NmeaDataStream;
+				if (devicestream is null)
+				{
+					MessageBox.Show("Datasource not started");
+					return;
+				}
+				if (!devicestream.CanWrite)
+				{
+					MessageBox.Show("Stream doesn't support writing");
+					return;
+				}
+
+				var ntripsocketstream = client.OpenStream(ntripstream);
+				currentNtripStream?.Dispose();
+				currentNtripStream = ntripsocketstream;
+				Task.Run(() =>
+				{
+					bytesTransferred = 0;
+					byte[] buffer = new byte[1024];
+					while (ntripsocketstream.CanRead && devicestream.CanWrite)
+					{
+						int count = ntripsocketstream.Read(buffer);
+						if (count > 0)
+						{
+							try
+							{
+								devicestream.Write(buffer, 0, count);
+								bytesTransferred += count;
+								Dispatcher.InvokeAsync(() => { ntripStatus.Text = $"{bytesTransferred} bytes"; });
+							}
+							catch(ObjectDisposedException)
+                            {
+								System.Diagnostics.Debug.WriteLine("Device stream was disposed");
+								break;
+							}
+						}
+					}
+					ntripsocketstream.Dispose();
+					Dispatcher.InvokeAsync(() => { ntripStatus.Text = "Status: Disconnected"; });
+				});
+			}
+        }
+
+		#endregion NTRIP
+
+		#region Menu Click Handlers
+
+		private void MenuItemFileExit_Click(object sender, RoutedEventArgs e)
+		{
+			App.Current.Shutdown();
+		}
+
+		private void MenuItemShowSkyView_Click(object sender, RoutedEventArgs e)
+		{
+			skyViewWindow.Show();
+			skyViewWindow.Activate();
+			skyViewWindow.Owner = this;
+		}
+
+		private void AutoPanOff_Click(object sender, RoutedEventArgs e)
+        {
+			AutoPanOffItem.IsChecked = true;
+			AutoPanRecenterItem.IsChecked = false;
+			AutoPanNavigationItem.IsChecked = false;
+			restoreAutoModeBehavior.PanMode = mapView.LocationDisplay.AutoPanMode = Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode.Off;
+
+		}
+
+        private void AutoPanRecenter_Click(object sender, RoutedEventArgs e)
+        {
+			AutoPanOffItem.IsChecked = false;
+			AutoPanRecenterItem.IsChecked = true;
+			AutoPanNavigationItem.IsChecked = false;
+			restoreAutoModeBehavior.PanMode = mapView.LocationDisplay.AutoPanMode = Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode.Recenter;
+		}
+
+        private void AutoPanNavigation_Click(object sender, RoutedEventArgs e)
+		{
+			AutoPanOffItem.IsChecked = false;
+			AutoPanRecenterItem.IsChecked = false;
+			AutoPanNavigationItem.IsChecked = true;
+			restoreAutoModeBehavior.PanMode = mapView.LocationDisplay.AutoPanMode = Esri.ArcGISRuntime.UI.LocationDisplayAutoPanMode.Navigation;
+
+		}
+		#endregion Menu Click Handlers
 	}
 }

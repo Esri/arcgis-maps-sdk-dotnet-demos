@@ -5,9 +5,12 @@
 		xmlns:ctrls="clr-namespace:ExternalNmeaGPS.Controls"
 		xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
 		xmlns:esrimapping="clr-namespace:Esri.ArcGISRuntime.Mapping;assembly=Esri.ArcGISRuntime"
-		xmlns:esriui="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"
-        
-        Title="GPS Parser Sample" Height="350" Width="525">
+		xmlns:esriui="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"        
+        Width="1024" Height="768"
+        Title="GPS Parser Sample" >
+    <Window.Resources>
+        <local:FixTypeConverter x:Key="FixTypeConverter" />
+    </Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -15,7 +18,6 @@
 		</Grid.RowDefinitions>
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="250"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		
@@ -23,12 +25,20 @@
 			<MenuItem Header="File" >
                 <MenuItem Header="Exit" Click="MenuItemFileExit_Click" />
             </MenuItem>
-			<MenuItem Header="Sky view" Click="MenuItemShowSkyView_Click" />
-		</Menu>
+            <MenuItem Header="Views">
+                <MenuItem Header="Satellite Sky View" Click="MenuItemShowSkyView_Click" />
+            </MenuItem>
+			<MenuItem Header="Auto Pan" >
+                <MenuItem Header="Off" x:Name="AutoPanOffItem" Click="AutoPanOff_Click" />
+                <MenuItem Header="Recenter" x:Name="AutoPanRecenterItem" Click="AutoPanRecenter_Click" />
+                <MenuItem Header="Navigation" x:Name="AutoPanNavigationItem" Click="AutoPanNavigation_Click" IsChecked="True" />
+                <MenuItem Header="Restore on inactivity" IsCheckable="True" IsChecked="{Binding IsEnabled, ElementName=restoreAutoModeBehavior, Mode=TwoWay}" />
+            </MenuItem>
+        </Menu>
 
 		<esri:MapView x:Name="mapView" Grid.Row="1"  Grid.ColumnSpan="2">
 			<local:RestoreAutoPanMode.RestoreAutoPanSettings>
-				<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" RestoreScale="5000" />
+				<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" RestoreScale="5000" x:Name="restoreAutoModeBehavior" />
 			</local:RestoreAutoPanMode.RestoreAutoPanSettings>
 			<esrimapping:Map>
                 <esrimapping:Map.Basemap>
@@ -46,79 +56,129 @@
 		
 		<Expander Header="Settings" HorizontalAlignment="Left" 
 				  VerticalAlignment="Top"
-				  Background="#FFE5E5E5"
+				  Background="White"
 				  Grid.Row="1" Margin="20"
-				  Padding="10"
+				  Padding="10" MinWidth="250"
 				  >
-			<Grid >
-				<StackPanel>
-					<StackPanel Orientation="Horizontal">
-						<RadioButton Content="Use File" IsChecked="True" x:Name="FileRdb" />
-						<RadioButton Content="Use Serial Port" x:Name="SerialPortRdb" />
-					</StackPanel>
-					<Border Margin="0,10">
-						<Border.Style>
-							<Style TargetType="Border">
-								<Setter Property="Visibility" Value="Collapsed"/>
-								<Style.Triggers>
-									<DataTrigger Binding="{Binding Path=IsChecked,ElementName=FileRdb}" Value="True">
-										<Setter Property="Border.Visibility" Value="{x:Static Visibility.Visible}"/>
-									</DataTrigger>
-								</Style.Triggers>
-							</Style>
-						</Border.Style>
-						<StackPanel>
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<TextBox Text="NmeaSampleData.txt" x:Name="SelectedFileName" IsReadOnly="True" />
-								<Button Grid.Column="1" Content="..." Click="BrowseForNmeaFile_Click" Padding="5,0" Margin="5,0,0,0" />
-							
-							</Grid>
-						</StackPanel>
-					</Border>
+            <TabControl>
+                <TabItem Header="Connect">
+                    <StackPanel Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Use File" IsChecked="True" x:Name="FileRdb" Margin="0,0,5,0" />
+                            <RadioButton Content="Use Serial Port" x:Name="SerialPortRdb" />
+                        </StackPanel>
+                        <Border Margin="0,10">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsChecked,ElementName=FileRdb}" Value="True">
+                                            <Setter Property="Border.Visibility" Value="{x:Static Visibility.Visible}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Button Grid.Column="0" Content="Open File" Click="BrowseForNmeaFile_Click" Padding="5,0" />
+                        </Border>
 
-					<Border Margin="10">
-						<Border.Style>
-							<Style TargetType="Border">
-								<Setter Property="Visibility" Value="Collapsed"/>
-								<Style.Triggers>
-									<DataTrigger Binding="{Binding Path=IsChecked,ElementName=SerialPortRdb}" Value="True">
-										<Setter Property="Border.Visibility" Value="{x:Static Visibility.Visible}"/>
-									</DataTrigger>
-								</Style.Triggers>
-							</Style>
-						</Border.Style>
-						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition />
-								<RowDefinition />
-								<RowDefinition />
-							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition/>
-								<ColumnDefinition/>
-							</Grid.ColumnDefinitions>
-							<TextBlock Text="Port:" />
-							<ComboBox Grid.Column="1" x:Name="PortsList" />
-							<TextBlock Text="Baud:" Grid.Row="1" />
-							<TextBox Text="9600" x:Name="BaudRate" HorizontalContentAlignment="Right" Grid.Row="1" Grid.Column="1" />
-							<Button Content="Open Port"
+                        <Border Margin="10">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsChecked,ElementName=SerialPortRdb}" Value="True">
+                                            <Setter Property="Border.Visibility" Value="{x:Static Visibility.Visible}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Port:" VerticalAlignment="Center" />
+                                <ComboBox Grid.Column="1" x:Name="PortsList" Margin="5,5,0,5" />
+                                <TextBlock Text="Baud:" Grid.Row="1"  VerticalAlignment="Center" />
+                                <TextBox Text="9600" x:Name="BaudRate" HorizontalContentAlignment="Right" Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" IsEnabled="{Binding SelectedItem.IsSerialPort, ElementName=PortsList}" />
+                                <Button Content="Open Port"
 									Click="SerialPortOpen_Click"
-									Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10" />
-						</Grid>
-					</Border>
-				</StackPanel>
-			</Grid>
-		</Expander>
+									Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="NTRIP">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Endpoint: "/>
+                        <TextBox Text="esricaster.esri.com" x:Name="ntripEndpoint" />
+                        <TextBlock Text="Port: "/>
+                        <TextBox Text="2101" x:Name="ntripPort" />
+                        <TextBlock Text="Username:"/>
+                        <TextBox Text="" x:Name="ntripUsername" />
+                        <TextBlock Text="Password:"/>
+                        <PasswordBox x:Name="ntripPassword" />
+                        <Button Content="Get Streams" Click="GetNtripStreams_Click" Margin="0,5" />
+                        <TextBlock Text="Available Streams:" />
+                        <ComboBox Text="Select Stream" x:Name="ntripStreamList" />
+                        <Button Content="Connect" Click="NtripConnect_Click" Margin="0,5" />
+                        <TextBlock x:Name="ntripStatus" Text="Status: Not connected" />
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </Expander>
 
-
-
-
-
-
-
+        <Border Background="White" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Margin="20" CornerRadius="5">
+            <Border.Style>
+                <Style TargetType="Border">
+                <Setter Property="Visibility" Value="Visible"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=LocationDisplay.Location, ElementName=mapView}" Value="{x:Null}">
+                        <Setter Property="Border.Visibility" Value="{x:Static Visibility.Collapsed}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            </Border.Style>
+            <StackPanel>
+                <Border Background="CornflowerBlue" CornerRadius="5,5,0,0" Padding="2">
+                    <TextBlock Text="Location Info" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" FontSize="16" />
+                </Border>
+            <Grid Margin="10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Horizontal Accuracy " />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=mapView, Path=LocationDisplay.Location.HorizontalAccuracy, Mode=OneWay, StringFormat={}{0:0.###m}}" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Vertical Accuracy " />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=mapView, Path=LocationDisplay.Location.VerticalAccuracy, Mode=OneWay, StringFormat={}{0:0.###m}}" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Fix " />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ElementName=mapView, Path=LocationDisplay.Location.FixType, Mode=OneWay, Converter={StaticResource FixTypeConverter}}" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Satellites " />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ElementName=mapView, Path=LocationDisplay.Location.Satellites.Count, Mode=OneWay}" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="HDOP " />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ElementName=mapView, Path=LocationDisplay.Location.Hdop, Mode=OneWay}" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="VDOP " />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding ElementName=mapView, Path=LocationDisplay.Location.Vdop, Mode=OneWay}" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="PDOP " />
+                    <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding ElementName=mapView, Path=LocationDisplay.Location.Pdop, Mode=OneWay}" FontWeight="Bold" HorizontalAlignment="Right" />
+                </Grid>
+            </StackPanel>
+        </Border>
 	</Grid>
+    
 </Window>
