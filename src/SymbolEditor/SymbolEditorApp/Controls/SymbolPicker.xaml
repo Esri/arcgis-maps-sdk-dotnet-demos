@@ -38,10 +38,10 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid ToolTip="{Binding Name}" Height="60" >
-                        <esri:SymbolDisplay Symbol="{Binding Symbol}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    <Grid ToolTip="{Binding SymbolStyleSearchResult.Name}" Height="60" >
+                        <esri:SymbolDisplay Symbol="{Binding StyleSymbol}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                             Margin="0,0,0,14" />
-                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+                        <TextBlock Text="{Binding SymbolStyleSearchResult.Name}" TextTrimming="CharacterEllipsis"
                                    VerticalAlignment="Bottom" HorizontalAlignment="Center" />
                     </Grid>
                 </DataTemplate>

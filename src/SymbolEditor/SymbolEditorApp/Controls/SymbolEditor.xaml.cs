@@ -64,7 +64,7 @@ namespace SymbolEditorApp.Controls
 
             if (MetroDialog.ShowDialog("Symbol Picker", picker, this) == true)
             {
-                var symbol = picker.SelectedItem?.Symbol;
+                var symbol = picker.SelectedItem?.StyleSymbol;
                 if (symbol != null)
                     Symbol = symbol;
             }
