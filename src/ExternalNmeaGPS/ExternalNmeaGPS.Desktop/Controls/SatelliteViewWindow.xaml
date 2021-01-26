@@ -4,15 +4,7 @@
         xmlns:ctrls="clr-namespace:ExternalNmeaGPS.Controls"
 		Title="GPS Satellite View" Height="300" Width="300">
     <Grid>
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition />
-				<RowDefinition Height="100" />
-			</Grid.RowDefinitions>
-			<ctrls:SatelliteView MaxWidth="{Binding ActualHeight, ElementName=satView}"
-					Grid.Column="1" x:Name="satView" />
-			<ctrls:SatelliteSnr Grid.Row="1"
-						GsvMessage="{Binding GsvMessage, ElementName=satView}" />
-		</Grid>
+		<ctrls:SatelliteView MaxWidth="{Binding ActualHeight, ElementName=satView}"
+				Grid.Column="1" x:Name="satView" />
 	</Grid>
 </Window>

@@ -30,10 +30,10 @@ namespace ExternalNmeaGPS.Controls
 			base.OnClosing(e);
 		}
 
-		public NmeaParser.Messages.Gsv GsvMessage
+		public IReadOnlyList<Esri.ArcGISRuntime.Location.NmeaSatelliteInfo> SatelliteInfos
 		{
-			get { return satView.GsvMessage; }
-			set { satView.GsvMessage = value; }
+			get { return satView.SatelliteInfos; }
+			set { satView.SatelliteInfos = value; }
 		}
 		
 	}
