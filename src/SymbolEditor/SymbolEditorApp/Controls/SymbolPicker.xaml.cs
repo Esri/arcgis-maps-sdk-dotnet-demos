@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +25,8 @@ namespace SymbolEditorApp.Controls
     public partial class SymbolPicker : UserControl
     {
         static ObservableCollection<SymbolStyleItems> symbols = new ObservableCollection<SymbolStyleItems>();
+        SymbolStyleSearchParameters searchParams = new SymbolStyleSearchParameters();
+
         public class SymbolStyleItems
         {
             public SymbolStyle Style { get; set; }
@@ -30,21 +34,69 @@ namespace SymbolEditorApp.Controls
             public override string ToString() => Name;
         }
 
+        public class StyleSearchResult : INotifyPropertyChanged
+        {
+            private Task<Symbol> _symbol;
+            private async System.Threading.Tasks.Task Initialize()
+            {
+                _symbol = SymbolStyleSearchResult.GetSymbolAsync();
+                if (_symbol.IsCompletedSuccessfully)
+                    return;
+                var symbol = await _symbol;
+                OnPropertyChanged(nameof(StyleSymbol));
+            }
+
+
+            public SymbolStyleSearchResult SymbolStyleSearchResult { get; set; }
+
+            public Symbol StyleSymbol
+            {
+                get
+                {
+                    if (_symbol == null)
+                        _ = Initialize();
+                    if (_symbol.IsCompletedSuccessfully)
+                        return _symbol.Result;
+
+                    return null;
+                }
+
+            }
+
+            /// <summary>
+            /// Raises the <see cref="MapViewModel.PropertyChanged" /> event
+            /// </summary>
+            /// <param name="propertyName">The name of the property that has changed</param>
+            protected void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+            public event PropertyChangedEventHandler PropertyChanged;
+        }
+
         public SymbolPicker()
         {
             InitializeComponent();
             LoadSymbols();
         }
-        
+
         public async void LoadSymbols()
         {
             SymbolStylePicker.ItemsSource = symbols;
             if (symbols.Count == 0)
             {
-                var pro2d = await SymbolStyle.OpenAsync("Resources/ArcGISRuntime2D_Pro25.stylx");
-                symbols.Add(new SymbolStyleItems() { Style = pro2d, Name = "2D Web Styles" });
-                //var pro3d = await SymbolStyle.OpenAsync("ArcGISRuntime3D_Pro25.stylx");
-                //symbols.Add(new SymbolStyleItems() { Style = pro3d, Name = "3D Web Styles" });
+                // SymbolStyle from a web style. Esri2DPointSymbolsStyle is an esri registered web style available out of the box on ArcGIS.com. 
+                // Null portal will fetch the 2D symbols style from ArcGIS.com. 
+                // If you want to fetch the esri registered web style from your custom portal then you should pass your Portal instance as a parameter.
+                var esri_webstyle = await SymbolStyle.OpenAsync(styleName: "Esri2DPointSymbolsStyle", portal: null);
+                symbols.Add(new SymbolStyleItems() { Style = esri_webstyle, Name = "Esri 2D Symbol Style - Web" });
+
+                // SymbolStyle from a web style with custom symbols published on a portal.                
+                var custom_webstyle = await SymbolStyle.OpenAsync(new Uri("https://www.arcgis.com/home/item.html?id=ee2aafab25f941c89a5e814e14a44d5d"));
+                symbols.Add(new SymbolStyleItems() { Style = custom_webstyle, Name = "Custom Symbol Style - Web" });
+
+                // SymbolStyle from a local stylx file on disk.
+                var local_style_file = await SymbolStyle.OpenAsync(styleLocation: @"Resources\ArcGISRuntime2D_Pro25.stylx");
+                symbols.Add(new SymbolStyleItems() { Style = local_style_file, Name = "Esri 2D Symbol Style - Local" });
             }
             SymbolStylePicker.SelectedIndex = 0;
         }
@@ -67,31 +119,39 @@ namespace SymbolEditorApp.Controls
 
         private async void categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IList<SymbolStyleSearchResult> styleResults = null;
-            if (e.AddedItems.Count == 1)
+            try
             {
-                try
+                if (e.AddedItems.Count == 1)
                 {
-                    // Search the style with the default parameters to return all symbol results.
-                    SymbolStyleSearchParameters searchParams = await SymbolStyle.GetDefaultSearchParametersAsync();
+                    ObservableCollection<StyleSearchResult> styleSearchResults = new ObservableCollection<StyleSearchResult>();
                     searchParams.Categories.Clear();
                     searchParams.Categories.Add(e.AddedItems[0] as string);
-                    styleResults = await SymbolStyle.SearchSymbolsAsync(searchParams);
+                    IList<SymbolStyleSearchResult> symbolStyleSearchResults;
+                    symbolStyleSearchResults = await SymbolStyle.SearchSymbolsAsync(searchParams);
+                    foreach (var searchResult in symbolStyleSearchResults)
+                    {
+                        var styleSearchResult = new StyleSearchResult();
+                        styleSearchResult.SymbolStyleSearchResult = searchResult;
+                        styleSearchResults.Add(styleSearchResult);
+                    }
+                    if (styleSearchResults?.Count > 0)
+                    {
+                        SymbolList.SelectedIndex = 0;
+                    }
+                    SymbolList.ItemsSource = styleSearchResults;
                 }
-                catch { }
             }
-            SymbolList.ItemsSource = styleResults;
-            if (styleResults?.Count > 0)
-                SymbolList.SelectedIndex = 0;
+            catch { }
+
         }
 
         private void SymbolList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var oldValue = SelectedItem;
-            SymbolStyleSearchResult result = null;
-            if(e.AddedItems.Count == 1)
+            StyleSearchResult result = null;
+            if (e.AddedItems.Count == 1)
             {
-                result = e.AddedItems[0] as SymbolStyleSearchResult;
+                result = e.AddedItems[0] as StyleSearchResult;
             }
             if (result != oldValue)
             {
@@ -100,15 +160,15 @@ namespace SymbolEditorApp.Controls
             }
         }
 
-        public event EventHandler<SymbolStyleSearchResult> SelectedItemChanged;
+        public event EventHandler<StyleSearchResult> SelectedItemChanged;
 
-        public SymbolStyleSearchResult SelectedItem
+        public StyleSearchResult SelectedItem
         {
-            get { return (SymbolStyleSearchResult)GetValue(SelectedItemProperty); }
+            get { return (StyleSearchResult)GetValue(SelectedItemProperty); }
         }
 
         public static readonly DependencyPropertyKey SelectedItemPropertyKey =
-            DependencyProperty.RegisterReadOnly(nameof(SelectedItem), typeof(SymbolStyleSearchResult), typeof(SymbolPicker), new PropertyMetadata(null));
+            DependencyProperty.RegisterReadOnly(nameof(SelectedItem), typeof(StyleSearchResult), typeof(SymbolPicker), new PropertyMetadata(null));
 
         public static readonly DependencyProperty SelectedItemProperty = SelectedItemPropertyKey.DependencyProperty;
 
@@ -149,6 +209,7 @@ namespace SymbolEditorApp.Controls
 
         private void SymbolStylePicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             SymbolStyle = (SymbolStylePicker.SelectedItem as SymbolStyleItems).Style;
         }
     }
