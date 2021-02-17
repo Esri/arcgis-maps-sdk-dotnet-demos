@@ -62,25 +62,25 @@ namespace FormsDemoAR
         private async Task configureScene()
         {
             // Create a scene and add the Melbourne layer to it.
-            Scene melbourneScene = new Scene();
-            melbourneScene.OperationalLayers.Add(new IntegratedMeshLayer(new Uri("https://arcgisruntime.maps.arcgis.com/home/item.html?id=2367c1fbe19d4a1aa05d79d084e3d832")));
+            Scene frankfurtScene = new Scene();
+            frankfurtScene.OperationalLayers.Add(new IntegratedMeshLayer(new Uri("https://tiles.arcgis.com/tiles/u0sSNqDXr7puKJrF/arcgis/rest/services/Frankfurt2017_v17/SceneServer/layers/0")));
 
             // Show the scene in the view
-            arSceneView.Scene = melbourneScene;
+            arSceneView.Scene = frankfurtScene;
 
             // Hide the basemap surface since it isn't needed with the mesh layer
-            melbourneScene.BaseSurface = new Surface();
-            melbourneScene.BaseSurface.BackgroundGrid.IsVisible = false;
-            melbourneScene.BaseSurface.Opacity = 0;
+            frankfurtScene.BaseSurface = new Surface();
+            frankfurtScene.BaseSurface.BackgroundGrid.IsVisible = false;
+            frankfurtScene.BaseSurface.Opacity = 0;
 
             // Always disable the navigation constraint in AR
-            melbourneScene.BaseSurface.NavigationConstraint = NavigationConstraint.None;
+            frankfurtScene.BaseSurface.NavigationConstraint = NavigationConstraint.None;
 
             // Load the metadata for the scene and all its layers
-            await melbourneScene.LoadAsync();
+            await frankfurtScene.LoadAsync();
 
             // Get the center of the scene content
-            centerPoint = melbourneScene.OperationalLayers.First().FullExtent.GetCenter();
+            centerPoint = frankfurtScene.OperationalLayers.First().FullExtent.GetCenter();
             MapPoint anchorPoint = new MapPoint(centerPoint.X, centerPoint.Y, 0, centerPoint.SpatialReference);
 
             // Set the origin camera.
