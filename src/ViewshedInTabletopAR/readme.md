@@ -25,7 +25,7 @@ The first step in creating a new AR application with Xamarin.Forms and ArcGIS Ru
 
 Once you've installed the templates, open Visual Studio, search for the Xamarin.Forms AR template, and create the project.
 
-Out of the box, the ArcGIS Runtime AR template allows you to tap to place a map of Mt. Everest. This is accomplished by setting the following properties on the `ARSceneView` defined in **ARPage.xaml**: 
+Out of the box, the ArcGIS Runtime AR template allows you to tap to place a map of Mt. Everest. This is accomplished by setting the following properties on the `ARSceneView` defined in **ARPage.xaml**:
 
 * `PlanesDetectedChanged` – allows you to prompt the user to place the map once planes are found
 * `RenderPlanes` is set to `true`; Runtime provides a common plane rendering implementation. On Xamarin.Android and Xamarin.iOS, you can also choose to use the native SDKs for more control over the appearance of rendered planes
@@ -33,14 +33,14 @@ Out of the box, the ArcGIS Runtime AR template allows you to tap to place a map 
 
 Note the following in **ARPage.xaml.cs**:
 
-* The origin camera on the ARSceneView is set to sea level at Mount Everest. The origin camera is where the 3D map is anchored to the real-world table when you tap-to-place 
-* The _translation factor_ is set to 1000. The translation factor is the relationship between movement of the device and the movement of the camera in the virtual 3D scene. A large translation factor allows you to move the device around to see large areas of the scene 
-* Inside `DoubleTap_ToPlace`, `SetInitialTransformation` is called on `arSceneView`. If the result is `true`, a plane was found at the tapped location, and rendering has been configured such that the origin camera is anchored to the tapped point. Plane rendering is turned off because it is no longer useful once the map is placed. `InitializeScene` is called to configure the map properly for AR. 
+* The origin camera on the ARSceneView is set to sea level at Mount Everest. The origin camera is where the 3D map is anchored to the real-world table when you tap-to-place.
+* The _translation factor_ is set to 1000. The translation factor is the relationship between movement of the device and the movement of the camera in the virtual 3D scene. A large translation factor allows you to move the device around to see large areas of the scene.
+* Inside `DoubleTap_ToPlace`, `SetInitialTransformation` is called on `arSceneView`. If the result is `true`, a plane was found at the tapped location, and rendering has been configured such that the origin camera is anchored to the tapped point. Plane rendering is turned off because it is no longer useful once the map is placed. `InitializeScene` is called to configure the map properly for AR.
 * `InitializeScene` creates and shows an imagery layer with elevation and disables the navigation constraint (by default, ArcGIS Runtime prevents you from navigating beneath the surface, which causes problems in AR).
 
 ### 3. Show a difference map
 
-For this demo, a city will be more interesting than the mountain range. [Nearmap](https://www.nearmap.com/us/en), an Esri partner, has shared the beautiful [Integrated Mesh Layer showing Melbourne, Australia](https://arcgisruntime.maps.arcgis.com/home/item.html?id=2367c1fbe19d4a1aa05d79d084e3d832) that is used in this demo.  
+For this demo, a city will be more interesting than the mountain range. An [nFrames integrated mesh layer showing Frankfurt, Germany](https://tiles.arcgis.com/tiles/u0sSNqDXr7puKJrF/arcgis/rest/services/Frankfurt2017_v17/SceneServer/layers/0) will be used.
 
 The first step to build this app is to remove the existing code from the `ARPage` constructor and `InitializeScene`:
 
@@ -93,25 +93,25 @@ private async void InitializeScene()
 private async Task configureScene() 
 {
     // Create a scene and add the Melbourne layer to it.
-    Scene melbourneScene = new Scene(SceneViewTilingScheme.Geographic);
-    melbourneScene.OperationalLayers.Add(new IntegratedMeshLayer(new Uri("https://arcgisruntime.maps.arcgis.com/home/item.html?id=2367c1fbe19d4a1aa05d79d084e3d832")));
+    Scene frankfurtScene = new Scene(SceneViewTilingScheme.Geographic);
+    frankfurtScene.OperationalLayers.Add(new IntegratedMeshLayer(new Uri("https://tiles.arcgis.com/tiles/u0sSNqDXr7puKJrF/arcgis/rest/services/Frankfurt2017_v17/SceneServer/layers/0")));
 
     // Show the scene in the view
-    arSceneView.Scene = melbourneScene;
+    arSceneView.Scene = frankfurtScene;
 
     // Hide the basemap surface since it isn't needed with the mesh layer 
-    melbourneScene.BaseSurface = new Surface(); 
-    melbourneScene.BaseSurface.BackgroundGrid.IsVisible = false;
-    melbourneScene.BaseSurface.Opacity = 0;
+    frankfurtScene.BaseSurface = new Surface(); 
+    frankfurtScene.BaseSurface.BackgroundGrid.IsVisible = false;
+    frankfurtScene.BaseSurface.Opacity = 0;
 
     // Always disable the navigation constraint in AR
-    melbourneScene.BaseSurface.NavigationConstraint = NavigationConstraint.None;
+    frankfurtScene.BaseSurface.NavigationConstraint = NavigationConstraint.None;
 
     // Load the metadata for the scene and all its layers
-    await melbourneScene.LoadAsync();
+    await frankfurtScene.LoadAsync();
 
     // Get the center of the scene content
-    centerPoint = melbourneScene.OperationalLayers.First().FullExtent.GetCenter();
+    centerPoint = frankfurtScene.OperationalLayers.First().FullExtent.GetCenter();
 
     MapPoint startingPoint = new MapPoint(centerPoint.X, centerPoint.Y, 0, centerPoint.SpatialReference);
 
