@@ -1,12 +1,35 @@
-ArcGIS Runtime Demos for .NET
-===========================
+# ArcGIS Runtime SDK for .NET - Demos
 
-This project contains source code for simple native Windows Desktop, Windows Universal, Xamarin.Android and Xamarin.iOS applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Runtime SDK for .NET.
-You can also find a set of smaller feature-focused samples in the [Runtime Samples](https://github.com/Esri/arcgis-runtime-samples-dotnet) repo.
+<a href="https://developers.arcgis.com"><img src="https://img.shields.io/badge/ArcGIS%20Developers%20Home-633b9b?style=flat-square" /></a> <a href="https://developers.arcgis.com/net/"><img src="https://img.shields.io/badge/Documentation-633b9b?style=flat-square" /></a>
+<a href="https://developers.arcgis.com/documentation/mapping-apis-and-services/tutorials/"><img src="https://img.shields.io/badge/Tutorials-633b9b?style=flat-square" /></a>
+<a href="https://developers.arcgis.com/net/wpf/sample-code/"><img src="https://img.shields.io/badge/Samples-633b9b?style=flat-square" /></a>
+<a><img src="https://img.shields.io/badge/Demos-black?style=flat-square" /></a>
+<a href="https://github.com/esri/arcgis-toolkit-dotnet"><img src="https://img.shields.io/badge/Toolkit-633b9b?style=flat-square" /></a>
+<a href="https://github.com/Esri/arcgis-runtime-templates-dotnet"><img src="https://img.shields.io/badge/Templates-633b9b?style=flat-square&logo=visualstudio&labelColor=gray" /></a> <a href="https://www.nuget.org/profiles/Esri_Inc"><img src="https://img.shields.io/badge/NuGet-633b9b?style=flat-square&logo=nuget&labelColor=gray" /></a> <a href="https://community.esri.com/t5/arcgis-runtime-sdks/ct-p/arcgis-runtime-sdks"><img src="https://img.shields.io/badge/🙋-Get%20help%20in%20Esri%20Community-633b9b?style=flat-square" /></a>
 
-### Demos
+**Full applications demonstrate workflows using ArcGIS Runtime**
 
-* [`Symbol Editor`](src/SymbolEditor) - A WPF .NET Core app (and MSIX installer project) that shows using mobile styles, and creating/editing vector symbol layers. 
+<table align="center">
+<tr>
+<td align="center"><img src="./src/ExternalNmeaGPS/Screenshot.jpg" height="128" /></td>
+<td align="center"><img src="./src/ViewshedInTabletopAR/ar_demo.jpg" height="128"/></td>
+<td align="center"><img src="./src/GeoEventServerSample/Screenshot_WinDesktop.gif" height="128" /></td>
+<td align="center"><img src="./src/GeocodeAndRoutingOnMouseMove/Screenshot_WinStore.png" height="128" /></td>
+
+</tr>
+<tr>
+<td align="center"><img src="./src/HydrographicsSample/Screenshot_WinDesktop.png" height="128" /></td>
+<td align="center"><img src="./src/KmlViewer/Screenshot.jpg" height="128" /></td>
+<td align="center"><img src="./src/OfflineWorkflowsSample/pre_planned_screenshot.png" height="128" /></td>
+<td align="center"><img src="./src/TurnByTurn/Screenshot.png" height="128" /></td>
+</tr>
+</table>
+
+<hr />
+
+## Demos
+
+* [`Symbol Editor`](src/SymbolEditor) - A WPF .NET Core app (and MSIX installer project) that shows using mobile styles, and creating/editing vector symbol layers.
 * [`Turn-by-Turn Routing`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Desktop, Windows Store and Xamarin.Forms.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
 * [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
@@ -21,27 +44,19 @@ You can also find a set of smaller feature-focused samples in the [Runtime Sampl
 * [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D using a customer editor.
 * [`Measure Tool`](src/MeasureTool) - A simple sample demonstrating how to use the editor to create your own measure tool.
 
-
-## Resources
-
-* [ArcGIS Runtime SDK for .NET](https://developers.arcgis.com/net/)
-
-## Issues
-
-Find a bug or want to request a new feature?  Please let us know by submitting an issue.
-
 ## Contributing
 
 Anyone and everyone is welcome to [contribute](CONTRIBUTING.md).
 
-## Licensing
-Copyright 2014 Esri
+## License
+
+Copyright 2014-2021 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+   https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
