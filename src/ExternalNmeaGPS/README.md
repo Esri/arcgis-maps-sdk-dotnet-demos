@@ -1,7 +1,7 @@
 Demo: Using an External GPS Device
 =======================
-Required version: ArcGIS Runtime SDK 100.10 for .NET
-Platforms: .NET Core 3.1 (Serial Port only) or .NET 5 (Serial Port + Bluetooth)
+Required version: ArcGIS Runtime SDK 100.12+ for .NET
+Platform: .NET 5+ Windows 10.0.14393+
 
 Sample app that shows how to use the NMEA Location Datasource to parse NMEA  messages from a file or GPS connected to a serial port or via bluetooth, and use it to drive the map's LocationDisplay in a Windows Desktop App. 
 

@@ -7,7 +7,7 @@
 		xmlns:esrimapping="clr-namespace:Esri.ArcGISRuntime.Mapping;assembly=Esri.ArcGISRuntime"
 		xmlns:esriui="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"        
         Width="1024" Height="768"
-        Title="GPS Parser Sample" >
+        Title="NMEA GPS Sample" >
     <Window.Resources>
         <local:FixTypeConverter x:Key="FixTypeConverter" />
     </Window.Resources>

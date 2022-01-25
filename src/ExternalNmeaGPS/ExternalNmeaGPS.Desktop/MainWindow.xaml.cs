@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
-#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
 using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
-#endif
 
 namespace ExternalNmeaGPS
 {
@@ -35,7 +34,6 @@ namespace ExternalNmeaGPS
 			LoadPorts();
 			LoadDevice(device);
 
-#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
 			// Monitor for added or removed serial and bluetooth devices
 			var watcher = DeviceInformation.CreateWatcher(SerialDevice.GetDeviceSelector());
 			watcher.Added += (s, e) => Dispatcher.InvokeAsync(LoadPorts);
@@ -45,7 +43,6 @@ namespace ExternalNmeaGPS
 			watcher.Added += (s, e) => Dispatcher.InvokeAsync(LoadPorts);
 			watcher.Removed += (s, e) => Dispatcher.InvokeAsync(LoadPorts);
 			watcher.Start();
-#endif
 		}
 
 		#region Get list of available devices
@@ -57,15 +54,11 @@ namespace ExternalNmeaGPS
 		{
 			public Device(string name) { Name = name; }
 			public string Name { get; }
-
-#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
 			public DeviceInformation? DeviceInfo { get; set; }
-#endif
 			public bool IsSerialPort { get; set; } = true;
 			public override string ToString() => Name!;
 		}
 
-#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
 		// Use WinRT APIs instead
 		public async void LoadPorts()
 		{
@@ -92,15 +85,6 @@ namespace ExternalNmeaGPS
 				PortsList.SelectedIndex = 0;
 
 		}
-#else
-		public void LoadPorts()
-		{ 
-			var ports = System.IO.Ports.SerialPort.GetPortNames();
-			PortsList.ItemsSource = ports.Select(p => new Device(p)).OrderBy(p => p.Name);
-			if(ports.Any())
-				PortsList.SelectedIndex = 0;
-		}
-#endif
 		#endregion Get list of available devices
 
 		private void LoadDevice(NmeaLocationDataSource device)
@@ -128,30 +112,13 @@ namespace ExternalNmeaGPS
 			{
 				mapView.GraphicsOverlays!.First().Graphics.Clear();
 				var deviceInfo = (Device)PortsList.SelectedItem;
-#if (NET5_0 || NET5_0_OR_GREATER) && WINDOWS
 				NmeaLocationDataSource device;
 				var btdevice = await Windows.Devices.Bluetooth.BluetoothDevice.FromIdAsync(deviceInfo.DeviceInfo!.Id);
 				if (btdevice is not null)
 					device = NmeaLocationDataSource.FromBluetooth((await btdevice.GetRfcommServicesForIdAsync(RfcommServiceId.SerialPort)).Services.First());
 				else 
 					device = NmeaLocationDataSource.FromSerialPort(deviceInfo.DeviceInfo, uint.Parse(BaudRate.Text));
-#else
-				//Use custom datasource
-				var device = new SerialPortLocationDataSource(deviceInfo.Name, int.Parse(BaudRate.Text));
-				// Or use stream creator approach:
-				/*
-				var port = new System.IO.Ports.SerialPort(deviceInfo.Name, int.Parse(BaudRate.Text));
-				var device = NmeaLocationDataSource.FromStreamCreator((s) =>
-				{
-					port.Open();
-					return Task.FromResult(port.BaseStream);
-				},
-				(s) =>
-				{
-					port.Close();
-					return Task.CompletedTask;
-				});*/
-#endif
+
 				LoadDevice(device);
 			}
 		}
