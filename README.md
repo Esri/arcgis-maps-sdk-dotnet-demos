@@ -10,7 +10,7 @@
 
 # ArcGIS Runtime SDK for .NET - Demos
 
-**Full applications demonstrate workflows using ArcGIS Runtime**
+**Demo apps showcasing full workflows with ArcGIS Runtime**
 
 <table align="center" aria-hidden="true">
 <tr>
