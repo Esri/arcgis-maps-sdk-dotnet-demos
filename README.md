@@ -26,7 +26,6 @@
 <td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/OfflineWorkflowsSample/pre_planned_screenshot.png" title="Pre-planned offline workflow" height="128" /></td>
 <td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/TurnByTurn/Screenshot.png" title="Turn-by-turn routing" height="128" /></td>
 </tr>
-<tr></tr>
 </table>
 
 <hr />
@@ -50,7 +49,10 @@
 
 ## Contribute
 
-Anyone and everyone is welcome to [contribute](CONTRIBUTING.md).
+Anyone and everyone is welcome to [contribute](CONTRIBUTING.md) in the form of issues. We encourage you to submit issues for:
+
+* Bugs you find while using the demos.
+* Requests for new demo apps or enhancements to existing demo apps.
 
 ## License
 
