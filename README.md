@@ -12,23 +12,7 @@
 
 **Demo apps showcasing full workflows with ArcGIS Runtime**
 
-<table align="center" aria-hidden="true">
-<tr>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/blob/main/src/ExternalNmeaGPS/Screenshot.jpg?raw=true" title="External NMEA device" height="128" /></td>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/ViewshedInTabletopAR/ar_demo.jpg" title="Viewshed in tabletop AR" height="128"/></td>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/GeoEventServerSample/Screenshot_WinDesktop.gif" title="Real-time updates from GeoEvent Server" height="128" /></td>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/GeocodeAndRoutingOnMouseMove/Screenshot_WinStore.png" height="128" title="Geocode and route as the mouse moves" /></td>
-
-</tr>
-<tr>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/HydrographicsSample/Screenshot_WinDesktop.png" title="Display ENC" height="128" /></td>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/KmlViewer/Screenshot.jpg" title="KML Viewer" height="128" /></td>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/OfflineWorkflowsSample/pre_planned_screenshot.png" title="Pre-planned offline workflow" height="128" /></td>
-<td align="center"><img src="https://github.com/Esri/arcgis-runtime-demos-dotnet/raw/main/src/TurnByTurn/Screenshot.png" title="Turn-by-turn routing" height="128" /></td>
-</tr>
-</table>
-
-<hr />
+<img align="center" title="screenshots of several demos" src="screenshot.png" alt="screenshots of several demos">
 
 ## Contents
 
