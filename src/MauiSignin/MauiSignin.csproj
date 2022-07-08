@@ -33,7 +33,7 @@
 
     <ItemGroup>
         <PackageReference Include="Esri.ArcGISRuntime.Maui" Version="100.14.1-preview3" />
-        <PackageReference Include="WinUIEx" Version="1.8.0-oauth3" Condition="$(TargetFramework.Contains('-windows'))" />
+        <PackageReference Include="WinUIEx" Version="1.8.0" Condition="$(TargetFramework.Contains('-windows'))" />
         <Using Include="Esri.ArcGISRuntime.Maui" />
         <Using Include="Esri.ArcGISRuntime.Mapping" />
     </ItemGroup>
