@@ -31,28 +31,18 @@ namespace RoutingSample.Services
 
     public class NavigationService
     {
-        private const string LocatorService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
-		private const string RouteService = "https://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+        private const string LocatorService = "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+		private const string RouteService = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
 
         private static readonly Uri s_locatorService = new Uri(LocatorService);
         private static readonly Uri s_routeService = new Uri(RouteService);
-        private readonly Credential _credential;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavigationService"/> class.
-        /// </summary>
-        public NavigationService()
-        {
-            _credential = AuthenticationManager.Current.FindCredential(new Uri("https://www.arcgis.com/sharing/rest"));
-        }
 
         /// <summary>
         /// Returns the location of the specified address.
         /// </summary>
         /// <param name="address"></param>
-        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<MapPoint> GeocodeAsync(string address)
+        public static async Task<MapPoint> GeocodeAsync(string address)
         {
             var locator = await LocatorTask.CreateAsync(s_locatorService);
             var result = await locator.GeocodeAsync(address).ConfigureAwait(false);
@@ -62,9 +52,8 @@ namespace RoutingSample.Services
         /// <summary>
         /// Returns a route between the specified stops.
         /// </summary>
-        /// <param name="stops">The stops on the route.</param>
         /// <returns></returns>
-        public async Task<SolveRouteResult> SolveRouteAsync(MapPoint from, MapPoint to)
+        public static async Task<SolveRouteResult> SolveRouteAsync(MapPoint from, MapPoint to)
         {
             RouteTask routeTask = null;
             RouteParameters routeParameters = null;
@@ -73,7 +62,7 @@ namespace RoutingSample.Services
             try
             {
                 // Create a new route using the onling routing service
-                routeTask = await RouteTask.CreateAsync(s_routeService, _credential);
+                routeTask = await RouteTask.CreateAsync(s_routeService);
 
                 // Configure the route and set the stops
                 routeParameters = await routeTask.CreateDefaultParametersAsync();

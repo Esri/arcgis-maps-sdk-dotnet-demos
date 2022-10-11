@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RoutingSample</RootNamespace>
     <AssemblyName>RoutingSample</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -65,10 +65,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="LoginWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,9 +72,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LoginWindow.xaml.cs">
-      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -113,63 +106,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\BearLeft.png">
-      <Link>Assets\Maneuvers\BearLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\BearRight.png">
-      <Link>Assets\Maneuvers\BearRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\ForkLeft.png">
-      <Link>Assets\Maneuvers\ForkLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\ForkRight.png">
-      <Link>Assets\Maneuvers\ForkRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\HighwayMerge.png">
-      <Link>Assets\Maneuvers\HighwayMerge.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\RampLeft.png">
-      <Link>Assets\Maneuvers\RampLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\RampRight.png">
-      <Link>Assets\Maneuvers\RampRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\Stop.png">
-      <Link>Assets\Maneuvers\Stop.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\Straight.png">
-      <Link>Assets\Maneuvers\Straight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\SharpLeft.png">
-      <Link>Assets\Maneuvers\SharpLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\SharpRight.png">
-      <Link>Assets\Maneuvers\SharpRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\TurnLeft.png">
-      <Link>Assets\Maneuvers\TurnLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\TurnRight.png">
-      <Link>Assets\Maneuvers\TurnRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\UTurn.png">
-      <Link>Assets\Maneuvers\UTurn.png</Link>
-    </Resource>
+    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\*.png" Link="Assets\Maneuvers\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Esri.ArcGISRuntime">
+      <Version>200.0.0-beta</Version>
+    </PackageReference>
     <PackageReference Include="Esri.ArcGISRuntime.WPF">
-      <Version>100.8.0</Version>
+      <Version>200.0.0-beta</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\Roundabout.png">
-      <Link>Assets\Maneuvers\Roundabout.png</Link>
-    </Resource>
-  </ItemGroup>
-  <Import Project="..\RoutingSample.Shared\RoutingSample.Shared.projitems" Label="Shared" Condition="Exists('..\RoutingSample.Shared\RoutingSample.Shared.projitems')" />
   <Import Project="..\RoutingSample.Shared\RoutingSample.Shared.projitems" Label="Shared" Condition="Exists('..\RoutingSample.Shared\RoutingSample.Shared.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

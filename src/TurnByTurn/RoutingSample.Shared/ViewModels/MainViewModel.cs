@@ -12,6 +12,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using Color = System.Drawing.Color;
+using Map = Esri.ArcGISRuntime.Mapping.Map;
 
 namespace RoutingSample.ViewModels
 {
@@ -86,7 +87,7 @@ namespace RoutingSample.ViewModels
         /// <summary>
         /// Gets the map to be displayed in a <see cref="Esri.ArcGISRuntime.UI.Controls.MapView"/>.
         /// </summary>
-        public Map Map => _map ?? (_map = new Map(Basemap.CreateNavigationVector()));
+        public Map Map => _map ?? (_map = new Map(BasemapStyle.ArcGISNavigation));
 
         /// <summary>
         /// Gets or sets the address.
@@ -302,16 +303,14 @@ namespace RoutingSample.ViewModels
 
                 try
                 {
-                    var navigationService = new NavigationService();
-
                     // Determine the location of the destination
-                    var destination = await navigationService.GeocodeAsync(Address);
+                    var destination = await NavigationService.GeocodeAsync(Address);
 
                     // Determine the our current location from the display
                     var start = (MapPoint)GeometryEngine.RemoveZ(LocationDisplay.Location.Position);
 
                     // Determine the route
-                    var result = await navigationService.SolveRouteAsync(start, destination);
+                    var result = await NavigationService.SolveRouteAsync(start, destination);
 
                     // Copy the result from the service
                     RouteParameters = result.Parameters;
@@ -344,7 +343,7 @@ namespace RoutingSample.ViewModels
         private async void CreateTracker()
         {
             // Creates a new tracker for a route
-            RouteTracker = new RouteTracker(RouteResult, 0);
+            RouteTracker = new RouteTracker(RouteResult, 0, true);
             RouteTracker.VoiceGuidanceUnitSystem = UnitSystem.Imperial;
 
             // Before enabling rerouting, you should check that it is supported
@@ -352,7 +351,8 @@ namespace RoutingSample.ViewModels
             {
                 try
                 {
-                    await RouteTracker.EnableReroutingAsync(RouteTask, RouteParameters, ReroutingStrategy.ToNextWaypoint, false);
+                    var rerouteParams = new ReroutingParameters(RouteTask, RouteParameters) { Strategy = ReroutingStrategy.ToNextWaypoint };
+                    await RouteTracker.EnableReroutingAsync(rerouteParams);
                 }
                 catch (Exception ex)
                 {
