@@ -29,7 +29,7 @@ namespace SymbolEditorApp
                 }
 
 #warning Supply an API key in App.xaml.cs, then delete this line
-                // Create an API key at https://developers.arcgis.com/api-keys/, then use it to replace YOUR_KEY_HERE below.
+                // Create an API key at https://developers.arcgis.com/api-keys/, then use it to replace YOUR_API_KEY below.
                 ArcGISRuntimeEnvironment.ApiKey = "YOUR_API_KEY";
 
 
