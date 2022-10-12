@@ -16,9 +16,19 @@ namespace SymbolEditorApp
         {
             InitializeComponent();
             ShowSidePanel(null);
+            CheckKey();
         }
 
-        private void TableOfContents_TocItemContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.Preview.UI.Controls.TocItemContextMenuEventArgs e)
+        private void CheckKey()
+        {
+            if (Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey == "YOUR_API_KEY")
+            {
+                MessageBox.Show("See App.xaml.cs for info about setting API key", "Error - No API Key provided", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Environment.Exit(0);
+            }
+        }
+
+        private void TableOfContents_TocItemContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.UI.Controls.TocItemContextMenuEventArgs e)
         {
             if(e.Item.Layer is Layer layer)
             {
@@ -67,7 +77,7 @@ namespace SymbolEditorApp
 
         private void OnTreeViewItemMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var item = (sender as FrameworkElement).DataContext as Esri.ArcGISRuntime.Toolkit.Preview.UI.TocItem;
+            var item = (sender as FrameworkElement).DataContext as Esri.ArcGISRuntime.Toolkit.UI.TocItem;
             if(item?.Content is LegendInfo legendInfo)
             {
                 Symbol symbolReference = null;

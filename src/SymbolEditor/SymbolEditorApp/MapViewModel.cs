@@ -27,8 +27,8 @@ namespace SymbolEditorApp
 
         public static MapViewModel Current => _Current ?? (_Current = new MapViewModel());
 
-        private Basemap _darkModeBaseMap = Basemap.CreateDarkGrayCanvasVector();
-        private Basemap _lightModeBaseMap = Basemap.CreateLightGrayCanvasVector();
+        private Basemap _darkModeBaseMap = new Basemap(BasemapStyle.ArcGISNavigationNight);
+        private Basemap _lightModeBaseMap = new Basemap(BasemapStyle.ArcGISNavigation);
 
         private MapViewModel()
         {

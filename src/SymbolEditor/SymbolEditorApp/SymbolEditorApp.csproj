@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>SymbolEditorApp</AssemblyName>
     <Platforms>AnyCPU;x64;x86</Platforms>
@@ -31,10 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="100.10.0" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit" Version="100.10.0" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.Preview" Version="100.10.0" />
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
+    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0-daily3660" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="200.0.0-daily3660" />
     <PackageReference Include="UniversalWPF" Version="0.9.0" />
   </ItemGroup>
 

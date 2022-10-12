@@ -28,6 +28,10 @@ namespace SymbolEditorApp
                     ArcGISRuntimeEnvironment.SetLicense(licenseKey);
                 }
 
+#warning Supply an API key in App.xaml.cs, then delete this line
+                // Create an API key at https://developers.arcgis.com/api-keys/, then use it to replace YOUR_KEY_HERE below.
+                ArcGISRuntimeEnvironment.ApiKey = "YOUR_API_KEY";
+
 
                 // Initialize the ArcGIS Runtime before any components are created.
                 ArcGISRuntimeEnvironment.Initialize();
