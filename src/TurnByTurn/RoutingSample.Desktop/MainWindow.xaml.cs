@@ -18,8 +18,9 @@ namespace RoutingSample.Desktop
 
         public MainWindow()
         {
-            // Create an API key at https://developers.arcgis.com/api-keys/, configure it with routing and geocoding services, then paste below.
-            Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "";
+#warning Supply an API key in MainWindow.xaml.cs, then delete this line
+            // Create an API key at https://developers.arcgis.com/api-keys/, configure it with routing and geocoding services, then use it to replace YOUR_API_KEY below.
+            Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "YOUR_API_KEY";
             InitializeComponent();
 
             CheckKey();
@@ -32,7 +33,7 @@ namespace RoutingSample.Desktop
         }
         private void CheckKey()
         {
-            if (string.IsNullOrEmpty(Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey))
+            if (Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey == "YOUR_API_KEY")
             {
                 MessageBox.Show("See MainWindow.xaml.cs for info about setting API key", "Error - No API Key provided", MessageBoxButton.OK, MessageBoxImage.Warning);
                 System.Environment.Exit(0);

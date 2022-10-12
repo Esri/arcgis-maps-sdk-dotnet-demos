@@ -11,19 +11,16 @@ namespace RoutingSample.MAUI
 
         public MainPage()
         {
-            // Create an API key at https://developers.arcgis.com/api-keys/, configure it with routing and geocoding services, then paste below.
-            Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "";
             InitializeComponent();
-
             _mainViewModel = new MainViewModel();
             BindingContext = _mainViewModel;
         }
 
         private async Task CheckKey()
         {
-            if (string.IsNullOrEmpty(Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey))
+            if (Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey == "YOUR_API_KEY")
             {
-                await DisplayAlert("Error - No API Key provided", "See MainPage.xaml.cs for info about setting API key", "OK");
+                await DisplayAlert("Error - No API Key provided", "See MauiProgram.cs for info about setting API key", "OK");
                 System.Environment.Exit(0);
             }
         }
