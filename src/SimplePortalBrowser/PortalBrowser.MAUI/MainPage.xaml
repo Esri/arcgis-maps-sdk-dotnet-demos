@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage
+    x:Class="PortalBrowser.MAUI.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PortalBrowser.ViewModels;assembly=PortalBrowser.SharedLib"
+    Title="Portal Browser"
+    BindingContext="{StaticResource portalVM}"
+    ItemsSource="{Binding Groups}">
+    <TabbedPage.Resources>
+        <ResourceDictionary>
+            <vm:PortalVM x:Key="portalVM" />
+            <Style TargetType="ContentPage">
+                <Style.Triggers>
+                    <DataTrigger
+                        Binding="{Binding Name}"
+                        TargetType="ContentPage"
+                        Value="Featured">
+                        <Setter Property="IconImageSource" Value="feature.png" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </TabbedPage.Resources>
+    <!--  Item template for tabbed page to contain the 2 tabs for Basemaps and Featured Maps  -->
+    <TabbedPage.ItemTemplate>
+        <DataTemplate>
+            <ContentPage Title="{Binding Name}" IconImageSource="basemap.png">
+                <FlexLayout
+                    Margin="8,8,0,0"
+                    AlignContent="Start"
+                    AlignItems="Start"
+                    BindableLayout.ItemsSource="{Binding Items}"
+                    JustifyContent="Start"
+                    Wrap="Wrap">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,8,8" WidthRequest="160">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                                </Grid.GestureRecognizers>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="120" />
+                                    <RowDefinition Height="40" />
+                                </Grid.RowDefinitions>
+                                <Image
+                                    Grid.RowSpan="2"
+                                    Aspect="AspectFill"
+                                    Source="{Binding ThumbnailUri}" />
+                                <Border
+                                    Grid.Row="1"
+                                    Margin="0"
+                                    BackgroundColor="#aa000000"
+                                    StrokeThickness="0">
+                                    <Label
+                                        Margin="8"
+                                        Text="{Binding Title}"
+                                        TextColor="White" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </ContentPage>
+        </DataTemplate>
+    </TabbedPage.ItemTemplate>
+</TabbedPage>

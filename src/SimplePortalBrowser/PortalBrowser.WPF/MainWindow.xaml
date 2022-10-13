@@ -1,0 +1,108 @@
+﻿<Window
+    x:Class="PortalBrowser.WPF.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+    xmlns:vm="clr-namespace:PortalBrowser.ViewModels;assembly=PortalBrowser.SharedLib"
+    Title="ArcGIS Runtime SDK Demo - Windows Desktop"
+    Width="900"
+    Height="600"
+    Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+    ResizeMode="CanResizeWithGrip">
+    <!--  Resources to be used by the control  -->
+    <Window.Resources>
+        <vm:PortalVM x:Key="portalVM" />
+        <vm:MapVM x:Key="mapVM" />
+        <DataTemplate x:Key="mapItemsTemplate">
+            <Grid Width="125">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border
+                    Padding="3"
+                    HorizontalAlignment="Left"
+                    Background="White"
+                    BorderBrush="DarkGray"
+                    BorderThickness="1">
+                    <Image Source="{Binding ThumbnailUri}" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Padding="5"
+                    ToolTipService.ToolTip="{Binding Description}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Text="{Binding Title}"
+                        TextTrimming="CharacterEllipsis" />
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="725*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--  Menu  -->
+        <Menu Grid.ColumnSpan="3">
+            <!--  This menu is mostly empty and just here for show  -->
+            <MenuItem Header="File">
+                <MenuItem Click="Exit_Clicked" Header="Exit" />
+            </MenuItem>
+        </Menu>
+        <!--  StatusBar  -->
+        <StatusBar
+            Grid.Row="3"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusMessage, Source={StaticResource portalVM}}" />
+            </StatusBarItem>
+            <Separator Opacity=".5" />
+            <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Text="{Binding StatusMessage, Source={StaticResource mapVM}}" />
+        </StatusBar>
+        <!--  Side panel map list  -->
+        <Grid Grid.Row="2" DataContext="{StaticResource portalVM}">
+            <TabControl>
+                <TabItem Header="Basemaps">
+                    <ListBox
+                        ItemTemplate="{StaticResource mapItemsTemplate}"
+                        ItemsSource="{Binding Basemaps}"
+                        SelectedItem="{Binding PortalItem, Mode=TwoWay, Source={StaticResource mapVM}}" />
+                </TabItem>
+                <TabItem Header="Featured">
+                    <ListBox
+                        ItemTemplate="{StaticResource mapItemsTemplate}"
+                        ItemsSource="{Binding Featured}"
+                        SelectedItem="{Binding PortalItem, Mode=TwoWay, Source={StaticResource mapVM}}" />
+                </TabItem>
+            </TabControl>
+
+        </Grid>
+        <!--  Map  -->
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            FontSize="24"
+            Text="{Binding PortalItem.Title, Source={StaticResource mapVM}}" />
+        <Grid
+            Grid.Row="2"
+            Grid.Column="2"
+            DataContext="{StaticResource mapVM}">
+            <esri:MapView x:Name="MyMapView" Map="{Binding Map}" />
+        </Grid>
+
+    </Grid>
+</Window>

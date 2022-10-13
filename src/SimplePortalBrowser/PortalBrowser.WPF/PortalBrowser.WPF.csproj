@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0-beta" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PortalBrowser.SharedLib\PortalBrowser.SharedLib.csproj" />
+	</ItemGroup>
+
+</Project>
