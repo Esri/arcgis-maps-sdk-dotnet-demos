@@ -38,13 +38,88 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="AppBarButton">
-                            <Grid x:Name="Root"
-                    MinWidth="{TemplateBinding MinWidth}"
-                    MaxWidth="{TemplateBinding MaxWidth}"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}" >
+                            <Grid
+                                x:Name="Root"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MaxWidth="{TemplateBinding MaxWidth}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                                <Grid x:Name="ContentRoot" MinHeight="{ThemeResource AppBarThemeMinHeight}">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Viewbox
+                                        x:Name="ContentViewbox"
+                                        Height="20"
+                                        Margin="{ThemeResource AppBarButtonContentViewboxCollapsedMargin}"
+                                        HorizontalAlignment="Stretch"
+                                        AutomationProperties.AccessibilityView="Raw">
+                                        <ContentPresenter
+                                            x:Name="Content"
+                                            Height="20"
+                                            Content="{TemplateBinding Icon}"
+                                            Foreground="{TemplateBinding Foreground}" />
+                                    </Viewbox>
+                                    <TextBlock
+                                        x:Name="TextLabel"
+                                        Grid.Row="1"
+                                        Margin="2,0,2,6"
+                                        AutomationProperties.AccessibilityView="Raw"
+                                        FontFamily="{TemplateBinding FontFamily}"
+                                        FontSize="12"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        Text="{TemplateBinding Label}"
+                                        TextAlignment="Center"
+                                        TextWrapping="Wrap" />
+                                    <TextBlock
+                                        x:Name="OverflowTextLabel"
+                                        Margin="12,0,12,0"
+                                        Padding="{StaticResource AppBarButtonOverflowTextLabelPadding}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        AutomationProperties.AccessibilityView="Raw"
+                                        FontFamily="{TemplateBinding FontFamily}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        Text="{TemplateBinding Label}"
+                                        TextAlignment="Left"
+                                        TextTrimming="Clip"
+                                        TextWrapping="NoWrap"
+                                        Visibility="Collapsed" />
+                                    <TextBlock
+                                        x:Name="KeyboardAcceleratorTextLabel"
+                                        Grid.Column="1"
+                                        MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KeyboardAcceleratorTextMinWidth}"
+                                        Margin="24,0,12,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        AutomationProperties.AccessibilityView="Raw"
+                                        Foreground="{ThemeResource AppBarButtonKeyboardAcceleratorTextForeground}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="{TemplateBinding KeyboardAcceleratorTextOverride}"
+                                        Visibility="Collapsed" />
+                                    <FontIcon
+                                        x:Name="SubItemChevron"
+                                        Grid.Column="2"
+                                        Margin="12,0,12,0"
+                                        AutomationProperties.AccessibilityView="Raw"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontSize="12"
+                                        Foreground="{ThemeResource MenuFlyoutSubItemChevron}"
+                                        Glyph="&#xE0E3;"
+                                        MirroredWhenRightToLeft="True"
+                                        Visibility="Collapsed" />
+
+                                </Grid>
 
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="ApplicationViewStates">
@@ -271,75 +346,6 @@
                                     </VisualStateGroup>
 
                                 </VisualStateManager.VisualStateGroups>
-                                <Grid x:Name="ContentRoot" MinHeight="{ThemeResource AppBarThemeMinHeight}">
-
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Viewbox x:Name="ContentViewbox"
-                            Height="20"
-                            Margin="{ThemeResource AppBarButtonContentViewboxCollapsedMargin}"
-                            HorizontalAlignment="Stretch"
-                            AutomationProperties.AccessibilityView="Raw" >
-                                        <ContentPresenter x:Name="Content"
-                                Height="20"
-                                Content="{TemplateBinding Icon}"
-                                Foreground="{TemplateBinding Foreground}"/>
-                                    </Viewbox>
-                                    <TextBlock x:Name="TextLabel"
-                            Grid.Row="1"
-                            Text="{TemplateBinding Label}"
-                            Foreground="{TemplateBinding Foreground}"
-                            FontSize="12"
-                            FontFamily="{TemplateBinding FontFamily}"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap"
-                            Margin="2,0,2,6"
-                            AutomationProperties.AccessibilityView="Raw" />
-                                    <TextBlock x:Name="OverflowTextLabel"
-                            Text="{TemplateBinding Label}"
-                            Foreground="{TemplateBinding Foreground}"
-                            FontFamily="{TemplateBinding FontFamily}"
-                            TextAlignment="Left"
-                            TextTrimming="Clip"
-                            TextWrapping="NoWrap"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Margin="12,0,12,0"
-                            Padding="{StaticResource AppBarButtonOverflowTextLabelPadding}"
-                            Visibility="Collapsed"
-                            AutomationProperties.AccessibilityView="Raw" />
-                                    <TextBlock x:Name="KeyboardAcceleratorTextLabel"
-                            Grid.Column="1"
-                            Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{TemplateBinding KeyboardAcceleratorTextOverride}"
-                            MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KeyboardAcceleratorTextMinWidth}"
-                            Margin="24,0,12,0"
-                            Foreground="{ThemeResource AppBarButtonKeyboardAcceleratorTextForeground}"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Visibility="Collapsed"
-                            AutomationProperties.AccessibilityView="Raw" />
-                                    <FontIcon x:Name="SubItemChevron"
-                            Grid.Column="2"
-                            Glyph="&#xE0E3;"
-                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                            FontSize="12"
-                            AutomationProperties.AccessibilityView="Raw"
-                            Foreground="{ThemeResource MenuFlyoutSubItemChevron}"
-                            Margin="12,0,12,0"
-                            MirroredWhenRightToLeft="True"
-                            Visibility="Collapsed" />
-
-                                </Grid>
-
                             </Grid>
 
                         </ControlTemplate>
@@ -348,8 +354,8 @@
             </Style>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- The date template was moved to a separate resource dictionary because x:DataType causes XAML compilation errors otherwise. -->
-                <!-- https://stackoverflow.com/questions/48030101/uwp-how-to-use-xbind-in-resourcedictionary -->
+                <!--  The date template was moved to a separate resource dictionary because x:DataType causes XAML compilation errors otherwise.  -->
+                <!--  https://stackoverflow.com/questions/48030101/uwp-how-to-use-xbind-in-resourcedictionary  -->
                 <local:TemplatesResourceDictionary />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
