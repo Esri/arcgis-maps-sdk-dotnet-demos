@@ -176,7 +176,7 @@ namespace HydrographicsSample
         private void CreateMap(Viewpoint vp)
         {
             Map map = new Map(SpatialReferences.WebMercator); // Use WebMercator. If we don't specify a spatial reference, it'll default to the SR of the first ENC Layer - typically GCS_WGS84
-            map.Basemap = Basemap.CreateLightGrayCanvasVector(); // Lightgray background map, just for reference in this demo. Not necessarily needed
+            map.Basemap = new Basemap(new Uri("https://www.arcgis.com/home/item.html?id=979c6cc89af9449cbeb5342a439c6a76")); // Lightgray background map, just for reference in this demo. Not necessarily needed
             map.InitialViewpoint = vp;
             mapView.Map = map;
         }
@@ -295,17 +295,14 @@ namespace HydrographicsSample
 
         private void BasemapSelector_Checked(object sender, RoutedEventArgs e)
         {
-            if (basemapSelector_LightGray == null || basemapSelector_Imagery == null || basemapSelector_Ocean == null || mapView.Map == null)
+            if (basemapSelector_LightGray == null || basemapSelector_Imagery == null || mapView.Map == null)
                 return;
             basemapSelector_LightGray.IsChecked = (sender == basemapSelector_LightGray);
             basemapSelector_Imagery.IsChecked = (sender == basemapSelector_Imagery);
-            basemapSelector_Ocean.IsChecked = (sender == basemapSelector_Ocean);
             if (basemapSelector_LightGray.IsChecked)
-                mapView.Map.Basemap = Basemap.CreateLightGrayCanvas();
+                mapView.Map.Basemap = new Basemap(new Uri("https://www.arcgis.com/home/item.html?id=979c6cc89af9449cbeb5342a439c6a76"));
             else if (basemapSelector_Imagery.IsChecked)
-                mapView.Map.Basemap = Basemap.CreateImagery();
-            else if (basemapSelector_Ocean.IsChecked)
-                mapView.Map.Basemap = Basemap.CreateOceans();
+                mapView.Map.Basemap = new Basemap(new Uri("https://www.arcgis.com/home/item.html?id=39858979a6ba4cfd96005bbe9bd4cf82"));
         }
     }
 }
