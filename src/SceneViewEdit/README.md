@@ -1,14 +1,13 @@
-scene editing demo
-===============================================
+# Scene geometry editing
 
 Demo to show how to do custom geometry editing on a SceneView. Implements drawing and editing for points, polylines and polygons.
 
-### Notable classes:
+## Notable classes:
 
 * [`SceneEditHelper.cs`](SceneEditingDemo/Helpers/SceneEditHelper.cs) - Provides functions for drawing and editing geometries that works with Graphics and Features
 * [`SceneDrawHelper.cs`](SceneEditingDemo/Helpers/SceneDrawHelper.cs) - Provides helper functions for drawing that is used by SceneEditHelper
 
-#### Using SceneEditHelper
+### Using SceneEditHelper
 
 `SceneEditHelper` provides methods for creating and editing geometries on a `SceneView`. You can use the class as-is, extend it or take some ideas from it while implementing your own custom editing experience.
 
@@ -18,7 +17,7 @@ Only one draw or edit operation can be active at the time and preivous is cancel
 
 <img src="SceneEditHelperDiagram.png"/>
 
-#### Drawing geometries
+### Drawing geometries
 
 ````CSharp
 	try
@@ -55,7 +54,7 @@ Only one draw or edit operation can be active at the time and preivous is cancel
 	}			
 ````
 
-#### Editing geometries
+### Editing geometries
 
 ````CSharp
 	try
@@ -96,6 +95,3 @@ Only one draw or edit operation can be active at the time and preivous is cancel
 
 <img src="screenshot1.png"/>
 <img src="screenshot2.png"/>
-
-[](Esri Tags: ArcGIS Runtime SDK .NET WinRT WinStore WPF WinPhone C# C-Sharp DotNet XAML MVVM)
-[](Esri Language: DotNet)
