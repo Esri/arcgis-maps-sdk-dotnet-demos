@@ -166,8 +166,7 @@ namespace XInputHelper
             if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight))
                 newCamera = newCamera.RotateTo(90, newCamera.Pitch, newCamera.Roll);
 
-            if (!newCamera.IsEqual(originalCamera))
-                sceneView.SetViewpointCamera(newCamera);
+            sceneView.SetViewpointCamera(newCamera);
 
         }
 
