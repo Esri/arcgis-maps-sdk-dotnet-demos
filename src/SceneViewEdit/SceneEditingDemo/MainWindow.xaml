@@ -3,40 +3,40 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
-    xmlns:esri2="clr-namespace:Esri.ArcGISRuntime.Symbology;assembly=Esri.ArcGISRuntime"
-    xmlns:esri3="clr-namespace:Esri.ArcGISRuntime.Mapping;assembly=Esri.ArcGISRuntime"
-    xmlns:esri5="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"
+    xmlns:esriSymbology="clr-namespace:Esri.ArcGISRuntime.Symbology;assembly=Esri.ArcGISRuntime"
+    xmlns:esriMapping="clr-namespace:Esri.ArcGISRuntime.Mapping;assembly=Esri.ArcGISRuntime"
+    xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"
     Title="SceneView - Create and edit geometries"
     WindowState="Maximized">
     <Grid>
         <Grid.Resources>
-            <esri2:SimpleMarkerSymbol
+            <esriSymbology:SimpleMarkerSymbol
                 x:Key="SMS"
                 Size="10"
                 Style="Circle"
                 Color="Red" />
-            <esri2:SimpleLineSymbol
+            <esriSymbology:SimpleLineSymbol
                 x:Key="SLS"
                 Width="5"
                 Color="Red" />
-            <esri2:SimpleFillSymbol
+            <esriSymbology:SimpleFillSymbol
                 x:Key="SFS"
                 Style="Solid"
                 Color="Red" />
-            <esri2:SimpleRenderer x:Key="MarkerRenderer" Symbol="{StaticResource SMS}" />
-            <esri2:SimpleRenderer x:Key="PolylineRenderer" Symbol="{StaticResource SLS}" />
-            <esri2:SimpleRenderer x:Key="PolygonRenderer" Symbol="{StaticResource SFS}" />
+            <esriSymbology:SimpleRenderer x:Key="MarkerRenderer" Symbol="{StaticResource SMS}" />
+            <esriSymbology:SimpleRenderer x:Key="PolylineRenderer" Symbol="{StaticResource SLS}" />
+            <esriSymbology:SimpleRenderer x:Key="PolygonRenderer" Symbol="{StaticResource SFS}" />
         </Grid.Resources>
         <esri:SceneView x:Name="MySceneView" GeoViewTapped="MySceneView_SceneViewTapped">
-            <esri3:Scene>
-                <esri3:Scene.OperationalLayers>
-                    <esri3:ArcGISTiledLayer Id="StreetMapLayer" Source="https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
-                </esri3:Scene.OperationalLayers>
-            </esri3:Scene>
+            <esriMapping:Scene>
+                <esriMapping:Scene.OperationalLayers>
+                    <esriMapping:ArcGISTiledLayer Id="StreetMapLayer" Source="https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
+                </esriMapping:Scene.OperationalLayers>
+            </esriMapping:Scene>
             <esri:SceneView.GraphicsOverlays>
-                <esri5:GraphicsOverlay Id="PointGraphicsOverlay" Renderer="{StaticResource MarkerRenderer}" />
-                <esri5:GraphicsOverlay Id="PolylineGraphicsOverlay" Renderer="{StaticResource PolylineRenderer}" />
-                <esri5:GraphicsOverlay Id="PolygonGraphicsOverlay" Renderer="{StaticResource PolygonRenderer}" />
+                <esriUI:GraphicsOverlay Id="PointGraphicsOverlay" Renderer="{StaticResource MarkerRenderer}" />
+                <esriUI:GraphicsOverlay Id="PolylineGraphicsOverlay" Renderer="{StaticResource PolylineRenderer}" />
+                <esriUI:GraphicsOverlay Id="PolygonGraphicsOverlay" Renderer="{StaticResource PolygonRenderer}" />
             </esri:SceneView.GraphicsOverlays>
         </esri:SceneView>
 
