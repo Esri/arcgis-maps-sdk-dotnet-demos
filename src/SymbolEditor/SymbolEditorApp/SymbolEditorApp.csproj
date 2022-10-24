@@ -32,8 +32,8 @@
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
-    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0-daily3660" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="200.0.0-daily3660" />
+    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0-beta" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="200.0.0-beta" />
     <PackageReference Include="UniversalWPF" Version="0.9.0" />
   </ItemGroup>
 

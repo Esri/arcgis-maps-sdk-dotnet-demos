@@ -52,7 +52,7 @@
   <PropertyGroup>
     <ProjectGuid>e000d6e7-54fd-4a0b-8b2b-e2c867efe159</ProjectGuid>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\SymbolEditorApp\SymbolEditorApp.csproj</EntryPointProjectUniqueName>
