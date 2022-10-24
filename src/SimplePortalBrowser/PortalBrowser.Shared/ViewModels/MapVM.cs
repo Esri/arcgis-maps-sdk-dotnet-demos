@@ -1,5 +1,5 @@
-﻿using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Portal;
+﻿using Esri.ArcGISRuntime.Portal;
+using Map = Esri.ArcGISRuntime.Mapping.Map;
 
 namespace PortalBrowser.ViewModels
 {
