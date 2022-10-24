@@ -17,8 +17,7 @@ namespace SymbolEditorApp
             InitializeComponent();
             ShowSidePanel(null);
         }
-
-        private void TableOfContents_TocItemContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.Preview.UI.Controls.TocItemContextMenuEventArgs e)
+        private void TableOfContents_TocItemContextMenuOpening(object sender, Esri.ArcGISRuntime.Toolkit.UI.Controls.TocItemContextMenuEventArgs e)
         {
             if(e.Item.Layer is Layer layer)
             {
@@ -67,7 +66,7 @@ namespace SymbolEditorApp
 
         private void OnTreeViewItemMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var item = (sender as FrameworkElement).DataContext as Esri.ArcGISRuntime.Toolkit.Preview.UI.TocItem;
+            var item = (sender as FrameworkElement).DataContext as Esri.ArcGISRuntime.Toolkit.UI.TocItem;
             if(item?.Content is LegendInfo legendInfo)
             {
                 Symbol symbolReference = null;
