@@ -127,7 +127,7 @@ namespace OfflineWorkflowSample.ViewModels
                 var cred = await AuthenticationManager.Current.GetCredentialAsync(cri, true);
 
                 // Create the portal with authentication info
-                return await ArcGISPortal.CreateAsync(cred.ServiceUri);
+                return await ArcGISPortal.CreateAsync(cred.ServiceUri, true);
             }
             catch (ArcGISWebException e)
             {
