@@ -33,7 +33,6 @@
             <MenuItem Header="Basemap">
                 <MenuItem IsCheckable="True" IsChecked="True" Header="Light-gray canvas" x:Name="basemapSelector_LightGray" Checked="BasemapSelector_Checked" />
                 <MenuItem IsCheckable="True" IsChecked="False" Header="Aerial Imagery" x:Name="basemapSelector_Imagery" Checked="BasemapSelector_Checked" />
-                <MenuItem IsCheckable="True" IsChecked="False" Header="Ocean basemap" x:Name="basemapSelector_Ocean" Checked="BasemapSelector_Checked" />
             </MenuItem>
         </Menu>
 
