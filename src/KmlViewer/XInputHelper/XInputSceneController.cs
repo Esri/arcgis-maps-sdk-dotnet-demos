@@ -1,4 +1,5 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.UI.Controls;
 using SharpDX.XInput;
 using System;
@@ -166,8 +167,10 @@ namespace XInputHelper
             if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight))
                 newCamera = newCamera.RotateTo(90, newCamera.Pitch, newCamera.Roll);
 
-            sceneView.SetViewpointCamera(newCamera);
-
+            if (!CamerasAreEqual(originalCamera, newCamera))
+            {
+                sceneView.SetViewpointCamera(newCamera);
+            }
         }
 
         private void _sceneView_Unloaded(object sender, RoutedEventArgs e)
@@ -202,5 +205,45 @@ namespace XInputHelper
             if (newCtrl != null)
                 newCtrl.SetSceneView(d as SceneView);
         }
+
+        private static bool CamerasAreEqual(Camera lhs, Camera rhs)
+        {
+            if (ReferenceEquals(lhs, rhs))
+            {
+                return true;
+            }
+
+            if (lhs == null && rhs == null)
+            {
+                return true;
+            }
+
+            if (lhs.Location == null && rhs.Location == null)
+            {
+                return true;
+            }
+
+            if (lhs.Location == null || rhs.Location == null)
+            {
+                return false;
+            }
+
+            if (lhs.Location is MapPoint ll && rhs.Location is MapPoint rl && doublesAreEqual(ll.X, rl.X) 
+                && doublesAreEqual(ll.Y, rl.Y) && doublesAreEqual(ll.Z, rl.Z) 
+                && doublesAreEqual(lhs.Pitch, rhs.Pitch) && doublesAreEqual(lhs.Heading, rhs.Heading)
+                && doublesAreEqual(lhs.Roll, rhs.Roll))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool doublesAreEqual(double lhs, double rhs)
+        {
+            const float eps = 1e-5f;
+            return Math.Abs(lhs - rhs) < eps;
+        }
+
     }
 }
