@@ -127,7 +127,7 @@ namespace OfflineWorkflowSample.ViewModels
                 var cred = await AuthenticationManager.Current.GetCredentialAsync(cri, true);
 
                 // Create the portal with authentication info
-                return await ArcGISPortal.CreateAsync(cred.ServiceUri, cred);
+                return await ArcGISPortal.CreateAsync(cred.ServiceUri, true);
             }
             catch (ArcGISWebException e)
             {
@@ -151,16 +151,11 @@ namespace OfflineWorkflowSample.ViewModels
         private void ConfigureOAuth()
         {
             // Register the server information with the AuthenticationManager.
-            ServerInfo serverInfo = new ServerInfo
+            ServerInfo serverInfo = new ServerInfo(new Uri(_portalUrl))
             {
-                ServerUri = new Uri(_portalUrl),
                 TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit,
 
-                OAuthClientInfo = new OAuthClientInfo
-                {
-                    ClientId = AppClientId,
-                    RedirectUri = new Uri(OAuthRedirectUrl)
-                }
+                OAuthClientInfo = new OAuthClientInfo(AppClientId, new Uri(OAuthRedirectUrl))
             };
 
             // If a client secret has been configured, set the authentication type to OAuthAuthorizationCode.
