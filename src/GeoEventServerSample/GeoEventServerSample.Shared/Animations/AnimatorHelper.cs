@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 #if NETFX_CORE
 using Windows.UI.Xaml.Media;
+#elif MauiWindows
+using Microsoft.UI.Xaml.Media;
+using Microsoft.Maui.ApplicationModel;
 #elif !__ANDROID__ && !__IOS__
 using System.Windows.Media;
 #endif
@@ -79,7 +82,7 @@ namespace GeoEventServerSample.Animations
             if (_displayLink == null)
             {
                 _displayLink = CoreAnimation.CADisplayLink.Create(() => OnFrameEvent(TimeSpan.FromSeconds(_displayLink.Timestamp)));
-                _displayLink.AddToRunLoop(Foundation.NSRunLoop.Main, Foundation.NSRunLoop.NSDefaultRunLoopMode);
+                _displayLink.AddToRunLoop(Foundation.NSRunLoop.Main, Foundation.NSRunLoopMode.Default);
             }
 #elif NETFX_CORE
             if (Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.HasThreadAccess)
@@ -88,6 +91,19 @@ namespace GeoEventServerSample.Animations
             {
                 var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompositionTarget.Rendering += CompositionTargetRendering);
             }
+#elif MauiWindows
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    CompositionTarget.Rendering += CompositionTargetRendering;
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+            });
+
 #else
             if (System.Windows.Application.Current.Dispatcher.CheckAccess())
                 CompositionTarget.Rendering += CompositionTargetRendering;
@@ -118,6 +134,18 @@ namespace GeoEventServerSample.Animations
             {
                 var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompositionTarget.Rendering -= CompositionTargetRendering);
             }
+#elif MauiWindows
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    CompositionTarget.Rendering -= CompositionTargetRendering;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+            });
 #else
             if (System.Windows.Application.Current.Dispatcher.CheckAccess())
                 CompositionTarget.Rendering -= CompositionTargetRendering;

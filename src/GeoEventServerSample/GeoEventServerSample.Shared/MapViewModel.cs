@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Map = Esri.ArcGISRuntime.Mapping.Map;
 
 namespace GeoEventServerSample
 {
@@ -33,7 +34,7 @@ namespace GeoEventServerSample
 
         public MapViewModel()
         {
-            Map = new Map(Basemap.CreateLightGrayCanvasVector())
+            Map = new Map(new Basemap(new Uri("https://www.arcgis.com/home/item.html?id=979c6cc89af9449cbeb5342a439c6a76")))
             {
                 InitialViewpoint = new Viewpoint(new Envelope(-13234206.5948101, 3983021, -13093018, 4075286, SpatialReferences.WebMercator))
             };
@@ -60,26 +61,16 @@ namespace GeoEventServerSample
 
         private void RunOnUIThread(Action action)
         {
-#if NETFX_CORE
+#if MauiWindows || __IOS__ || __Android__
+            MainThread.BeginInvokeOnMainThread(action);
+#elif NETFX_CORE
             if (Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.HasThreadAccess)
                 action();
             else
             {
                 var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => action());
             }
-#elif __ANDROID__
-            if (Android.OS.Looper.MainLooper.IsCurrentThread)
-                action();
-            else
-            {
-                using (var h = new Android.OS.Handler(Android.OS.Looper.MainLooper))
-                {
-                    h.Post(action);
-                }
-            }
-#elif __IOS__
-            action();
-#else 
+#elif WPF
             var dispatcher = System.Windows.Application.Current.Dispatcher;
             if (dispatcher == null || dispatcher.HasShutdownStarted || dispatcher.HasShutdownFinished)
                 return; // Occurs during shutdown
