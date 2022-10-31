@@ -90,18 +90,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="..\data\locators\san-diego\san-diego-locator.loc.xml">
-      <Link>Data\Locators\san-diego\san-diego-locator.loc.xml</Link>
-    </Content>
-    <Content Include="..\data\locators\san-diego\san-diego-locator.loc">
-      <Link>Data\Locators\san-diego\san-diego-locator.loc</Link>
-    </Content>
-    <Content Include="..\data\locators\san-diego\san-diego-locator.locb">
-      <Link>Data\Locators\san-diego\san-diego-locator.locb</Link>
-    </Content>
-    <Content Include="..\data\locators\san-diego\san-diego-locator.lox">
-      <Link>Data\Locators\san-diego\san-diego-locator.lox</Link>
-    </Content>
     <Content Include="..\data\networks\sandiego\san-diego-network.db">
       <Link>Data\Networks\SanDiego\san-diego-network.db</Link>
     </Content>
@@ -123,6 +111,14 @@
     <Content Include="..\data\networks\sandiego\san-diego-network.tn\Streets_ND_weight_values">
       <Link>Data\Networks\SanDiego\san-diego-network.tn\Streets_ND_weight_values</Link>
     </Content>
+    <None Include="..\Data\Locators\san-diego\SanDiego_StreetAddress.loc">
+      <Link>Data\Locators\san-diego\SanDiego_StreetAddress.loc</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Data\Locators\san-diego\SanDiego_StreetAddress.loz">
+      <Link>Data\Locators\san-diego\SanDiego_StreetAddress.loz</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
