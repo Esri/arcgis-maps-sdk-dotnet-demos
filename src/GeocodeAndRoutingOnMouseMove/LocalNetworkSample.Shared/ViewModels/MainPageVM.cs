@@ -348,7 +348,7 @@ namespace LocalNetworkSample
                 if (m_Map == null)
                 {
                     var extent = new Envelope(-13044883, 3853913, -13039791, 3857887, SpatialReferences.WebMercator);
-                    m_Map = new Map(Basemap.CreateImagery()) { InitialViewpoint = new Viewpoint(extent) };
+                    m_Map = new Map(new Basemap(new Uri("https://www.arcgis.com/home/item.html?id=979c6cc89af9449cbeb5342a439c6a76"))) { InitialViewpoint = new Viewpoint(extent) };
                 }
                 return m_Map;
             }
