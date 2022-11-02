@@ -14,9 +14,7 @@ namespace RoutingSample.MAUI
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 })
-#warning Supply an API key in MauiProgram.cs, then delete this line
-                // Create an API key at https://developers.arcgis.com/api-keys/, configure it with routing and geocoding services, then use it to replace YOUR_API_KEY below.
-                .UseArcGISRuntime(apiKey: "YOUR_API_KEY");
+                .UseArcGISRuntime();
 
             return builder.Build();
         }

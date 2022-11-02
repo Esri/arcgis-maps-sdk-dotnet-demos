@@ -18,25 +18,11 @@ namespace RoutingSample
         {
             InitializeComponent();
 
-#warning Supply an API key in MainPage.xaml.cs, then delete this line
-            // Create an API key at https://developers.arcgis.com/api-keys/, configure it with routing and geocoding services, then use it to replace YOUR_API_KEY below.
-            Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "YOUR_API_KEY";
-
             _mainViewModel = new MainViewModel();
             _mainViewModel.LocationDisplay = MapView.LocationDisplay;
             _mainViewModel.LocationDisplay.NavigationPointHeightFactor = 0.5;
 
             DataContext = _mainViewModel;
-            _ = CheckKey();
-        }
-
-        private async Task CheckKey()
-        {
-            if (Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey == "YOUR_API_KEY")
-            {
-                await new MessageDialog("See MainPage.xaml.cs for info about setting API key", "Error - No API Key provided").ShowAsync();
-                System.Environment.Exit(0);
-            }
         }
     }
 }

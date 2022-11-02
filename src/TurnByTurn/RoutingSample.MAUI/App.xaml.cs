@@ -6,7 +6,9 @@
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            var rootNav = new NavigationPage(new LoginPage());
+
+            MainPage = rootNav;
         }
     }
 }

@@ -16,15 +16,6 @@ namespace RoutingSample.MAUI
             BindingContext = _mainViewModel;
         }
 
-        private async Task CheckKey()
-        {
-            if (Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey == "YOUR_API_KEY")
-            {
-                await DisplayAlert("Error - No API Key provided", "See MauiProgram.cs for info about setting API key", "OK");
-                System.Environment.Exit(0);
-            }
-        }
-
         protected override async void OnAppearing()
         {
             try
@@ -44,7 +35,6 @@ namespace RoutingSample.MAUI
             _mainViewModel.LocationDisplay.NavigationPointHeightFactor = 0.5;
 
             base.OnAppearing();
-            _ = CheckKey();
         }
 
         private async void ButtonSimulation_Clicked(object sender, EventArgs e)
