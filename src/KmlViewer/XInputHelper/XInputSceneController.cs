@@ -213,9 +213,9 @@ namespace XInputHelper
                 return true;
             }
 
-            if (lhs == null && rhs == null)
+            if (lhs == null || rhs == null)
             {
-                return true;
+                return false;
             }
 
             if (lhs.Location == null && rhs.Location == null)
