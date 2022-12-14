@@ -15,6 +15,17 @@ namespace OfflineWorkflowSample.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
+        #region OAuth constants
+
+        // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
+#warning These settings must be updated first before building and running. Delete this line when done:
+        private const string AppClientId = "YOUR_APP_CLIENT_ID_HERE";
+        private const string ClientSecret = "GET IT FROM https://developers.arcgis.com/applications/";
+        private const string OAuthRedirectUrl = @"DON'T FORGET A REDIRECT URL";
+        private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
+
+        #endregion OAuth constants
+
         // Commands enable binding controls to behavior. https://visualstudiomagazine.com/articles/2012/04/10/command-pattern-in-net.aspx
         private readonly DelegateCommand _logInToEnterpriseCommand;
         private readonly DelegateCommand _logInToPortalCommand;
@@ -105,7 +116,7 @@ namespace OfflineWorkflowSample.ViewModels
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                await WindowService.ShowAlertAsync("Couldn't log in to the portal.", "Log in failed");
+                await WindowService.ShowAlertAsync("Couldn't log in to the portal: " + e.Message, "Log in failed");
             }
             finally
             {
@@ -150,6 +161,8 @@ namespace OfflineWorkflowSample.ViewModels
 
         private void ConfigureOAuth()
         {
+            if (AppClientId == "YOUR_APP_CLIENT_ID_HERE")
+                throw new InvalidOperationException("Please configure your OAuth settings in LoginViewModel.cs");
             // Register the server information with the AuthenticationManager.
             ServerInfo serverInfo = new ServerInfo(new Uri(_portalUrl))
             {
@@ -204,15 +217,5 @@ namespace OfflineWorkflowSample.ViewModels
             CompletedLogin?.Invoke(this);
         }
         #endregion log in event
-
-        #region OAuth constants
-
-        // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
-        private const string AppClientId = "YOUR_APP_CLIENT_ID_HERE";
-        private const string ClientSecret = "GET IT FROM https://developers.arcgis.com/applications/";
-        private const string OAuthRedirectUrl = @"DON'T FORGET A REDIRECT URL";
-        private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
-
-        #endregion OAuth constants
     }
 }
