@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HydrographicsSample"
         xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
         mc:Ignorable="d"
-        Title="ArcGIS Runtime - ENC Demo App" Height="800" Width="1200">
+        Title="ArcGIS Maps SDK - ENC Demo App" Height="800" Width="1200">
     <Grid>
 
         <Grid.ColumnDefinitions>
