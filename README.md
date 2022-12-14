@@ -1,8 +1,7 @@
-ArcGIS Runtime Demos for .NET
-===========================
+# ArcGIS Maps SDK for .NET Demos
 
-This project contains source code for simple native Windows Desktop, Windows Universal, Xamarin.Android and Xamarin.iOS applications that demonstrate common workflows for utilizing and displaying spatial information with the ArcGIS Maps SDK for .NET.
-You can also find a set of smaller feature-focused samples in the [Runtime Samples](https://github.com/Esri/arcgis-runtime-samples-dotnet) repo.
+This project contains source code for simple native .NET applications that demonstrate common workflows for utilizing and displaying spatial information.
+You can also find a set of smaller feature-focused samples in the [ArcGIS Maps SDK for .NET Samples](https://github.com/Esri/arcgis-runtime-samples-dotnet) repo.
 
 ### Demos
 
@@ -33,8 +32,9 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 
 Anyone and everyone is welcome to [contribute](CONTRIBUTING.md).
 
-## Licensing
-Copyright 2014 Esri
+## License
+
+Copyright 2022 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
