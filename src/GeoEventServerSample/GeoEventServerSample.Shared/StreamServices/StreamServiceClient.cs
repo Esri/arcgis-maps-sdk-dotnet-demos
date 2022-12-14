@@ -151,7 +151,7 @@ namespace GeoEventServerSample.StreamServices
 
         private async Task LoadInfoAsync()
         {
-            HttpClient client = new HttpClient(new Esri.ArcGISRuntime.Http.ArcGISHttpClientHandler(), true);
+            HttpClient client = new HttpClient(new Esri.ArcGISRuntime.Http.ArcGISHttpMessageHandler(), true);
             try
             {
                 using (var serviceJson = await client.GetStreamAsync(new Uri(_serviceUri + "?f=json")))
@@ -159,7 +159,7 @@ namespace GeoEventServerSample.StreamServices
                     ServiceInfo = StreamServerInfo.FromJson(serviceJson);
                 }
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 throw;
             }
@@ -187,11 +187,7 @@ namespace GeoEventServerSample.StreamServices
                     FeatureMessage p;
                     try
                     {
-#if __IOS__ || __ANDROID__
-                        p = FeatureMessage.FromJson(Encoding.UTF8.GetString(buff, 0, result.Count));
-#else
                         p = FeatureMessage.FromJson(ms);
-#endif
                     }
                     catch (System.Exception)
                     {
