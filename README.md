@@ -6,7 +6,7 @@ You can also find a set of smaller feature-focused samples in the [ArcGIS Maps S
 ### Demos
 
 * [`Symbol Editor`](src/SymbolEditor) - A WPF .NET Core app (and MSIX installer project) that shows using mobile styles, and creating/editing vector symbol layers. 
-* [`Turn-by-Turn Routing`](src/TurnByTurn) - A universal turn-by-turn app that shows routing and navigation on Windows Desktop, Windows Store and Xamarin.Forms.
+* [`Turn-by-Turn Routing`](src/TurnByTurn) - A turn-by-turn app that shows routing and navigation on WPF, UWP, and MAUI.
 * [`Simple Portal Browser`](src/SimplePortalBrowser) - A universal ArcGIS Portal Map Browser app on Windows Phone, Windows Store and Windows Desktop.
 * [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
 * [`Esri Campus Routing`](src/CampusRouting) - A cross-platform (Xamarin) sample demonstrating indoor geocoding and routing for a campus running on Windows Universal, Android and iOS.

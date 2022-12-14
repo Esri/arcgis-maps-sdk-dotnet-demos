@@ -8,7 +8,7 @@ namespace RoutingSample.Models
     {
         private string _text;
         private DirectionManeuverType _type;
-#if XAMARIN
+#if MAUI
         private string _imageSource;
 #else
         private Uri _imageUri;
@@ -41,19 +41,19 @@ namespace RoutingSample.Models
                     //  WPF - Resource
                     //  UWP - Content
 
-#if XAMARIN
-                    ImageSource = $"{_type}.png";
+#if MAUI
+                    ImageSource = $"{_type.ToString().ToLowerInvariant()}.png";
 #elif NETFX_CORE
-                    ImageUri = new Uri($"ms-appx:///Assets/Maneuvers/{_type}.png");
+                    ImageUri = new Uri($"ms-appx:///Assets/Maneuvers/{_type.ToString().ToLowerInvariant()}.png");
 #else
-                    ImageUri = new Uri($"pack://application:,,,/Assets/Maneuvers/{_type}.png");
+                    ImageUri = new Uri($"pack://application:,,,/Assets/Maneuvers/{_type.ToString().ToLowerInvariant()}.png");
 #endif
                 }
             }
         }
 
 
-#if XAMARIN
+#if MAUI
         /// <summary>
         /// Gets the image source.
         /// </summary>
