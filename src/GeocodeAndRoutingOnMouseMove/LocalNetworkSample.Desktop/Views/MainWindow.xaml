@@ -59,7 +59,7 @@
             <TabItem Header="About">
                 <TextBlock TextWrapping="Wrap" Margin="10">
                     <TextBlock.Inlines>
-                        <Bold>ArcGIS Runtime Routing and Geocoder sample</Bold>
+                        <Bold>ArcGIS Maps SDK for .NET Routing and Geocoder sample</Bold>
                         <LineBreak />
                         <LineBreak />
                         <Run>Select the first two tabs to perform geocoding and routing to the mouse location within the area of San Diego.</Run>
