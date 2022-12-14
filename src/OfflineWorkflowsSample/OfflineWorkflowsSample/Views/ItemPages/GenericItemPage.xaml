@@ -62,7 +62,7 @@
             <WebView x:Name="TermsWebView"
                      Grid.Row="3" />
         </Grid>
-        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3">
+        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Padding="4">
             <Button Content="Open in ArcGIS Online"
                     HorizontalAlignment="Stretch"
                     Command="{x:Bind ViewModel.OpenItemInAgolCommand}" />

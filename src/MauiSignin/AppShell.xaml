@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MauiSignin.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiSignin"
+    Shell.FlyoutBehavior="Disabled">
+
+    <Shell.FlyoutContent>
+        <StackLayout HorizontalOptions="Fill" Padding="20">
+            <Frame CornerRadius="25" Padding="0" WidthRequest="50" HeightRequest="50">
+               <Image Source="{Binding PortalUserThumbnail}" />
+            </Frame>
+            <Label Text="{Binding PortalUser.FullName}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="Subtitle" />
+            <Label Text="{Binding Portal.PortalInfo.PortalName}"  HorizontalOptions="Center" FontSize="Caption" />
+            <Button Text="Sign Out" Clicked="SignOutButton_Clicked" />
+        </StackLayout>
+    </Shell.FlyoutContent>
+    <!--<ShellContent ContentTemplate="{DataTemplate local:StartupPage}" Route="StartupPage" />-->
+    <ShellContent
+        Title="ArcGIS Runtime Demo" 
+        ContentTemplate="{DataTemplate local:PortalPage}"
+        Route="PortalPage" />
+</Shell>

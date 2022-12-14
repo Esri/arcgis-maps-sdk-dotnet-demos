@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-#if XAMARIN
-using Xamarin.Essentials;
+#if MAUI
 #elif NETFX_CORE
 using System.Linq;
 using Windows.Media.Core;
@@ -17,7 +16,7 @@ namespace RoutingSample
 {
     public static class Speech
     {
-#if XAMARIN
+#if MAUI
         private static SpeechOptions _speechOptions;
 #else
         private static readonly SpeechSynthesizer _speechSynthesizer;
@@ -26,7 +25,7 @@ namespace RoutingSample
         static Speech()
         {
             // Create the synthesizer with a female voice
-#if XAMARIN
+#if MAUI
             _speechOptions = new SpeechOptions
             {
                 Volume = 0.95f,
@@ -52,7 +51,7 @@ namespace RoutingSample
             if (string.IsNullOrEmpty(text))
                 return;
 
-#if XAMARIN
+#if MAUI
             await TextToSpeech.SpeakAsync(text, _speechOptions);
 #elif NETFX_CORE
             // Doesn't seem to work all the time.

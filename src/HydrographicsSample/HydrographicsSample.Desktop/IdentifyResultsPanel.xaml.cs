@@ -122,9 +122,9 @@ namespace HydrographicsSample
                     go.Graphics.Clear();
                     Graphic g = new Graphic(item.Element.Geometry, item.Element.Attributes) { IsSelected = true };
                     if (g.Geometry is MapPoint || g.Geometry is Multipoint)
-                        g.Symbol = new SimpleMarkerSymbol() { Outline = new SimpleLineSymbol() { Color = Colors.Cyan, Width = 2 },  Color = Color.FromArgb(1, 0, 0, 0), Size = 20 };
+                        g.Symbol = new SimpleMarkerSymbol() { Outline = new SimpleLineSymbol() { Color = System.Drawing.Color.Cyan, Width = 2 },  Color = System.Drawing.Color.FromArgb(1, 0, 0, 0), Size = 20 };
                     else if (g.Geometry is Polyline || g.Geometry is Polygon || g.Geometry is Envelope)
-                        g.Symbol = new SimpleLineSymbol() { Color = Color.FromArgb(1, 255, 255, 0), Width = 1 };
+                        g.Symbol = new SimpleLineSymbol() { Color = System.Drawing.Color.FromArgb(1, 255, 255, 0), Width = 1 };
                     else
                     {
 

@@ -16,9 +16,12 @@
 
 using System;
 using System.Collections.Generic;
-#if NETFX_CORE
+#if WINDOWS_UWP
 using Windows.UI.Xaml.Media;
-#elif !__ANDROID__ && !__IOS__
+#elif MAUI && WINDOWS
+using Microsoft.UI.Xaml.Media;
+using Microsoft.Maui.ApplicationModel;
+#elif WPF
 using System.Windows.Media;
 #endif
 
@@ -79,16 +82,29 @@ namespace GeoEventServerSample.Animations
             if (_displayLink == null)
             {
                 _displayLink = CoreAnimation.CADisplayLink.Create(() => OnFrameEvent(TimeSpan.FromSeconds(_displayLink.Timestamp)));
-                _displayLink.AddToRunLoop(Foundation.NSRunLoop.Main, Foundation.NSRunLoop.NSDefaultRunLoopMode);
+                _displayLink.AddToRunLoop(Foundation.NSRunLoop.Main, Foundation.NSRunLoopMode.Default);
             }
-#elif NETFX_CORE
+#elif WINDOWS_UWP
             if (Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.HasThreadAccess)
                 CompositionTarget.Rendering += CompositionTargetRendering;
             else
             {
                 var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompositionTarget.Rendering += CompositionTargetRendering);
             }
-#else
+#elif MAUI && WINDOWS
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    CompositionTarget.Rendering += CompositionTargetRendering;
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+            });
+
+#elif WPF
             if (System.Windows.Application.Current.Dispatcher.CheckAccess())
                 CompositionTarget.Rendering += CompositionTargetRendering;
             else
@@ -111,14 +127,26 @@ namespace GeoEventServerSample.Animations
 #elif __IOS__
             _displayLink?.Invalidate();
             _displayLink = null;
-#elif NETFX_CORE
+#elif WINDOWS_UWP
             if (Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.HasThreadAccess)
                 CompositionTarget.Rendering -= CompositionTargetRendering;
             else
             {
                 var _ = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompositionTarget.Rendering -= CompositionTargetRendering);
             }
-#else
+#elif MAUI && WINDOWS
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    CompositionTarget.Rendering -= CompositionTargetRendering;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+            });
+#elif WPF
             if (System.Windows.Application.Current.Dispatcher.CheckAccess())
                 CompositionTarget.Rendering -= CompositionTargetRendering;
             else
@@ -126,7 +154,7 @@ namespace GeoEventServerSample.Animations
 #endif
         }
 
-#if !__ANDROID__ && !__IOS__
+#if WINDOWS_UWP || WPF || MAUI && WINDOWS
         private static void CompositionTargetRendering(object sender, object e)
         {
             OnFrameEvent(((RenderingEventArgs)e).RenderingTime);

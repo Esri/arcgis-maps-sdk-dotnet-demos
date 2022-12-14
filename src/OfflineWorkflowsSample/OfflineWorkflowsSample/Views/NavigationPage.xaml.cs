@@ -103,6 +103,9 @@ namespace OfflineWorkflowSample.Views
                     case "Search":
                         nextPageType = typeof(SearchPage);
                         break;
+                    case "User":
+                        nextPageType = typeof(SettingsPage);
+                        break;
                 }
             }
 

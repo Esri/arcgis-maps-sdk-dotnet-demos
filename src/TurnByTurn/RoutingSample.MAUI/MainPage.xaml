@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="RoutingSample.MAUI.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:RoutingSample.Converters"
+    xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+    xmlns:local="clr-namespace:RoutingSample">
+    <ContentPage.Resources>
+        <converters:TimeFormatter x:Key="TimeFormatter" />
+        <converters:DistanceFormatter x:Key="DistanceFormatter" />
+        <converters:EnumFormatter x:Key="EnumFormatter" />
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" BackgroundColor="Black">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Grid.Column="0"
+                HeightRequest="48"
+                HorizontalOptions="Center"
+                Source="{Binding Maneuver.ImageSource}"
+                VerticalOptions="Center"
+                WidthRequest="48" />
+            <StackLayout
+                Grid.Column="2"
+                BindingContext="{Binding Maneuver}"
+                VerticalOptions="End">
+                <Label
+                    FontAttributes="Bold"
+                    Text="{Binding Text}"
+                    TextColor="White" />
+                <StackLayout Orientation="Horizontal" Spacing="4">
+                    <Label Text="{Binding RemainingTime, Converter={StaticResource TimeFormatter}}" TextColor="White" />
+                    <Label Text="•" TextColor="White" />
+                    <Label Text="{Binding RemainingDistance, Converter={StaticResource DistanceFormatter}}" TextColor="White" />
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+
+        <esri:MapView
+            x:Name="mapView"
+            Grid.Row="1"
+            GraphicsOverlays="{Binding RouteGraphicsOverlays}"
+            Map="{Binding Map}">
+            <local:RestoreAutoPanMode.RestoreAutoPanSettings>
+                <local:RestoreAutoPanMode
+                    DelayInSeconds="5"
+                    IsEnabled="True"
+                    PanMode="Navigation" />
+            </local:RestoreAutoPanMode.RestoreAutoPanSettings>
+        </esri:MapView>
+
+        <Button
+            x:Name="buttonSimulation"
+            Grid.Row="1"
+            Margin="0,0,0,22"
+            Clicked="ButtonSimulation_Clicked"
+            HeightRequest="40"
+            HorizontalOptions="End"
+            Text="Navigation"
+            VerticalOptions="End"
+            WidthRequest="120" />
+    </Grid>
+
+</ContentPage>

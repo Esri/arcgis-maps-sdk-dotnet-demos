@@ -3,9 +3,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-#if XAMARIN
-using Esri.ArcGISRuntime.Xamarin.Forms;
-using Xamarin.Forms;
+#if MAUI
+using Esri.ArcGISRuntime.Maui;
 #elif NETFX_CORE
 using Esri.ArcGISRuntime.UI.Controls;
 using Windows.UI.Xaml;
@@ -97,7 +96,7 @@ namespace RoutingSample
         /// </summary>
         public LocationDisplayAutoPanMode PanMode { get; set; }
 
-#if XAMARIN
+#if MAUI
         public static BindableProperty RestoreAutoPanSettingsProperty =
             BindableProperty.CreateAttached(
                 "RestoreAutoPanSettings",
@@ -116,7 +115,7 @@ namespace RoutingSample
             );
 #endif
 
-#if XAMARIN
+#if MAUI
         public static RestoreAutoPanMode GetRestoreAutoPanSettings(BindableObject obj)
 #else
         public static RestoreAutoPanMode GetRestoreAutoPanSettings(DependencyObject obj)
@@ -125,7 +124,7 @@ namespace RoutingSample
             return (RestoreAutoPanMode)obj.GetValue(RestoreAutoPanSettingsProperty);
         }
 
-#if XAMARIN
+#if MAUI
         public static void SetRestoreAutoPanSettings(BindableObject obj, RestoreAutoPanMode value)
 #else
         public static void SetRestoreAutoPanSettings(DependencyObject obj, RestoreAutoPanMode value)
@@ -134,7 +133,7 @@ namespace RoutingSample
             obj.SetValue(RestoreAutoPanSettingsProperty, value);
         }
 
-#if XAMARIN
+#if MAUI
         private static void OnRestoreAutoPanSettingsChanged(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is MapView mv)

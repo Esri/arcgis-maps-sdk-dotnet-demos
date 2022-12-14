@@ -113,7 +113,8 @@ namespace OfflineWorkflowsSample.DownloadMapArea
 
                 // Step 2 Create job that handles the download and provides status information 
                 // about the progress
-                var job = task.DownloadPreplannedOfflineMap(SelectedMapArea.MapArea, offlineDataFolder);
+                var parameters = await task.CreateDefaultDownloadPreplannedOfflineMapParametersAsync(SelectedMapArea.MapArea);
+                var job = task.DownloadPreplannedOfflineMap(parameters, offlineDataFolder);
                 job.ProgressChanged += async (s, e) =>
                 {
                     await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>

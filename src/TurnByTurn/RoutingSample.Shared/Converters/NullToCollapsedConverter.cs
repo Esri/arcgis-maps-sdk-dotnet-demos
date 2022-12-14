@@ -1,5 +1,4 @@
-﻿#if !XAMARIN
-using System;
+﻿using System;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -22,4 +21,3 @@ namespace RoutingSample.Converters
 		}
 	}
 }
-#endif

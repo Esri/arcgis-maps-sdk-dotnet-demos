@@ -22,13 +22,6 @@ namespace OfflineWorkflowSample
 
         private readonly List<Basemap> _defaultBasemaps = new List<Basemap>
         {
-            Basemap.CreateImagery(),
-            Basemap.CreateImageryWithLabels(),
-            Basemap.CreateLightGrayCanvas(),
-            Basemap.CreateNationalGeographic(),
-            Basemap.CreateOceans(),
-            Basemap.CreateOpenStreetMap(),
-            Basemap.CreateStreets()
         };
 
         private readonly List<Basemap> _orgBasemaps = new List<Basemap>();

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GeoEventServerSample.Maui.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013">
+
+    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*">
+
+        <esri:MapView
+            x:Name="mapView"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            GeoViewTapped="mapView_GeoViewTapped"
+            GraphicsOverlays="{Binding Overlays}"
+            Map="{Binding Map}" />
+
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="20"
+            Padding="4"
+            Background="#D0CFD3">
+            <StackLayout Orientation="Vertical">
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Vehicle count: "
+                        TextColor="#007AC2" />
+                    <Label
+                        Margin="5,0,0,0"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="{Binding VehicleCount, Mode=OneWay}"
+                        TextColor="#007AC2" />
+                </StackLayout>
+                <ListView x:Name="attributeView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Detail="{Binding Key}" Text="{Binding Value}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>
