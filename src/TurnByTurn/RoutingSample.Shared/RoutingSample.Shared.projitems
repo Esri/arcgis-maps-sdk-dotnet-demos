@@ -9,23 +9,6 @@
     <Import_RootNamespace>RoutingSample</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\BearLeft.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\BearRight.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\ForkLeft.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\ForkRight.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\HighwayMerge.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\RampLeft.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\RampRight.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\Roundabout.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\Stop.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\Straight.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\SharpLeft.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\TurnLeft.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\SharpRight.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\TurnRight.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Maneuvers\UTurn.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\DistanceFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EnumFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DelegateCommand.cs" />
@@ -43,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Assets\" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\" />
   </ItemGroup>
 </Project>

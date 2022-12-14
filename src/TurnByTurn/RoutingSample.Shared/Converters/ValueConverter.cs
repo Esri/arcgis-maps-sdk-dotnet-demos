@@ -1,7 +1,6 @@
 ﻿using System;
-#if XAMARIN
+#if MAUI
 using System.Globalization;
-using Xamarin.Forms;
 #elif NETFX_CORE
 using Windows.UI.Xaml.Data;
 #else

@@ -12,8 +12,8 @@
         {
             get
             {
-#if XAMARIN
-                return Xamarin.Forms.DesignMode.IsDesignModeEnabled;
+#if MAUI
+                return false;
 #elif NETFX_CORE
                 return Windows.ApplicationModel.DesignMode.DesignModeEnabled;
 #else

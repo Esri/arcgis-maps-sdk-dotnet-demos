@@ -1,182 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B2F60E3E-4038-455C-805C-3D7F8B80CE5C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RoutingSample</RootNamespace>
-    <AssemblyName>RoutingSample</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <UseWPF>true</UseWPF>
+    <nullable>enable</nullable>
+    <RootNamespace>ExternalNmeaGPS</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>RoutingSample.Desktop.App</StartupObject>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Speech" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="LoginWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LoginWindow.xaml.cs">
-      <DependentUpon>LoginWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\BearLeft.png">
-      <Link>Assets\Maneuvers\BearLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\BearRight.png">
-      <Link>Assets\Maneuvers\BearRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\ForkLeft.png">
-      <Link>Assets\Maneuvers\ForkLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\ForkRight.png">
-      <Link>Assets\Maneuvers\ForkRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\HighwayMerge.png">
-      <Link>Assets\Maneuvers\HighwayMerge.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\RampLeft.png">
-      <Link>Assets\Maneuvers\RampLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\RampRight.png">
-      <Link>Assets\Maneuvers\RampRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\Stop.png">
-      <Link>Assets\Maneuvers\Stop.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\Straight.png">
-      <Link>Assets\Maneuvers\Straight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\SharpLeft.png">
-      <Link>Assets\Maneuvers\SharpLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\SharpRight.png">
-      <Link>Assets\Maneuvers\SharpRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\TurnLeft.png">
-      <Link>Assets\Maneuvers\TurnLeft.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\TurnRight.png">
-      <Link>Assets\Maneuvers\TurnRight.png</Link>
-    </Resource>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\UTurn.png">
-      <Link>Assets\Maneuvers\UTurn.png</Link>
-    </Resource>
-  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.WPF">
-      <Version>100.8.0</Version>
+      <Version>200.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Speech">
+      <Version>6.0.0</Version>
     </PackageReference>
   </ItemGroup>
+
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\*.png" Link="Assets\Maneuvers\%(RecursiveDir) %(Filename)%(Extension)" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\Roundabout.png">
-      <Link>Assets\Maneuvers\Roundabout.png</Link>
-    </Resource>
-  </ItemGroup>
-  <Import Project="..\RoutingSample.Shared\RoutingSample.Shared.projitems" Label="Shared" Condition="Exists('..\RoutingSample.Shared\RoutingSample.Shared.projitems')" />
-  <Import Project="..\RoutingSample.Shared\RoutingSample.Shared.projitems" Label="Shared" Condition="Exists('..\RoutingSample.Shared\RoutingSample.Shared.projitems')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <Import Project="..\RoutingSample.Shared\RoutingSample.Shared.projitems" Label="Shared" />
+
 </Project>

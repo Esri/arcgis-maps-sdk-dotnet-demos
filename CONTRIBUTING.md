@@ -1,14 +1,14 @@
 Esri welcomes contributions from anyone and everyone. Please see our
 [guidelines for contributing](https://github.com/esri/contributing).
 
-# Contributing to demos for the ArcGIS Runtime SDK for .NET
+# Contributing to demos for the ArcGIS Maps SDK for .NET
 
 This guide describes how you can contribute improvements to source code.
 
 1. Make sure you have a [GitHub account](https://github.com/signup/free).
 2. To add an enhancement or fix a problem, create an issue.    
     * Be descriptive.  Clearly describe the issue including steps to reproduce and, if possible, a sample.  If an enhancement, clearly describe the additional functionality and provide a good use case to support it.     
-3. [Fork](https://help.github.com/articles/fork-a-repo) the [ArcGIS Runtime SDK for .NET Demos repo](https://github.com/Esri/arcgis-runtime-demos-dotnet/) on GitHub.
+3. [Fork](https://help.github.com/articles/fork-a-repo) the [ArcGIS Maps SDK for .NET Demos repo](https://github.com/Esri/arcgis-runtime-demos-dotnet/) on GitHub.
 4. Clone it to your local machine.
 5. Checkout the [main branch](https://github.com/Esri/arcgis-runtime-demos-dotnet/tree/main).
 6. Create a new feature branch on your local machine.  The name of the branch is not important.     

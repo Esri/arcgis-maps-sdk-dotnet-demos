@@ -88,12 +88,19 @@ namespace OfflineWorkflowSample.ViewModels
 
         public void Reset()
         {
-            Map.Basemap = null;
-            Map.OperationalLayers.Clear();
-            Map = null;
-            OnlineMap.Basemap = null;
-            OnlineMap.OperationalLayers.Clear();
-            OnlineMap = null;
+            if (Map != null)
+            {
+                Map.Basemap = null;
+                Map.OperationalLayers.Clear();
+                Map = null;
+
+            }
+            if (OnlineMap != null)
+            {
+                OnlineMap.Basemap = null;
+                OnlineMap.OperationalLayers.Clear();
+                OnlineMap = null;
+            }
         }
 
         private async Task LoadOnlineMapItemForOfflineMap(LocalItem localItem)
