@@ -7,6 +7,5 @@ public partial class App : Application
         InitializeComponent();
 
         MainPage = new StartupPage();
-        //MainPage = new AppShell();
     }
 }

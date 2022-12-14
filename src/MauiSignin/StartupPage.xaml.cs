@@ -19,19 +19,14 @@ public partial class StartupPage : ContentPage
             // Application isn't configured. Please update the oauth settings by using the ArcGIS Developer Portal at
             // https://developers.arcgis.com/applications
             System.Diagnostics.Debugger.Break();
-            throw new InvalidOperationException("Please configure your client id and redirect url in 'ApplicationConfiguration.xaml' to run this sample");
+            throw new InvalidOperationException("Please configure your client id and redirect url in 'AppSettings.cs' to run this sample");
         }
 
         progress.Progress += .2;
-        status.Text = "Initializing ArcGIS Runtime...";
+        status.Text = "Initializing ArcGIS Maps SDK...";
 
-        Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.Initialize();
-
-#if WINDOWS
-        AuthenticationManager.Current.Persistence = await WinUI.AppDataCredentialPersistence.CreateAsync();
-#else
         AuthenticationManager.Current.Persistence = await CredentialPersistence.CreateDefaultAsync();
-#endif
+
         //Register server info for portal
         ServerInfo portalServerInfo = new ServerInfo(AppSettings.PortalUri)
         {
@@ -106,7 +101,6 @@ public partial class StartupPage : ContentPage
 
         progress.Progress += .2;
 
-        App.Current.MainPage = new AppShell();
-        //await Shell.Current.GoToAsync("//PortalPage");
+        App.Current!.MainPage = new AppShell();
     }
 }
