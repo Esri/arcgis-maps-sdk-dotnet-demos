@@ -43,8 +43,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0-beta" />
-    <PackageReference Include="Esri.ArcGISRuntime.Hydrography" Version="200.0.0-beta" />
+    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0" />
+    <PackageReference Include="Esri.ArcGISRuntime.Hydrography" Version="200.0.0" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />

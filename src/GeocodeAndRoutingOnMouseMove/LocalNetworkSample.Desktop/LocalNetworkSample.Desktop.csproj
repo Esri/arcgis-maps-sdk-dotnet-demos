@@ -104,7 +104,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0-beta" />
+	  <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0" />
   </ItemGroup>
   <Import Project="..\LocalNetworkSample.Shared\LocalNetworkSample.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
