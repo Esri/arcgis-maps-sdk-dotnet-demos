@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:LocalNetworkSample"
         xmlns:localCtrls="clr-namespace:LocalNetworkSample.Controls"
         xmlns:common="clr-namespace:LocalNetworkSample.Common"
-        Title="ArcGIS Runtime SDK for .NET - Network Sample" Height="400" Width="800">
+        Title="ArcGIS Maps SDK for .NET - Network Sample" Height="400" Width="800">
     <Window.Resources>
         <common:BooleanToVisibilityConverter x:Key="boolToViz" />
         <local:MainPageVM x:Key="vm"/>

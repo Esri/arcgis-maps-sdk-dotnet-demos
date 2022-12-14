@@ -247,8 +247,8 @@ namespace LocalNetworkSample
             try
             {
                 BusyMessage = "Loading network...";
-#if NETFX_CORE
                 string path = "Data\\Networks";
+#if NETFX_CORE
                 var foldername = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + "\\" + path;
                 var datafolder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(foldername);
                 var folders = await datafolder.GetFoldersAsync();
@@ -262,7 +262,6 @@ namespace LocalNetworkSample
                     }
                 }
 #else
-                string path = "..\\..\\..\\Data\\Networks";
                 foreach (var folder in new System.IO.DirectoryInfo(path).GetDirectories())
                 {
                     var file = folder.GetFiles("*.db").FirstOrDefault();
@@ -293,9 +292,9 @@ namespace LocalNetworkSample
             }
             try
             {
-#if NETFX_CORE
                 BusyMessage = "Loading geocoder...";
                 string path = "Data\\Locators";
+#if NETFX_CORE
                 var foldername = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + "\\" + path;
                 var datafolder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(foldername);
                 var folders = await datafolder.GetFoldersAsync();
@@ -309,7 +308,6 @@ namespace LocalNetworkSample
                     }
                 }
 #else
-                string path = "..\\..\\..\\Data\\Locators";
                 foreach (var folder in new System.IO.DirectoryInfo(path).GetDirectories())
                 {
                     var file = folder.GetFiles("*.loc").FirstOrDefault();
