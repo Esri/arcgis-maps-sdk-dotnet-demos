@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutingSample.Desktop", "RoutingSample.Desktop\RoutingSample.Desktop.csproj", "{B2F60E3E-4038-455C-805C-3D7F8B80CE5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoutingSample.Desktop", "RoutingSample.Desktop\RoutingSample.Desktop.csproj", "{B2F60E3E-4038-455C-805C-3D7F8B80CE5C}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RoutingSample.Shared", "RoutingSample.Shared\RoutingSample.Shared.shproj", "{A2354B88-E136-4B85-8AC0-DD7F9DF4A6B1}"
 EndProject
@@ -94,6 +94,6 @@ Global
 		RoutingSample.Shared\RoutingSample.Shared.projitems*{7df404e7-8860-4d0f-8bc5-0e645c00ff8b}*SharedItemsImports = 5
 		RoutingSample.Shared\RoutingSample.Shared.projitems*{987c58dd-32d0-4583-9375-62967384bec6}*SharedItemsImports = 4
 		RoutingSample.Shared\RoutingSample.Shared.projitems*{a2354b88-e136-4b85-8ac0-dd7f9df4a6b1}*SharedItemsImports = 13
-		RoutingSample.Shared\RoutingSample.Shared.projitems*{b2f60e3e-4038-455c-805c-3d7f8b80ce5c}*SharedItemsImports = 4
+		RoutingSample.Shared\RoutingSample.Shared.projitems*{b2f60e3e-4038-455c-805c-3d7f8b80ce5c}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
