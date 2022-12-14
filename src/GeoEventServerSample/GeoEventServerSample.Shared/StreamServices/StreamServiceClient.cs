@@ -151,7 +151,7 @@ namespace GeoEventServerSample.StreamServices
 
         private async Task LoadInfoAsync()
         {
-            HttpClient client = new HttpClient(new Esri.ArcGISRuntime.Http.ArcGISHttpClientHandler(), true);
+            HttpClient client = new HttpClient(new Esri.ArcGISRuntime.Http.ArcGISHttpMessageHandler(), true);
             try
             {
                 using (var serviceJson = await client.GetStreamAsync(new Uri(_serviceUri + "?f=json")))

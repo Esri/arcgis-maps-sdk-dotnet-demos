@@ -61,9 +61,9 @@ namespace GeoEventServerSample
 
         private void RunOnUIThread(Action action)
         {
-#if MauiWindows || __IOS__ || __Android__
+#if MAUI
             MainThread.BeginInvokeOnMainThread(action);
-#elif NETFX_CORE
+#elif WINDOWS_UWP
             if (Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.HasThreadAccess)
                 action();
             else
