@@ -30,7 +30,7 @@ public partial class StartupPage : ContentPage
         //Register server info for portal
         ServerInfo portalServerInfo = new ServerInfo(AppSettings.PortalUri)
         {
-            TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit,
+            TokenAuthenticationType = TokenAuthenticationType.OAuthAuthorizationCode,
             OAuthClientInfo = new OAuthClientInfo(AppSettings.OAuthClientId, AppSettings.OAuthRedirectUri)
         };
         AuthenticationManager.Current.RegisterServer(portalServerInfo);
