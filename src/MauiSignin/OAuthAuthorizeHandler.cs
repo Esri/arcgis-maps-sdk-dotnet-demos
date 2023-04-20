@@ -14,11 +14,14 @@ public class OAuthAuthorizeHandler : IOAuthAuthorizeHandler
         // using WinUIEx for handling OAuth on Windows until https://github.com/microsoft/WindowsAppSDK/issues/441 has been resolved and integrated with .NET MAUI's WebAuthenticator
         var result = await WinUIEx.WebAuthenticator.AuthenticateAsync(authorizeUri, callbackUri);
 #else
-        var result = await WebAuthenticator.AuthenticateAsync(new WebAuthenticatorOptions()
+        var result = await MainThread.InvokeOnMainThreadAsync(() => // iOS requires authentication on main thread
         {
-            CallbackUrl = callbackUri,
-            Url = authorizeUri
-        });
+            return WebAuthenticator.AuthenticateAsync(new WebAuthenticatorOptions()
+            {
+                CallbackUrl = callbackUri,
+                Url = authorizeUri
+            });
+        }).ConfigureAwait(false);
 #endif
         return result.Properties;
     }
