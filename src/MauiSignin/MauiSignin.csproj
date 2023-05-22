@@ -11,7 +11,7 @@
         <Nullable>enable</Nullable>
 
         <!-- Display name -->
-        <ApplicationTitle>MauiSignin</ApplicationTitle>
+        <ApplicationTitle>Portal Sign-In Demo - .NET MAUI</ApplicationTitle>
 
         <!-- App Identifier -->
         <ApplicationId>com.companyname.mauisignin</ApplicationId>
