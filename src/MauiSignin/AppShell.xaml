@@ -18,7 +18,7 @@
     </Shell.FlyoutContent>
     <!--<ShellContent ContentTemplate="{DataTemplate local:StartupPage}" Route="StartupPage" />-->
     <ShellContent
-        Title="ArcGIS Runtime Demo" 
+        Title="ArcGIS Maps SDK for .NET Demo" 
         ContentTemplate="{DataTemplate local:PortalPage}"
         Route="PortalPage" />
 </Shell>

@@ -5,7 +5,7 @@
              BackgroundColor="#130D4E">
     <Grid>
         <Image Source="heroimage.png" Aspect="AspectFill" Opacity=".5" />
-        <Label Text="ArcGIS Runtime Demo" HorizontalOptions="Center" VerticalOptions="Start" TextColor="White" FontSize="24" Margin="0,60" />
+        <Label Text="ArcGIS Maps SDK for .NET Demo" HorizontalOptions="Center" VerticalOptions="Start" TextColor="White" FontSize="24" Margin="0,60" />
         <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Margin="20,0">
             <Label Text="Sign in to ArcGIS Online is required to access your data and maps." TextColor="White" FontSize="18" Margin="0,20"/>
             <Button Text="Sign in" Clicked="SignIn_Clicked" />
