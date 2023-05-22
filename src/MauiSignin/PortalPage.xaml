@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MauiSignin"
              x:Class="MauiSignin.PortalPage">
+    <ContentPage.Resources>
+        <local:StripHtmlConverter x:Key="stripHtmlConverter" />
+    </ContentPage.Resources>
     <StackLayout>
         <ListView ItemsSource="{Binding MapItems}" ItemTapped="MapItem_ItemTapped">
             <ListView.ItemTemplate>
@@ -11,8 +15,8 @@
                             <Image Source="{Binding ThumbnailUri}" WidthRequest="150" HeightRequest="75" />
                             <VerticalStackLayout>
                                 <Label Text="{Binding Title}" FontSize="Subtitle" />
-                                <Label Text="{Binding Description}"
-                                       HorizontalOptions="Fill"
+                                <Label Text="{Binding Description, Converter={StaticResource stripHtmlConverter}}"
+                                       HorizontalOptions="Fill" 
                                        MaximumHeightRequest="50" LineBreakMode="WordWrap" />
                             </VerticalStackLayout>
                         </HorizontalStackLayout>
