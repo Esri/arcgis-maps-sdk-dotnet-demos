@@ -6,23 +6,21 @@
     <ContentPage.Resources>
         <local:StripHtmlConverter x:Key="stripHtmlConverter" />
     </ContentPage.Resources>
-    <StackLayout>
-        <ListView ItemsSource="{Binding MapItems}" ItemTapped="MapItem_ItemTapped">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <HorizontalStackLayout Margin="0,5">
-                            <Image Source="{Binding ThumbnailUri}" WidthRequest="150" HeightRequest="75" />
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Title}" FontSize="Subtitle" />
-                                <Label Text="{Binding Description, Converter={StaticResource stripHtmlConverter}}"
-                                       HorizontalOptions="Fill" 
-                                       MaximumHeightRequest="50" LineBreakMode="WordWrap" />
-                            </VerticalStackLayout>
-                        </HorizontalStackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+    <CollectionView BackgroundColor="{StaticResource Gray100}" ItemsSource="{Binding MapItems}" SelectionMode="Single" SelectionChanged="MapItem_ItemTapped">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Border BackgroundColor="{StaticResource White}" StrokeThickness="1" >
+                    <Grid Margin="5" RowDefinitions="Auto,Auto" ColumnDefinitions="150,*">
+                        <Image Source="{Binding ThumbnailUri}" WidthRequest="150" Margin="0,0,10,0" Grid.RowSpan="2" />
+                        <Label Text="{Binding Title}" FontSize="Subtitle" Grid.Column="1" TextColor="{StaticResource Primary}"
+                                FontAttributes="Bold" VerticalOptions="Start" />
+                        <Label Text="{Binding Description, Converter={StaticResource stripHtmlConverter}}"
+                                HorizontalOptions="Fill" Grid.Column="1" Grid.Row="1"
+                                TextColor="Black"
+                                MaximumHeightRequest="60" MaxLines="3" LineBreakMode="WordWrap" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>

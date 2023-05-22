@@ -13,11 +13,13 @@ public partial class PortalPage : ContentPage
         Shell.Current.FlyoutBehavior = FlyoutBehavior.Flyout;
     }
 
-    private void MapItem_ItemTapped(object sender, ItemTappedEventArgs e)
+    private void MapItem_ItemTapped(object sender, SelectionChangedEventArgs e)
     {
-        var item = e.Group as Esri.ArcGISRuntime.Portal.PortalItem;
-        if(item != null)
+        var item = e.CurrentSelection?.FirstOrDefault() as Esri.ArcGISRuntime.Portal.PortalItem;
+
+        if (item != null)
         {
+            ((CollectionView)sender).SelectedItem = null;
             Navigation.PushAsync(new MapPage(item));
         }
     }
