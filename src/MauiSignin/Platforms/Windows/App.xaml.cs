@@ -16,6 +16,8 @@ public partial class App : MauiWinUIApplication
     /// </summary>
     public App()
     {
+        if (WinUIEx.WebAuthenticator.CheckOAuthRedirectionActivation())
+            return;
         this.InitializeComponent();
     }
 
