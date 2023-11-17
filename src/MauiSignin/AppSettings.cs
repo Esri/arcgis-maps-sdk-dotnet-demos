@@ -1,4 +1,4 @@
-﻿using Esri.ArcGISRuntime.Portal;
+using Esri.ArcGISRuntime.Portal;
 using System.ComponentModel;
 
 namespace MauiSignin;
@@ -44,7 +44,14 @@ internal class AppSettings : ModelBase
         PortalUser = value;
         if (value != null)
         {
-            PortalUserThumbnail = ImageSource.FromStream((c) => value.GetThumbnailDataAsync());
+            if (value.ThumbnailUri == null)
+            {
+                PortalUserThumbnail = null;
+            }
+            else
+            {
+                PortalUserThumbnail = ImageSource.FromStream((c) => value.GetThumbnailDataAsync(c));
+            }
             _ = RefreshMaps(value.Portal);
         }
         else
