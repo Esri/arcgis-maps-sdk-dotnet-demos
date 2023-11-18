@@ -82,6 +82,7 @@ internal class AppSettings : ModelBase
     {
         SetUser(null);
         OnPropertyChanged(nameof(Portal));
+        SecureStorage.Remove("License");
         await Esri.ArcGISRuntime.Security.AuthenticationManager.Current.RemoveAndRevokeAllCredentialsAsync();
     }
 }

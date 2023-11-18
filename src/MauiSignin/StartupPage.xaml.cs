@@ -6,6 +6,9 @@ namespace MauiSignin;
 
 public partial class StartupPage : ContentPage
 {
+    private bool _firstTimeSetupComplete = false;
+    private LicenseStatus _licenseStatus = LicenseStatus.Invalid;
+
     public StartupPage()
     {
         InitializeComponent();
@@ -14,64 +17,19 @@ public partial class StartupPage : ContentPage
 
     private async void StartupPage_Loaded(object? sender, EventArgs e)
     {
-        if (AppSettings.OAuthClientId == "SET_CLIENT_ID" || AppSettings.OAuthRedirectUri.OriginalString.Contains($"SET_REDIRECT_URL"))
-        {
-            // Application isn't configured. Please update the oauth settings by using the ArcGIS Developer Portal at
-            // https://developers.arcgis.com/applications
-            System.Diagnostics.Debugger.Break();
-            throw new InvalidOperationException("Please configure your client id and redirect url in 'AppSettings.cs' to run this sample");
-        }
-
-        progress.Progress += .2;
         status.Text = "Initializing ArcGIS Maps SDK...";
 
-        AuthenticationManager.Current.Persistence = await CredentialPersistence.CreateDefaultAsync();
-
-        //Register server info for portal
-        ServerInfo portalServerInfo = new ServerInfo(AppSettings.PortalUri)
+        // "loaded" event happens every time we return to the StartupPage
+        // (in the beginning, after OAuth authorization, and again after signing out)
+        // but some of the initialization only needs to happen once.
+        if (!_firstTimeSetupComplete)
         {
-            TokenAuthenticationType = TokenAuthenticationType.OAuthAuthorizationCode,
-            OAuthClientInfo = new OAuthClientInfo(AppSettings.OAuthClientId, AppSettings.OAuthRedirectUri)
-        };
-        AuthenticationManager.Current.RegisterServer(portalServerInfo);
-
-
-        var licenseStatus = Esri.ArcGISRuntime.LicenseStatus.Invalid;
-        var licenseJson = await SecureStorage.GetAsync("License");
-        if (!string.IsNullOrEmpty(licenseJson))
-        {
-            status.Text = "Checking license...";
-            try
-            {
-                var result = Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.SetLicense(LicenseInfo.FromJson(licenseJson)!);
-                licenseStatus = result.LicenseStatus;
-            }
-            catch { }
+            await FirstTimeSetupAsync();
         }
 
-        progress.Progress += .2;
-        status.Text = "Signing in to ArcGIS Online...";
-
-        if (AuthenticationManager.Current.Credentials.Any())
-        {
-            // Old credentials restored from persistance. Try to use them to load the portal
-            try
-            {
-                // Do this without oauth handler - we want to fail if credential persistance was empty / or stored credentials no longer working
-                var portal = await ArcGISPortal.CreateAsync(AppSettings.PortalUri, true);
-                AppSettings.Instance.SetUser(portal.User);
-            }
-            catch (Exception)
-            {
-                await AuthenticationManager.Current.RemoveAndRevokeAllCredentialsAsync();
-            }
-        }
-
-        AuthenticationManager.Current.ChallengeHandler = new DefaultChallengeHandler();
-        AuthenticationManager.Current.OAuthAuthorizeHandler = OAuthAuthorizeHandler.Instance;
-
-        progress.Progress += .2;
-        if(AppSettings.Instance.Portal is null)
+        progress.Progress = 0.5;
+        status.Text = "Signing in to the portal...";
+        if (AppSettings.Instance.Portal is null)
         {
             var page = new SignInPage();
             TaskCompletionSource<ArcGISPortal> signinTask = new TaskCompletionSource<ArcGISPortal>();
@@ -87,20 +45,72 @@ public partial class StartupPage : ContentPage
             await Navigation.PopModalAsync();
         }
 
-        if (licenseStatus != Esri.ArcGISRuntime.LicenseStatus.Valid)
+        if (_licenseStatus != Esri.ArcGISRuntime.LicenseStatus.Valid)
         {
             // Refresh license from portal
-            progress.Progress += .2;
+            progress.Progress = 0.75;
             status.Text = "Getting updated license...";
             var license = await AppSettings.Instance.Portal!.GetLicenseInfoAsync();
             await SecureStorage.SetAsync("License", license.ToJson());
             var result = Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.SetLicense(license);
-            licenseStatus = result.LicenseStatus;
+            _licenseStatus = result.LicenseStatus;
         }
+        progress.Progress = 1;
         status.Text = "Finishing up...";
 
-        progress.Progress += .2;
-
         App.Current!.MainPage = new AppShell();
+    }
+
+    private async Task FirstTimeSetupAsync()
+    {
+        if (AppSettings.OAuthClientId == "SET_CLIENT_ID" || AppSettings.OAuthRedirectUri.OriginalString.Contains($"SET_REDIRECT_URL"))
+        {
+            // Application isn't configured. Please update the oauth settings by using the ArcGIS Developer Portal at
+            // https://developers.arcgis.com/applications
+            System.Diagnostics.Debugger.Break();
+            throw new InvalidOperationException("Please configure your client id and redirect url in 'AppSettings.cs' to run this sample");
+        }
+
+        AuthenticationManager.Current.Persistence = await CredentialPersistence.CreateDefaultAsync();
+
+        //Register server info for portal
+        ServerInfo portalServerInfo = new ServerInfo(AppSettings.PortalUri)
+        {
+            TokenAuthenticationType = TokenAuthenticationType.OAuthAuthorizationCode,
+            OAuthClientInfo = new OAuthClientInfo(AppSettings.OAuthClientId, AppSettings.OAuthRedirectUri)
+        };
+        AuthenticationManager.Current.RegisterServer(portalServerInfo);
+
+        if (AuthenticationManager.Current.Credentials.Any())
+        {
+            // Old credentials restored from persistance. Try to use them to load the portal
+            try
+            {
+                // Do this without oauth handler - we want to fail if credential persistance was empty / or stored credentials no longer working
+                var portal = await ArcGISPortal.CreateAsync(AppSettings.PortalUri, true);
+                AppSettings.Instance.SetUser(portal.User);
+            }
+            catch (Exception)
+            {
+                await AuthenticationManager.Current.RemoveAndRevokeAllCredentialsAsync();
+            }
+        }
+        progress.Progress = 0.25;
+
+        AuthenticationManager.Current.ChallengeHandler = new DefaultChallengeHandler();
+        AuthenticationManager.Current.OAuthAuthorizeHandler = OAuthAuthorizeHandler.Instance;
+        
+        var licenseJson = await SecureStorage.GetAsync("License");
+        if (!string.IsNullOrEmpty(licenseJson))
+        {
+            status.Text = "Checking license...";
+            try
+            {
+                var result = Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.SetLicense(LicenseInfo.FromJson(licenseJson)!);
+                _licenseStatus = result.LicenseStatus;
+            }
+            catch { }
+        }
+        _firstTimeSetupComplete = true;
     }
 }
