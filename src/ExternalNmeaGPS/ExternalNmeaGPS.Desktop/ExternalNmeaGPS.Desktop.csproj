@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <UseWPF>true</UseWPF>
     <nullable>enable</nullable>
     <RootNamespace>ExternalNmeaGPS</RootNamespace>
@@ -12,7 +12,7 @@
   
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.WPF">
-      <Version>200.0.0</Version>
+      <Version>200.3.0</Version>
     </PackageReference>
   </ItemGroup>
 
