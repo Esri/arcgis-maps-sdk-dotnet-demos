@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
     <UseWPF>true</UseWPF>
     <AssemblyName>SymbolEditorApp</AssemblyName>
     <Platforms>AnyCPU;x64;x86;ARM64</Platforms>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release' AND '$(RuntimeIdentifier)' != ''">
@@ -26,10 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
-    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.0.0" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="200.0.0" />
-    <PackageReference Include="UniversalWPF" Version="0.9.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.3.0" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="200.3.0" />
+    <PackageReference Include="UniversalWPF" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
