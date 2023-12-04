@@ -1,6 +1,6 @@
 # Demo: Turn-by-Turn Navigation
 
-Required version: ArcGIS Maps SDK for .NET 200.0.0
+Required version: ArcGIS Maps SDK for .NET 200.3.0
 
 Sample app that shows how to write a turn-by-turn navigation application using the Network Analysis and Navigation APIs from the [ArcGIS Maps SDK for.NET](https://developers.arcgis.com/net/). The app uses MVVM patterns and shares services, models, and viewmodels between all platforms through a shared project, but uses individual views suited to each specific platform.
 
