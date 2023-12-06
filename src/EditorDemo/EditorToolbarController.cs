@@ -16,18 +16,18 @@ namespace EditorDemo
     internal partial class EditorToolbarController : ObservableObject
     {
         private readonly MyGeometryEditor editor = new MyGeometryEditor();
-        private readonly GeometryEditor reshapeEditor = new GeometryEditor();
+        private readonly GeometryEditor lineInputEditor = new GeometryEditor();
         private readonly GraphicsOverlay EditorOverlay = new GraphicsOverlay();
 
         public EditorToolbarController()
         {
-            reshapeEditor.PropertyChanged += ReshapeEditor_PropertyChanged;
+            lineInputEditor.PropertyChanged += ReshapeEditor_PropertyChanged;
             editor.PropertyChanged += Editor_PropertyChanged;
         }
         private void ReshapeEditor_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GeometryEditor.Geometry))
-                ReshapeAcceptCommand.NotifyCanExecuteChanged();
+                LineInputAcceptCommand.NotifyCanExecuteChanged();
         }
 
         private void Editor_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -39,27 +39,42 @@ namespace EditorDemo
                 case nameof(MyGeometryEditor.Geometry):
                     {
                         ReshapeCommand.NotifyCanExecuteChanged();
+                        CutCommand.NotifyCanExecuteChanged();
                         ApplyCommand.NotifyCanExecuteChanged();
                         break;
                     }
                 case nameof(MyGeometryEditor.Tool):
                     {
+                        ClearSelection();
                         RaiseActiveINPC();
+                        break;
+                    }
+                case nameof(MyGeometryEditor.SelectedElement):
+                    {
+                        DeleteSelectionCommand.NotifyCanExecuteChanged();
+                        ClearSelectionCommand.NotifyCanExecuteChanged();
                         break;
                     }
             }
         }
+        string lineInputMode = "";
+
         private void RaiseActiveINPC()
         {
             OnPropertyChanged(nameof(IsMoveActive));
             OnPropertyChanged(nameof(IsRotateActive));
             OnPropertyChanged(nameof(IsEditVerticesActive));
             OnPropertyChanged(nameof(IsReshapeActive));
+            OnPropertyChanged(nameof(IsCutActive));
+            OnPropertyChanged(nameof(IsLineInputActive));
         }
+
         public bool IsMoveActive => GeometryEditor == editor && editor.IsMoveActive;
         public bool IsRotateActive => GeometryEditor == editor && editor.IsRotateActive;
         public bool IsEditVerticesActive => GeometryEditor == editor && editor.IsEditVerticesActive;
-        public bool IsReshapeActive => GeometryEditor == reshapeEditor;
+        public bool IsReshapeActive => IsLineInputActive && lineInputMode == "Reshape";
+        public bool IsCutActive => IsLineInputActive && lineInputMode == "Cut";
+        public bool IsLineInputActive => GeometryEditor == lineInputEditor;
 
         [ObservableProperty]
         private GeometryEditor? _geometryEditor;
@@ -138,9 +153,12 @@ namespace EditorDemo
             UndoCommand.NotifyCanExecuteChanged();
             RedoCommand.NotifyCanExecuteChanged();
             ReshapeCommand.NotifyCanExecuteChanged();
-            ReshapeAcceptCommand.NotifyCanExecuteChanged();
+            CutCommand.NotifyCanExecuteChanged();
+            LineInputAcceptCommand.NotifyCanExecuteChanged();
             DiscardCommand.NotifyCanExecuteChanged();
             ApplyCommand.NotifyCanExecuteChanged();
+            DeleteSelectionCommand.NotifyCanExecuteChanged();
+            ClearSelectionCommand.NotifyCanExecuteChanged();
         }
 
         private GraphicsOverlay? GetGraphicsOwner(Graphic g)

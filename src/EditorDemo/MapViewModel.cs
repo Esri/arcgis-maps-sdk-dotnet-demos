@@ -65,10 +65,6 @@ namespace EditorDemo
                 }
                 Controller.ShowCalloutForGeoElement(element, location, def);
             }
-            else if (mapLocation is not null)
-            {
-                Controller.ShowCalloutAt(mapLocation, new CalloutDefinition("No features found"));
-            }
         }
 
         private void Edit(GeoElement? element)
@@ -77,7 +73,7 @@ namespace EditorDemo
             {
                 EditFeatureSelection = element;
                 Controller.DismissCallout();
-                Controller.SetViewpointGeometryAsync(element.Geometry, 50);
+                Controller.SetViewpointGeometryAsync(element.Geometry, 100);
             }
         }
 

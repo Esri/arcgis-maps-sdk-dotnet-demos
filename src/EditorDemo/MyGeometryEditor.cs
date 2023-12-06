@@ -92,7 +92,7 @@ namespace EditorDemo
             {
                 AllowMovingSelectedElement = false,
                 AllowMidVertexSelection = false,
-                AllowDeletingSelectedElement = false,
+                AllowDeletingSelectedElement = true,
                 AllowPartCreation = false,
                 AllowGeometrySelection = false,
                 AllowPartSelection = true,

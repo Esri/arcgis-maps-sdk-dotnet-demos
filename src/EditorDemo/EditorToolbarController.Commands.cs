@@ -14,11 +14,35 @@ namespace EditorDemo
 {
     internal partial class EditorToolbarController
     {
+        private bool CanClearSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement != null;
+
+        [RelayCommand(CanExecute = nameof(CanClearSelection))]
+        private void ClearSelection()
+        {
+            GeometryEditor = editor;
+            editor.ClearSelection();
+        }
+
+        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true && 
+            (editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorGeometry || editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorMidVertex);
+
+        [RelayCommand(CanExecute = nameof(CanDeleteSelection))]
+        private void DeleteSelection()
+        {
+            GeometryEditor = editor;
+            editor.DeleteSelectedElement();
+        }
+
         private bool CanEditVertices => CanEditGeometry(GeoElement) && (GeoElement?.Geometry is Polygon || (GeoElement?.Geometry is Polyline));
 
         [RelayCommand(CanExecute = nameof(CanEditVertices))]
         private void EditVertices()
         {
+            if(GeometryEditor == editor && editor.IsEditVerticesActive)
+            {
+                editor.SetInactive();
+                return;
+            }
             GeometryEditor = editor;
             editor.EditVertices();
         }
@@ -27,6 +51,11 @@ namespace EditorDemo
         [RelayCommand(CanExecute = nameof(CanMove))]
         private void Move()
         {
+            if (GeometryEditor == editor && editor.IsMoveActive)
+            {
+                editor.SetInactive();
+                return;
+            }
             GeometryEditor = editor;
             editor.Move();
         }
@@ -42,6 +71,11 @@ namespace EditorDemo
         [RelayCommand(CanExecute = nameof(CanEditVertices))]
         private void Rotate()
         {
+            if (GeometryEditor == editor && editor.IsRotateActive)
+            {
+                editor.SetInactive();
+                return;
+            }
             GeometryEditor = editor;
             editor.Rotate();
         }
@@ -56,50 +90,102 @@ namespace EditorDemo
             }
         }
 
-        private bool CanReshape => !reshapeEditor.IsStarted && editor.Geometry?.IsEmpty == false && editor.Geometry is Polygon; //TODO
+        private bool CanUseLineInput => !lineInputEditor.IsStarted && editor.Geometry?.IsEmpty == false && editor.Geometry is Polygon; //TODO
 
-        [RelayCommand(CanExecute = nameof(CanReshape))]
+        [RelayCommand(CanExecute = nameof(CanUseLineInput))]
         private void Reshape()
         {
-            GeometryEditor = reshapeEditor;
-            reshapeEditor.Start(GeometryType.Polyline);
+            GeometryEditor = lineInputEditor;
+            lineInputMode = nameof(Reshape);
+            lineInputEditor.Start(GeometryType.Polyline);
             ReshapeCommand.NotifyCanExecuteChanged();
-            ReshapeAcceptCommand.NotifyCanExecuteChanged();
-            ReshapeDiscardCommand.NotifyCanExecuteChanged();
+            LineInputAcceptCommand.NotifyCanExecuteChanged();
+            LineInputDiscardCommand.NotifyCanExecuteChanged();
         }
 
-        private bool CanAcceptReshape => reshapeEditor.IsStarted &&
-            this.editor.Geometry is Multipart mp && !mp.IsEmpty && reshapeEditor.Geometry is Polyline line && !line.IsEmpty &&
-            GeometryEngine.Reshape(mp, line) != null;
-
-        [RelayCommand(CanExecute = nameof(CanAcceptReshape))]
-        private void ReshapeAccept()
+        [RelayCommand(CanExecute = nameof(CanUseLineInput))]
+        private void Cut()
         {
-            var geometry = reshapeEditor.Stop();
+            GeometryEditor = lineInputEditor;
+            lineInputMode = nameof(Cut);
+            lineInputEditor.Start(GeometryType.Polyline);
+            CutCommand.NotifyCanExecuteChanged();
+            LineInputAcceptCommand.NotifyCanExecuteChanged();
+            LineInputDiscardCommand.NotifyCanExecuteChanged();
+        }
+
+        private bool CanAcceptLineInput => lineInputEditor.IsStarted &&
+            this.editor.Geometry is Multipart mp && !mp.IsEmpty && lineInputEditor.Geometry is Polyline line && !line.IsEmpty &&
+            ((lineInputMode == nameof(Reshape) && GeometryEngine.Reshape(mp, line) != null) ||
+             (lineInputMode == nameof(Cut) && GeometryEngine.Cut(mp, line).Length > 0));
+
+        [RelayCommand(CanExecute = nameof(CanAcceptLineInput))]
+        private void LineInputAccept()
+        {
+            var geometry = lineInputEditor.Stop();
             EditorOverlay.Graphics.Clear();
             if (editor.Geometry is Multipart mp && geometry is Polyline line && !mp.IsEmpty && !line.IsEmpty)
             {
-                var reshapedGeometry = GeometryEngine.Reshape(mp, line);
-                if (reshapedGeometry != null)
-                    editor.ReplaceGeometry(reshapedGeometry);
+                if (lineInputMode == nameof(Reshape))
+                {
+                    var reshapedGeometry = GeometryEngine.Reshape(mp, line);
+                    if (reshapedGeometry != null)
+                        editor.ReplaceGeometry(reshapedGeometry);
+                }
+                if (lineInputMode == nameof(Cut))
+                {
+                    var cutGeometry = GeometryEngine.Cut(mp, line).Where(g=>g.GeometryType == editor.Geometry.GeometryType).ToArray();
+                    if (cutGeometry != null && cutGeometry.Length > 0)
+                    {
+                        if (cutGeometry.Length == 1)
+                        {
+                            editor.ReplaceGeometry(cutGeometry[0]);
+                        }
+                        else
+                        {
+                            if (editor.Geometry is Polygon p)
+                            {
+                                var b = new PolygonBuilder(p.SpatialReference);
+                                foreach (var piece in cutGeometry.OfType<Polygon>())
+                                {
+                                    b.AddParts(piece.Parts);
+                                }
+                                editor.ReplaceGeometry(b.ToGeometry());
+                            }
+                            else if (editor.Geometry is Polyline l)
+                            {
+                                var b = new PolylineBuilder(l.SpatialReference);
+                                foreach (var piece in cutGeometry.OfType<Polyline>())
+                                {
+                                    b.AddParts(piece.Parts);
+                                }
+                                editor.ReplaceGeometry(b.ToGeometry());
+                            }
+                            else
+                                editor.ReplaceGeometry(cutGeometry.First());
+                        }
+                    }
+                }
             }
             GeometryEditor = editor;
             ReshapeCommand.NotifyCanExecuteChanged();
-            ReshapeAcceptCommand.NotifyCanExecuteChanged();
-            ReshapeDiscardCommand.NotifyCanExecuteChanged();
+            CutCommand.NotifyCanExecuteChanged();
+            LineInputAcceptCommand.NotifyCanExecuteChanged();
+            LineInputDiscardCommand.NotifyCanExecuteChanged();
         }
 
-        private bool CanReshapeDiscard => reshapeEditor.IsStarted;
+        private bool CanReshapeDiscard => lineInputEditor.IsStarted;
 
         [RelayCommand(CanExecute = nameof(CanReshapeDiscard))]
-        private void ReshapeDiscard()
+        private void LineInputDiscard()
         {
-            reshapeEditor.Stop();
+            lineInputEditor.Stop();
             EditorOverlay.Graphics.Clear();
             GeometryEditor = editor;
             ReshapeCommand.NotifyCanExecuteChanged();
-            ReshapeAcceptCommand.NotifyCanExecuteChanged();
-            ReshapeDiscardCommand.NotifyCanExecuteChanged();
+            CutCommand.NotifyCanExecuteChanged();
+            LineInputAcceptCommand.NotifyCanExecuteChanged();
+            LineInputDiscardCommand.NotifyCanExecuteChanged();
         }
 
         private bool CanApply => CanEditGeometry(GeoElement) && editor.IsStarted && GeoElement != null &&(editor.Geometry?.IsEmpty ?? true) == false;
