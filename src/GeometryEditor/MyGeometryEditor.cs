@@ -140,16 +140,6 @@ namespace EditorDemo
                 if (geometry is Polygon)
                 {
                     _vertexTool.Style.FillSymbol = _rotateTool.Style.FillSymbol = _moveTool.Style.FillSymbol = _inactiveTool.Style.FillSymbol = symbol;
-                    //if (symbol?.Clone() is FillSymbol fill) 
-                    //{
-                    //    fill.Color = Color.Cyan;
-                    //    _inactiveTool.Style.FillSymbol = fill;
-                    //}
-                    //else if (symbol?.Clone() is MultilayerPolygonSymbol fill2)
-                    //{
-                    //    fill2.Color = Color.Cyan;
-                    //    _inactiveTool.Style.FillSymbol = fill2;
-                    //}
                 }
                 else if (geometry is Polyline)
                 {
@@ -164,8 +154,6 @@ namespace EditorDemo
             Tool = _inactiveTool;
         }
 
-        //public Geometry? ActiveGeometry => Geometry ?? _geometry;
-
         private void OnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -177,7 +165,6 @@ namespace EditorDemo
                 case nameof(Tool):
                     break;
                 case nameof(Geometry):
-                    //   OnPropertyChanged(nameof(ActiveGeometry));
                     break;
             }
         }
