@@ -1,4 +1,5 @@
-﻿using MahApps.Metro;
+﻿using ControlzEx.Theming;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,11 @@ namespace SymbolEditorApp
             UpdateVersion();
             DarkModeButton.IsChecked = UserSettings.Default.IsDarkModeEnabled;
             LightModeButton.IsChecked = !UserSettings.Default.IsDarkModeEnabled;
-            AccentSelector.SelectedItem = ThemeManager.ColorSchemes.Where(c => c.Name == UserSettings.Default.ThemeName).FirstOrDefault();
+            AccentSelector.ItemsSource = new string[]
+            {
+                "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna"
+            };
+            AccentSelector.SelectedItem = ThemeManager.Current.ColorSchemes.Where(c => c == UserSettings.Default.ThemeName).FirstOrDefault();
         }
 
         private void UpdateVersion()
@@ -47,10 +52,10 @@ namespace SymbolEditorApp
 
         private void AccentSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedAccent = AccentSelector.SelectedItem as ColorScheme;
+            var selectedAccent = AccentSelector.SelectedItem as string;
             if (selectedAccent != null)
             {
-                MapViewModel.Current.SetTheme(selectedAccent.Name);
+                MapViewModel.Current.SetTheme(selectedAccent);
             }
         }
 

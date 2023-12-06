@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="ExternalNmeaGPS.Controls.SatelliteSnr"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExternalNmeaGPS.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:SatelliteIdToNameConverter x:Key="SatelliteNumberConverter" />
+        <local:SatelliteVechicleColorConverter x:Key="SatelliteVechicleColorConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="GridLines">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="#14a6ef" Offset="-.5" />
+                    <GradientStop Color="#96dcff" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Path Stroke="Gray" StrokeThickness="1"
+                  Stretch="Fill" VerticalAlignment="Top"
+                  Data="M0,0 L 1,0 M 0,1 L 1,1 M 0,2 L 1,2 M 0,3 L 1,3 M 0,4 L 1,4" Margin="0,0,0,0" />
+        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2" >
+            <ItemsControl x:Name="satellites" 
+                      HorizontalAlignment="Stretch" 
+                      VerticalAlignment="Stretch">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="25" >
+                            <local:SnrBar SatelliteInfo="{Binding}" 
+                                          BorderBrush="Gray" BorderThickness="1"
+                                          Background="{Binding Converter={StaticResource SatelliteVechicleColorConverter}}"
+                                          Margin="5,-1" Height="{Binding ActualHeight, ElementName=GridLines}" >
+                            </local:SnrBar>
+                            <TextBlock Text="{Binding Converter={StaticResource SatelliteNumberConverter}}" 
+                                       Foreground="Black" FontSize="10" Width="50" VerticalAlignment="Top"
+                                       RenderTransformOrigin="0,0" Margin="13,0,-40,0">
+                                <TextBlock.RenderTransform>
+                                    <RotateTransform Angle="45"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+
+</UserControl>

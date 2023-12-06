@@ -121,7 +121,7 @@ namespace SymbolEditorApp.Controls
                     {
                         var d = new ObjectPropertyGrid() { Type = property.PropertyType };
                         d.SetBinding(ObjectPropertyGrid.ValueProperty, new Binding() { Path = new PropertyPath(name), Source = Value, Mode = BindingMode.TwoWay });
-                        editor = new Border() { Padding = new Thickness(2), BorderThickness = new Thickness(1), BorderBrush = Application.Current.Resources[MahApps.Metro.Theme.ThemeShowcaseBrushKey] as Brush, Child = d };
+                        editor = new Border() { Padding = new Thickness(2), BorderThickness = new Thickness(1), Child = d };
                     }
                     else
                     {

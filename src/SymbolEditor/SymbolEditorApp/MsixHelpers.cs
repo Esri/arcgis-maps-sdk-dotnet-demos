@@ -23,10 +23,20 @@ namespace SymbolEditorApp
                     var minor = br.ReadUInt16();
                     var major = br.ReadUInt16();
                     id.Version = new Version(major, minor, build, revision);
-                    id.Name = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
-                    id.PublisherId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
-                    id.ResourceId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
-                    id.PublisherId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
+                    if (IntPtr.Size == 8)
+                    {
+                        id.Name = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
+                        id.PublisherId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
+                        id.ResourceId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
+                        id.PublisherId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt64()));
+                    }
+                    else
+                    {
+                        id.Name = Marshal.PtrToStringUni(new IntPtr(br.ReadInt32()));
+                        id.PublisherId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt32()));
+                        id.ResourceId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt32()));
+                        id.PublisherId = Marshal.PtrToStringUni(new IntPtr(br.ReadInt32()));
+                    }
                 }
                 return id;
             }

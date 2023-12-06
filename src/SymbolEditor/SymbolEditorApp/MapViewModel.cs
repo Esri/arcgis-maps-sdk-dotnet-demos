@@ -15,6 +15,7 @@ using Esri.ArcGISRuntime.Tasks;
 using Esri.ArcGISRuntime.UI;
 using MahApps.Metro;
 using System.Windows;
+using ControlzEx.Theming;
 
 namespace SymbolEditorApp
 {
@@ -59,7 +60,7 @@ namespace SymbolEditorApp
 
         public void SetDarkMode(bool isDarkEnabled)
         {
-            ThemeManager.ChangeThemeBaseColor(Application.Current, isDarkEnabled ? ThemeManager.BaseColorDark : ThemeManager.BaseColorLight);
+            ThemeManager.Current.ChangeThemeBaseColor(Application.Current, isDarkEnabled ? ThemeManager.BaseColorDark : ThemeManager.BaseColorLight);
             _map.Basemap = isDarkEnabled ? _darkModeBaseMap : _lightModeBaseMap;
             UserSettings.Default.IsDarkModeEnabled = isDarkEnabled;
             UserSettings.Default.Save();
@@ -67,7 +68,7 @@ namespace SymbolEditorApp
 
         public void SetTheme(string name)
         {
-            ThemeManager.ChangeThemeColorScheme(Application.Current, name);
+            ThemeManager.Current.ChangeThemeColorScheme(Application.Current, name);
             UserSettings.Default.ThemeName = name;
             UserSettings.Default.Save();
         }
