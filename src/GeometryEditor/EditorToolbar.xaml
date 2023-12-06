@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="EditorDemo.EditorToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EditorDemo"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.Resources>
+            <FontFamily x:Key="calcite-font-24" >#calcite-ui-icons-24</FontFamily>
+            <local:BoolToVisibilityConverter x:Key="converter" />
+            <Style TargetType="Button">
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="Background" Value="CornflowerBlue" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style TargetType="ToggleButton">
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="Background" Value="CornflowerBlue" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </Grid.Resources>
+        <StackPanel Orientation="Horizontal">
+
+            <Button Content="&#xe2d6;" Command="{Binding UndoCommand}" ToolTip="Undo" />
+            <Button Content="&#xe23e;" Command="{Binding RedoCommand}" ToolTip="Redo" />
+            <Button Content="&#xe2db;" ToolTip="Unselect" Command="{Binding ClearSelectionCommand}" />
+            <Button Content="&#xe2d0;" ToolTip="Delete Selection" Command="{Binding DeleteSelectionCommand}" />
+            <ToggleButton Content="&#xe2ea;" Command="{Binding EditVerticesCommand}" ToolTip="Edit Vertices" IsChecked="{Binding IsEditVerticesActive, Mode=OneWay}" />
+            <ToggleButton Content="&#xe1dc;" Command="{Binding MoveCommand}" ToolTip="Move" IsChecked="{Binding IsMoveActive, Mode=OneWay}" />
+            <ToggleButton Content="&#xe256;" Command="{Binding RotateCommand}" ToolTip="Rotate" IsChecked="{Binding IsRotateActive, Mode=OneWay}" />
+            <Button Content="&#xe2a2;" Command="{Binding ReshapeCommand}" ToolTip="Reshape" />
+            <Button Content="&#xe264;" Command="{Binding CutCommand}" ToolTip="Cut" />
+            <Button Content="&#xe075;" Command="{Binding ApplyCommand}" x:Name="applyButton" ToolTip="Apply Edits" />
+            <Button Content="&#xe30a;" Command="{Binding DiscardCommand}" ToolTip="Discard Edits" />
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Background="White" Visibility="{Binding IsLineInputActive, Converter={StaticResource converter}}">
+            <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
+            <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
+        </StackPanel>
+    </Grid>
+</UserControl>
