@@ -13,3 +13,5 @@ Demonstrates using the [`GeometryEditor`](https://developers.arcgis.com/net/api-
 
 ### Notes
 For property change notifications and commands, the [.NET Community MVVM Toolkit](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) is used.
+
+https://github.com/Esri/arcgis-maps-sdk-dotnet-demos/assets/1378165/d40a4f95-e33e-43b5-8eda-3c86ee733ddc
