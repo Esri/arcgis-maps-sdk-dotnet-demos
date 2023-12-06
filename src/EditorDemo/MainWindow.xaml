@@ -1,0 +1,57 @@
+﻿<Window x:Class="EditorDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EditorDemo"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+       xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="Geometry Editor Sample" Height="450" Width="800">
+    <Window.Resources>
+        <local:MapViewModel x:Key="VM" />
+    </Window.Resources>
+    <Grid DataContext="{StaticResource VM}">
+
+
+        <esri:MapView Map="{Binding Map, Mode=OneWay}" x:Name="mapView"
+                      esri:GeoViewController.GeoViewController="{Binding Controller, Source={StaticResource VM}}"
+                      GraphicsOverlays="{Binding GraphicsOverlays, Mode=OneWay}" 
+                      GeometryEditor="{Binding GeometryEditor, ElementName=editor, Mode=OneWay}" >
+            <Behaviors:Interaction.Triggers>
+                <Behaviors:EventTrigger EventName="GeoViewTapped" >
+                    <Behaviors:InvokeCommandAction Command="{Binding GeoViewTappedCommand}" PassEventArgsToCommand="True" />
+                </Behaviors:EventTrigger>
+            </Behaviors:Interaction.Triggers>
+        </esri:MapView>
+
+        <Border Background="White" BorderThickness="1" BorderBrush="Black" Margin="20" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="2">
+
+            <Behaviors:Interaction.Behaviors>
+                <Behaviors:MouseDragElementBehavior ConstrainToParentBounds="True" />
+            </Behaviors:Interaction.Behaviors>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border Background="CornflowerBlue" Padding="5,1,0,2">
+                    <TextBlock Text="Geometry Editor" Foreground="White" FontWeight="SemiBold" />
+                </Border>
+                <local:EditorToolbar x:Name="editor" GeoElement="{Binding EditFeatureSelection, Source={StaticResource VM}}"
+                                 GraphicsOverlays="{Binding GraphicsOverlays, ElementName=mapView, Mode=OneWay}"
+                                 Grid.Row="1" Margin="2">
+                    <Behaviors:Interaction.Triggers>
+                        <Behaviors:EventTrigger EventName="EditingCompleted" >
+                            <Behaviors:InvokeCommandAction Command="{Binding EditingCompletedCommand, Source={StaticResource VM}}" PassEventArgsToCommand="True" />
+                        </Behaviors:EventTrigger>
+                        <Behaviors:EventTrigger EventName="EditingCancelled" >
+                            <Behaviors:InvokeCommandAction Command="{Binding EditingCancelledCommand, Source={StaticResource VM}}" />
+                        </Behaviors:EventTrigger>
+                    </Behaviors:Interaction.Triggers>
+                </local:EditorToolbar>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

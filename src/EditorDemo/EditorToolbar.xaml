@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="EditorDemo.EditorToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EditorDemo"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.Resources>
+            <local:BoolToVisibilityConverter x:Key="converter" />
+            <Style TargetType="Button">
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="Background" Value="CornflowerBlue" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style TargetType="ToggleButton">
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="Background" Value="CornflowerBlue" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </Grid.Resources>
+        <StackPanel Orientation="Horizontal">
+      
+            <Button Content="&#xE10E;" Command="{Binding UndoCommand}" ToolTip="Undo" />
+            <Button Content="&#xE10D;" Command="{Binding RedoCommand}" ToolTip="Redo" />
+            <Button Content="&#xE8E6;" ToolTip="Unselect" IsEnabled="False" />
+            <Button Content="&#xE107;" ToolTip="Delete Selection" IsEnabled="False" />
+            <ToggleButton Content="&#xE104;" Command="{Binding EditVerticesCommand}" ToolTip="Edit Vertices" IsChecked="{Binding IsEditVerticesActive, Mode=OneWay}" />
+            <ToggleButton Content="&#xECE9;" Command="{Binding MoveCommand}" ToolTip="Move" IsChecked="{Binding IsMoveActive, Mode=OneWay}" />
+            <ToggleButton Content="&#xE777;" Command="{Binding RotateCommand}" ToolTip="Rotate" IsChecked="{Binding IsRotateActive, Mode=OneWay}" />
+            <Button Content="&#xE924;" Command="{Binding ReshapeCommand}" ToolTip="Reshape" Visibility="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource Self}, Converter={StaticResource converter}}" x:Name="reshapeButton" />
+            <Button Content="&#xE792;" Command="{Binding ApplyCommand}" x:Name="applyButton" ToolTip="Apply Edits" />
+            <Button Content="&#xE8BB;" Command="{Binding DiscardCommand}" ToolTip="Discard Edits" />
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Background="White" Visibility="{Binding IsReshapeActive, Converter={StaticResource converter}}">
+            <Button Content="&#xE8BB;" Command="{Binding ReshapeDiscardCommand}" ToolTip="Discard Reshape" />
+            <Button Content="&#xEC61;" Command="{Binding ReshapeAcceptCommand}" ToolTip="Accept Reshape" />
+        </StackPanel>
+    </Grid>
+</UserControl>
