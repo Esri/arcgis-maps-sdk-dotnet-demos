@@ -90,6 +90,8 @@ namespace EditorDemo
             {
                 EditorOverlay.Graphics.Clear();
             }
+            if (newValue == editor)
+                editor.SetInactive();
             RaiseActiveINPC();
         }
 
