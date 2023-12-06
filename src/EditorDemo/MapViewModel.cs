@@ -25,7 +25,7 @@ namespace EditorDemo
 
         private async void LoadMap()
         {
-            Map = await MapCreator.CreateMap(true);
+            Map = await MapCreator.CreateOgcConformanceMap(true);
         }
 
         public MapViewController Controller { get; } = new MapViewController();

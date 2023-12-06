@@ -12,21 +12,26 @@ namespace EditorDemo
     /// </summary>
     internal static class MapCreator
     {
-        public static async Task<Map> CreateMap(bool recreate = true)
+        /// <summary>
+        /// Generates the OGC Conformance Map from the OGC Simple Features Specification v1.1.0
+        /// </summary>
+        /// <param name="recreate">Deletes any previous instance and creates a new database</param>
+        /// <returns>Map backed by a local mobile geodatabase</returns>
+        public static async Task<Map> CreateOgcConformanceMap(bool recreate = true, string filename = "MapData.geodatabase")
         {
             Map map = new Map();
             var sr = SpatialReferences.WebMercator;
             Geodatabase? gdb = null;
-            if(File.Exists("MapData.geodatabase"))
+            if(File.Exists(filename))
             {
                 if(recreate)
-                    File.Delete("MapData.geodatabase");
+                    File.Delete(filename);
                 else
-                    gdb = await Esri.ArcGISRuntime.Data.Geodatabase.OpenAsync("MapData.geodatabase");
+                    gdb = await Esri.ArcGISRuntime.Data.Geodatabase.OpenAsync(filename);
             }
             if (gdb is null)
             {
-                gdb = await Esri.ArcGISRuntime.Data.Geodatabase.CreateAsync("MapData.geodatabase");
+                gdb = await Esri.ArcGISRuntime.Data.Geodatabase.CreateAsync(filename);
                 var lakes = await gdb.CreateTableAsync(CreateTable("lakes", sr, GeometryType.Polygon, ("name", FieldType.Text)));
                 var road_segments = await gdb.CreateTableAsync(CreateTable("road_segments", sr, GeometryType.Polyline, ("name", FieldType.Text), ("aliases", FieldType.Text), ("num_lanes", FieldType.Int32)));
                 var divided_routes = await gdb.CreateTableAsync(CreateTable("divided_routes", sr, GeometryType.Polyline, ("name", FieldType.Text), ("num_lanes", FieldType.Int32)));
@@ -116,18 +121,18 @@ namespace EditorDemo
                 await map_neatlines.AddFeatureAsync(f);
             }
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("map_neatlines"), System.Drawing.Color.LightGray));
-            map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("lakes"), System.Drawing.Color.CornflowerBlue));
+            map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("lakes"), System.Drawing.Color.CornflowerBlue, outlineColor: System.Drawing.Color.Blue));
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("forests"), System.Drawing.Color.Green));
+            map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("named_places"), System.Drawing.Color.Gray, hatch: true));
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("buildings"), System.Drawing.Color.Gray, System.Drawing.Color.Black, 1));
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("ponds"), System.Drawing.Color.LightBlue));
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("road_segments"), System.Drawing.Color.DarkGray, width : 3));
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("divided_routes"), System.Drawing.Color.DarkGray, width: 8));
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("streams"), System.Drawing.Color.CornflowerBlue, width : 5));
             map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("bridges"), System.Drawing.Color.Black));
-            map.OperationalLayers.Add(CreateLayer(gdb.GetGeodatabaseFeatureTable("named_places"), System.Drawing.Color.Transparent));
             return map;
         }
-        private static FeatureLayer CreateLayer(FeatureTable? table, System.Drawing.Color color, System.Drawing.Color? outlineColor = null, double width = 2)
+        private static FeatureLayer CreateLayer(FeatureTable? table, System.Drawing.Color color, System.Drawing.Color? outlineColor = null, double width = 2, bool hatch = false)
         {
             if(table is null) throw new ArgumentNullException(nameof(table));
             var layer = new FeatureLayer(table);
@@ -143,7 +148,9 @@ namespace EditorDemo
             else if (table.GeometryType == GeometryType.Polyline)
                 symbol = new SimpleLineSymbol() { Color = color, Width = width };
             else if (table.GeometryType == GeometryType.Polygon)
-                symbol = new SimpleFillSymbol() { Color = color, Outline = outlineColor.HasValue ? new SimpleLineSymbol() { Width = width, Color = outlineColor.Value } : null };
+            {
+                symbol = new SimpleFillSymbol() { Color = color, Style = hatch ? SimpleFillSymbolStyle.ForwardDiagonal : SimpleFillSymbolStyle.Solid, Outline = outlineColor.HasValue ? new SimpleLineSymbol() { Width = width, Color = outlineColor.Value } : null };
+            }
             layer.Renderer = new SimpleRenderer(symbol);
             return layer;
         }
