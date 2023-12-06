@@ -5,7 +5,8 @@ You can also find a set of smaller feature-focused samples in the [ArcGIS Maps S
 
 ### Demos
 
-* [`Symbol Editor`](src/SymbolEditor) - A WPF .NET Core app (and MSIX installer project) that shows using mobile styles, and creating/editing vector symbol layers. 
+* [`Geometry Editor`](src/GeometryEditor) - A WPF .NET app that shows extending the Geometry Editor for more advanced editing workflows. 
+* [`Symbol Editor`](src/SymbolEditor) - A WPF .NET app (and MSIX installer project) that shows using mobile styles, and creating/editing vector symbol layers. 
 * [`Turn-by-Turn Routing`](src/TurnByTurn) - A turn-by-turn app that shows routing and navigation on WPF, UWP, and MAUI.
 * [`MAUI Portal Sign In`](src/MauiSignin) - Demonstrates using OAuth to sign into an ArcGIS Portal, retrieve and save an ArcGIS Maps SDK license, and store credentials persisting across application sessions.
 * [`Using an External GPS Device`](src/ExternalNmeaGPS) - A Windows Desktop app showing how to use data from an external GPS or NMEA log file to power the MapView's LocationDisplay.
