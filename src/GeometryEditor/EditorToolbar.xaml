@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.Resources>
-            <FontFamily x:Key="calcite-font-24" >#calcite-ui-icons-24</FontFamily>
+            <FontFamily x:Key="calcite-font-24" >./#calcite-ui-icons-24</FontFamily>
             <local:BoolToVisibilityConverter x:Key="converter" />
             <Style TargetType="Button">
                 <Setter Property="Width" Value="30" />
