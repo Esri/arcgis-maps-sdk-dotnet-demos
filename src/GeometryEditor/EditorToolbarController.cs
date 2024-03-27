@@ -28,7 +28,7 @@ namespace EditorDemo
         {
             if (e.PropertyName == nameof(GeometryEditor.Geometry))
                 LineInputAcceptCommand.NotifyCanExecuteChanged();
-        }
+            }
 
         private void Editor_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -67,6 +67,8 @@ namespace EditorDemo
             OnPropertyChanged(nameof(IsReshapeActive));
             OnPropertyChanged(nameof(IsCutActive));
             OnPropertyChanged(nameof(IsLineInputActive));
+            OnPropertyChanged(nameof(IsEditorSnappingEnabled));
+            OnPropertyChanged(nameof(IsLineInputEditorSnappingEnabled));
         }
 
         public bool IsMoveActive => GeometryEditor == editor && editor.IsMoveActive;
@@ -75,13 +77,16 @@ namespace EditorDemo
         public bool IsReshapeActive => IsLineInputActive && lineInputMode == "Reshape";
         public bool IsCutActive => IsLineInputActive && lineInputMode == "Cut";
         public bool IsLineInputActive => GeometryEditor == lineInputEditor;
+        public bool IsEditorSnappingEnabled => GeometryEditor == editor && editor.IsSnappingEnabled;
+        public bool IsLineInputEditorSnappingEnabled => GeometryEditor == lineInputEditor && lineInputEditor.SnapSettings.IsEnabled;
+
 
         [ObservableProperty]
         private GeometryEditor? _geometryEditor;
 
         partial void OnGeometryEditorChanged(GeometryEditor? oldValue, GeometryEditor? newValue)
         {
-            if(newValue != editor)
+            if (newValue != editor)
             {
                 // Add current state of geometry to temporary overlay while using a different editor
                 EditorOverlay.Graphics.Add(new Graphic(editor.Geometry, editor.Symbol) { IsSelected = true });
@@ -114,7 +119,7 @@ namespace EditorDemo
             }
         }
 
-        
+
         [ObservableProperty]
         private GeoElement? _geoElement;
 
@@ -161,6 +166,8 @@ namespace EditorDemo
             ApplyCommand.NotifyCanExecuteChanged();
             DeleteSelectionCommand.NotifyCanExecuteChanged();
             ClearSelectionCommand.NotifyCanExecuteChanged();
+            EditorToggleSnappingCommand.NotifyCanExecuteChanged();
+            LineInputEditorToggleSnappingCommand.NotifyCanExecuteChanged();
         }
 
         private GraphicsOverlay? GetGraphicsOwner(Graphic g)

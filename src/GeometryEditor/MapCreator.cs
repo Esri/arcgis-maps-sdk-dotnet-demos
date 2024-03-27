@@ -166,6 +166,7 @@ namespace EditorDemo
                 symbol = new SimpleFillSymbol() { Color = color, Style = hatch ? SimpleFillSymbolStyle.ForwardDiagonal : SimpleFillSymbolStyle.Solid, Outline = outlineColor.HasValue ? new SimpleLineSymbol() { Width = width, Color = outlineColor.Value } : null };
             }
             layer.Renderer = new SimpleRenderer(symbol);
+            layer.TilingMode = FeatureTilingMode.EnabledWithFullResolutionWhenSupported;
             return layer;
         }
 

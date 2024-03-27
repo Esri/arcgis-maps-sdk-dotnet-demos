@@ -6,47 +6,86 @@
              xmlns:local="clr-namespace:EditorDemo"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.Resources>
-            <FontFamily x:Key="calcite-font-24" >./#calcite-ui-icons-24</FontFamily>
-            <local:BoolToVisibilityConverter x:Key="converter" />
-            <Style TargetType="Button">
-                <Setter Property="Width" Value="30" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="Margin" Value="2" />
-                <Setter Property="Background" Value="CornflowerBlue" />
-                <Setter Property="Foreground" Value="White" />
-                <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-            <Style TargetType="ToggleButton">
-                <Setter Property="Width" Value="30" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="Margin" Value="2" />
-                <Setter Property="Background" Value="CornflowerBlue" />
-                <Setter Property="Foreground" Value="White" />
-                <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-        </Grid.Resources>
-        <StackPanel Orientation="Horizontal">
+  <Grid>
+    <Grid.Resources>
+      <FontFamily x:Key="calcite-font-24" >./#calcite-ui-icons-24</FontFamily>
+      <local:BoolToVisibilityConverter x:Key="converter" />
+      <Style TargetType="Button">
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Background" Value="CornflowerBlue" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
+        <Setter Property="FontSize" Value="20" />
+      </Style>
+      <Style TargetType="ToggleButton">
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Background" Value="CornflowerBlue" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
+        <Setter Property="FontSize" Value="20" />
+      </Style>
+      <Style TargetType="ComboBox">
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Background" Value="CornflowerBlue" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
+        <Setter Property="FontSize" Value="10" />
+      </Style>
+    </Grid.Resources>
+    <StackPanel Orientation="Horizontal">
 
-            <Button Content="&#xe2d6;" Command="{Binding UndoCommand}" ToolTip="Undo" />
-            <Button Content="&#xe23e;" Command="{Binding RedoCommand}" ToolTip="Redo" />
-            <Button Content="&#xe2db;" ToolTip="Unselect" Command="{Binding ClearSelectionCommand}" />
-            <Button Content="&#xe2d0;" ToolTip="Delete Selection" Command="{Binding DeleteSelectionCommand}" />
-            <ToggleButton Content="&#xe2ea;" Command="{Binding EditVerticesCommand}" ToolTip="Edit Vertices" IsChecked="{Binding IsEditVerticesActive, Mode=OneWay}" />
-            <ToggleButton Content="&#xe1dc;" Command="{Binding MoveCommand}" ToolTip="Move" IsChecked="{Binding IsMoveActive, Mode=OneWay}" />
-            <ToggleButton Content="&#xe256;" Command="{Binding RotateCommand}" ToolTip="Rotate" IsChecked="{Binding IsRotateActive, Mode=OneWay}" />
-            <Button Content="&#xe2a2;" Command="{Binding ReshapeCommand}" ToolTip="Reshape" />
-            <Button Content="&#xe264;" Command="{Binding CutCommand}" ToolTip="Cut" />
-            <Button Content="&#xe075;" Command="{Binding ApplyCommand}" x:Name="applyButton" ToolTip="Apply Edits" />
-            <Button Content="&#xe30a;" Command="{Binding DiscardCommand}" ToolTip="Discard Edits" />
+      <Button Content="&#xe2d6;" Command="{Binding UndoCommand}" ToolTip="Undo" />
+      <Button Content="&#xe23e;" Command="{Binding RedoCommand}" ToolTip="Redo" />
+      <Button Content="&#xe2db;" ToolTip="Unselect" Command="{Binding ClearSelectionCommand}" />
+      <Button Content="&#xe2d0;" ToolTip="Delete Selection" Command="{Binding DeleteSelectionCommand}" />
+      <ToggleButton Content="&#xe2ea;" Command="{Binding EditVerticesCommand}" ToolTip="Edit Vertices" IsChecked="{Binding IsEditVerticesActive, Mode=OneWay}" />
+      <ToggleButton Content="S" Command="{Binding EditorToggleSnappingCommand}" ToolTip="Toggle Snapping" IsChecked="{Binding IsEditorSnappingEnabled, Mode=OneWay}" />
+      <ComboBox ItemsSource="{Binding EditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <Grid Margin="5" VerticalAlignment="Center">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="{Binding Source.Name}" />
+              <CheckBox Grid.Column="1" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" />
+            </Grid>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      <ToggleButton Content="&#xe1dc;" Command="{Binding MoveCommand}" ToolTip="Move" IsChecked="{Binding IsMoveActive, Mode=OneWay}" />
+      <ToggleButton Content="&#xe256;" Command="{Binding RotateCommand}" ToolTip="Rotate" IsChecked="{Binding IsRotateActive, Mode=OneWay}" />
+      <Button Content="&#xe2a2;" Command="{Binding ReshapeCommand}" ToolTip="Reshape" />
+      <Button Content="&#xe264;" Command="{Binding CutCommand}" ToolTip="Cut" />
+      <Button Content="&#xe075;" Command="{Binding ApplyCommand}" x:Name="applyButton" ToolTip="Apply Edits" />
+      <Button Content="&#xe30a;" Command="{Binding DiscardCommand}" ToolTip="Discard Edits" />
 
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Background="White" Visibility="{Binding IsLineInputActive, Converter={StaticResource converter}}">
-            <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
-            <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
-        </StackPanel>
-    </Grid>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Background="White" Visibility="{Binding IsLineInputActive, Converter={StaticResource converter}}">
+      <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
+      <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
+      <ToggleButton Content="S" Command="{Binding LineInputEditorToggleSnappingCommand}" ToolTip="Toggle Snapping" IsChecked="{Binding IsLineInputEditorSnappingEnabled, Mode=OneWay}" />
+      <ComboBox ItemsSource="{Binding LineInputEditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <Grid Margin="5" VerticalAlignment="Center">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="{Binding Source.Name}" />
+              <CheckBox Grid.Column="1" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" />
+            </Grid>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </StackPanel>
+  </Grid>
 </UserControl>

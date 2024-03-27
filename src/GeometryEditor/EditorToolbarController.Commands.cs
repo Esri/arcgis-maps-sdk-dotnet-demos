@@ -1,10 +1,13 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.UI;
+using Esri.ArcGISRuntime.UI.Editing;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -23,7 +26,7 @@ namespace EditorDemo
             editor.ClearSelection();
         }
 
-        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true && 
+        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true &&
             (editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorGeometry || editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorMidVertex);
 
         [RelayCommand(CanExecute = nameof(CanDeleteSelection))]
@@ -38,7 +41,7 @@ namespace EditorDemo
         [RelayCommand(CanExecute = nameof(CanEditVertices))]
         private void EditVertices()
         {
-            if(GeometryEditor == editor && editor.IsEditVerticesActive)
+            if (GeometryEditor == editor && editor.IsEditVerticesActive)
             {
                 editor.SetInactive();
                 return;
@@ -134,7 +137,7 @@ namespace EditorDemo
                 }
                 if (lineInputMode == nameof(Cut))
                 {
-                    var cutGeometry = GeometryEngine.Cut(mp, line).Where(g=>g.GeometryType == editor.Geometry.GeometryType).ToArray();
+                    var cutGeometry = GeometryEngine.Cut(mp, line).Where(g => g.GeometryType == editor.Geometry.GeometryType).ToArray();
                     if (cutGeometry != null && cutGeometry.Length > 0)
                     {
                         if (cutGeometry.Length == 1)
@@ -172,6 +175,7 @@ namespace EditorDemo
             CutCommand.NotifyCanExecuteChanged();
             LineInputAcceptCommand.NotifyCanExecuteChanged();
             LineInputDiscardCommand.NotifyCanExecuteChanged();
+            LineInputEditorToggleSnappingCommand.NotifyCanExecuteChanged();
         }
 
         private bool CanReshapeDiscard => lineInputEditor.IsStarted;
@@ -186,16 +190,17 @@ namespace EditorDemo
             CutCommand.NotifyCanExecuteChanged();
             LineInputAcceptCommand.NotifyCanExecuteChanged();
             LineInputDiscardCommand.NotifyCanExecuteChanged();
+            LineInputEditorToggleSnappingCommand.NotifyCanExecuteChanged();
         }
 
-        private bool CanApply => CanEditGeometry(GeoElement) && editor.IsStarted && GeoElement != null &&(editor.Geometry?.IsEmpty ?? true) == false;
+        private bool CanApply => CanEditGeometry(GeoElement) && editor.IsStarted && GeoElement != null && (editor.Geometry?.IsEmpty ?? true) == false;
 
         [RelayCommand(CanExecute = nameof(CanApply))]
         private void Apply()
         {
             Debug.Assert(GeoElement != null);
             var geometry = editor.Stop();
-            if (geometry != null) 
+            if (geometry != null)
                 EditingCompleted?.Invoke(this, geometry);
         }
 
@@ -203,5 +208,54 @@ namespace EditorDemo
 
         [RelayCommand(CanExecute = nameof(CanDiscard))]
         private void Discard() => EditingCancelled?.Invoke(this, EventArgs.Empty);
+
+        [RelayCommand(CanExecute = nameof(CanMove))]
+        private void EditorToggleSnapping()
+        {
+            if (IsEditorSnappingEnabled)
+            {
+                editor.SnapSettings.IsEnabled = false;
+                EditorSnapSourceSettings.Clear();
+                return;
+            }
+
+            if (GeoElement is Feature feature && feature.FeatureTable?.Layer is FeatureLayer layer)
+            {
+                editor.SnapSettings.SyncSourceSettings();
+                editor.SnapSettings.IsEnabled = true;
+
+                foreach (var sourceSetting in editor.SnapSettings.SourceSettings)
+                {
+                    EditorSnapSourceSettings.Add(sourceSetting);
+                }
+            }
+        }
+
+        [RelayCommand(CanExecute = nameof(CanDiscard))]
+        private void LineInputEditorToggleSnapping()
+        {
+            if (IsLineInputEditorSnappingEnabled)
+            {
+                lineInputEditor.SnapSettings.IsEnabled = false;
+                LineInputEditorSnapSourceSettings.Clear();
+                return;
+            }
+            if (GeoElement is Feature feature && feature.FeatureTable?.Layer is FeatureLayer layer)
+            {
+                lineInputEditor.SnapSettings.SyncSourceSettings();
+                lineInputEditor.SnapSettings.IsEnabled = true;
+
+                foreach (var sourceSetting in lineInputEditor.SnapSettings.SourceSettings)
+                {
+                    LineInputEditorSnapSourceSettings.Add(sourceSetting);
+                }
+            }
+        }
+
+        [ObservableProperty]
+        private ObservableCollection<SnapSourceSettings> editorSnapSourceSettings = [];
+
+        [ObservableProperty]
+        private ObservableCollection<SnapSourceSettings> lineInputEditorSnapSourceSettings = [];
     }
 }

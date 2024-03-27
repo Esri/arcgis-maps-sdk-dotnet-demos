@@ -116,6 +116,7 @@ namespace EditorDemo
         public bool IsMoveActive => IsStarted && Tool == _moveTool;
         public bool IsRotateActive => IsStarted && Tool == _rotateTool;
         public bool IsEditVerticesActive => IsStarted && Tool == _vertexTool;
+        public bool IsSnappingEnabled => IsStarted && SnapSettings.IsEnabled;
 
         public MyGeometryEditor()
         {
