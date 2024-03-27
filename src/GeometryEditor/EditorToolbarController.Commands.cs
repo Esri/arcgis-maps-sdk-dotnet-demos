@@ -26,7 +26,7 @@ namespace EditorDemo
             editor.ClearSelection();
         }
 
-        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true &&
+        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true && 
             (editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorGeometry || editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorMidVertex);
 
         [RelayCommand(CanExecute = nameof(CanDeleteSelection))]
@@ -41,7 +41,7 @@ namespace EditorDemo
         [RelayCommand(CanExecute = nameof(CanEditVertices))]
         private void EditVertices()
         {
-            if (GeometryEditor == editor && editor.IsEditVerticesActive)
+            if(GeometryEditor == editor && editor.IsEditVerticesActive)
             {
                 editor.SetInactive();
                 return;
@@ -137,7 +137,7 @@ namespace EditorDemo
                 }
                 if (lineInputMode == nameof(Cut))
                 {
-                    var cutGeometry = GeometryEngine.Cut(mp, line).Where(g => g.GeometryType == editor.Geometry.GeometryType).ToArray();
+                    var cutGeometry = GeometryEngine.Cut(mp, line).Where(g=>g.GeometryType == editor.Geometry.GeometryType).ToArray();
                     if (cutGeometry != null && cutGeometry.Length > 0)
                     {
                         if (cutGeometry.Length == 1)
@@ -191,14 +191,14 @@ namespace EditorDemo
             LineInputDiscardCommand.NotifyCanExecuteChanged();
         }
 
-        private bool CanApply => CanEditGeometry(GeoElement) && editor.IsStarted && GeoElement != null && (editor.Geometry?.IsEmpty ?? true) == false;
+        private bool CanApply => CanEditGeometry(GeoElement) && editor.IsStarted && GeoElement != null &&(editor.Geometry?.IsEmpty ?? true) == false;
 
         [RelayCommand(CanExecute = nameof(CanApply))]
         private void Apply()
         {
             Debug.Assert(GeoElement != null);
             var geometry = editor.Stop();
-            if (geometry != null)
+            if (geometry != null) 
                 EditingCompleted?.Invoke(this, geometry);
         }
 

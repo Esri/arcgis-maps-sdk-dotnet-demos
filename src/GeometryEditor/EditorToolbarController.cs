@@ -28,7 +28,7 @@ namespace EditorDemo
         {
             if (e.PropertyName == nameof(GeometryEditor.Geometry))
                 LineInputAcceptCommand.NotifyCanExecuteChanged();
-            }
+        }
 
         private void Editor_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -83,7 +83,7 @@ namespace EditorDemo
 
         partial void OnGeometryEditorChanged(GeometryEditor? oldValue, GeometryEditor? newValue)
         {
-            if (newValue != editor)
+            if(newValue != editor)
             {
                 // Add current state of geometry to temporary overlay while using a different editor
                 EditorOverlay.Graphics.Add(new Graphic(editor.Geometry, editor.Symbol) { IsSelected = true });
@@ -116,7 +116,7 @@ namespace EditorDemo
             }
         }
 
-
+        
         [ObservableProperty]
         private GeoElement? _geoElement;
 
