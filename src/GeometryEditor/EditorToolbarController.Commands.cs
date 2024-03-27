@@ -175,7 +175,6 @@ namespace EditorDemo
             CutCommand.NotifyCanExecuteChanged();
             LineInputAcceptCommand.NotifyCanExecuteChanged();
             LineInputDiscardCommand.NotifyCanExecuteChanged();
-            LineInputEditorToggleSnappingCommand.NotifyCanExecuteChanged();
         }
 
         private bool CanReshapeDiscard => lineInputEditor.IsStarted;
@@ -190,7 +189,6 @@ namespace EditorDemo
             CutCommand.NotifyCanExecuteChanged();
             LineInputAcceptCommand.NotifyCanExecuteChanged();
             LineInputDiscardCommand.NotifyCanExecuteChanged();
-            LineInputEditorToggleSnappingCommand.NotifyCanExecuteChanged();
         }
 
         private bool CanApply => CanEditGeometry(GeoElement) && editor.IsStarted && GeoElement != null && (editor.Geometry?.IsEmpty ?? true) == false;
@@ -209,10 +207,12 @@ namespace EditorDemo
         [RelayCommand(CanExecute = nameof(CanDiscard))]
         private void Discard() => EditingCancelled?.Invoke(this, EventArgs.Empty);
 
-        [RelayCommand(CanExecute = nameof(CanMove))]
-        private void EditorToggleSnapping()
+        [ObservableProperty]
+        private bool isEditorSnappingEnabled;
+
+        partial void OnIsEditorSnappingEnabledChanged(bool value)
         {
-            if (IsEditorSnappingEnabled)
+            if (!value)
             {
                 editor.SnapSettings.IsEnabled = false;
                 EditorSnapSourceSettings.Clear();
@@ -231,10 +231,12 @@ namespace EditorDemo
             }
         }
 
-        [RelayCommand(CanExecute = nameof(CanDiscard))]
-        private void LineInputEditorToggleSnapping()
+        [ObservableProperty]
+        private bool isLineInputEditorSnappingEnabled;
+
+        partial void OnIsLineInputEditorSnappingEnabledChanged(bool value)
         {
-            if (IsLineInputEditorSnappingEnabled)
+            if (!value)
             {
                 lineInputEditor.SnapSettings.IsEnabled = false;
                 LineInputEditorSnapSourceSettings.Clear();

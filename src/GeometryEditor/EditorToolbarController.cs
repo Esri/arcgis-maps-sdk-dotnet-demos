@@ -77,9 +77,6 @@ namespace EditorDemo
         public bool IsReshapeActive => IsLineInputActive && lineInputMode == "Reshape";
         public bool IsCutActive => IsLineInputActive && lineInputMode == "Cut";
         public bool IsLineInputActive => GeometryEditor == lineInputEditor;
-        public bool IsEditorSnappingEnabled => GeometryEditor == editor && editor.IsSnappingEnabled;
-        public bool IsLineInputEditorSnappingEnabled => GeometryEditor == lineInputEditor && lineInputEditor.SnapSettings.IsEnabled;
-
 
         [ObservableProperty]
         private GeometryEditor? _geometryEditor;
@@ -166,8 +163,6 @@ namespace EditorDemo
             ApplyCommand.NotifyCanExecuteChanged();
             DeleteSelectionCommand.NotifyCanExecuteChanged();
             ClearSelectionCommand.NotifyCanExecuteChanged();
-            EditorToggleSnappingCommand.NotifyCanExecuteChanged();
-            LineInputEditorToggleSnappingCommand.NotifyCanExecuteChanged();
         }
 
         private GraphicsOverlay? GetGraphicsOwner(Graphic g)
