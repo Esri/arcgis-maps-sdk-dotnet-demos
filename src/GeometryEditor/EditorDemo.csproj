@@ -9,12 +9,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-      <RuntimeNugetPackageVersion>200.4.0</RuntimeNugetPackageVersion>
+    <RuntimeNugetPackageVersion>200.4.0</RuntimeNugetPackageVersion>
   </PropertyGroup>
 	
   <ItemGroup>
-	  <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="$(RuntimeNugetPackageVersion)" />
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="$(RuntimeNugetPackageVersion)" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 
