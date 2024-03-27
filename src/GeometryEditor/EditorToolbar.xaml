@@ -74,21 +74,21 @@
       <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
       <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
       <StackPanel Orientation="Horizontal">
-      <ToggleButton Content="S" ToolTip="Toggle Snapping" IsChecked="{Binding IsLineInputEditorSnappingEnabled}" />
-      <ComboBox ItemsSource="{Binding LineInputEditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="{Binding IsLineInputEditorSnappingEnabled, Converter={StaticResource converter}}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate>
-            <Grid Margin="5" VerticalAlignment="Center">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="{Binding Source.Name}" />
-              <CheckBox Grid.Column="1" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" />
-            </Grid>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
+        <ToggleButton Content="S" ToolTip="Toggle Snapping" IsChecked="{Binding IsLineInputEditorSnappingEnabled}" />
+        <ComboBox ItemsSource="{Binding LineInputEditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="{Binding IsLineInputEditorSnappingEnabled, Converter={StaticResource converter}}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="5" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding Source.Name}" />
+                <CheckBox Grid.Column="1" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" />
+              </Grid>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
       </StackPanel>
     </StackPanel>
   </Grid>
