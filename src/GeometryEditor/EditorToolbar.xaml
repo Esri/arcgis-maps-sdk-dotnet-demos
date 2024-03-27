@@ -46,7 +46,7 @@
             <Button Content="&#xe2d0;" ToolTip="Delete Selection" Command="{Binding DeleteSelectionCommand}" />
             <ToggleButton Content="&#xe2ea;" Command="{Binding EditVerticesCommand}" ToolTip="Edit Vertices" IsChecked="{Binding IsEditVerticesActive, Mode=OneWay}" />
             <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEditVerticesActive}">
-                <ToggleButton Content="S" ToolTip="Toggle Snapping" IsChecked="{Binding IsEditorSnappingEnabled}" />
+                <ToggleButton Content="&#xe290;" ToolTip="Toggle Snapping" IsChecked="{Binding IsEditorSnappingEnabled}" />
                 <ComboBox ItemsSource="{Binding EditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="{Binding IsEditorSnappingEnabled, Converter={StaticResource converter}}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -74,7 +74,7 @@
             <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
             <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
             <StackPanel Orientation="Horizontal">
-                <ToggleButton Content="S" ToolTip="Toggle Snapping" IsChecked="{Binding IsLineInputEditorSnappingEnabled}" />
+                <ToggleButton Content="&#xe290;" ToolTip="Toggle Snapping" IsChecked="{Binding IsLineInputEditorSnappingEnabled}" />
                 <ComboBox ItemsSource="{Binding LineInputEditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="{Binding IsLineInputEditorSnappingEnabled, Converter={StaticResource converter}}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
