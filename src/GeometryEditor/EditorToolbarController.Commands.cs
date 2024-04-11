@@ -41,7 +41,6 @@ namespace EditorDemo
         [RelayCommand(CanExecute = nameof(CanEditVertices))]
         private void EditVertices()
         {
-            IsEditorSnappingEnabled = !editor.IsEditVerticesActive;
             if (GeometryEditor == editor && editor.IsEditVerticesActive)
             {
                 editor.SetInactive();
@@ -105,7 +104,6 @@ namespace EditorDemo
             ReshapeCommand.NotifyCanExecuteChanged();
             LineInputAcceptCommand.NotifyCanExecuteChanged();
             LineInputDiscardCommand.NotifyCanExecuteChanged();
-            IsLineInputEditorSnappingEnabled = !CanUseLineInput;
         }
 
         [RelayCommand(CanExecute = nameof(CanUseLineInput))]
@@ -117,7 +115,6 @@ namespace EditorDemo
             CutCommand.NotifyCanExecuteChanged();
             LineInputAcceptCommand.NotifyCanExecuteChanged();
             LineInputDiscardCommand.NotifyCanExecuteChanged();
-            IsLineInputEditorSnappingEnabled = !CanUseLineInput;
         }
 
         private bool CanAcceptLineInput => lineInputEditor.IsStarted &&
