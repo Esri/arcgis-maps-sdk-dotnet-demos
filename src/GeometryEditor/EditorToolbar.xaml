@@ -45,9 +45,9 @@
             <Button Content="&#xe2db;" ToolTip="Unselect" Command="{Binding ClearSelectionCommand}" />
             <Button Content="&#xe2d0;" ToolTip="Delete Selection" Command="{Binding DeleteSelectionCommand}" />
             <ToggleButton Content="&#xe2ea;" Command="{Binding EditVerticesCommand}" ToolTip="Edit Vertices" IsChecked="{Binding IsEditVerticesActive, Mode=OneWay}" />
-            <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEditVerticesActive}">
-                <ToggleButton Content="&#xe290;" ToolTip="Toggle Snapping" IsChecked="{Binding IsEditorSnappingEnabled}" />
-                <ComboBox ItemsSource="{Binding EditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="{Binding IsEditorSnappingEnabled, Converter={StaticResource converter}}">
+            <Grid IsEnabled="{Binding IsEditorSnappingEnabled}">
+                <ToggleButton Content="&#xe290;" ToolTip="Select Snapping" x:Name="SnappingDropdownButton"/>
+                <ComboBox ItemsSource="{Binding EditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="Hidden" IsDropDownOpen="{Binding ElementName=SnappingDropdownButton, Path=IsChecked}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="5" VerticalAlignment="Center">
@@ -61,7 +61,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-            </StackPanel>
+            </Grid>
             <ToggleButton Content="&#xe1dc;" Command="{Binding MoveCommand}" ToolTip="Move" IsChecked="{Binding IsMoveActive, Mode=OneWay}" />
             <ToggleButton Content="&#xe256;" Command="{Binding RotateCommand}" ToolTip="Rotate" IsChecked="{Binding IsRotateActive, Mode=OneWay}" />
             <Button Content="&#xe2a2;" Command="{Binding ReshapeCommand}" ToolTip="Reshape" />
@@ -73,9 +73,9 @@
         <StackPanel Orientation="Horizontal" Background="White" Visibility="{Binding IsLineInputActive, Converter={StaticResource converter}}">
             <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
             <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
-            <StackPanel Orientation="Horizontal">
-                <ToggleButton Content="&#xe290;" ToolTip="Toggle Snapping" IsChecked="{Binding IsLineInputEditorSnappingEnabled}" />
-                <ComboBox ItemsSource="{Binding LineInputEditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="{Binding IsLineInputEditorSnappingEnabled, Converter={StaticResource converter}}">
+            <Grid IsEnabled="{Binding IsLineInputEditorSnappingEnabled}">
+                <ToggleButton Content="&#xe290;" ToolTip="Select Snapping" x:Name="LineEditorSnappingDropdownButton"/>
+                <ComboBox ItemsSource="{Binding LineInputEditorSnapSourceSettings}" IsReadOnly="True" IsEditable="False" HorizontalContentAlignment="Stretch" Visibility="Hidden" IsDropDownOpen="{Binding ElementName=LineEditorSnappingDropdownButton, Path=IsChecked}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="5" VerticalAlignment="Center">
@@ -89,7 +89,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-            </StackPanel>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>
