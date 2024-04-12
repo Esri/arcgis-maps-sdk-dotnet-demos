@@ -55,7 +55,9 @@
                 </ToggleButton>
                 <Popup IsOpen="{Binding ElementName=SnappingDropdownButton, Path=IsChecked, Mode=OneWay}"  PlacementTarget="{Binding ElementName=SnappingDropdownButton}" StaysOpen="False">
                     <StackPanel>
-                        <CheckBox Margin="5" VerticalAlignment="Center" Content="Snapping Enabled " IsChecked="{Binding IsEditorSnappingEnabled}"/>
+                        <StackPanel Orientation="Horizontal" Background="CornflowerBlue" >
+                            <CheckBox Foreground="White" Margin="5" Content="Snapping Enabled " IsChecked="{Binding IsEditorSnappingEnabled}"/>
+                        </StackPanel>
                         <ListView ItemsSource="{Binding EditorSnapSourceSettings}" Visibility="{Binding IsEditorSnappingEnabled, Converter={StaticResource converter}}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
@@ -64,7 +66,7 @@
                             </ListView.ItemContainerStyle>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Margin="5" VerticalAlignment="Center" IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
+                                    <CheckBox Margin="5" IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -92,7 +94,9 @@
                 </ToggleButton>
                 <Popup IsOpen="{Binding ElementName=LineEditorSnappingDropdownButton, Path=IsChecked, Mode=OneWay}"  PlacementTarget="{Binding ElementName=LineEditorSnappingDropdownButton}" StaysOpen="False">
                     <StackPanel>
-                        <CheckBox Margin="5" VerticalAlignment="Center" Content="Snapping Enabled " IsChecked="{Binding IsLineInputEditorSnappingEnabled}"/>
+                        <StackPanel Orientation="Horizontal" Background="CornflowerBlue" >
+                            <CheckBox Foreground="White" Margin="5" Content="Snapping Enabled " IsChecked="{Binding IsLineInputEditorSnappingEnabled}"/>
+                        </StackPanel>
                         <ListView ItemsSource="{Binding LineInputEditorSnapSourceSettings}" Visibility="{Binding IsLineInputEditorSnappingEnabled, Converter={StaticResource converter}}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
@@ -101,7 +105,7 @@
                             </ListView.ItemContainerStyle>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Margin="5" VerticalAlignment="Center" IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
+                                    <CheckBox Margin="5" IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
