@@ -99,5 +99,11 @@ namespace EditorDemo
         /// <param name="geoElement"></param>
         /// <returns></returns>
         public static bool CanEditGeometry(GeoElement? geoElement) => EditorToolbarController.CanEditGeometry(geoElement);
+
+        private void SnappingDropdownButton_Click(object sender, RoutedEventArgs e)
+        {
+            SnappingDropdownPopup.PlacementTarget = sender as UIElement;
+            SnappingDropdownPopup.IsOpen = !SnappingDropdownPopup.IsOpen; // This toggle is not working as expected, If Popup's `StayOpen' is set to true, this works but the popup does not close when clicked outside.
+        }
     }
 }

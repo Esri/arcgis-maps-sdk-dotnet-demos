@@ -6,6 +6,7 @@ using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.UI.Editing;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -46,6 +47,7 @@ namespace EditorDemo
                 case nameof(MyGeometryEditor.Tool):
                     {
                         ClearSelection();
+                        IsSnappingEnabled = false;
                         RaiseActiveINPC();
                         break;
                     }
@@ -67,8 +69,7 @@ namespace EditorDemo
             OnPropertyChanged(nameof(IsReshapeActive));
             OnPropertyChanged(nameof(IsCutActive));
             OnPropertyChanged(nameof(IsLineInputActive));
-            OnPropertyChanged(nameof(IsEditorSnappingEnabled));
-            OnPropertyChanged(nameof(IsLineInputEditorSnappingEnabled));
+            OnPropertyChanged(nameof(IsSnappingEnabled));
         }
 
         public bool IsMoveActive => GeometryEditor == editor && editor.IsMoveActive;
@@ -94,6 +95,7 @@ namespace EditorDemo
             }
             if (newValue == editor)
                 editor.SetInactive();
+            IsSnappingEnabled = false;
             RaiseActiveINPC();
         }
 
@@ -164,6 +166,31 @@ namespace EditorDemo
             DeleteSelectionCommand.NotifyCanExecuteChanged();
             ClearSelectionCommand.NotifyCanExecuteChanged();
         }
+
+
+        [ObservableProperty]
+        private bool isSnappingEnabled;
+
+        partial void OnIsSnappingEnabledChanged(bool value)
+        {
+            SnapSourceSettings.Clear();
+
+            if (GeometryEditor is not null)
+            {
+                if (value)
+                    GeometryEditor.SnapSettings.SyncSourceSettings();
+
+                GeometryEditor.SnapSettings.IsEnabled = value;
+
+                foreach (var sourceSetting in GeometryEditor.SnapSettings.SourceSettings)
+                {
+                    SnapSourceSettings.Add(sourceSetting);
+                }
+            }
+        }
+
+        [ObservableProperty]
+        private ObservableCollection<SnapSourceSettings> snapSourceSettings = [];
 
         private GraphicsOverlay? GetGraphicsOwner(Graphic g)
         {

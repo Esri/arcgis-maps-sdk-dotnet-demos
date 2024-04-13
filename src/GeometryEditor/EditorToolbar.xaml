@@ -46,32 +46,22 @@
             <Button Content="&#xe2d0;" ToolTip="Delete Selection" Command="{Binding DeleteSelectionCommand}" />
             <ToggleButton Content="&#xe2ea;" Command="{Binding EditVerticesCommand}" ToolTip="Edit Vertices" IsChecked="{Binding IsEditVerticesActive, Mode=OneWay}" />
             <Grid IsEnabled="{Binding IsEditVerticesActive}">
-                <ToggleButton ToolTip="Select Snapping" x:Name="SnappingDropdownButton" Width="auto">
+                <Button x:Name="SnappingDropdownButton" ToolTip="Select Snapping" Width="auto" Click="SnappingDropdownButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xe290;" />
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="5 0 0 0"/>
                         <TextBlock Text="&#xe076;" FontSize="10" VerticalAlignment="Bottom" />
                     </StackPanel>
-                </ToggleButton>
-                <Popup IsOpen="{Binding ElementName=SnappingDropdownButton, Path=IsChecked, Mode=OneWay}"  PlacementTarget="{Binding ElementName=SnappingDropdownButton}" StaysOpen="False">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Background="CornflowerBlue" >
-                            <CheckBox Foreground="White" Margin="5" Content="Snapping Enabled " IsChecked="{Binding IsEditorSnappingEnabled}"/>
-                        </StackPanel>
-                        <ListView ItemsSource="{Binding EditorSnapSourceSettings}" Visibility="{Binding IsEditorSnappingEnabled, Converter={StaticResource converter}}">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="Focusable" Value="false"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Margin="5" IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
-                </Popup>
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSnappingEnabled}" Value="True">
+                                    <Setter Property="Foreground" Value="Aqua" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
             <ToggleButton Content="&#xe1dc;" Command="{Binding MoveCommand}" ToolTip="Move" IsChecked="{Binding IsMoveActive, Mode=OneWay}" />
             <ToggleButton Content="&#xe256;" Command="{Binding RotateCommand}" ToolTip="Rotate" IsChecked="{Binding IsRotateActive, Mode=OneWay}" />
@@ -85,33 +75,42 @@
             <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
             <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
             <Grid IsEnabled="{Binding IsLineInputActive}">
-                <ToggleButton ToolTip="Select Snapping" x:Name="LineEditorSnappingDropdownButton" Width="auto">
+                <Button x:Name="LineInpuSnappingDropdownButton" ToolTip="Select Snapping" Width="auto" Click="SnappingDropdownButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xe290;" />
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="5 0 0 0"/>
                         <TextBlock Text="&#xe076;" FontSize="10" VerticalAlignment="Bottom" />
                     </StackPanel>
-                </ToggleButton>
-                <Popup IsOpen="{Binding ElementName=LineEditorSnappingDropdownButton, Path=IsChecked, Mode=OneWay}"  PlacementTarget="{Binding ElementName=LineEditorSnappingDropdownButton}" StaysOpen="False">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Background="CornflowerBlue" >
-                            <CheckBox Foreground="White" Margin="5" Content="Snapping Enabled " IsChecked="{Binding IsLineInputEditorSnappingEnabled}"/>
-                        </StackPanel>
-                        <ListView ItemsSource="{Binding LineInputEditorSnapSourceSettings}" Visibility="{Binding IsLineInputEditorSnappingEnabled, Converter={StaticResource converter}}">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="Focusable" Value="false"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Margin="5" IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
-                </Popup>
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSnappingEnabled}" Value="True">
+                                    <Setter Property="Foreground" Value="Aqua" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
         </StackPanel>
+        <Popup x:Name="SnappingDropdownPopup" StaysOpen="False" >
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Background="CornflowerBlue" >
+                    <CheckBox Foreground="White" Margin="5" Content="Snapping Enabled " IsChecked="{Binding IsSnappingEnabled}"/>
+                </StackPanel>
+                <ListView ItemsSource="{Binding SnapSourceSettings}" Visibility="{Binding IsSnappingEnabled, Converter={StaticResource converter}}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Focusable" Value="false"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </Popup>
     </Grid>
 </UserControl>

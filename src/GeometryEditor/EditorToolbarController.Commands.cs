@@ -26,7 +26,7 @@ namespace EditorDemo
             editor.ClearSelection();
         }
 
-        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true && 
+        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true &&
             (editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorGeometry || editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorMidVertex);
 
         [RelayCommand(CanExecute = nameof(CanDeleteSelection))]
@@ -198,7 +198,7 @@ namespace EditorDemo
         {
             Debug.Assert(GeoElement != null);
             var geometry = editor.Stop();
-            if (geometry != null) 
+            if (geometry != null)
                 EditingCompleted?.Invoke(this, geometry);
         }
 
@@ -206,58 +206,5 @@ namespace EditorDemo
 
         [RelayCommand(CanExecute = nameof(CanDiscard))]
         private void Discard() => EditingCancelled?.Invoke(this, EventArgs.Empty);
-
-        [ObservableProperty]
-        private bool isEditorSnappingEnabled;
-
-        partial void OnIsEditorSnappingEnabledChanged(bool value)
-        {
-            if (!value)
-            {
-                editor.SnapSettings.IsEnabled = false;
-                EditorSnapSourceSettings.Clear();
-                return;
-            }
-
-            if (GeoElement is Feature feature && feature.FeatureTable?.Layer is FeatureLayer layer)
-            {
-                editor.SnapSettings.SyncSourceSettings();
-                editor.SnapSettings.IsEnabled = true;
-
-                foreach (var sourceSetting in editor.SnapSettings.SourceSettings)
-                {
-                    EditorSnapSourceSettings.Add(sourceSetting);
-                }
-            }
-        }
-
-        [ObservableProperty]
-        private bool isLineInputEditorSnappingEnabled;
-
-        partial void OnIsLineInputEditorSnappingEnabledChanged(bool value)
-        {
-            if (!value)
-            {
-                lineInputEditor.SnapSettings.IsEnabled = false;
-                LineInputEditorSnapSourceSettings.Clear();
-                return;
-            }
-            if (GeoElement is Feature feature && feature.FeatureTable?.Layer is FeatureLayer layer)
-            {
-                lineInputEditor.SnapSettings.SyncSourceSettings();
-                lineInputEditor.SnapSettings.IsEnabled = true;
-
-                foreach (var sourceSetting in lineInputEditor.SnapSettings.SourceSettings)
-                {
-                    LineInputEditorSnapSourceSettings.Add(sourceSetting);
-                }
-            }
-        }
-
-        [ObservableProperty]
-        private ObservableCollection<SnapSourceSettings> editorSnapSourceSettings = [];
-
-        [ObservableProperty]
-        private ObservableCollection<SnapSourceSettings> lineInputEditorSnapSourceSettings = [];
     }
 }
