@@ -103,7 +103,12 @@ namespace EditorDemo
         private void SnappingDropdownButton_Click(object sender, RoutedEventArgs e)
         {
             SnappingDropdownPopup.PlacementTarget = sender as UIElement;
-            SnappingDropdownPopup.IsOpen = !SnappingDropdownPopup.IsOpen; // This toggle is not working as expected, If Popup's `StayOpen' is set to true, this works but the popup does not close when clicked outside.
+            SnappingDropdownPopup.IsOpen = !SnappingDropdownPopup.IsOpen;
+        }
+
+        private void ClosePopup_Click(object sender, RoutedEventArgs e)
+        {
+            SnappingDropdownPopup.IsOpen = false;
         }
     }
 }

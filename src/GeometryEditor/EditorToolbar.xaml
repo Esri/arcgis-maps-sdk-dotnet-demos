@@ -95,7 +95,8 @@
         </StackPanel>
         <Popup x:Name="SnappingDropdownPopup" StaysOpen="False" >
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Background="CornflowerBlue" >
+                <StackPanel Background="CornflowerBlue">
+                    <Button HorizontalAlignment="Right" Content="&#xe30A;" Click="ClosePopup_Click" Width="auto" Height="auto" FontSize="10" />
                     <CheckBox Foreground="White" Margin="5" Content="Snapping Enabled " IsChecked="{Binding IsSnappingEnabled}"/>
                 </StackPanel>
                 <ListView ItemsSource="{Binding SnapSourceSettings}" Visibility="{Binding IsSnappingEnabled, Converter={StaticResource converter}}">
