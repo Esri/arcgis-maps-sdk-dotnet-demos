@@ -1,13 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.UI;
-using Esri.ArcGISRuntime.UI.Editing;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -26,7 +23,7 @@ namespace EditorDemo
             editor.ClearSelection();
         }
 
-        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true &&
+        private bool CanDeleteSelection => CanEditGeometry(GeoElement) && GeometryEditor == editor && editor.SelectedElement?.CanDelete == true && 
             (editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorGeometry || editor.SelectedElement is not Esri.ArcGISRuntime.UI.Editing.GeometryEditorMidVertex);
 
         [RelayCommand(CanExecute = nameof(CanDeleteSelection))]
@@ -41,7 +38,7 @@ namespace EditorDemo
         [RelayCommand(CanExecute = nameof(CanEditVertices))]
         private void EditVertices()
         {
-            if (GeometryEditor == editor && editor.IsEditVerticesActive)
+            if(GeometryEditor == editor && editor.IsEditVerticesActive)
             {
                 editor.SetInactive();
                 return;
@@ -198,7 +195,7 @@ namespace EditorDemo
         {
             Debug.Assert(GeoElement != null);
             var geometry = editor.Stop();
-            if (geometry != null)
+            if (geometry != null) 
                 EditingCompleted?.Invoke(this, geometry);
         }
 
