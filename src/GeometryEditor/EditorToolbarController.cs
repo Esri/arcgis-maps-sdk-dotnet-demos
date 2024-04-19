@@ -126,7 +126,7 @@ namespace EditorDemo
             }
         }
 
-
+        
         [ObservableProperty]
         private GeoElement? _geoElement;
 
