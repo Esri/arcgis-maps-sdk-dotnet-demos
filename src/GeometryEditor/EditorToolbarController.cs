@@ -77,7 +77,7 @@ namespace EditorDemo
         public bool IsReshapeActive => IsLineInputActive && lineInputMode == "Reshape";
         public bool IsCutActive => IsLineInputActive && lineInputMode == "Cut";
         public bool IsLineInputActive => GeometryEditor == lineInputEditor;
-        public bool IsEditingActive => GeometryEditor is not null;
+        public bool IsEditingActive => GeometryEditor is not null && GeometryEditor.IsStarted;
 
         [ObservableProperty]
         private GeometryEditor? _geometryEditor;
