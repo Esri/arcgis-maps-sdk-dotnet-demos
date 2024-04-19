@@ -28,15 +28,6 @@
                 <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
                 <Setter Property="FontSize" Value="20" />
             </Style>
-            <Style TargetType="ComboBox">
-                <Setter Property="Width" Value="30" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="Margin" Value="2" />
-                <Setter Property="Background" Value="CornflowerBlue" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="FontFamily" Value="{StaticResource calcite-font-24}" />
-                <Setter Property="FontSize" Value="10" />
-            </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
