@@ -10,6 +10,7 @@
         Title="Geometry Editor Sample" Height="450" Width="800">
     <Window.Resources>
         <local:MapViewModel x:Key="VM" />
+        <local:BoolToVisibilityConverter x:Key="converter" />
     </Window.Resources>
     <Grid DataContext="{StaticResource VM}">
 
@@ -50,6 +51,22 @@
                         </Behaviors:EventTrigger>
                     </Behaviors:Interaction.Triggers>
                 </local:EditorToolbar>
+            </Grid>
+        </Border>
+
+        <Border Background="White" BorderThickness="1" BorderBrush="Black" Margin="20" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="2" DataContext="{Binding Path=DataContext, ElementName=editor}" Visibility="{Binding IsSettingsPanelVisible, Converter={StaticResource converter}}">
+            <Behaviors:Interaction.Behaviors>
+                <Behaviors:MouseDragElementBehavior ConstrainToParentBounds="True" />
+            </Behaviors:Interaction.Behaviors>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border Background="CornflowerBlue" Padding="5,1,0,2">
+                    <TextBlock Text="Settings" Foreground="White" FontWeight="SemiBold" />
+                </Border>
+                <local:SettingsMenu Grid.Row="1" Margin="2" />
             </Grid>
         </Border>
 

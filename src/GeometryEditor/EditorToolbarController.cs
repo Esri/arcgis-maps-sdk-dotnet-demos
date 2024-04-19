@@ -47,7 +47,6 @@ namespace EditorDemo
                 case nameof(MyGeometryEditor.Tool):
                     {
                         ClearSelection();
-                        IsSnappingEnabled = false;
                         RaiseActiveINPC();
                         break;
                     }
@@ -69,7 +68,7 @@ namespace EditorDemo
             OnPropertyChanged(nameof(IsReshapeActive));
             OnPropertyChanged(nameof(IsCutActive));
             OnPropertyChanged(nameof(IsLineInputActive));
-            OnPropertyChanged(nameof(IsSnappingEnabled));
+            OnPropertyChanged(nameof(IsEditingActive));
         }
 
         public bool IsMoveActive => GeometryEditor == editor && editor.IsMoveActive;
@@ -78,6 +77,7 @@ namespace EditorDemo
         public bool IsReshapeActive => IsLineInputActive && lineInputMode == "Reshape";
         public bool IsCutActive => IsLineInputActive && lineInputMode == "Cut";
         public bool IsLineInputActive => GeometryEditor == lineInputEditor;
+        public bool IsEditingActive => GeometryEditor is not null;
 
         [ObservableProperty]
         private GeometryEditor? _geometryEditor;
@@ -95,8 +95,16 @@ namespace EditorDemo
             }
             if (newValue == editor)
                 editor.SetInactive();
-            IsSnappingEnabled = false;
             RaiseActiveINPC();
+            CopySnapSettings(oldValue, newValue);
+        }
+
+        public void CopySnapSettings(GeometryEditor? source, GeometryEditor? target)
+        {
+            if (source is not null && target is not null)
+            {
+                target.SnapSettings = source.SnapSettings;
+            }
         }
 
         private GraphicsOverlayCollection? _graphicsOverlays;
@@ -118,7 +126,7 @@ namespace EditorDemo
             }
         }
 
-        
+
         [ObservableProperty]
         private GeoElement? _geoElement;
 
@@ -167,6 +175,8 @@ namespace EditorDemo
             ClearSelectionCommand.NotifyCanExecuteChanged();
         }
 
+        [ObservableProperty]
+        private bool isSettingsPanelVisible;
 
         [ObservableProperty]
         private bool isSnappingEnabled;

@@ -99,16 +99,5 @@ namespace EditorDemo
         /// <param name="geoElement"></param>
         /// <returns></returns>
         public static bool CanEditGeometry(GeoElement? geoElement) => EditorToolbarController.CanEditGeometry(geoElement);
-
-        private void SnappingDropdownButton_Click(object sender, RoutedEventArgs e)
-        {
-            SnappingDropdownPopup.PlacementTarget = sender as UIElement;
-            SnappingDropdownPopup.IsOpen = !SnappingDropdownPopup.IsOpen;
-        }
-
-        private void ClosePopup_Click(object sender, RoutedEventArgs e)
-        {
-            SnappingDropdownPopup.IsOpen = false;
-        }
     }
 }
