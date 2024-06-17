@@ -6,6 +6,7 @@ using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.UI.Editing;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -67,6 +68,7 @@ namespace EditorDemo
             OnPropertyChanged(nameof(IsReshapeActive));
             OnPropertyChanged(nameof(IsCutActive));
             OnPropertyChanged(nameof(IsLineInputActive));
+            OnPropertyChanged(nameof(IsEditingActive));
         }
 
         public bool IsMoveActive => GeometryEditor == editor && editor.IsMoveActive;
@@ -75,6 +77,7 @@ namespace EditorDemo
         public bool IsReshapeActive => IsLineInputActive && lineInputMode == "Reshape";
         public bool IsCutActive => IsLineInputActive && lineInputMode == "Cut";
         public bool IsLineInputActive => GeometryEditor == lineInputEditor;
+        public bool IsEditingActive => GeometryEditor is not null && GeometryEditor.IsStarted;
 
         [ObservableProperty]
         private GeometryEditor? _geometryEditor;
@@ -93,6 +96,15 @@ namespace EditorDemo
             if (newValue == editor)
                 editor.SetInactive();
             RaiseActiveINPC();
+            CopySnapSettings(oldValue, newValue);
+        }
+
+        public void CopySnapSettings(GeometryEditor? source, GeometryEditor? target)
+        {
+            if (source is not null && target is not null)
+            {
+                target.SnapSettings = source.SnapSettings;
+            }
         }
 
         private GraphicsOverlayCollection? _graphicsOverlays;
@@ -162,6 +174,33 @@ namespace EditorDemo
             DeleteSelectionCommand.NotifyCanExecuteChanged();
             ClearSelectionCommand.NotifyCanExecuteChanged();
         }
+
+        [ObservableProperty]
+        private bool isSettingsPanelVisible;
+
+        [ObservableProperty]
+        private bool isSnappingEnabled;
+
+        partial void OnIsSnappingEnabledChanged(bool value)
+        {
+            SnapSourceSettings.Clear();
+
+            if (GeometryEditor is not null)
+            {
+                if (value)
+                    GeometryEditor.SnapSettings.SyncSourceSettings();
+
+                GeometryEditor.SnapSettings.IsEnabled = value;
+
+                foreach (var sourceSetting in GeometryEditor.SnapSettings.SourceSettings)
+                {
+                    SnapSourceSettings.Add(sourceSetting);
+                }
+            }
+        }
+
+        [ObservableProperty]
+        private ObservableCollection<SnapSourceSettings> snapSourceSettings = [];
 
         private GraphicsOverlay? GetGraphicsOwner(Graphic g)
         {

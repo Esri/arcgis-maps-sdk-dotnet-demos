@@ -29,7 +29,11 @@
                 <Setter Property="FontSize" Value="20" />
             </Style>
         </Grid.Resources>
-        <StackPanel Orientation="Horizontal">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
 
             <Button Content="&#xe2d6;" Command="{Binding UndoCommand}" ToolTip="Undo" />
             <Button Content="&#xe23e;" Command="{Binding RedoCommand}" ToolTip="Redo" />
@@ -44,9 +48,12 @@
             <Button Content="&#xe30a;" Command="{Binding DiscardCommand}" ToolTip="Discard Edits" />
 
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Background="White" Visibility="{Binding IsLineInputActive, Converter={StaticResource converter}}">
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Background="White" Visibility="{Binding IsLineInputActive, Converter={StaticResource converter}}">
             <Button Content="&#xe075;" Command="{Binding LineInputAcceptCommand}" ToolTip="Accept" />
             <Button Content="&#xe30a;" Command="{Binding LineInputDiscardCommand}" ToolTip="Discard" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <ToggleButton Content="&#xe136;" ToolTip="Settings" x:Name="SettingsToggleButton" IsChecked="{Binding IsSettingsPanelVisible}" IsEnabled="{Binding IsEditingActive}" />
         </StackPanel>
     </Grid>
 </UserControl>
