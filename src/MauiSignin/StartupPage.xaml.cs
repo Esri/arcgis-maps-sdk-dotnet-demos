@@ -73,9 +73,6 @@ public partial class StartupPage : ContentPage
 
         AuthenticationManager.Current.Persistence = await CredentialPersistence.CreateDefaultAsync();
 
-        //Register oauth sign in for portal
-        AuthenticationManager.Current.OAuthUserConfigurations.Add(AppSettings.OAuthConfig);
-        
         if (AuthenticationManager.Current.Credentials.Any())
         {
             // Old credentials restored from persistance. Try to use them to load the portal

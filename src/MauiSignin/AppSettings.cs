@@ -15,6 +15,8 @@ internal class AppSettings : ModelBase
     public static Uri PortalUri { get; } = new Uri("https://www.arcgis.com/sharing/rest");
 
     #region OAuth Settings
+
+#error Update the OAUTH ClientID, Redirect URI and Redirect Scheme with your own values, then delete this line
     private const string OAuthClientId = "SET_CLIENT_ID";
     // Also update 'mauisignin' scheme in 
     //   ./Platforms/iOS/Info.plist
