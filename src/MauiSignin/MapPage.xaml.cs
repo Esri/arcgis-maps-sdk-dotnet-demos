@@ -4,8 +4,6 @@ namespace MauiSignin;
 
 public partial class MapPage : ContentPage
 {
-    private PortalItem item;
-
     public MapPage()
     {
         InitializeComponent();
