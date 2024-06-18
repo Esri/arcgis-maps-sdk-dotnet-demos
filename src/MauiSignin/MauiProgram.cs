@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.LifecycleEvents;
+using Esri.ArcGISRuntime.Security;
 namespace MauiSignin;
 
 public static class MauiProgram
@@ -28,7 +29,11 @@ public static class MauiProgram
                      });
                  })
 #endif
-            .UseArcGISRuntime();
+            .UseArcGISRuntime(config =>
+                config.ConfigureAuthentication(auth =>
+                    auth.AddOAuthUserConfiguration(AppSettings.OAuthConfig)
+                )
+            );
         return builder.Build();
     }
 }

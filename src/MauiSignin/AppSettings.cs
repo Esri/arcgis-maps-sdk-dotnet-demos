@@ -1,4 +1,5 @@
 using Esri.ArcGISRuntime.Portal;
+using Esri.ArcGISRuntime.Security;
 using System.ComponentModel;
 
 namespace MauiSignin;
@@ -7,20 +8,21 @@ internal class AppSettings : ModelBase
 {
     private AppSettings()
     {
-        
+
     }
     public static AppSettings Instance { get; } = new AppSettings();
-    
+
     public static Uri PortalUri { get; } = new Uri("https://www.arcgis.com/sharing/rest");
 
-    public static string OAuthClientId { get; } = "SET_CLIENT_ID";
-
+    #region OAuth Settings
+    private const string OAuthClientId = "SET_CLIENT_ID";
     // Also update 'mauisignin' scheme in 
     //   ./Platforms/iOS/Info.plist
     //   ./Platforms/Windows/Package.appxmanifest
     public const string OAuthRedirectScheme = "mauisignin";
-
-    public static Uri OAuthRedirectUri { get; } = new Uri(OAuthRedirectScheme + "://SET_REDIRECT_URL");
+    private const string OAuthRedirectUri = OAuthRedirectScheme + "://SET_REDIRECT_URL";
+    public static OAuthUserConfiguration OAuthConfig { get; } = new OAuthUserConfiguration(PortalUri, OAuthClientId, new Uri(OAuthRedirectUri));
+    #endregion OAuth Settings
 
     public ArcGISPortal? Portal => _PortalUser?.Portal;
     

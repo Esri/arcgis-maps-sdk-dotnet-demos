@@ -63,7 +63,7 @@ public partial class StartupPage : ContentPage
 
     private async Task FirstTimeSetupAsync()
     {
-        if (AppSettings.OAuthClientId == "SET_CLIENT_ID" || AppSettings.OAuthRedirectUri.OriginalString.Contains($"SET_REDIRECT_URL"))
+        if (AppSettings.OAuthConfig.ClientId == "SET_CLIENT_ID" || AppSettings.OAuthConfig.RedirectUrl.OriginalString.Contains($"SET_REDIRECT_URL"))
         {
             // Application isn't configured. Please update the oauth settings by using the ArcGIS Developer Portal at
             // https://developers.arcgis.com/applications
@@ -73,14 +73,9 @@ public partial class StartupPage : ContentPage
 
         AuthenticationManager.Current.Persistence = await CredentialPersistence.CreateDefaultAsync();
 
-        //Register server info for portal
-        ServerInfo portalServerInfo = new ServerInfo(AppSettings.PortalUri)
-        {
-            TokenAuthenticationType = TokenAuthenticationType.OAuthAuthorizationCode,
-            OAuthClientInfo = new OAuthClientInfo(AppSettings.OAuthClientId, AppSettings.OAuthRedirectUri)
-        };
-        AuthenticationManager.Current.RegisterServer(portalServerInfo);
-
+        //Register oauth sign in for portal
+        AuthenticationManager.Current.OAuthUserConfigurations.Add(AppSettings.OAuthConfig);
+        
         if (AuthenticationManager.Current.Credentials.Any())
         {
             // Old credentials restored from persistance. Try to use them to load the portal
