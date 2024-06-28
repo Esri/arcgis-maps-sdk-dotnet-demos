@@ -21,52 +21,7 @@
         <local:TrueToVisibleConverter x:Key="trueVizConv" />
         <local:DayOfYearToDateConverter x:Key="dayOfYearToDateConverter" />
         <local:TimeOfDayTimeConverter x:Key="timeOfDayTimeConverter" />
-        <local:MainPageVM x:Key="vm">
-            <local:MainPageVM.Scene>
-                <mapping:Scene>
-
-                    <mapping:Scene.BaseSurface>
-                        <mapping:Surface>
-                            <mapping:ArcGISTiledElevationSource Source="http://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer" IsEnabled="True" />
-                        </mapping:Surface>
-                    </mapping:Scene.BaseSurface>
-                    <mapping:Scene.Basemap>
-                        <local:FadeGroupLayer>
-                            <mapping:ArcGISTiledLayer Name="Aerial" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                            <mapping:OpenStreetMapLayer Name="Open Street Map" />
-                            <mapping:ArcGISTiledLayer Name="Topographic" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Dark Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Light Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="National Geographic" Source="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="USGS Topographic (US)" Source="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Terrain" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Navigation Charts" Source="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
-                        </local:FadeGroupLayer>
-                    </mapping:Scene.Basemap>
-                </mapping:Scene>
-            </local:MainPageVM.Scene>
-            <local:MainPageVM.Map>
-                <mapping:Map InitialViewpoint="-180,-90,180,90,4326">
-                    <mapping:Map.Basemap>
-                        <local:FadeGroupLayer>
-                            <mapping:ArcGISTiledLayer Name="Aerial" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                            <mapping:OpenStreetMapLayer Name="Open Street Map" />
-                            <mapping:ArcGISTiledLayer Name="Topographic" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Dark Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Light Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="National Geographic" Source="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="USGS Topographic (US)" Source="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Terrain" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Navigation Charts" Source="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
-                        </local:FadeGroupLayer>
-                    </mapping:Map.Basemap>
-                </mapping:Map>
-            </local:MainPageVM.Map>
-        </local:MainPageVM>
+        <local:MainPageVM x:Key="vm" />
         <Style x:Key="SidePanelItemStyle1" TargetType="local:SidePanelItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Top"/>
@@ -81,18 +36,25 @@
     </Page.Resources>
 
     <Grid DataContext="{StaticResource vm}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <SplitView x:Name="splitView" IsPaneOpen="True" 
+        <TitleBar Title="ArcGIS Maps SDK for .NET - KML Viewer" IsPaneToggleButtonVisible="True" PaneToggleRequested="BurgerButton_Toggled" x:Name="TitleBar" Loaded="TitleBar_Loaded">
+            <local:FindLocationControl LocationPicked="OnLocationPicked"
+                                       Width="200" HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" BorderThickness="0" />
+
+        </TitleBar>
+        
+        <SplitView x:Name="splitView" IsPaneOpen="True"  Grid.Row="1"
                    OpenPaneLength="350" CompactPaneLength="50" DisplayMode="Inline">
             <SplitView.Pane>
                 <Grid PointerEntered="SidePanel_PointerEntered"
                       PointerExited="SidePanel_PointerExited">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
 
-                    <local:SidePanel SelectedIndex="0" HorizontalAlignment="Stretch" x:Name="sidePanel" Grid.Row="1" >
+                    <local:SidePanel SelectedIndex="0" HorizontalAlignment="Stretch" x:Name="sidePanel">
                         <local:SidePanelItem Icon="Bookmarks" Header="Content" Padding="20,10,20,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                             <Grid Grid.Row="1" Grid.Column="1" >
                                 <Grid.RowDefinitions>
@@ -193,18 +155,8 @@
                         </local:SidePanelItem>
                     </local:SidePanel>
 
-
-
-                    <TextBlock Text="A" FontFamily="Segoe MDL2 Assets" />
-                    <ToggleButton x:Name="BurgerButton" Width="50" Height="40" IsChecked="True" Background="LightGray" Checked="BurgerButton_Toggled" Unchecked="BurgerButton_Toggled">
-                        <FontIcon Glyph="&#xE700;" HorizontalAlignment="Left" />
-                    </ToggleButton>
                     <SymbolIcon VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                        Margin="13" Symbol="Help" Tapped="HelpIcon_Tapped" Grid.Row="1" />
-                    <local:FindLocationControl LocationPicked="OnLocationPicked"
-                                       HorizontalAlignment="Stretch"
-                                       VerticalAlignment="Top" BorderThickness="0"
-                                       Margin="50,-0,0,0" />
+                        Margin="13" Symbol="Help" Tapped="HelpIcon_Tapped" />
                 </Grid>
             </SplitView.Pane>
             <Grid>
@@ -224,7 +176,7 @@
                                     <Grid>
                                         <Path Data="M0,0 L30,0 30,20 16,20 15,21 14,20 0,20 z"
                                       Stroke="Black" StrokeThickness="2" Stretch="Fill" Fill="White" />
-                                        <WebView MinWidth="300" MinHeight="200" Margin="2,2,2,12" FrameNavigationStarting="WebView_FrameNavigationStarting"  />
+                                        <WebView2 MinWidth="300" MinHeight="200" Margin="2,2,2,12" NavigationStarting="WebView_FrameNavigationStarting"  />
                                         <Button BorderThickness="0" Background="Transparent" Click="CloseTip_Clicked"
                                         HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Padding="0">
                                             <Path Width="20"
@@ -264,7 +216,7 @@
                                     <Grid>
                                         <Path Data="M0,0 L30,0 30,20 16,20 15,21 14,20 0,20 z"
                                               Stroke="Black" StrokeThickness="2" Stretch="Fill" Fill="White" />
-                                        <WebView MinWidth="300" MinHeight="200" Margin="2,2,2,12" FrameNavigationStarting="WebView_FrameNavigationStarting"  />
+                                        <WebView2 MinWidth="300" MinHeight="200" Margin="2,2,2,12" NavigationStarting="WebView_FrameNavigationStarting"  />
                                         <Button BorderThickness="0" Background="Transparent" Click="CloseTip_Clicked"
                                                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Padding="0">
                                                 <Path Width="20"
@@ -289,7 +241,7 @@
         </SplitView>
 
         
-        <local:AboutView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="aboutView" Visibility="Collapsed" />
+        <local:AboutView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="aboutView" Visibility="Collapsed" Grid.Row="1" />
         
     </Grid>
     

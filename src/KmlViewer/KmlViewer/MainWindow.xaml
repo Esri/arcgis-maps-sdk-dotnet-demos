@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="KmlViewer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KmlViewer"
+    xmlns:xinput="using:XInputHelper"
+    xmlns:ctrls="using:KmlViewer.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
+    xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
+    xmlns:ogc="using:Esri.ArcGISRuntime.Ogc"
+    xmlns:loc="using:Esri.ArcGISRuntime.Location"
+    mc:Ignorable="d"
+    >
+
+    <local:MainPage />
+</Window>

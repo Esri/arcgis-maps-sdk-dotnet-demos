@@ -11,9 +11,16 @@
     
 	<Grid>
 		<TextBox Text="Hack" Width="0" Height="0" Margin="-10000,-10000,0,0"/><!--This is a hack to prevent SearchBox from constantly grabbing focus automatically-->
-		<SearchBox x:Name="Location" BorderThickness="0,0,0,1" Padding="10" Background="White"
-						ResultSuggestionChosen="Location_ResultSuggestionChosen" 
-						SuggestionsRequested="Location_SuggestionsRequested" 
-						PlaceholderText="find location" QuerySubmitted="Location_QuerySubmitted" />
-	</Grid>
+        <AutoSuggestBox x:Name="Location" BorderThickness="0,0,0,1" Padding="10" Background="White"
+                        PlaceholderText="find location" 
+                        TextChanged="Location_TextChanged"
+						SuggestionChosen="Location_ResultSuggestionChosen"
+						QuerySubmitted="Location_QuerySubmitted" >
+            <AutoSuggestBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Label}" />
+                </DataTemplate>
+            </AutoSuggestBox.ItemTemplate>
+        </AutoSuggestBox>
+    </Grid>
 </UserControl>
