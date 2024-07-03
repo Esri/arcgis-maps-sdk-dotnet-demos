@@ -34,24 +34,16 @@ namespace KmlViewer
             vm.PropertyChanged += Vm_PropertyChanged;
         }
 
-        private void TitleBar_Loaded(object sender, RoutedEventArgs e)
-        {
-            var titlebar = (sender as TitleBar);
-           // Parts get delay loaded. If you have the parts, make them visible.
-      VisualStateManager.GoToState(titlebar, "SubtitleTextVisible", false);
-      VisualStateManager.GoToState(titlebar, "HeaderVisible", false);
-      VisualStateManager.GoToState(titlebar, "ContentVisible", false);
-      VisualStateManager.GoToState(titlebar, "FooterVisible", false);
-
-      // Run layout so we re-calculate the drag regions.
-            titlebar.InvalidateMeasure();
-        }
-
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(MainPageVM.IsShadowsEnabled))
             {
                 sceneView.SunLighting = VM.IsShadowsEnabled ? LightingMode.LightAndShadows : LightingMode.NoLight;
+            }
+
+            else if (e.PropertyName == nameof(MainPageVM.IsAtmosphereEnabled))
+            {
+                sceneView.AtmosphereEffect = VM.IsAtmosphereEnabled ? AtmosphereEffect.Realistic : AtmosphereEffect.HorizonOnly;
             }
         }
 

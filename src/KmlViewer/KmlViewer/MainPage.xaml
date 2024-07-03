@@ -41,7 +41,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TitleBar Title="ArcGIS Maps SDK for .NET - KML Viewer" IsPaneToggleButtonVisible="True" PaneToggleRequested="BurgerButton_Toggled" x:Name="TitleBar" Loaded="TitleBar_Loaded">
+        <TitleBar Title="ArcGIS Maps SDK for .NET - KML Viewer" IsPaneToggleButtonVisible="True" PaneToggleRequested="BurgerButton_Toggled" x:Name="TitleBar">
             <local:FindLocationControl LocationPicked="OnLocationPicked"
                                        Width="200" HorizontalAlignment="Right"
                                        VerticalAlignment="Center" BorderThickness="0" />
@@ -118,7 +118,9 @@
                                     <Slider Header="Elevation Exaggeration" Minimum="0" Maximum="5" StepFrequency="0.05"
                                         TickFrequency="1" HorizontalAlignment="Stretch" TickPlacement="Outside" 
                                         Value="{x:Bind VM.Scene.BaseSurface.ElevationExaggeration, Mode=TwoWay}" />
-                                    <ToggleSwitch x:Name="LightCheckbox" Header="Sunlight"
+                                    <ToggleSwitch x:Name="LightCheckbox" Header="Atmosphere"
+                                        IsOn="{x:Bind VM.IsAtmosphereEnabled, Mode=TwoWay}" />
+                                    <ToggleSwitch x:Name="AtmosphereCheckbox" Header="Sunlight"
                                         IsOn="{x:Bind VM.IsShadowsEnabled, Mode=TwoWay}" />
                                     <Slider Header="Day of year" Minimum="0" Maximum="365" x:Name="Day" ValueChanged="Month_ValueChanged" ThumbToolTipValueConverter="{StaticResource dayOfYearToDateConverter}"
                                         Visibility="{x:Bind VM.IsShadowsEnabled, Mode=OneWay}" Margin="20,0" />

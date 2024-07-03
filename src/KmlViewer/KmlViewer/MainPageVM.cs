@@ -170,7 +170,17 @@ namespace KmlViewer
                 OnPropertyChanged();
             }
         }
-
+        private bool m_IsAtmosphereEnabled;
+        public bool IsAtmosphereEnabled
+        {
+            get => m_IsAtmosphereEnabled;
+            set
+            {
+                m_IsAtmosphereEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        
         private void StoreAppSetting(object value, [CallerMemberName] string propertyName = null)
         {
             Windows.Storage.ApplicationData.Current.LocalSettings.Values[propertyName] = value;

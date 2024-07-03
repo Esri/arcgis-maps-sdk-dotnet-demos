@@ -31,8 +31,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240531000-experimental1" />
-    <PackageReference Include="Esri.ArcGISRuntime.WinUI" Version="200.4.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240701003-experimental2" />
+    <PackageReference Include="Esri.ArcGISRuntime.WinUI" Version="200.5.0-daily4283" />
     <ProjectReference Include="..\XInputHelper\XInputHelper.csproj" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
