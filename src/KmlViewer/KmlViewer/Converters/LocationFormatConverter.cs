@@ -12,7 +12,9 @@ namespace KmlViewer
 		{
 			if (value is Envelope)
 				value = ((Envelope)value).GetCenter();
-			if (value is MapPoint)
+            if (value is Polygon)
+                value = ((Polygon)value).Extent.GetCenter();
+            if (value is MapPoint)
 			{
 				var p = (MapPoint)value;
 				if (!p.SpatialReference.IsGeographic) //Convert to long/lat
