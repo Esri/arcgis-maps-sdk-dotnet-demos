@@ -55,9 +55,10 @@ namespace KmlViewer
                 Path = "ms-appx:///SampleData/Flight_Maps_UK_Ireland.kmz",
                 Thumbnail = new Uri("ms-appx:///SampleData/FlightMapsUKPreview.png"),
             });
-            m_Scene = new Scene() { Basemap = CreateDefaultBasemap() };
-            m_Scene.BaseSurface.ElevationSources.Add(new ArcGISTiledElevationSource(new Uri("https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")));
-            m_Map = new Map() { Basemap = CreateDefaultBasemap() };
+            var scene = new Scene() { Basemap = CreateDefaultBasemap() };
+            scene.BaseSurface.ElevationSources.Add(new ArcGISTiledElevationSource(new Uri("https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")));
+            Scene = scene;
+            Map = new Map() { Basemap = CreateDefaultBasemap() };
         }
         private static FadeGroupLayer CreateDefaultBasemap()
         {
@@ -91,8 +92,8 @@ namespace KmlViewer
                 OnPropertyChanged();
                 if (Is3D)
                 {
-                    OnPropertyChanged("Contents");
-                    OnPropertyChanged("Layers");
+                    OnPropertyChanged(nameof(Contents));
+                    OnPropertyChanged(nameof(Layers));
                 }
             }
         }
@@ -138,8 +139,8 @@ namespace KmlViewer
                 OnPropertyChanged();
                 if (!Is3D)
                 {
-                    OnPropertyChanged("Contents");
-                    OnPropertyChanged("Layers");
+                    OnPropertyChanged(nameof(Contents));
+                    OnPropertyChanged(nameof(Layers));
                 }
             }
         }
@@ -199,7 +200,7 @@ namespace KmlViewer
         {
             if (e.NewItems != null && e.NewItems.OfType<KmlLayer>().Any() ||
                 e.OldItems != null && e.OldItems.OfType<KmlLayer>().Any())
-                OnPropertyChanged("Contents");
+                OnPropertyChanged(nameof(Contents));
         }
 
 
