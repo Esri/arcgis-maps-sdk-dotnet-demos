@@ -21,7 +21,7 @@
         <local:TrueToVisibleConverter x:Key="trueVizConv" />
         <local:DayOfYearToDateConverter x:Key="dayOfYearToDateConverter" />
         <local:TimeOfDayTimeConverter x:Key="timeOfDayTimeConverter" />
-        <local:MainPageVM x:Key="vm" />
+
         <Style x:Key="SidePanelItemStyle1" TargetType="local:SidePanelItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Top"/>
@@ -35,7 +35,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid DataContext="{StaticResource vm}">
+    <Grid DataContext="{x:Bind VM}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -63,7 +63,7 @@
                                 </Grid.RowDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="Contents" Style="{StaticResource SubtitleTextBlockStyle}" FontFamily="Global User Interface" />
-                                    <StackPanel Visibility="{Binding Contents, Converter={StaticResource nullConv}, ConverterParameter=reverse}">
+                                    <StackPanel Visibility="{x:Bind VM.Contents, Mode=OneWay, Converter={StaticResource nullConv}, ConverterParameter=reverse}">
                                         <TextBlock Text="No KML files loaded" Margin="0,10"/>
                                         <Button Content="Load KML" Click="LoadKmlButton_Click" HorizontalAlignment="Stretch" />
                                     </StackPanel>
@@ -140,7 +140,7 @@
                                 <TextBox PlaceholderText="Enter URL" Margin="0,20,0,5" x:Name="kmlUrl" Header="Open from the web:" InputScope="Url" />
                                 <Button Content="Load" Click="LoadFromUrlButton_Click" HorizontalAlignment="Stretch" />
                                 <TextBlock Text="Sample KML files" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,20,0,5" />
-                                <ItemsControl ItemsSource="{Binding SampleData}">
+                                <ItemsControl ItemsSource="{x:Bind VM.SampleData, Mode=OneWay}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Button Click="LoadSampleButton_Click" HorizontalAlignment="Stretch" Padding="0" Margin="0,0,0,5">
@@ -163,9 +163,9 @@
             </SplitView.Pane>
             <Grid>
                 <Grid x:Name="sceneArea" Grid.Column="1"
-                    Visibility="{Binding Is3D, Converter={StaticResource trueVizConv}}">
+                    Visibility="{x:Bind VM.Is3D, Mode=OneWay, Converter={StaticResource trueVizConv}}">
 
-                    <esri:SceneView x:Name="sceneView" Grid.Column="1" Scene="{Binding Scene}" GeoViewTapped="ViewTapped"
+                    <esri:SceneView x:Name="sceneView" Grid.Column="1" Scene="{x:Bind VM.Scene}" GeoViewTapped="ViewTapped"
                             ViewpointChanged="ViewChanged" >
                         <!--This attached property allows the use of a game controller to fly around in the scene-->
                         <xinput:XInputSceneController.Controller>
@@ -204,12 +204,12 @@
                     </Grid>
 
                 </Grid>
-                <Grid x:Name="mapArea" Grid.Column="1" Visibility="{Binding Is3D, Converter={StaticResource trueVizConv}, ConverterParameter=reverse}">
+                <Grid x:Name="mapArea" Grid.Column="1" Visibility="{x:Bind VM.Is3D, Mode=OneWay, Converter={StaticResource trueVizConv}, ConverterParameter=reverse}">
 
                     <!---->
                     <esri:MapView x:Name="mapView" GeoViewTapped="ViewTapped"
                                   ViewpointChanged="ViewChanged"
-                                Grid.Column="1" Map="{Binding Map}" >
+                                Grid.Column="1" Map="{x:Bind VM.Map, Mode=OneWay}" >
                         <esri:MapView.Overlays>
                             <esri:OverlayItemsControl>
                                 <Border x:Name="overlayMap" Visibility="Collapsed" BorderBrush="Black" BorderThickness="0"

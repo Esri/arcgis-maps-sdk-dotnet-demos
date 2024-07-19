@@ -22,17 +22,18 @@ namespace KmlViewer
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        MainPageVM vm;
+        
         public MainPage()
         {
             this.InitializeComponent();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
-            vm = Resources["vm"] as MainPageVM;
             Day.Value = DateTime.Now.DayOfYear;
             Hour.Value = DateTime.Now.TimeOfDay.TotalHours;
-            vm.PropertyChanged += Vm_PropertyChanged;
+            VM.PropertyChanged += Vm_PropertyChanged;
         }
+
+        public MainPageVM VM { get; } = new MainPageVM();
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -47,8 +48,6 @@ namespace KmlViewer
             }
         }
 
-        public MainPageVM VM => vm;
-
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
         /// </summary>
@@ -57,7 +56,7 @@ namespace KmlViewer
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             LoadLocation();
-            if (vm.Is3D)
+            if (VM.Is3D)
             {
                 Camera homeCamera = new Camera(41, -180, 31000000, 0, 0, 0);
                 sceneView.SetViewpointCamera(homeCamera);
@@ -133,7 +132,7 @@ namespace KmlViewer
                 var path = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
                 uri = new Uri("file:///" + path.Path.Replace("\\", "/"));
             }
-            var layer = vm.LoadKmlLayer(uri.OriginalString.Replace("file:///", ""));
+            var layer = VM.LoadKmlLayer(uri.OriginalString.Replace("file:///", ""));
 
             try
             {
@@ -177,7 +176,7 @@ namespace KmlViewer
                 //	viewPoint = new Viewpoint(layer.FullExtent);
                 //if (viewPoint != null)
                 //{
-                //	if (vm.Is3D)
+                //	if (VM.Is3D)
                 //		sceneView.SetViewpointAsync(viewPoint);
                 //	else
                 //		mapView.SetViewpointAsync(viewPoint);
@@ -218,7 +217,7 @@ namespace KmlViewer
             AddKmlLayer(sample.Path);
             if (sample.InitialViewpoint != null)
             {
-                GeoView view = vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+                GeoView view = VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
                 var _ = view.SetViewpointAsync(sample.InitialViewpoint);
             }
         }
@@ -255,7 +254,7 @@ namespace KmlViewer
 
         private async void ShowMapTip(KmlNode feature, MapPoint location = null)
         {
-            GeoView view = vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+            GeoView view = VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
             var placemark = feature as KmlPlacemark;
             var border = (Border)view.Overlays.Items.First();
             if (feature == null || string.IsNullOrWhiteSpace(feature.BalloonContent) ||
@@ -289,7 +288,7 @@ namespace KmlViewer
                     vp = new Viewpoint(kmlvp.Location, new Camera(kmlvp.Location, kmlvp.Heading, kmlvp.Pitch, kmlvp.Roll));
                 else
                     vp = new Viewpoint(kmlvp.Location, new Camera(kmlvp.Location, kmlvp.Range, kmlvp.Heading, kmlvp.Pitch, kmlvp.Roll));
-                if (vm.Is3D)
+                if (VM.Is3D)
                 {
                     sceneView.SetViewpointAsync(vp);
                     sceneView.Focus(FocusState.Keyboard);
@@ -311,10 +310,10 @@ namespace KmlViewer
             if (sceneView != null && mapView != null)
             {
                 bool isOn = ((ToggleSwitch)sender).IsOn;
-                if (isOn == vm.Is3D)
+                if (isOn == VM.Is3D)
                     return; //this happens the first time it loads
                 HighlightFeature(null);
-                if (vm.Is3D)
+                if (VM.Is3D)
                 {
                     var c = sceneView.Camera;
                     //If there's tilt or heading, reset before switching to 2D
@@ -325,20 +324,20 @@ namespace KmlViewer
                         await sceneView.SetViewpointCameraAsync(c);
                     }
                 }
-                GeoView from = vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
-                GeoView to = !vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+                GeoView from = VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+                GeoView to = !VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
                 var vp = from.GetCurrentViewpoint(ViewpointType.BoundingGeometry);
                 if (vp != null)
                 {
-                    await to.SetViewpointAsync(vp, TimeSpan.Zero);
+                    to.SetViewpoint(vp);
                 }
-                vm.Is3D = !vm.Is3D;
+                VM.Is3D = !VM.Is3D;
             }
         }
 
         public void OnLocationPicked(object sender, Esri.ArcGISRuntime.Geometry.Geometry location)
         {
-            if (vm.Is3D)
+            if (VM.Is3D)
             {
                 sceneView.SetViewpointAsync(new Viewpoint(location));
                 sceneView.Focus(FocusState.Keyboard);
