@@ -366,7 +366,7 @@ namespace KmlViewer
         }
         private void WebView_FrameNavigationStarting(WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs args)
         {
-            if (args.Uri != null)
+            if (args.Uri != null && args.Uri.StartsWith("http"))
             {
                 args.Cancel = true;
                 var _ = Windows.System.Launcher.LaunchUriAsync(new Uri(args.Uri));
