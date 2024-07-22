@@ -64,5 +64,7 @@ namespace KmlViewer
         }
 
         private Window m_window;
+
+        public Window Window => m_window;
     }
 }

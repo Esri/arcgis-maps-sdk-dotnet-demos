@@ -188,6 +188,9 @@ namespace KmlViewer
         private async void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(((KmlViewer.App)App.Current).Window);
+            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwnd);
+
             openPicker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
             openPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
             // Users expect to have a filtered view of their folders depending on the scenario.
