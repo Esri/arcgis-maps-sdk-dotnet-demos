@@ -69,7 +69,6 @@ namespace KmlViewer
             baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer")) { Name = "Dark Gray Reference" });
             baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer")) { Name = "Light Gray Reference" });
             baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer")) { Name = "National Geographic" });
-            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer")) { Name = "Ocean" });
             baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer")) { Name = "USGS Topographic (US)" });
             baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer")) { Name = "World Terrain" });
             baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer")) { Name = "World Navigation Charts" });
