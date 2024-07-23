@@ -12,12 +12,14 @@ namespace OfficeLocator.Core.Tests
     [TestCategory("Provisioning")]
     public class ProvisioningTests
     {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public TestContext TestContext { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         [TestMethod]
         public async Task ProvisioningTest()
         {
-            var appDataFolder = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), DateTime.Now.Ticks.ToString());
+            var appDataFolder = Path.Combine(ProvisionDataHelper.AppDataDirectory, DateTime.Now.Ticks.ToString());
             try
             {
                 List<string> events = new List<string>();
@@ -38,11 +40,12 @@ namespace OfficeLocator.Core.Tests
             }
             finally
             {
-                Directory.Delete(appDataFolder, true); //Clean up
+                if (Directory.Exists(appDataFolder))
+                    Directory.Delete(appDataFolder, true); //Clean up
             }
         }
 
-        private static Task provisioningTask;
+        private static Task? provisioningTask;
 
         internal static Task EnsureData()
         {

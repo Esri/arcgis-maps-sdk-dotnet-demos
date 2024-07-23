@@ -1,10 +1,7 @@
-﻿using Plugin.Settings;
+﻿//using Microsoft.Maui.Storage;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-#if NETFX_CORE
-using Windows.Storage;
-#endif
 
 namespace OfficeLocator
 {
@@ -19,8 +16,7 @@ namespace OfficeLocator
         /// <returns></returns>
         internal static string GetDataFolder()
         {
-            var appDataFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-            return Path.Combine(appDataFolder, "CampusData");
+            return Path.Combine(AppDataDirectory, "CampusData");
         }
         public static Task GetDataAsync(Action<string> progress)
         {
@@ -38,9 +34,9 @@ namespace OfficeLocator
                 return;
             DownloadManager.FileDownloadTask task = null;
             string tempFile = null;
-            if (AppSettings.Contains("DataDownloadTask"))
+            if (AppSettings.ContainsKey("DataDownloadTask"))
             {
-                var previousTask = DownloadManager.FileDownloadTask.FromJson(AppSettings.GetValueOrDefault("DataDownloadTask", string.Empty));
+                var previousTask = DownloadManager.FileDownloadTask.FromJson(AppSettings.Get("DataDownloadTask", string.Empty));
                 if (previousTask.IsResumable)
                 {
                     task = previousTask;
@@ -57,7 +53,7 @@ namespace OfficeLocator
                 tempFile = Path.GetTempFileName();
                 task = await DownloadManager.FileDownloadTask.StartDownload(tempFile, item);
                 string downloadTask = task.ToJson();
-                AppSettings.AddOrUpdateValue("DataDownloadTask", task.ToJson());
+                AppSettings.Set("DataDownloadTask", task.ToJson());
             }
             progress?.Invoke("Downloading data...");
 
@@ -86,7 +82,17 @@ namespace OfficeLocator
             await Task.Run(() => System.IO.Compression.ZipFile.ExtractToDirectory(zipFile, folder));
         }
 
-        private static Plugin.Settings.Abstractions.ISettings AppSettings => CrossSettings.Current;
+        public static IPreferences AppSettings { get; set; }
 
+        public static string AppDataDirectory { get; set; }
+
+    }
+
+    public interface IPreferences
+    {
+        T Get<T>(string key, T defaultValue);
+        void Set<T>(string key, T value);
+        void Remove(string key);
+        bool ContainsKey(string key);
     }
 }

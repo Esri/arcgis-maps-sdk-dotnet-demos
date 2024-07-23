@@ -95,7 +95,7 @@ namespace OfficeLocator
         /// <returns></returns>
         private async Task InitializeMap()
         {
-            Basemap basemap = Basemap.CreateTopographic();
+            Basemap basemap = new Basemap(new ArcGISTiledLayer(new Uri("https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer")));
             var layer = new ArcGISVectorTiledLayer(new Uri(Path.Combine(ProvisionDataHelper.GetDataFolder(), "Basemap/CampusBasemap.vtpk"), UriKind.RelativeOrAbsolute));
             await layer.LoadAsync();
             basemap.BaseLayers.Add(layer);
@@ -122,7 +122,7 @@ namespace OfficeLocator
             //Create scene for use in a 3D environment
             Scene = new Scene()
             {
-                Basemap = Basemap.CreateTopographic(),
+                Basemap = new Basemap(new ArcGISTiledLayer(new Uri("https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer"))),
                 BaseSurface = new Surface(),
                 InitialViewpoint = new Viewpoint(new MapPoint(-13046209, 4036456, SpatialReferences.WebMercator), 30000),
             };
@@ -326,9 +326,5 @@ namespace OfficeLocator
         {
             RunOnUIThreadAction(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));          
         }
-
-#if NETFX_CORE
-        private Windows.UI.Core.CoreDispatcher Dispatcher = Windows.UI.Xaml.Application.Current.Resources.Dispatcher;
-#endif
     }
 }

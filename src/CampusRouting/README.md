@@ -1,12 +1,10 @@
 Demo: Esri Campus Routing
 =======================
-Required version: ArcGIS Runtime SDK for .NET 100.4.0
+Required version: ArcGIS Runtime SDK for .NET 200.5.0
 
 This cross-platform sample demonstrates offline* indoor geocoding and routing for a campus.
 
-The app uses Windows Universal and Xamarin to allow running the app on any Windows 10 Device, Android and iOS.
-Both a Native platform app as well as a Xamarin.Forms version is provided for each platform.
-Most of the code however is in a shared project used by all other projects, so only UI-specific parts are platform specific.
+The app uses .NET MAUI to allow running the app on any Windows 10 Device, Android, iOS and Catalyst, and also provides some simple unit testing for running both with the Visual Studio MS test runner and on a device using MSTestX.
 
 You can also quickly tweak the code to offer a 3D view of the campus* which better visualizes floor changes.
 
