@@ -8,17 +8,16 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-	Foreground="Black"
 	>
 	<UserControl.Transitions>
 		<TransitionCollection>
 			<EntranceThemeTransition />
 		</TransitionCollection>
 	</UserControl.Transitions>
-	<Grid Background="#AAFFFFFF" Tapped="Grid_Tapped">
-	
-		<Grid Background="White"
-			  VerticalAlignment="Center"
+	<Grid Background="Transparent" Tapped="Grid_Tapped">
+        <Grid Background="{ThemeResource SolidBackgroundFillColorBaseBrush}" Opacity=".6" />
+        <Grid Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+			  VerticalAlignment="Center" BorderBrush="{ThemeResource TextFillColorPrimaryBrush}" BorderThickness="0,1,0,1"
 			  >
 			<Grid  MinHeight="200" MaxWidth="600">
 				<Grid.RowDefinitions>
@@ -31,10 +30,10 @@
 
 					<TextBlock Text="KML File Viewer" FontWeight="SemiBold" HorizontalAlignment="Center" />
 				
-					<TextBlock Text="Built using ArcGIS Runtime SDK for .NET" HorizontalAlignment="Center" />
+					<TextBlock Text="Built using ArcGIS Maps SDK for .NET" HorizontalAlignment="Center" />
 					<HyperlinkButton
 						NavigateUri="http://developers.arcgis.com/net"
-						Content="developers.arcgis.com/net" HorizontalAlignment="Center" Padding="-5" />
+						Content="developers.arcgis.com/net" HorizontalAlignment="Center" Margin="0,-5" />
 
 					<TextBlock Text="Tips:" FontWeight="SemiBold" />
 					<TextBlock Text="- Add an XBox or other similar game controller and navigate the 3D view using your controller." TextWrapping="Wrap" />
