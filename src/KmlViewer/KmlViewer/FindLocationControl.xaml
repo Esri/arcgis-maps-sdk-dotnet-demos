@@ -11,7 +11,7 @@
     
 	<Grid>
 		<TextBox Text="Hack" Width="0" Height="0" Margin="-10000,-10000,0,0"/><!--This is a hack to prevent SearchBox from constantly grabbing focus automatically-->
-        <AutoSuggestBox x:Name="Location" BorderThickness="0,0,0,1" Padding="10" Background="White"
+        <AutoSuggestBox x:Name="Location" BorderThickness="0,0,0,1" Padding="10" 
                         PlaceholderText="find location" 
                         TextChanged="Location_TextChanged"
 						SuggestionChosen="Location_ResultSuggestionChosen"
