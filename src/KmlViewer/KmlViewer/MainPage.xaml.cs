@@ -95,6 +95,7 @@ namespace KmlViewer
 
         private async void AddKmlLayer(string url)
         {
+            if (string.IsNullOrEmpty(url)) return;
             Uri uri;
             try
             {

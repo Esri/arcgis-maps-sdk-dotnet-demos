@@ -88,19 +88,29 @@
                                     SelectedIndex="{x:Bind VM.Basemap.SelectedIndex, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="mapping:Layer">
-                                            <Border BorderBrush="Black" BorderThickness="1" Margin="-10,2" >
-                                                <Grid HorizontalAlignment="Stretch">
+                                            <Border BorderBrush="{ThemeResource TextFillColorPrimaryBrush}" CornerRadius="5" BorderThickness="1" Margin="-10,5" >
+                                                <Grid HorizontalAlignment="Stretch" Background="{ThemeResource SolidBackgroundFillColorBaseAltBrush}">
                                                     <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
-                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="30" />
                                                     </Grid.RowDefinitions>
-                                                    <Image Stretch="UniformToFill" MaxHeight="100">
+                                                    <Image Stretch="UniformToFill" MaxHeight="100" Grid.RowSpan="2">
                                                         <Image.Source>
                                                             <BitmapImage UriSource="{x:Bind Converter={StaticResource basemapThumbnailConverter}}" />
                                                         </Image.Source>
                                                     </Image>
-                                                    <Grid Grid.Row="1" Background="White">
-                                                       <TextBlock Text="{x:Bind Name}" Grid.Row="1" HorizontalAlignment="Center" Margin="2" />
+                                                    <Grid Grid.Row="1" >
+                                                        <Grid.Background>
+                                                            <LinearGradientBrush EndPoint="0,1">
+                                                                <GradientStopCollection>
+                                                                    <GradientStop Color="Transparent"/>
+                                                                    <GradientStop Color="#66000000" Offset="1" />
+                                                                </GradientStopCollection>
+                                                            </LinearGradientBrush>
+                                                        </Grid.Background>
+                                                       <TextBlock Text="{x:Bind Name}" Grid.Row="1"
+                                                                  Foreground="White"
+                                                                  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="2" />
                                                     </Grid>
                                                 </Grid>
                                             </Border>
