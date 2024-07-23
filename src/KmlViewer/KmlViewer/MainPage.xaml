@@ -11,6 +11,7 @@
     xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
     xmlns:ogc="using:Esri.ArcGISRuntime.Ogc"
     xmlns:loc="using:Esri.ArcGISRuntime.Location"
+    x:Name="Page"
     mc:Ignorable="d">
     <Page.Resources>
         <local:NullOrEmptyToCollapsedConverter x:Key="nullConv" />
@@ -143,11 +144,15 @@
                                 <TextBlock Text="Sample KML files" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,20,0,5" />
                                 <ItemsControl ItemsSource="{x:Bind VM.SampleData, Mode=OneWay}">
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="local:KmlSample">
                                             <Button Click="LoadSampleButton_Click" HorizontalAlignment="Stretch" Padding="0" Margin="0,0,0,5">
                                                 <StackPanel>
-                                                    <Image Source="{Binding Thumbnail}" />
-                                                    <TextBlock Text="{Binding Title}" HorizontalAlignment="Center"/>
+                                                    <Image>
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="{x:Bind Thumbnail}"/>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock Text="{x:Bind Title}" HorizontalAlignment="Center"/>
                                                 </StackPanel>
                                             </Button>
                                         </DataTemplate>
@@ -196,11 +201,11 @@
                                Margin="20" Height="50" ValueTick="SliderValueTick" />
 
                     <Grid IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Top"
-                        Margin="20" Grid.Column="1" DataContext="{Binding ElementName=sceneView, Path=Camera}">
+                        Margin="20" Grid.Column="1">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=Location, Converter={StaticResource locationConv}}" />
+                            <TextBlock Text="{x:Bind sceneView.Camera.Location, Converter={StaticResource locationConv}, Mode=OneWay}" />
                             <TextBlock Text=" Altitude: " />
-                            <TextBlock Text="{Binding Path=Location.Z, Converter={StaticResource meterFormat}}"/>
+                            <TextBlock Text="{x:Bind sceneView.Camera.Location.Z, Converter={StaticResource meterFormat}, Mode=OneWay}"/>
                         </StackPanel>
                     </Grid>
 
@@ -235,7 +240,7 @@
                     <Grid IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Top"
                           Margin="20" Grid.Column="1">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding VisibleArea, ElementName=mapView, Converter={StaticResource locationConv}}" />
+                            <TextBlock Text="{x:Bind mapView.VisibleArea, Converter={StaticResource locationConv}, Mode=OneWay}" />
                         </StackPanel>
                     </Grid>
                 </Grid>
