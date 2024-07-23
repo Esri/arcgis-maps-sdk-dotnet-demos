@@ -8,10 +8,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Windows.Storage;
+using Esri.ArcGISRuntime.UI;
 
 namespace KmlViewer
 {
-    [Microsoft.UI.Xaml.Data.Bindable]
     public class KmlSample
     {
         public string Title { get; set; }
@@ -20,14 +20,10 @@ namespace KmlViewer
         public Viewpoint InitialViewpoint { get; set; }
     }
 
-    [Microsoft.UI.Xaml.Data.Bindable]
     public class MainPageVM : INotifyPropertyChanged
     {
         public MainPageVM()
         {
-                if (Windows.Storage.ApplicationData.Current.LocalSettings.Values.ContainsKey("Is3D"))
-                    Is3D = (bool)Windows.Storage.ApplicationData.Current.LocalSettings.Values["Is3D"];
-        
             SampleData = new List<KmlSample>();
             SampleData.Add(new KmlSample()
             {
@@ -144,46 +140,54 @@ namespace KmlViewer
             }
         }
 
-        private bool m_Is3D = true;
-
         public bool Is3D
         {
-            get { return m_Is3D; }
+            get => GetAppSetting(true);
             set
             {
-                m_Is3D = value;
+                StoreAppSetting(value);
                 OnPropertyChanged(nameof(Contents));
                 OnPropertyChanged(nameof(Layers));
                 OnPropertyChanged(nameof(Basemap));
                 OnPropertyChanged();
-                StoreAppSetting(value);
             }
         }
 
-        private bool m_IsShadowsEnabled;
         public bool IsShadowsEnabled
         {
-            get => m_IsShadowsEnabled;
+            get => GetAppSetting<bool>(false);
             set
             {
-                m_IsShadowsEnabled = value;
+                StoreAppSetting(value);
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SunLighting));
             }
         }
-        private bool m_IsAtmosphereEnabled;
+        public LightingMode SunLighting => IsShadowsEnabled ? LightingMode.LightAndShadows : LightingMode.NoLight;
+
         public bool IsAtmosphereEnabled
         {
-            get => m_IsAtmosphereEnabled;
+            get => GetAppSetting<bool>(false);
             set
             {
-                m_IsAtmosphereEnabled = value;
+                StoreAppSetting(value);
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(AtmosphereEffect));
             }
         }
-        
+
+        public AtmosphereEffect AtmosphereEffect => IsAtmosphereEnabled ? AtmosphereEffect.Realistic : AtmosphereEffect.HorizonOnly;
+
         private void StoreAppSetting(object value, [CallerMemberName] string propertyName = null)
         {
-            Windows.Storage.ApplicationData.Current.LocalSettings.Values[propertyName] = value;
+            ApplicationData.Current.LocalSettings.Values[propertyName] = value;
+        }
+
+        private T GetAppSetting<T>(T defaultValue, [CallerMemberName] string propertyName = null)
+        {
+            if(ApplicationData.Current.LocalSettings.Values.ContainsKey(propertyName))
+                return (T)ApplicationData.Current.LocalSettings.Values[propertyName];
+            return defaultValue;
         }
 
         private void MainPageVM_PropertyChanged(object sender, PropertyChangedEventArgs e)

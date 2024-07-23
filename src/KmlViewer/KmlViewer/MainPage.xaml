@@ -28,7 +28,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="local:SidePanelItem">
-                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -129,6 +130,7 @@
                                     <Slider Header="Time of day" Minimum="0" Maximum="24" x:Name="Hour" ValueChanged="Month_ValueChanged"
                                         Margin="20,0"  TickFrequency="1" TickPlacement="Outside" StepFrequency=".25" ThumbToolTipValueConverter="{StaticResource timeOfDayTimeConverter}"
                                         Visibility="{x:Bind VM.IsShadowsEnabled, Mode=OneWay}" />
+                                    <Button Content="Now" HorizontalAlignment="Right" Margin="20,0" Visibility="{x:Bind VM.IsShadowsEnabled, Mode=OneWay}" Click="SetTimeOfDay_Click" />
                                 </StackPanel>
 
                             </StackPanel>
@@ -171,8 +173,11 @@
                 <Grid x:Name="sceneArea" Grid.Column="1"
                     Visibility="{x:Bind VM.Is3D, Mode=OneWay, Converter={StaticResource trueVizConv}}">
 
-                    <esri:SceneView x:Name="sceneView" Grid.Column="1" Scene="{x:Bind VM.Scene}" GeoViewTapped="ViewTapped"
-                            ViewpointChanged="ViewChanged" >
+                    <esri:SceneView x:Name="sceneView" Grid.Column="1" Scene="{x:Bind VM.Scene}"
+                                    GeoViewTapped="ViewTapped"
+                                    ViewpointChanged="ViewChanged"
+                                    AtmosphereEffect="{x:Bind VM.AtmosphereEffect, Mode=OneWay}"
+                                    SunLighting="{x:Bind VM.SunLighting, Mode=OneWay}">
                         <!--This attached property allows the use of a game controller to fly around in the scene-->
                         <xinput:XInputSceneController.Controller>
                             <xinput:XInputSceneController />

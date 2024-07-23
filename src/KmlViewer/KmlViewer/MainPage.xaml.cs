@@ -26,27 +26,12 @@ namespace KmlViewer
         public MainPage()
         {
             this.InitializeComponent();
-
             this.NavigationCacheMode = NavigationCacheMode.Required;
             Day.Value = DateTime.Now.DayOfYear;
             Hour.Value = DateTime.Now.TimeOfDay.TotalHours;
-            VM.PropertyChanged += Vm_PropertyChanged;
         }
 
         public MainPageVM VM { get; } = new MainPageVM();
-
-        private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if(e.PropertyName == nameof(MainPageVM.IsShadowsEnabled))
-            {
-                sceneView.SunLighting = VM.IsShadowsEnabled ? LightingMode.LightAndShadows : LightingMode.NoLight;
-            }
-
-            else if (e.PropertyName == nameof(MainPageVM.IsAtmosphereEnabled))
-            {
-                sceneView.AtmosphereEffect = VM.IsAtmosphereEnabled ? AtmosphereEffect.Realistic : AtmosphereEffect.HorizonOnly;
-            }
-        }
 
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
@@ -149,7 +134,6 @@ namespace KmlViewer
             try
             {
                 await layer.LoadAsync();
-                Viewpoint viewPoint = null;
                 var root = layer.Dataset?.RootNodes?.FirstOrDefault();
                 if (root == null)
                 {
@@ -168,18 +152,19 @@ namespace KmlViewer
                     root = layer.Dataset?.RootNodes?.FirstOrDefault();
                 }
 
+                //Viewpoint? viewPoint = null;
                 //if (layer.FullExtent == null && layer.RootFeature != null)
                 //{
-                //	viewPoint = layer.RootFeature.Viewpoint;
+                //    viewPoint = layer.RootFeature.Viewpoint;
                 //}
                 //if(viewPoint == null && layer.FullExtent != null)
-                //	viewPoint = new Viewpoint(layer.FullExtent);
+                //    viewPoint = new Viewpoint(layer.FullExtent);
                 //if (viewPoint != null)
                 //{
-                //	if (VM.Is3D)
-                //		sceneView.SetViewpointAsync(viewPoint);
-                //	else
-                //		mapView.SetViewpointAsync(viewPoint);
+                //    if (VM.Is3D)
+                //        sceneView.SetViewpointAsync(viewPoint);
+                //    else
+                //        mapView.SetViewpointAsync(viewPoint);
                 //}
             }
             catch { }
@@ -202,10 +187,7 @@ namespace KmlViewer
             var file = await openPicker.PickSingleFileAsync();
             if (file != null)
             {
-                //Copy file inside the sandbox
-                var localFile = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(file.Name, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-                await file.CopyAndReplaceAsync(localFile);
-                AddKmlLayer("file:///" + localFile.Path);
+                AddKmlLayer("file:///" + file.Path);
             }
         }
 
@@ -379,8 +361,15 @@ namespace KmlViewer
         private void Month_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (Day == null || Hour == null) return;
-            var date = new DateTime(2015, 1, 1, 0, 0, 0, DateTimeKind.Local).Date.AddDays((int)Day.Value).AddHours(Hour.Value);
+            var date = new DateTime(DateTime.UtcNow.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc).Date.AddDays((int)Day.Value).AddHours(Hour.Value);
             sceneView.SunTime = date;
+        }
+
+        private void SetTimeOfDay_Click(object sender, RoutedEventArgs e)
+        {
+            var now = DateTime.UtcNow;
+            Day.Value = now.DayOfYear - 1;
+            Hour.Value = now.TimeOfDay.TotalHours;
         }
 
         private void SliderValueTick(object sender, double value)
