@@ -18,27 +18,21 @@ using System.Diagnostics;
 namespace KmlViewer
 {
     /// <summary>
-	/// Main KML Viewer page
+	/// Main KML Viewer page - Contains only the view-specific code
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        
         public MainPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = NavigationCacheMode.Required;
             Day.Value = DateTime.Now.DayOfYear;
             Hour.Value = DateTime.Now.TimeOfDay.TotalHours;
+            Initialize();
         }
 
         public MainPageVM VM { get; } = new MainPageVM();
 
-        /// <summary>
-        /// Invoked when this page is about to be displayed in a Frame.
-        /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.
-        /// This parameter is typically used to configure the page.</param>
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        private async void Initialize()
         {
             LoadLocation();
             if (VM.Is3D)
