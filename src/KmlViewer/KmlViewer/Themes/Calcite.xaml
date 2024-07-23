@@ -1,0 +1,103 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="CalciteUIBrandLightColor">#007ac2</Color>
+    <Color x:Key="CalciteUIBrandHoverLightColor">#00619B</Color>
+    <Color x:Key="CalciteUIBrandPressLightColor">#004874</Color>
+    <Color x:Key="CalciteUIBackgroundLightColor">#f8f8f8</Color>
+    <Color x:Key="CalciteUIBackground1LightColor">#ffffff</Color>
+    <Color x:Key="CalciteUIBackground2LightColor">#f3f3f3</Color>
+    <Color x:Key="CalciteUIBackground3LightColor">#eaeaea</Color>
+    <Color x:Key="CalciteUIText1LightColor">#151515</Color>
+    <Color x:Key="CalciteUIText2LightColor">#4a4a4a</Color>
+    <Color x:Key="CalciteUIText3LightColor">#6a6a6a</Color>
+    <Color x:Key="CalciteUITextHighlightLightColor">#bbd5fa</Color>
+    <Color x:Key="CalciteUITextInverseLightColor">#FFFFFF</Color>
+    <Color x:Key="CalciteUITextLinkLightColor">#00619b</Color>
+    <Color x:Key="CalciteUIBorder1LightColor">#cacaca</Color>
+    <Color x:Key="CalciteUIBorder2LightColor">#d4d4d4</Color>
+    <Color x:Key="CalciteUIBorder3LightColor">#dfdfdf</Color>
+    <Color x:Key="CalciteUIBorderInputLightColor">#949494</Color>
+    <Color x:Key="CalciteUIInfoLightColor">#00619b</Color>
+    <Color x:Key="CalciteUISuccessLightColor">#35ac46</Color>
+    <Color x:Key="CalciteUIWarningLightColor">#edd317</Color>
+    <Color x:Key="CalciteUIDangerLightColor">#D83020</Color>
+    <Color x:Key="CalciteUIDangerHoverLightColor">#A82B1E</Color>
+    <Color x:Key="CalciteUIDangerPressLightColor">#7C1D13</Color>
+    <Color x:Key="CalciteUIBrandDarkColor">#009AF2</Color>
+    <Color x:Key="CalciteUIBrandHoverDarkColor">#007AC2</Color>
+    <Color x:Key="CalciteUIBrandPressDarkColor">#00619B</Color>
+    <Color x:Key="CalciteUIBackgroundDarkColor">#353535</Color>
+    <Color x:Key="CalciteUIBackground1DarkColor">#2b2b2b</Color>
+    <Color x:Key="CalciteUIBackground2DarkColor">#202020</Color>
+    <Color x:Key="CalciteUIBackground3DarkColor">#151515</Color>
+    <Color x:Key="CalciteUIText1DarkColor">#ffffff</Color>
+    <Color x:Key="CalciteUIText2DarkColor">#bfbfbf</Color>
+    <Color x:Key="CalciteUIText3DarkColor">#9f9f9f</Color>
+    <Color x:Key="CalciteUITextHighlightDarkColor">#375F95</Color>
+    <Color x:Key="CalciteUITextInverseDarkColor">#151515</Color>
+    <Color x:Key="CalciteUITextLinkDarkColor">#00A0FF</Color>
+    <Color x:Key="CalciteUIBorder1DarkColor">#555555</Color>
+    <Color x:Key="CalciteUIBorder2DarkColor">#4a4a4a</Color>
+    <Color x:Key="CalciteUIBorder3DarkColor">#404040</Color>
+    <Color x:Key="CalciteUIBorderInputDarkColor">#757575</Color>
+    <Color x:Key="CalciteUIInfoDarkColor">#00A0FF</Color>
+    <Color x:Key="CalciteUISuccessDarkColor">#36DA43</Color>
+    <Color x:Key="CalciteUIWarningDarkColor">#FFC900</Color>
+    <Color x:Key="CalciteUIDangerDarkColor">#FE583E</Color>
+    <Color x:Key="CalciteUIDangerHoverDarkColor">#FF0015</Color>
+    <Color x:Key="CalciteUIDangerPressDarkColor">#D90012</Color>
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key ="Default" >
+            <StaticResource x:Key="CalciteUIBrandColor" ResourceKey="CalciteUIBrandDarkColor" />
+            <StaticResource x:Key="CalciteUIBrandHoverColor" ResourceKey="CalciteUIBrandHoverDarkColor" />
+            <StaticResource x:Key="CalciteUIBrandPressColor" ResourceKey="CalciteUIBrandPressDarkColor" />
+            <StaticResource x:Key="CalciteUIBackgroundColor" ResourceKey="CalciteUIBackgroundDarkColor" />
+            <StaticResource x:Key="CalciteUIBackground1Color" ResourceKey="CalciteUIBackground1DarkColor" />
+            <StaticResource x:Key="CalciteUIBackground2Color" ResourceKey="CalciteUIBackground2DarkColor" />
+            <StaticResource x:Key="CalciteUIBackground3Color" ResourceKey="CalciteUIBackground3DarkColor" />
+            <StaticResource x:Key="CalciteUIText1Color" ResourceKey="CalciteUIText1DarkColor" />
+            <StaticResource x:Key="CalciteUIText2Color" ResourceKey="CalciteUIText2DarkColor" />
+            <StaticResource x:Key="CalciteUIText3Color" ResourceKey="CalciteUIText3DarkColor" />
+            <StaticResource x:Key="CalciteUITextHighlightColor" ResourceKey="CalciteUITextHighlightDarkColor" />
+            <StaticResource x:Key="CalciteUITextInverseColor" ResourceKey="CalciteUITextInverseDarkColor" />
+            <StaticResource x:Key="CalciteUITextLinkColor" ResourceKey="CalciteUITextLinkDarkColor" />
+            <StaticResource x:Key="CalciteUIBorder1Color" ResourceKey="CalciteUIBorder1DarkColor" />
+            <StaticResource x:Key="CalciteUIBorder2Color" ResourceKey="CalciteUIBorder2DarkColor" />
+            <StaticResource x:Key="CalciteUIBorder3Color" ResourceKey="CalciteUIBorder3DarkColor" />
+            <StaticResource x:Key="CalciteUIBorderInputColor" ResourceKey="CalciteUIBorderInputDarkColor" />
+            <StaticResource x:Key="CalciteUIInfoColor" ResourceKey="CalciteUIInfoDarkColor" />
+            <StaticResource x:Key="CalciteUISuccessColor" ResourceKey="CalciteUISuccessDarkColor" />
+            <StaticResource x:Key="CalciteUIWarningColor" ResourceKey="CalciteUIWarningDarkColor" />
+            <StaticResource x:Key="CalciteUIDangerColor" ResourceKey="CalciteUIDangerDarkColor" />
+            <StaticResource x:Key="CalciteUIDangerHoverColor" ResourceKey="CalciteUIDangerHoverDarkColor" />
+            <StaticResource x:Key="CalciteUIDangerPressColor" ResourceKey="CalciteUIDangerPressDarkColor" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key ="Light" >
+            <StaticResource x:Key="CalciteUIBrandColor" ResourceKey="CalciteUIBrandLightColor" />
+            <StaticResource x:Key="CalciteUIBrandHoverColor" ResourceKey="CalciteUIBrandHoverLightColor" />
+            <StaticResource x:Key="CalciteUIBrandPressColor" ResourceKey="CalciteUIBrandPressLightColor" />
+            <StaticResource x:Key="CalciteUIBackgroundColor" ResourceKey="CalciteUIBackgroundLightColor" />
+            <StaticResource x:Key="CalciteUIBackground1Color" ResourceKey="CalciteUIBackground1LightColor" />
+            <StaticResource x:Key="CalciteUIBackground2Color" ResourceKey="CalciteUIBackground2LightColor" />
+            <StaticResource x:Key="CalciteUIBackground3Color" ResourceKey="CalciteUIBackground3LightColor" />
+            <StaticResource x:Key="CalciteUIText1Color" ResourceKey="CalciteUIText1LightColor" />
+            <StaticResource x:Key="CalciteUIText2Color" ResourceKey="CalciteUIText2LightColor" />
+            <StaticResource x:Key="CalciteUIText3Color" ResourceKey="CalciteUIText3LightColor" />
+            <StaticResource x:Key="CalciteUITextHighlightColor" ResourceKey="CalciteUITextHighlightLightColor" />
+            <StaticResource x:Key="CalciteUITextInverseColor" ResourceKey="CalciteUITextInverseLightColor" />
+            <StaticResource x:Key="CalciteUITextLinkColor" ResourceKey="CalciteUITextLinkLightColor" />
+            <StaticResource x:Key="CalciteUIBorder1Color" ResourceKey="CalciteUIBorder1LightColor" />
+            <StaticResource x:Key="CalciteUIBorder2Color" ResourceKey="CalciteUIBorder2LightColor" />
+            <StaticResource x:Key="CalciteUIBorder3Color" ResourceKey="CalciteUIBorder3LightColor" />
+            <StaticResource x:Key="CalciteUIBorderInputColor" ResourceKey="CalciteUIBorderInputLightColor" />
+            <StaticResource x:Key="CalciteUIInfoColor" ResourceKey="CalciteUIInfoLightColor" />
+            <StaticResource x:Key="CalciteUISuccessColor" ResourceKey="CalciteUISuccessLightColor" />
+            <StaticResource x:Key="CalciteUIWarningColor" ResourceKey="CalciteUIWarningLightColor" />
+            <StaticResource x:Key="CalciteUIDangerColor" ResourceKey="CalciteUIDangerLightColor" />
+            <StaticResource x:Key="CalciteUIDangerHoverColor" ResourceKey="CalciteUIDangerHoverLightColor" />
+            <StaticResource x:Key="CalciteUIDangerPressColor" ResourceKey="CalciteUIDangerPressLightColor" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

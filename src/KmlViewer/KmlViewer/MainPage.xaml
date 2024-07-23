@@ -11,8 +11,7 @@
     xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
     xmlns:ogc="using:Esri.ArcGISRuntime.Ogc"
     xmlns:loc="using:Esri.ArcGISRuntime.Location"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
     <Page.Resources>
         <local:NullOrEmptyToCollapsedConverter x:Key="nullConv" />
         <local:LocationFormatConverter x:Key="locationConv" />
