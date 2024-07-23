@@ -9,5 +9,6 @@ App for opening KML and KMZ Files in a 3D or 2D View.
 * [`JoystickControl.xaml.cs`](KmlViewer.Windows/JoystickControl.xaml.cs) - Touch-friendly joystick for controlling camera pitch 3D
 * [`KmlTreeView.xaml.cs`](KmlViewer.Windows/KmlTreeView.xaml.cs) - An efficient KML Tree View control matching the Google Earth behavior.
 
-![image](https://github.com/user-attachments/assets/268b71de-17bb-435f-a880-11e4d8e3ac20)
+![image](https://github.com/user-attachments/assets/54683dce-6cda-438a-9f01-9a9878f84197)
+
 
