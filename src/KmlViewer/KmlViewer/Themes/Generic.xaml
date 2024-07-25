@@ -71,6 +71,9 @@
                                                          Storyboard.TargetProperty="ScaleX"
                                                          To="1"
                                                          Duration="0:0:0.2" />
+                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                                                                        </ObjectAnimationUsingKeyFrames>
                                                                     </Storyboard>
                                                                 </VisualState>
                                                                 <VisualState x:Name="Unchecked" >
@@ -83,12 +86,12 @@
                                                                 </VisualState>
                                                             </VisualStateGroup>
                                                         </VisualStateManager.VisualStateGroups>
-                                                        <Border Background="{ThemeResource CalciteUIBrandBrush}" x:Name="back" Opacity="1" RenderTransformOrigin="1.01,0">
+                                                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" x:Name="back" Opacity="1" RenderTransformOrigin="1.01,0">
                                                             <Border.RenderTransform>
                                                                 <ScaleTransform x:Name="scale" ScaleX="0" ScaleY="1" />
                                                             </Border.RenderTransform>
                                                         </Border>
-                                                        <ContentPresenter Content="{Binding Content}" Margin="{TemplateBinding Padding}" />
+                                                        <ContentPresenter Content="{Binding Content}" Margin="{TemplateBinding Padding}" x:Name="ContentPresenter" />
                                                     </Grid>
                                                 </ControlTemplate>
                                             </Setter.Value>

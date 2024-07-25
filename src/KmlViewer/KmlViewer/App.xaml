@@ -8,37 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <ResourceDictionary Source="ms-appx:///Themes/Calcite.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="CalciteUIBrandBrush" Color="{StaticResource CalciteUIBrandColor}" />
-            <SolidColorBrush x:Key="CalciteUIBrandHoverBrush" Color="{StaticResource CalciteUIBrandHoverColor}" />
-            <SolidColorBrush x:Key="CalciteUIBrandPressBrush" Color="{StaticResource CalciteUIBrandPressColor}" />
-
-            <StaticResource x:Key="SystemAccentColor" ResourceKey="CalciteUIBrandColor" />
-            <StaticResource x:Key="RadioButtonCheckGlyphFill" ResourceKey="CalciteUIBrandBrush" />
-            <StaticResource x:Key="RadioButtonCheckGlyphFillPointerOver" ResourceKey="CalciteUIBrandHoverBrush" />
-            <StaticResource x:Key="RadioButtonCheckGlyphFillPressed" ResourceKey="CalciteUIBrandPressBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillChecked" ResourceKey="CalciteUIBrandBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" ResourceKey="CalciteUIBrandHoverBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillCheckedPressed" ResourceKey="CalciteUIBrandPressBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOn" ResourceKey="CalciteUIBrandBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOnPointerOver" ResourceKey="CalciteUIBrandHoverBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOnPressed" ResourceKey="CalciteUIBrandPressBrush" />
-            <StaticResource x:Key="ProgressRingForegroundThemeBrush" ResourceKey="CalciteUIBrandBrush" />
-            <StaticResource x:Key="TabViewItemHeaderBackgroundSelected" ResourceKey="CalciteUIBrandBrush" />
-            <SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="{StaticResource SystemAccentColor}" />
-            <SolidColorBrush x:Key="ListViewItemSelectedPointerOverBorderThemeBrush" Color="{StaticResource SystemAccentColor}" />
-            <SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush" Color="{StaticResource SystemAccentColor}" />
-
-            <SolidColorBrush x:Key="ToggleSwitchCurtainBackgroundThemeBrush" Color="{StaticResource SystemAccentColor}" />
-            <SolidColorBrush x:Key="ToggleSwitchCurtainPointerOverBackgroundThemeBrush" Color="{StaticResource SystemAccentColor}" />
-            <SolidColorBrush x:Key="ToggleSwitchCurtainPressedBackgroundThemeBrush" Color="{StaticResource SystemAccentColor}" />
-            <Style TargetType="Slider">
-                <Style.Setters>
-                    <Setter Property="Foreground" Value="{StaticResource SystemAccentColor}" />
-                </Style.Setters>
-            </Style>
         </ResourceDictionary>
-   
     </Application.Resources>
 </Application>
