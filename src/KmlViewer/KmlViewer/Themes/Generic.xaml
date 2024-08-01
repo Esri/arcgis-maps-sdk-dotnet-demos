@@ -26,7 +26,7 @@
     </Style>
     
     <Style TargetType="local:SidePanel">
-        <Setter Property="Background" Value="White" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Template">
             <Setter.Value>
@@ -53,8 +53,8 @@
                                 HorizontalAlignment="Left" />
                             </Grid>
 
-                            <Grid Background="LightGray" RowSpan="2"  />
-                            <ItemsControl x:Name="sideButtons" Grid.Row="1" Grid.Column="0" Background="LightGray" VerticalAlignment="Stretch">
+                            <Grid Background="{ThemeResource LayerFillColorDefaultBrush}" RowSpan="2"  />
+                            <ItemsControl x:Name="sideButtons" Grid.Row="1" Grid.Column="0" Background="{ThemeResource LayerFillColorDefaultBrush}" VerticalAlignment="Stretch">
                                 <ItemsControl.Resources>
                                     <Style TargetType="RadioButton">
                                         <Setter Property="Width" Value="50" />
@@ -71,6 +71,9 @@
                                                          Storyboard.TargetProperty="ScaleX"
                                                          To="1"
                                                          Duration="0:0:0.2" />
+                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                                                                        </ObjectAnimationUsingKeyFrames>
                                                                     </Storyboard>
                                                                 </VisualState>
                                                                 <VisualState x:Name="Unchecked" >
@@ -83,12 +86,12 @@
                                                                 </VisualState>
                                                             </VisualStateGroup>
                                                         </VisualStateManager.VisualStateGroups>
-                                                        <Border Background="White" x:Name="back" Opacity="1" RenderTransformOrigin="1.01,0">
+                                                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" x:Name="back" Opacity="1" RenderTransformOrigin="1.01,0">
                                                             <Border.RenderTransform>
                                                                 <ScaleTransform x:Name="scale" ScaleX="0" ScaleY="1" />
                                                             </Border.RenderTransform>
                                                         </Border>
-                                                        <ContentPresenter Content="{Binding Content}" Margin="{TemplateBinding Padding}" />
+                                                        <ContentPresenter Content="{Binding Content}" Margin="{TemplateBinding Padding}" x:Name="ContentPresenter" />
                                                     </Grid>
                                                 </ControlTemplate>
                                             </Setter.Value>
@@ -109,7 +112,7 @@
 
                             <ScrollViewer ZoomMode="Disabled" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto"
                                             Grid.Column="1" Grid.Row="1"   >
-                                <Border Background="White" Margin="0,0,0,0">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" Margin="0,0,0,0">
                                     <ContentPresenter HorizontalAlignment="Stretch"
                                                 Content="{TemplateBinding SelectedItem}" >
                                         <ContentPresenter.ContentTransitions >

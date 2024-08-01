@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Windows.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Data;
 
 namespace KmlViewer
 {
@@ -12,7 +12,9 @@ namespace KmlViewer
 		{
 			if (value is Envelope)
 				value = ((Envelope)value).GetCenter();
-			if (value is MapPoint)
+            if (value is Polygon)
+                value = ((Polygon)value).Extent.GetCenter();
+            if (value is MapPoint)
 			{
 				var p = (MapPoint)value;
 				if (!p.SpatialReference.IsGeographic) //Convert to long/lat

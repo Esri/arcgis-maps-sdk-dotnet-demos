@@ -8,68 +8,66 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace KmlViewer
 {
-    public sealed partial class FindLocationControl : UserControl
-    {
+	public sealed partial class FindLocationControl : UserControl
+	{
 		private Uri serviceUri = new Uri("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer", UriKind.Absolute);
 
-        public FindLocationControl()
-        {
-            this.InitializeComponent();
-        }
+		public FindLocationControl()
+		{
+			this.InitializeComponent();
+		}
 
 		private CancellationTokenSource geocodeTcs;
 
-		private async void Location_SuggestionsRequested(SearchBox sender, SearchBoxSuggestionsRequestedEventArgs args)
+		private async void Location_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
 		{
 			if (geocodeTcs != null)
 				geocodeTcs.Cancel();
 			geocodeTcs = new CancellationTokenSource();
 
-			if (args.QueryText.Length > 3)
+			if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput && sender.Text.Length > 3)
 			{
 				try
 				{
 					var geo = new LocatorTask(serviceUri);
-					var deferral = args.Request.GetDeferral();
-					var result = await geo.GeocodeAsync(args.QueryText,new GeocodeParameters()
+					var result = await geo.GeocodeAsync(sender.Text, new GeocodeParameters()
 					{
 						MaxResults = 5,
-                        OutputSpatialReference = SpatialReferences.Wgs84
+						OutputSpatialReference = SpatialReferences.Wgs84
 					}, geocodeTcs.Token);
-					if (result.Any() && !args.Request.IsCanceled)
+					if (result.Any())
 					{
 						var imageSource = Windows.Storage.Streams.RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/blank.png"));
-						foreach (var item in result)
-							args.Request.SearchSuggestionCollection.AppendResultSuggestion(item.Label, "", item.Extent.ToJson(), imageSource, "");
+						sender.ItemsSource = result;
 					}
-					deferral.Complete();
 				}
 				catch { }
 			}
 		}
 
-		private void Location_ResultSuggestionChosen(SearchBox sender, SearchBoxResultSuggestionChosenEventArgs args)
+		private void Location_ResultSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
 		{
-			var geom = Esri.ArcGISRuntime.Geometry.Geometry.FromJson(args.Tag);
-			if (LocationPicked != null)
-				LocationPicked(this, geom);
+			var result = args.SelectedItem as GeocodeResult;
+            sender.Text = "";
+            if (LocationPicked != null)
+				LocationPicked(this, result.Extent);
 		}
 
 		public event EventHandler<Esri.ArcGISRuntime.Geometry.Geometry> LocationPicked;
 
-		private async void Location_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+		private async void Location_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
 		{
 			if (geocodeTcs != null)
 				geocodeTcs.Cancel();
@@ -77,19 +75,19 @@ namespace KmlViewer
 			try
 			{
 				var geo = new LocatorTask(serviceUri);
-				var result = await geo.GeocodeAsync(args.QueryText, new GeocodeParameters() 
+				var result = await geo.GeocodeAsync(args.QueryText, new GeocodeParameters()
 				{
 					MaxResults = 5,
 					OutputSpatialReference = SpatialReferences.Wgs84
 				}, geocodeTcs.Token);
 				if (result.Any())
 				{
-					Location.QueryText = result.First().Label;
+					sender.Text = result.First().Label;
 					if (LocationPicked != null)
 						LocationPicked(this, result.First().Extent);
 				}
 			}
 			catch { }
 		}
-    }
+	}
 }

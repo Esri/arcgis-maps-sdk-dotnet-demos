@@ -7,10 +7,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Windows.Storage;
+using Esri.ArcGISRuntime.UI;
 
 namespace KmlViewer
 {
-    [Windows.UI.Xaml.Data.Bindable]
     public class KmlSample
     {
         public string Title { get; set; }
@@ -19,23 +20,10 @@ namespace KmlViewer
         public Viewpoint InitialViewpoint { get; set; }
     }
 
-    [Windows.UI.Xaml.Data.Bindable]
     public class MainPageVM : INotifyPropertyChanged
     {
         public MainPageVM()
         {
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                m_Scene = new Scene();
-                m_Scene.OperationalLayers.Add(new KmlLayer(new Uri("http://server.com/data1.kml")));
-                m_Scene.OperationalLayers.Add(new KmlLayer(new Uri("http://server.com/data2.kml")));
-            }
-            else
-            {
-                if (Windows.Storage.ApplicationData.Current.LocalSettings.Values.ContainsKey("Is3D"))
-                    Is3D = (bool)Windows.Storage.ApplicationData.Current.LocalSettings.Values["Is3D"];
-            }
-
             SampleData = new List<KmlSample>();
             SampleData.Add(new KmlSample()
             {
@@ -63,6 +51,24 @@ namespace KmlViewer
                 Path = "ms-appx:///SampleData/Flight_Maps_UK_Ireland.kmz",
                 Thumbnail = new Uri("ms-appx:///SampleData/FlightMapsUKPreview.png"),
             });
+            var scene = new Scene() { Basemap = CreateDefaultBasemap() };
+            scene.BaseSurface.ElevationSources.Add(new ArcGISTiledElevationSource(new Uri("https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")));
+            Scene = scene;
+            Map = new Map() { Basemap = CreateDefaultBasemap() };
+        }
+        private static FadeGroupLayer CreateDefaultBasemap()
+        {
+            FadeGroupLayer baselayers = new FadeGroupLayer();
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer")) { Name = "Aerial" });
+            baselayers.BaseLayers.Add(new OpenStreetMapLayer() { Name = "Open Street Map" });
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer")) { Name = "Topographic" });
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer")) { Name = "Dark Gray Reference" });
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer")) { Name = "Light Gray Reference" });
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer")) { Name = "National Geographic" });
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer")) { Name = "USGS Topographic (US)" });
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer")) { Name = "World Terrain" });
+            baselayers.BaseLayers.Add(new ArcGISTiledLayer(new Uri("http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer")) { Name = "World Navigation Charts" });
+            return baselayers;
         }
 
         public List<KmlSample> SampleData { get; private set; }
@@ -81,8 +87,8 @@ namespace KmlViewer
                 OnPropertyChanged();
                 if (Is3D)
                 {
-                    OnPropertyChanged("Contents");
-                    OnPropertyChanged("Layers");
+                    OnPropertyChanged(nameof(Contents));
+                    OnPropertyChanged(nameof(Layers));
                 }
             }
         }
@@ -97,6 +103,10 @@ namespace KmlViewer
                 Scene.OperationalLayers.Remove(l);
             var source = new Uri(path);
             string name = "";
+            if(source.Scheme == "ms-appx")
+            {
+                //StorageFile.GetFileFromApplicationUriAsync(source)
+            }
             if (source.IsFile)
                 name = new System.IO.FileInfo(source.LocalPath).Name;
             else
@@ -124,42 +134,60 @@ namespace KmlViewer
                 OnPropertyChanged();
                 if (!Is3D)
                 {
-                    OnPropertyChanged("Contents");
-                    OnPropertyChanged("Layers");
+                    OnPropertyChanged(nameof(Contents));
+                    OnPropertyChanged(nameof(Layers));
                 }
             }
         }
 
-        private bool m_Is3D = true;
-
         public bool Is3D
         {
-            get { return m_Is3D; }
+            get => GetAppSetting(true);
             set
             {
-                m_Is3D = value;
+                StoreAppSetting(value);
                 OnPropertyChanged(nameof(Contents));
                 OnPropertyChanged(nameof(Layers));
                 OnPropertyChanged(nameof(Basemap));
                 OnPropertyChanged();
-                StoreAppSetting(value);
             }
         }
 
-        private bool m_IsShadowsEnabled;
         public bool IsShadowsEnabled
         {
-            get => m_IsShadowsEnabled;
+            get => GetAppSetting<bool>(false);
             set
             {
-                m_IsShadowsEnabled = value;
+                StoreAppSetting(value);
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SunLighting));
             }
         }
+        public LightingMode SunLighting => IsShadowsEnabled ? LightingMode.LightAndShadows : LightingMode.NoLight;
+
+        public bool IsAtmosphereEnabled
+        {
+            get => GetAppSetting<bool>(false);
+            set
+            {
+                StoreAppSetting(value);
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(AtmosphereEffect));
+            }
+        }
+
+        public AtmosphereEffect AtmosphereEffect => IsAtmosphereEnabled ? AtmosphereEffect.Realistic : AtmosphereEffect.HorizonOnly;
 
         private void StoreAppSetting(object value, [CallerMemberName] string propertyName = null)
         {
-            Windows.Storage.ApplicationData.Current.LocalSettings.Values[propertyName] = value;
+            ApplicationData.Current.LocalSettings.Values[propertyName] = value;
+        }
+
+        private T GetAppSetting<T>(T defaultValue, [CallerMemberName] string propertyName = null)
+        {
+            if(ApplicationData.Current.LocalSettings.Values.ContainsKey(propertyName))
+                return (T)ApplicationData.Current.LocalSettings.Values[propertyName];
+            return defaultValue;
         }
 
         private void MainPageVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -175,7 +203,7 @@ namespace KmlViewer
         {
             if (e.NewItems != null && e.NewItems.OfType<KmlLayer>().Any() ||
                 e.OldItems != null && e.OldItems.OfType<KmlLayer>().Any())
-                OnPropertyChanged("Contents");
+                OnPropertyChanged(nameof(Contents));
         }
 
 

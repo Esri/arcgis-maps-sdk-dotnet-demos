@@ -11,8 +11,8 @@
     xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
     xmlns:ogc="using:Esri.ArcGISRuntime.Ogc"
     xmlns:loc="using:Esri.ArcGISRuntime.Location"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    x:Name="Page"
+    mc:Ignorable="d">
     <Page.Resources>
         <local:NullOrEmptyToCollapsedConverter x:Key="nullConv" />
         <local:LocationFormatConverter x:Key="locationConv" />
@@ -21,78 +21,43 @@
         <local:TrueToVisibleConverter x:Key="trueVizConv" />
         <local:DayOfYearToDateConverter x:Key="dayOfYearToDateConverter" />
         <local:TimeOfDayTimeConverter x:Key="timeOfDayTimeConverter" />
-        <local:MainPageVM x:Key="vm">
-            <local:MainPageVM.Scene>
-                <mapping:Scene>
 
-                    <mapping:Scene.BaseSurface>
-                        <mapping:Surface>
-                            <mapping:ArcGISTiledElevationSource Source="http://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer" IsEnabled="True" />
-                        </mapping:Surface>
-                    </mapping:Scene.BaseSurface>
-                    <mapping:Scene.Basemap>
-                        <local:FadeGroupLayer>
-                            <mapping:ArcGISTiledLayer Name="Aerial" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                            <mapping:OpenStreetMapLayer Name="Open Street Map" />
-                            <mapping:ArcGISTiledLayer Name="Topographic" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Dark Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Light Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="National Geographic" Source="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="USGS Topographic (US)" Source="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Terrain" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Navigation Charts" Source="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
-                        </local:FadeGroupLayer>
-                    </mapping:Scene.Basemap>
-                </mapping:Scene>
-            </local:MainPageVM.Scene>
-            <local:MainPageVM.Map>
-                <mapping:Map InitialViewpoint="-180,-90,180,90,4326">
-                    <mapping:Map.Basemap>
-                        <local:FadeGroupLayer>
-                            <mapping:ArcGISTiledLayer Name="Aerial" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" />
-                            <mapping:OpenStreetMapLayer Name="Open Street Map" />
-                            <mapping:ArcGISTiledLayer Name="Topographic" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Dark Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Light Gray Reference" Source="http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="National Geographic" Source="http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="Ocean" Source="http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="USGS Topographic (US)" Source="http://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Terrain" Source="http://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer" />
-                            <mapping:ArcGISTiledLayer Name="World Navigation Charts" Source="http://services.arcgisonline.com/arcgis/rest/services/Specialty/World_Navigation_Charts/MapServer" />
-                        </local:FadeGroupLayer>
-                    </mapping:Map.Basemap>
-                </mapping:Map>
-            </local:MainPageVM.Map>
-        </local:MainPageVM>
         <Style x:Key="SidePanelItemStyle1" TargetType="local:SidePanelItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Top"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="local:SidePanelItem">
-                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
     </Page.Resources>
 
-    <Grid DataContext="{StaticResource vm}">
+    <Grid DataContext="{x:Bind VM}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <SplitView x:Name="splitView" IsPaneOpen="True" 
-                   OpenPaneLength="350" CompactPaneLength="50" DisplayMode="Inline">
+        <TitleBar Title="ArcGIS Maps SDK for .NET - KML Viewer" IsPaneToggleButtonVisible="True" PaneToggleRequested="BurgerButton_Toggled" x:Name="TitleBar">
+            <TitleBar.Footer>
+            <local:FindLocationControl LocationPicked="OnLocationPicked"
+                                       Width="200" HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" BorderThickness="0" />
+            </TitleBar.Footer>
+
+        </TitleBar>
+        
+        <SplitView x:Name="splitView" IsPaneOpen="True"  Grid.Row="1"
+                   OpenPaneLength="350" CompactPaneLength="45" DisplayMode="Inline">
             <SplitView.Pane>
                 <Grid PointerEntered="SidePanel_PointerEntered"
                       PointerExited="SidePanel_PointerExited">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
 
-                    <local:SidePanel SelectedIndex="0" HorizontalAlignment="Stretch" x:Name="sidePanel" Grid.Row="1" >
+                    <local:SidePanel SelectedIndex="0" HorizontalAlignment="Stretch" x:Name="sidePanel">
                         <local:SidePanelItem Icon="Bookmarks" Header="Content" Padding="20,10,20,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                             <Grid Grid.Row="1" Grid.Column="1" >
                                 <Grid.RowDefinitions>
@@ -101,7 +66,7 @@
                                 </Grid.RowDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="Contents" Style="{StaticResource SubtitleTextBlockStyle}" FontFamily="Global User Interface" />
-                                    <StackPanel Visibility="{Binding Contents, Converter={StaticResource nullConv}, ConverterParameter=reverse}">
+                                    <StackPanel Visibility="{x:Bind VM.Contents, Mode=OneWay, Converter={StaticResource nullConv}, ConverterParameter=reverse}">
                                         <TextBlock Text="No KML files loaded" Margin="0,10"/>
                                         <Button Content="Load KML" Click="LoadKmlButton_Click" HorizontalAlignment="Stretch" />
                                     </StackPanel>
@@ -123,19 +88,29 @@
                                     SelectedIndex="{x:Bind VM.Basemap.SelectedIndex, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="mapping:Layer">
-                                            <Border BorderBrush="Black" BorderThickness="1" Margin="-10,2" >
-                                                <Grid HorizontalAlignment="Stretch">
+                                            <Border BorderBrush="{ThemeResource TextFillColorPrimaryBrush}" CornerRadius="5" BorderThickness="1" Margin="-10,5" >
+                                                <Grid HorizontalAlignment="Stretch" Background="{ThemeResource SolidBackgroundFillColorBaseAltBrush}">
                                                     <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
-                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="30" />
                                                     </Grid.RowDefinitions>
-                                                    <Image Stretch="UniformToFill" MaxHeight="100">
+                                                    <Image Stretch="UniformToFill" MaxHeight="100" Grid.RowSpan="2">
                                                         <Image.Source>
                                                             <BitmapImage UriSource="{x:Bind Converter={StaticResource basemapThumbnailConverter}}" />
                                                         </Image.Source>
                                                     </Image>
-                                                    <Grid Grid.Row="1" Background="White">
-                                                       <TextBlock Text="{x:Bind Name}" Grid.Row="1" HorizontalAlignment="Center" Margin="2" />
+                                                    <Grid Grid.Row="1" >
+                                                        <Grid.Background>
+                                                            <LinearGradientBrush EndPoint="0,1">
+                                                                <GradientStopCollection>
+                                                                    <GradientStop Color="Transparent"/>
+                                                                    <GradientStop Color="#66000000" Offset="1" />
+                                                                </GradientStopCollection>
+                                                            </LinearGradientBrush>
+                                                        </Grid.Background>
+                                                       <TextBlock Text="{x:Bind Name}" Grid.Row="1"
+                                                                  Foreground="White"
+                                                                  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="2" />
                                                     </Grid>
                                                 </Grid>
                                             </Border>
@@ -156,13 +131,16 @@
                                     <Slider Header="Elevation Exaggeration" Minimum="0" Maximum="5" StepFrequency="0.05"
                                         TickFrequency="1" HorizontalAlignment="Stretch" TickPlacement="Outside" 
                                         Value="{x:Bind VM.Scene.BaseSurface.ElevationExaggeration, Mode=TwoWay}" />
-                                    <ToggleSwitch x:Name="LightCheckbox" Header="Sunlight"
+                                    <ToggleSwitch x:Name="LightCheckbox" Header="Atmosphere"
+                                        IsOn="{x:Bind VM.IsAtmosphereEnabled, Mode=TwoWay}" />
+                                    <ToggleSwitch x:Name="AtmosphereCheckbox" Header="Sunlight"
                                         IsOn="{x:Bind VM.IsShadowsEnabled, Mode=TwoWay}" />
                                     <Slider Header="Day of year" Minimum="0" Maximum="365" x:Name="Day" ValueChanged="Month_ValueChanged" ThumbToolTipValueConverter="{StaticResource dayOfYearToDateConverter}"
                                         Visibility="{x:Bind VM.IsShadowsEnabled, Mode=OneWay}" Margin="20,0" />
                                     <Slider Header="Time of day" Minimum="0" Maximum="24" x:Name="Hour" ValueChanged="Month_ValueChanged"
                                         Margin="20,0"  TickFrequency="1" TickPlacement="Outside" StepFrequency=".25" ThumbToolTipValueConverter="{StaticResource timeOfDayTimeConverter}"
                                         Visibility="{x:Bind VM.IsShadowsEnabled, Mode=OneWay}" />
+                                    <Button Content="Now" HorizontalAlignment="Right" Margin="20,0" Visibility="{x:Bind VM.IsShadowsEnabled, Mode=OneWay}" Click="SetTimeOfDay_Click" />
                                 </StackPanel>
 
                             </StackPanel>
@@ -176,13 +154,17 @@
                                 <TextBox PlaceholderText="Enter URL" Margin="0,20,0,5" x:Name="kmlUrl" Header="Open from the web:" InputScope="Url" />
                                 <Button Content="Load" Click="LoadFromUrlButton_Click" HorizontalAlignment="Stretch" />
                                 <TextBlock Text="Sample KML files" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,20,0,5" />
-                                <ItemsControl ItemsSource="{Binding SampleData}">
+                                <ItemsControl ItemsSource="{x:Bind VM.SampleData, Mode=OneWay}">
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="local:KmlSample">
                                             <Button Click="LoadSampleButton_Click" HorizontalAlignment="Stretch" Padding="0" Margin="0,0,0,5">
                                                 <StackPanel>
-                                                    <Image Source="{Binding Thumbnail}" />
-                                                    <TextBlock Text="{Binding Title}" HorizontalAlignment="Center"/>
+                                                    <Image>
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="{x:Bind Thumbnail}"/>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock Text="{x:Bind Title}" HorizontalAlignment="Center"/>
                                                 </StackPanel>
                                             </Button>
                                         </DataTemplate>
@@ -193,26 +175,19 @@
                         </local:SidePanelItem>
                     </local:SidePanel>
 
-
-
-                    <TextBlock Text="A" FontFamily="Segoe MDL2 Assets" />
-                    <ToggleButton x:Name="BurgerButton" Width="50" Height="40" IsChecked="True" Background="LightGray" Checked="BurgerButton_Toggled" Unchecked="BurgerButton_Toggled">
-                        <FontIcon Glyph="&#xE700;" HorizontalAlignment="Left" />
-                    </ToggleButton>
                     <SymbolIcon VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                        Margin="13" Symbol="Help" Tapped="HelpIcon_Tapped" Grid.Row="1" />
-                    <local:FindLocationControl LocationPicked="OnLocationPicked"
-                                       HorizontalAlignment="Stretch"
-                                       VerticalAlignment="Top" BorderThickness="0"
-                                       Margin="50,-0,0,0" />
+                        Margin="13" Symbol="Help" Tapped="HelpIcon_Tapped" />
                 </Grid>
             </SplitView.Pane>
             <Grid>
                 <Grid x:Name="sceneArea" Grid.Column="1"
-                    Visibility="{Binding Is3D, Converter={StaticResource trueVizConv}}">
+                    Visibility="{x:Bind VM.Is3D, Mode=OneWay, Converter={StaticResource trueVizConv}}">
 
-                    <esri:SceneView x:Name="sceneView" Grid.Column="1" Scene="{Binding Scene}" GeoViewTapped="ViewTapped"
-                            ViewpointChanged="ViewChanged" >
+                    <esri:SceneView x:Name="sceneView" Grid.Column="1" Scene="{x:Bind VM.Scene}"
+                                    GeoViewTapped="ViewTapped"
+                                    ViewpointChanged="ViewChanged"
+                                    AtmosphereEffect="{x:Bind VM.AtmosphereEffect, Mode=OneWay}"
+                                    SunLighting="{x:Bind VM.SunLighting, Mode=OneWay}">
                         <!--This attached property allows the use of a game controller to fly around in the scene-->
                         <xinput:XInputSceneController.Controller>
                             <xinput:XInputSceneController />
@@ -224,7 +199,7 @@
                                     <Grid>
                                         <Path Data="M0,0 L30,0 30,20 16,20 15,21 14,20 0,20 z"
                                       Stroke="Black" StrokeThickness="2" Stretch="Fill" Fill="White" />
-                                        <WebView MinWidth="300" MinHeight="200" Margin="2,2,2,12" FrameNavigationStarting="WebView_FrameNavigationStarting"  />
+                                        <WebView2 MinWidth="300" MinHeight="200" Margin="2,2,2,12" NavigationStarting="WebView_FrameNavigationStarting"  />
                                         <Button BorderThickness="0" Background="Transparent" Click="CloseTip_Clicked"
                                         HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Padding="0">
                                             <Path Width="20"
@@ -241,21 +216,21 @@
                                Margin="20" Height="50" ValueTick="SliderValueTick" />
 
                     <Grid IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Top"
-                        Margin="20" Grid.Column="1" DataContext="{Binding ElementName=sceneView, Path=Camera}">
+                        Margin="20" Grid.Column="1">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=Location, Converter={StaticResource locationConv}}" />
+                            <TextBlock Text="{x:Bind sceneView.Camera.Location, Converter={StaticResource locationConv}, Mode=OneWay}" />
                             <TextBlock Text=" Altitude: " />
-                            <TextBlock Text="{Binding Path=Location.Z, Converter={StaticResource meterFormat}}"/>
+                            <TextBlock Text="{x:Bind sceneView.Camera.Location.Z, Converter={StaticResource meterFormat}, Mode=OneWay}"/>
                         </StackPanel>
                     </Grid>
 
                 </Grid>
-                <Grid x:Name="mapArea" Grid.Column="1" Visibility="{Binding Is3D, Converter={StaticResource trueVizConv}, ConverterParameter=reverse}">
+                <Grid x:Name="mapArea" Grid.Column="1" Visibility="{x:Bind VM.Is3D, Mode=OneWay, Converter={StaticResource trueVizConv}, ConverterParameter=reverse}">
 
                     <!---->
                     <esri:MapView x:Name="mapView" GeoViewTapped="ViewTapped"
                                   ViewpointChanged="ViewChanged"
-                                Grid.Column="1" Map="{Binding Map}" >
+                                Grid.Column="1" Map="{x:Bind VM.Map, Mode=OneWay}" >
                         <esri:MapView.Overlays>
                             <esri:OverlayItemsControl>
                                 <Border x:Name="overlayMap" Visibility="Collapsed" BorderBrush="Black" BorderThickness="0"
@@ -264,7 +239,7 @@
                                     <Grid>
                                         <Path Data="M0,0 L30,0 30,20 16,20 15,21 14,20 0,20 z"
                                               Stroke="Black" StrokeThickness="2" Stretch="Fill" Fill="White" />
-                                        <WebView MinWidth="300" MinHeight="200" Margin="2,2,2,12" FrameNavigationStarting="WebView_FrameNavigationStarting"  />
+                                        <WebView2 MinWidth="300" MinHeight="200" Margin="2,2,2,12" NavigationStarting="WebView_FrameNavigationStarting"  />
                                         <Button BorderThickness="0" Background="Transparent" Click="CloseTip_Clicked"
                                                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Padding="0">
                                                 <Path Width="20"
@@ -280,7 +255,7 @@
                     <Grid IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Top"
                           Margin="20" Grid.Column="1">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding VisibleArea, ElementName=mapView, Converter={StaticResource locationConv}}" />
+                            <TextBlock Text="{x:Bind mapView.VisibleArea, Converter={StaticResource locationConv}, Mode=OneWay}" />
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -289,7 +264,7 @@
         </SplitView>
 
         
-        <local:AboutView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="aboutView" Visibility="Collapsed" />
+        <local:AboutView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="aboutView" Visibility="Collapsed" Grid.Row="1" />
         
     </Grid>
     

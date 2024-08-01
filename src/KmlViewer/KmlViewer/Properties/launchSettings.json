@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "KmlViewer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "KmlViewer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

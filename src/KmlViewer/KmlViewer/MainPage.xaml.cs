@@ -7,52 +7,35 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.UI;
-using Windows.UI.Popups;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.Ogc;
+using System.Diagnostics;
 
 namespace KmlViewer
 {
     /// <summary>
-	/// Main KML Viewer page
+	/// Main KML Viewer page - Contains only the view-specific code
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        MainPageVM vm;
         public MainPage()
         {
             this.InitializeComponent();
-
-            this.NavigationCacheMode = NavigationCacheMode.Required;
-            vm = Resources["vm"] as MainPageVM;
             Day.Value = DateTime.Now.DayOfYear;
             Hour.Value = DateTime.Now.TimeOfDay.TotalHours;
-            vm.PropertyChanged += Vm_PropertyChanged;
+            Initialize();
         }
 
-        private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if(e.PropertyName == nameof(MainPageVM.IsShadowsEnabled))
-            {
-                sceneView.SunLighting = VM.IsShadowsEnabled ? LightingMode.LightAndShadows : LightingMode.NoLight;
-            }
-        }
+        public MainPageVM VM { get; } = new MainPageVM();
 
-        public MainPageVM VM => vm;
-
-        /// <summary>
-        /// Invoked when this page is about to be displayed in a Frame.
-        /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.
-        /// This parameter is typically used to configure the page.</param>
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        private async void Initialize()
         {
             LoadLocation();
-            if (vm.Is3D)
+            if (VM.Is3D)
             {
                 Camera homeCamera = new Camera(41, -180, 31000000, 0, 0, 0);
                 sceneView.SetViewpointCamera(homeCamera);
@@ -104,31 +87,32 @@ namespace KmlViewer
             }
         }
 
-        public void LoadKml(Windows.ApplicationModel.Activation.FileOpenPickerActivatedEventArgs args)
-        {
-        }
-
-        public async void LoadKml(Windows.ApplicationModel.Activation.FileActivatedEventArgs args)
+        public void LoadKml(Windows.ApplicationModel.Activation.IFileActivatedEventArgs args)
         {
             var file = args.Files.FirstOrDefault() as Windows.Storage.StorageFile;
-            var localFile = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(file.Name, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-            await file.CopyAndReplaceAsync(localFile);
-            AddKmlLayer("file:///" + localFile.Path);
+            AddKmlLayer("file:///" + file.Path);
         }
 
         private async void AddKmlLayer(string url)
         {
+            if (string.IsNullOrEmpty(url)) return;
             Uri uri;
             try
             {
-                uri = new Uri(url);
+                uri = new Uri(url, UriKind.RelativeOrAbsolute);
             }
             catch (System.Exception ex)
             {
-                var _ = new MessageDialog("Invalid url: " + ex.Message).ShowAsync();
+                Debugger.Break(); //TODO
+                //var _ = new MessageDialog("Invalid url: " + ex.Message).ShowAsync();
                 return;
             }
-            var layer = vm.LoadKmlLayer(uri.OriginalString.Replace("file:///", ""));
+            if (uri.Scheme == "ms-appx")
+            {
+                var path = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
+                uri = new Uri("file:///" + path.Path.Replace("\\", "/"));
+            }
+            var layer = VM.LoadKmlLayer(uri.OriginalString.Replace("file:///", ""));
 
             try
             {
@@ -136,7 +120,8 @@ namespace KmlViewer
             }
             catch (System.Exception ex)
             {
-                var _ = new MessageDialog(ex.Message).ShowAsync();
+                Debugger.Break(); //TODO
+                // var _ = new MessageDialog(ex.Message).ShowAsync();
                 return;
             }
 
@@ -144,7 +129,6 @@ namespace KmlViewer
             try
             {
                 await layer.LoadAsync();
-                Viewpoint viewPoint = null;
                 var root = layer.Dataset?.RootNodes?.FirstOrDefault();
                 if (root == null)
                 {
@@ -163,18 +147,19 @@ namespace KmlViewer
                     root = layer.Dataset?.RootNodes?.FirstOrDefault();
                 }
 
+                //Viewpoint? viewPoint = null;
                 //if (layer.FullExtent == null && layer.RootFeature != null)
                 //{
-                //	viewPoint = layer.RootFeature.Viewpoint;
+                //    viewPoint = layer.RootFeature.Viewpoint;
                 //}
                 //if(viewPoint == null && layer.FullExtent != null)
-                //	viewPoint = new Viewpoint(layer.FullExtent);
+                //    viewPoint = new Viewpoint(layer.FullExtent);
                 //if (viewPoint != null)
                 //{
-                //	if (vm.Is3D)
-                //		sceneView.SetViewpointAsync(viewPoint);
-                //	else
-                //		mapView.SetViewpointAsync(viewPoint);
+                //    if (VM.Is3D)
+                //        sceneView.SetViewpointAsync(viewPoint);
+                //    else
+                //        mapView.SetViewpointAsync(viewPoint);
                 //}
             }
             catch { }
@@ -183,6 +168,9 @@ namespace KmlViewer
         private async void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(((KmlViewer.App)App.Current).Window);
+            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwnd);
+
             openPicker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
             openPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
             // Users expect to have a filtered view of their folders depending on the scenario.
@@ -194,10 +182,7 @@ namespace KmlViewer
             var file = await openPicker.PickSingleFileAsync();
             if (file != null)
             {
-                //Copy file inside the sandbox
-                var localFile = await Windows.Storage.ApplicationData.Current.TemporaryFolder.CreateFileAsync(file.Name, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-                await file.CopyAndReplaceAsync(localFile);
-                AddKmlLayer("file:///" + localFile.Path);
+                AddKmlLayer("file:///" + file.Path);
             }
         }
 
@@ -212,7 +197,7 @@ namespace KmlViewer
             AddKmlLayer(sample.Path);
             if (sample.InitialViewpoint != null)
             {
-                GeoView view = vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+                GeoView view = VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
                 var _ = view.SetViewpointAsync(sample.InitialViewpoint);
             }
         }
@@ -247,23 +232,24 @@ namespace KmlViewer
 
         private UIElement currentMaptip;
 
-        private void ShowMapTip(KmlNode feature, MapPoint location = null)
+        private async void ShowMapTip(KmlNode feature, MapPoint location = null)
         {
-            GeoView view = vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+            GeoView view = VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
             var placemark = feature as KmlPlacemark;
             var border = (Border)view.Overlays.Items.First();
             if (feature == null || string.IsNullOrWhiteSpace(feature.BalloonContent) ||
                 placemark?.Geometry == null)
             {
-                border.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                border.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
                 currentMaptip = null;
                 return;
             }
-            var grid = (Windows.UI.Xaml.Controls.Grid)border.Child;
-            var webview = grid.Children.OfType<WebView>().First();
+            var grid = (Microsoft.UI.Xaml.Controls.Grid)border.Child;
+            var webview = grid.Children.OfType<WebView2>().First();
+            await webview.EnsureCoreWebView2Async();
             webview.NavigateToString(feature.BalloonContent);
             GeoView.SetViewOverlayAnchor(border, location ?? placemark.Geometry.Extent.GetCenter());
-            border.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            border.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
             currentMaptip = border;
         }
 
@@ -282,7 +268,7 @@ namespace KmlViewer
                     vp = new Viewpoint(kmlvp.Location, new Camera(kmlvp.Location, kmlvp.Heading, kmlvp.Pitch, kmlvp.Roll));
                 else
                     vp = new Viewpoint(kmlvp.Location, new Camera(kmlvp.Location, kmlvp.Range, kmlvp.Heading, kmlvp.Pitch, kmlvp.Roll));
-                if (vm.Is3D)
+                if (VM.Is3D)
                 {
                     sceneView.SetViewpointAsync(vp);
                     sceneView.Focus(FocusState.Keyboard);
@@ -304,10 +290,10 @@ namespace KmlViewer
             if (sceneView != null && mapView != null)
             {
                 bool isOn = ((ToggleSwitch)sender).IsOn;
-                if (isOn == vm.Is3D)
+                if (isOn == VM.Is3D)
                     return; //this happens the first time it loads
                 HighlightFeature(null);
-                if (vm.Is3D)
+                if (VM.Is3D)
                 {
                     var c = sceneView.Camera;
                     //If there's tilt or heading, reset before switching to 2D
@@ -318,20 +304,20 @@ namespace KmlViewer
                         await sceneView.SetViewpointCameraAsync(c);
                     }
                 }
-                GeoView from = vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
-                GeoView to = !vm.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+                GeoView from = VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
+                GeoView to = !VM.Is3D ? (GeoView)sceneView : (GeoView)mapView;
                 var vp = from.GetCurrentViewpoint(ViewpointType.BoundingGeometry);
                 if (vp != null)
                 {
-                    await to.SetViewpointAsync(vp, TimeSpan.Zero);
+                    to.SetViewpoint(vp);
                 }
-                vm.Is3D = !vm.Is3D;
+                VM.Is3D = !VM.Is3D;
             }
         }
 
         public void OnLocationPicked(object sender, Esri.ArcGISRuntime.Geometry.Geometry location)
         {
-            if (vm.Is3D)
+            if (VM.Is3D)
             {
                 sceneView.SetViewpointAsync(new Viewpoint(location));
                 sceneView.Focus(FocusState.Keyboard);
@@ -358,21 +344,27 @@ namespace KmlViewer
             HighlightFeature(feature);
             ShowMapTip(feature, e.Location);
         }
-
-        private void WebView_FrameNavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        private void WebView_FrameNavigationStarting(WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs args)
         {
-            if (args.Uri != null)
+            if (args.Uri != null && args.Uri.StartsWith("http"))
             {
                 args.Cancel = true;
-                var _ = Windows.System.Launcher.LaunchUriAsync(args.Uri);
+                var _ = Windows.System.Launcher.LaunchUriAsync(new Uri(args.Uri));
             }
         }
 
         private void Month_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (Day == null || Hour == null) return;
-            var date = new DateTime(2015, 1, 1, 0, 0, 0, DateTimeKind.Local).Date.AddDays((int)Day.Value).AddHours(Hour.Value);
+            var date = new DateTime(DateTime.UtcNow.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc).Date.AddDays((int)Day.Value).AddHours(Hour.Value);
             sceneView.SunTime = date;
+        }
+
+        private void SetTimeOfDay_Click(object sender, RoutedEventArgs e)
+        {
+            var now = DateTime.UtcNow;
+            Day.Value = now.DayOfYear - 1;
+            Hour.Value = now.TimeOfDay.TotalHours;
         }
 
         private void SliderValueTick(object sender, double value)
@@ -394,9 +386,9 @@ namespace KmlViewer
             }
         }
 
-        private void HelpIcon_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void HelpIcon_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            aboutView.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            aboutView.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
         }
 
         private void TableOfContents_ContextMenuRequested(object sender, ContextMenuRequestedEventArgs e)
@@ -468,30 +460,33 @@ namespace KmlViewer
 
         private KmlTourController tourController;
 
-        private void BurgerButton_Toggled(object sender, RoutedEventArgs e)
+        private bool isPanePinned = true;
+
+        private void BurgerButton_Toggled(TitleBar sender, object args)
         {
-            var ischecked = (sender as ToggleButton).IsChecked.Value;
-            if(ischecked)
+            if(!isPanePinned)
             {
                 splitView.DisplayMode = SplitViewDisplayMode.Inline;
                 splitView.IsPaneOpen = true;
+                isPanePinned = true;
             }
             else
             {
                 splitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
                 splitView.IsPaneOpen = false;
+                isPanePinned = false;
             }
         }
 
-        private void SidePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private void SidePanel_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            if (!BurgerButton.IsChecked.Value)
+            if (!isPanePinned)
                 splitView.IsPaneOpen = true;
         }
 
-        private void SidePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private void SidePanel_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            if (!BurgerButton.IsChecked.Value)
+            if (!isPanePinned)
                 splitView.IsPaneOpen = false;
         }
     }

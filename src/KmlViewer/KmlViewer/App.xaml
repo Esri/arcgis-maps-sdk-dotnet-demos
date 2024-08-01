@@ -1,25 +1,14 @@
-﻿<Application
+<?xml version="1.0" encoding="utf-8"?>
+<Application
     x:Class="KmlViewer.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:KmlViewer"
-    RequestedTheme="Light">
-
-	<Application.Resources>
-				
-		<SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="CornflowerBlue" />
-		<SolidColorBrush x:Key="ListViewItemSelectedPointerOverBorderThemeBrush" Color="CornflowerBlue" />
-		<SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush" Color="CornflowerBlue" />
-
-		<SolidColorBrush x:Key="ToggleSwitchCurtainBackgroundThemeBrush" Color="CornflowerBlue" />
-		<SolidColorBrush x:Key="ToggleSwitchCurtainPointerOverBackgroundThemeBrush" Color="CornflowerBlue" />
-		<SolidColorBrush x:Key="ToggleSwitchCurtainPressedBackgroundThemeBrush" Color="CornflowerBlue" />
-		
-		<Style TargetType="Slider">
-			<Style.Setters>
-				<Setter Property="Foreground" Value="CornflowerBlue" />
-			</Style.Setters>
-		</Style>
-
-	</Application.Resources>
+    xmlns:local="using:KmlViewer">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

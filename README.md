@@ -15,7 +15,7 @@ You can also find a set of smaller feature-focused samples in the [ArcGIS Maps S
 * [`Geocode & Route on MouseMove`](src/GeocodeAndRoutingOnMouseMove) - Demonstrates fast reverse geocoding and routing during mouse-move on Windows Desktop (WPF) and Universal Windows Platform (UWP).
 * [`Viewshed analysis in tabletop AR with Xamarin.Forms`](src/ViewshedInTabletopAR) - Demonstrates how to do a viewshed analysis in a tabletop AR scenario using a moving graphic with Xamarin.Forms.
 * [`Offline workflows`](src/OfflineWorkflowsSample) - Demonstrates how to browse a portal for offline-enabled maps and take them offline. Also demonstrates how to open maps previously taken offline.
-* [`KML Viewer`](src/KmlViewer) - A UWP app for visualizing KML/KMZ files in 2D and 3D.
+* [`KML Viewer`](src/KmlViewer) - A WinUI 3 app for visualizing KML/KMZ files in 2D and 3D.
 * [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D using a customer editor.
 * [`Measure Tool`](src/MeasureTool) - A simple sample demonstrating how to use the editor to create your own measure tool.
 
