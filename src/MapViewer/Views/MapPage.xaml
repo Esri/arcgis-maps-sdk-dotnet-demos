@@ -9,28 +9,59 @@
     xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
     xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     xmlns:tkui="using:Esri.ArcGISRuntime.Toolkit.UI"
+    xmlns:calcite="using:Esri.Calcite.WinUI"
     mc:Ignorable="d">
 
-    <SplitView IsPaneOpen="True" DisplayMode="Inline">
-        <SplitView.Pane>
-            <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="Visible" />
-        </SplitView.Pane>
-        <SplitView IsPaneOpen="False" PanePlacement="Right" DisplayMode="Inline">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="500"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <NavigationView IsSettingsVisible="False" OpenPaneLength="160" PaneDisplayMode="LeftCompact"
+                        IsBackButtonVisible="Collapsed" IsPaneOpen="True" IsPaneToggleButtonVisible="False">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=AddLayer, Scale = Small, SymbolSize=20}" Content="Add" />
+                <NavigationViewItemSeparator />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Content="Layers" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Content="Tables" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Content="Basemap" x:Name="BasemapPane" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" Content="Charts" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" Content="Legend" x:Name="LegendPane" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Content="Bookmarks" />
+                <NavigationViewItemSeparator />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" Content="Save and open" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" Content="Map properties" />
+                <NavigationViewItemSeparator />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Share, Scale = Small, SymbolSize=20}" Content="Share map" IsEnabled="False" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" Content="Print" />
+                <NavigationViewItemSeparator />
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Content="Information" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=ChevronLeft, Scale = Small, SymbolSize=20}" Content="Collapse" />
+            </NavigationView.FooterMenuItems>
+            <Grid>
+                <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" />
+                <tk:Legend GeoView="{x:Bind mapView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
+            </Grid>
+        </NavigationView>
+        <SplitView IsPaneOpen="False" PanePlacement="Right" DisplayMode="Inline" Grid.Column="1">
             <SplitView.Pane>
                 <tk:FeatureFormView x:Name="FeatureForm" FeatureForm="{x:Bind PageVM.FeatureForm, Mode=OneWay}" />
             </SplitView.Pane>
-            <Grid>
+            <Grid >
 
                 <esri:MapView Map="{x:Bind AppVM.Map, Mode=OneWay}" Grid.Row="1" x:Name="mapView"
-                              GeoViewTapped="GeoViewTapped"
-                              tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
+                      GeoViewTapped="GeoViewTapped"
+                      tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
 
                 <tk:ScaleLine MapView="{x:Bind mapView}" Margin="20" />
-                
-                <tk:Compass GeoView="{x:Bind mapView}" Margin="20" />
-                
-            </Grid>
-        </SplitView>
-    </SplitView>
 
+                <tk:Compass GeoView="{x:Bind mapView}" Margin="20" />
+
+            </Grid>
+
+        </SplitView>
+
+    </Grid>
 </Page>
