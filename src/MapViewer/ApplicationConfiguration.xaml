@@ -1,0 +1,10 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISRuntimeDesktop">
+
+    <x:String x:Key="PortalUrl">https://www.arcgis.com/</x:String>
+    <x:String x:Key="OAuthClientID">SET_CLIENT_ID</x:String>
+    <x:String x:Key="OAuthRedirectUrl">SET_REDIRECT_URL</x:String> <!-- Must also match Protocol launch settings in Package.appxmanifest -->
+    
+</ResourceDictionary>

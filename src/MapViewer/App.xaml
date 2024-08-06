@@ -1,0 +1,21 @@
+﻿<Application
+    x:Class="ArcGISMapViewer.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISMapViewer"
+    xmlns:conv="using:ArcGISMapViewer.Converters"
+    >
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" >
+                    <XamlControlsResources.MergedDictionaries>
+                        <CalciteResources xmlns="using:Esri.Calcite.WinUI" />
+                    </XamlControlsResources.MergedDictionaries>
+                </XamlControlsResources>
+                <ResourceDictionary Source="ms-appx:///ApplicationConfiguration.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:RuntimeImageConverter x:Key="RuntimeImageConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

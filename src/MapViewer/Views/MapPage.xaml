@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ArcGISMapViewer.Views.MapPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISMapViewer.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
+    xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
+    xmlns:tkui="using:Esri.ArcGISRuntime.Toolkit.UI"
+    mc:Ignorable="d">
+
+    <SplitView IsPaneOpen="True" DisplayMode="Inline">
+        <SplitView.Pane>
+            <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="Visible" />
+        </SplitView.Pane>
+        <SplitView IsPaneOpen="False" PanePlacement="Right" DisplayMode="Inline">
+            <SplitView.Pane>
+                <tk:FeatureFormView x:Name="FeatureForm" FeatureForm="{x:Bind PageVM.FeatureForm, Mode=OneWay}" />
+            </SplitView.Pane>
+            <Grid>
+
+                <esri:MapView Map="{x:Bind AppVM.Map, Mode=OneWay}" Grid.Row="1" x:Name="mapView"
+                              GeoViewTapped="GeoViewTapped"
+                              tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
+
+                <tk:ScaleLine MapView="{x:Bind mapView}" Margin="20" />
+                
+                <tk:Compass GeoView="{x:Bind mapView}" Margin="20" />
+                
+            </Grid>
+        </SplitView>
+    </SplitView>
+
+</Page>
