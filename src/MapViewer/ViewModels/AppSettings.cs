@@ -26,7 +26,7 @@ namespace ArcGISMapViewer.ViewModels
 
         public void SetLastPortalItem(PortalItem? portalItem)
         {
-            SetSetting(portalItem.Url.OriginalString, "PortalItem");
+            SetSetting(portalItem?.Url?.OriginalString, "PortalItem");
         }
         public async Task<PortalItem?> GetLastPortalItemAsync()
         {
