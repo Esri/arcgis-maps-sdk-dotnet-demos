@@ -31,7 +31,7 @@
                 <TextBlock Text="{local:StringResource Key=AppNamePoweredBy}" HorizontalAlignment="Left" Foreground="White"
            VerticalAlignment="Center" Margin="10,0,0,0" Style="{StaticResource BaseTextBlockStyle}" />
             </Border>
-            <StackPanel Padding="20" VerticalAlignment="Center" Margin="0,250,0,0">
+            <StackPanel Padding="20" VerticalAlignment="Center" Margin="0,225,0,20">
                 <TextBlock Text="Sign into ArcGIS Online" Foreground="White" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"  />
                 <TextBlock Text="An ArcGIS Online Account is required to use this application" Foreground="White"
                        FontSize="14" Style="{StaticResource BodyStrongTextBlockStyle}" HorizontalAlignment="Center" Margin="10" />

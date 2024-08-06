@@ -16,5 +16,6 @@
         </Grid.RowDefinitions>
         <tk:PopupViewer x:Name="popupViewer" />
         <HyperlinkButton Content="Edit" Grid.Row="1" x:Name="EditButton" Click="EditButton_Click" />
+        <AppBarButton Icon="Clear" HorizontalAlignment="Right" Margin="-20,-15"  Click="Close_Click" />
     </Grid>
 </UserControl>

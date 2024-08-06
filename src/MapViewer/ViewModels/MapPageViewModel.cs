@@ -43,5 +43,11 @@ namespace ArcGISMapViewer.ViewModels
 
         [ObservableProperty]
         private Esri.ArcGISRuntime.Mapping.FeatureForms.FeatureForm? _featureForm;
+
+        public void ZoomTo(Layer? layer)
+        {
+            if (layer?.FullExtent is not null)
+                ViewController.SetViewpointAsync(new Viewpoint(layer.FullExtent));
+        }
     }
 }

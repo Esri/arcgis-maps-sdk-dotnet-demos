@@ -45,10 +45,8 @@ namespace ArcGISMapViewer.Views
                 {
                     var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result };
                     mapView.ShowCalloutAt(e.Location, calloutview);
-                    calloutview.EditRequested += (s, e) =>
-                    {
-                        PageVM.CurrentFeature = e as Feature;
-                    };
+                    calloutview.EditRequested += (s, e) => PageVM.CurrentFeature = e as Feature;
+                    calloutview.CloseRequested += (s, e) => mapView.DismissCallout();
                 }
             }
             catch
@@ -67,6 +65,18 @@ namespace ArcGISMapViewer.Views
         {
             //LeftSidePanelNavView.OpenPaneLength = 50;
             LeftSidePanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            var layer = (sender as FrameworkElement).DataContext as Layer;
+            if (layer?.FullExtent is not null)
+                mapView.SetViewpointAsync(new Viewpoint(layer.FullExtent));
+        }
+        public void ZoomTo(Layer? layer)
+        {
+            if (layer?.FullExtent is not null)
+                mapView.SetViewpointAsync(new Viewpoint(layer.FullExtent));
         }
     }
 }

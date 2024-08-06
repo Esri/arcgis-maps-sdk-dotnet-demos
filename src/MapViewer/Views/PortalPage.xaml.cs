@@ -29,9 +29,11 @@ namespace ArcGISMapViewer.Views
         {
             if (e.ClickedItem is PortalItem item)
             {
-                ApplicationViewModel.Instance.Map = new Map(item);
+                ApplicationViewModel.Instance.PortalItem = item;
                 ApplicationViewModel.Instance.IsMapVisible = true;
             }
         }
+
+        
     }
 }

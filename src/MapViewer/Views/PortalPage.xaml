@@ -12,13 +12,26 @@
 
     <Grid>
 
-        <GridView ItemsSource="{x:Bind PageVM.MapItems, Mode=OneWay}" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <AutoSuggestBox PlaceholderText="Search for a map" QueryIcon="Find" QuerySubmitted="{x:Bind PageVM.SearchQuerySubmitted}"/>
+            <Button Content="Search" Grid.Column="1"/>
+        </Grid>
+        <GridView ItemsSource="{x:Bind PageVM.MapItems, Mode=OneWay}" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="portal:PortalItem">
                     <Border>
-                        <Grid MaxWidth="200">
+                        <Grid Width="250" Height="150" Margin="5" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" BorderThickness="1" CornerRadius="5">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="125" />
+                                <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Image Source="{x:Bind Thumbnail, Converter={StaticResource RuntimeImageConverter}}" Grid.RowSpan="2" Stretch="UniformToFill" />
@@ -42,6 +55,11 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Text="{x:Bind PageVM.SearchError, Mode=OneWay}" IsHitTestVisible="False"
+                   Foreground="{StaticResource CalciteUIDangerBrush}"
+                   Style="{StaticResource BodyStrongTextBlockStyle}"
+                   Grid.Row="1"/>
     </Grid>
 </Page>

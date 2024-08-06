@@ -105,7 +105,7 @@
                                             <AppBarButton Icon="More" Grid.Column="2" VerticalAlignment="Center" VerticalContentAlignment="Bottom" >
                                                 <AppBarButton.Flyout>
                                                     <MenuFlyout Placement="RightEdgeAlignedTop">
-                                                        <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" />
+                                                        <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" Click="MenuFlyoutItem_Click" />
                                                         <MenuFlyoutItem Text="Show Properties" Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" />
                                                         <MenuFlyoutItem Text="Show Table" Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" />
                                                         <MenuFlyoutSeparator />
@@ -147,7 +147,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="300" />
                         </Grid.ColumnDefinitions>
                         <Grid >
 
@@ -161,7 +161,21 @@
 
                         </Grid>
                         <Grid Grid.Column="1">
-                            <tk:FeatureFormView x:Name="FeatureForm" FeatureForm="{x:Bind PageVM.FeatureForm, Mode=OneWay}" />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <tk:FeatureFormView x:Name="FeatureForm" FeatureForm="{x:Bind PageVM.FeatureForm, Mode=OneWay}" Margin="5,5,5,0" />
+                            <Grid Grid.Row="1" Background="Black">
+                                <Grid.ColumnDefinitions >
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Close" Margin="5,0,0,0" Background="#007AC2" Foreground="White" Padding="5" Grid.Column="0" HorizontalAlignment="Stretch" />
+                                <Button Content="Reset" Margin="5" Background="#D83020" Foreground="White" Padding="5" Grid.Column="1" HorizontalAlignment="Stretch" />
+                                <Button Content="Apply" Margin="0,0,5,0" Background="#35AC46" Foreground="White" Padding="5" Grid.Column="2" HorizontalAlignment="Stretch" />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </SplitView>

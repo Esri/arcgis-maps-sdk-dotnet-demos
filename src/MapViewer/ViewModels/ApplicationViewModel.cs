@@ -21,13 +21,62 @@ public partial class ApplicationViewModel : ObservableObject
         _ = LocationDataSource.StartAsync();
     }
 
+    public async Task<Map?> LoadLastMapAsync()
+    {
+        var item = await AppSettings.GetLastPortalItemAsync();
+        if(item != null)
+        {
+            PortalItem = item;
+            return Map;
+        }
+        else
+        {
+            Map = new Map(BasemapStyle.ArcGISStreets);
+            return null;
+        }
+    }
+
     [ObservableProperty]
     private LocationDataSource _LocationDataSource = LocationDataSource.CreateDefault();
 
     public AppSettings AppSettings { get; } = new AppSettings();
 
     [ObservableProperty]
-    private Map _map = new Map(BasemapStyle.ArcGISStreets);
+    private Map? _map;
+
+    [ObservableProperty]
+    private PortalItem? portalItem;
+
+    partial void OnPortalItemChanged(PortalItem? value)
+    {
+        if (value is not null)
+        {
+
+            var map = new Map(BasemapStyle.ArcGISStreets);
+            if (value.Type == PortalItemType.WebMap)
+                map = new Map(value);
+            else if(value.Type == PortalItemType.FeatureService || value.Type == PortalItemType.WFS)
+                map.OperationalLayers.Add(new FeatureLayer(value));
+            else if (value.Type == PortalItemType.WMS)
+                map.OperationalLayers.Add(new WmsLayer(value));
+            else if (value.Type == PortalItemType.KML)
+                map.OperationalLayers.Add(new KmlLayer(value));
+            else if (value.Type == PortalItemType.VectorTileService)
+                map.OperationalLayers.Add(new ArcGISVectorTiledLayer(value));
+            else if (value.Type == PortalItemType.MapService)
+                map.OperationalLayers.Add(new ArcGISMapImageLayer(value));
+            else if (value.Type == PortalItemType.FeatureCollection)
+                map.OperationalLayers.Add(new FeatureCollectionLayer(new Esri.ArcGISRuntime.Data.FeatureCollection(value)));
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"{value.Type} not implemented");
+            }
+            if (value.Extent != null)
+                map.InitialViewpoint = new Viewpoint(value.Extent);
+            Map = map;
+        }
+        AppSettings.SetLastPortalItem(value);
+    }
 
     [ObservableProperty]
     private string _windowSubTitle;
@@ -103,6 +152,7 @@ public partial class ApplicationViewModel : ObservableObject
     public async Task SignOut()
     {
         PortalUser = null;
+        AppSettings.SetLastPortalItem(null);
         await Esri.ArcGISRuntime.Security.AuthenticationManager.Current.RemoveAndRevokeAllCredentialsAsync();
     }
 }

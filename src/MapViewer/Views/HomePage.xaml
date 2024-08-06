@@ -13,7 +13,7 @@
     <NavigationView PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" IsPaneToggleButtonVisible="False"
                     NavigationView.IsSettingsVisible="True" SelectionChanged="NavigationView_SelectionChanged">
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Portal, Scale = Small, SymbolSize=20}" Content="My Portal" Tag="PortalPage" />
+            <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Portal, Scale = Small, SymbolSize=20}" Content="My Portal" Tag="PortalPage" IsSelected="True" />
             <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Map, Scale = Small, SymbolSize=20}" Content="New" Tag="NewMapPage" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame" />

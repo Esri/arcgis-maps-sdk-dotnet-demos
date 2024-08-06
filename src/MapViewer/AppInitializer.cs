@@ -102,6 +102,9 @@ internal class AppInitializer
         }
         StatusText = Resources.GetString("FinishingUpStatus");
         Progress = 80;
+        var lastMap = await ApplicationViewModel.Instance.LoadLastMapAsync();
+        ApplicationViewModel.Instance.IsMapVisible = lastMap is not null;
+        Progress = 100;
         ApplicationInitialized?.Invoke(this, EventArgs.Empty);
     }
 

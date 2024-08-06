@@ -111,5 +111,12 @@ namespace ArcGISMapViewer.Controls
         }
 
         public event EventHandler<GeoElement>? EditRequested;
+
+        public event EventHandler? CloseRequested;
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

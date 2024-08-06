@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Esri.ArcGISRuntime;
+using Esri.ArcGISRuntime.Portal;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,24 @@ namespace ArcGISMapViewer.ViewModels
             OAuthClientId = (string)appResources["OAuthClientID"];
             OAuthRedirectUrl = (string)appResources["OAuthRedirectUrl"];
             PortalUrl = new Uri((string)appResources["PortalUrl"] + "sharing/rest");
+        }
+
+        public void SetLastPortalItem(PortalItem? portalItem)
+        {
+            SetSetting(portalItem.Url.OriginalString, "PortalItem");
+        }
+        public async Task<PortalItem?> GetLastPortalItemAsync()
+        {
+            var uri = GetSetting<string?>(null, "PortalItem");
+            if(!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out var result))
+            {
+                try
+                {
+                    return await PortalItem.CreateAsync(result);
+                }
+                catch { }
+            }
+            return null;
         }
 
         public string OAuthClientId { get; }

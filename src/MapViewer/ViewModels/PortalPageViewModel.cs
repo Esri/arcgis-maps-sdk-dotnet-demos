@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Esri.ArcGISRuntime.Portal;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Windows.Foundation;
 
@@ -16,22 +17,28 @@ namespace ArcGISMapViewer.ViewModels
         private PortalPageViewModel()
         {
             ApplicationViewModel.Instance.PropertyChanged += Instance_PropertyChanged;
-            Reload();
+            Reload(null);
         }
 
         private void Instance_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(ApplicationViewModel.PortalUser))
             {
-                Reload();
+                Reload(null);
             }
+        }
+
+        public void SearchQuerySubmitted(AutoSuggestBox box, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            Reload(args.QueryText);
         }
 
         public static PortalPageViewModel Instance { get; } = new PortalPageViewModel();
 
-        public async void Reload()
+        public async void Reload(string? query)
         {
             var portal = ApplicationViewModel.Instance.PortalUser?.Portal;
+            SearchError = "";
             if (portal is null)
             {
                 MapItems = null;
@@ -40,14 +47,28 @@ namespace ArcGISMapViewer.ViewModels
             try
             {
                 IsLoading = true;
-                var result = await portal.FindItemsAsync(PortalQueryParameters.CreateForItemsOfTypes(new PortalItemType[] { PortalItemType.WebMap }));
+                var queryParams = PortalQueryParameters.CreateForItemsOfTypes(
+                   [PortalItemType.WebMap,
+                    PortalItemType.FeatureService,
+                    PortalItemType.WMS,
+                    // PortalItemType.WMTS,
+                    // PortalItemType.WFS,
+                    PortalItemType.VectorTileService,
+                    PortalItemType.MapService,
+                    PortalItemType.KML, 
+                    PortalItemType.FeatureCollection], search: query);
+                var result = await portal.FindItemsAsync(queryParams);
                 MapItems = new PortalItemQuerySource(portal, result);
             }
-            catch
+            catch(System.Exception ex)
             {
+                SearchError = ex.Message;
             }
             IsLoading = false;
         }
+
+        [ObservableProperty]
+        private string _searchError;
 
         [ObservableProperty]
         private bool _isLoading;
