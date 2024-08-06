@@ -6,9 +6,15 @@
     xmlns:local="using:ArcGISMapViewer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
+    mc:Ignorable="d" MaxHeight="300" MaxWidth="300">
 
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <tk:PopupViewer x:Name="popupViewer" />
+        <HyperlinkButton Content="Edit" Grid.Row="1" x:Name="EditButton" Click="EditButton_Click" />
     </Grid>
 </UserControl>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Toolkit.UI.Controls;
 using Esri.ArcGISRuntime.UI.Controls;
 using Microsoft.UI.Xaml;
@@ -42,12 +43,30 @@ namespace ArcGISMapViewer.Views
                 var result = await mapView.IdentifyLayersAsync(e.Position, 2, false);
                 if (result.Any())
                 {
-                    mapView.ShowCalloutAt(e.Location, new Controls.IdentifyResultView() { IdentifyResult = result });
+                    var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result };
+                    mapView.ShowCalloutAt(e.Location, calloutview);
+                    calloutview.EditRequested += (s, e) =>
+                    {
+                        PageVM.CurrentFeature = e as Feature;
+                    };
                 }
             }
             catch
             {
             }
+        }
+
+        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            //LeftSidePanelNavView.OpenPaneLength = 160;
+            LeftSidePanelNavView.IsPaneOpen = false;
+            LeftSidePanel.Visibility = Visibility.Visible;
+        }
+
+        private void SidePanelClose_Click(object sender, RoutedEventArgs e)
+        {
+            //LeftSidePanelNavView.OpenPaneLength = 50;
+            LeftSidePanel.Visibility = Visibility.Collapsed;
         }
     }
 }
