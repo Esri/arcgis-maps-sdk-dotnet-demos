@@ -2,6 +2,7 @@
     x:Class="ArcGISMapViewer.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:calcite="using:Esri.Calcite.WinUI"
     xmlns:local="using:ArcGISMapViewer"
     xmlns:conv="using:ArcGISMapViewer.Converters"
     >
@@ -16,6 +17,46 @@
                 <ResourceDictionary Source="ms-appx:///ApplicationConfiguration.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <conv:RuntimeImageConverter x:Key="RuntimeImageConverter" />
+            <Style TargetType="ToggleButton" x:Key="VisibilityToggleButtonStyle">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Checked">
+                                            <VisualState.Setters>
+                                                <Setter Target="VisibleIcon.Visibility" Value="Visible" />
+                                                <Setter Target="NotVisibleIcon.Visibility" Value="Collapsed" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="CheckedPointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Target="VisibleIcon.Visibility" Value="Visible" />
+                                                <Setter Target="NotVisibleIcon.Visibility" Value="Collapsed" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Target="NotVisibleIcon.Visibility" Value="Visible" />
+                                                <Setter Target="VisibleIcon.Visibility" Value="Collapsed" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Target="NotVisibleIcon.Visibility" Value="Visible" />
+                                                <Setter Target="VisibleIcon.Visibility" Value="Collapsed" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <IconSourceElement x:Name="VisibleIcon" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=ViewVisible, SymbolSize=32, Scale=Medium}" Visibility="Collapsed" />
+                                <IconSourceElement x:Name="NotVisibleIcon" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=ViewHide, SymbolSize=32, Scale=Medium}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

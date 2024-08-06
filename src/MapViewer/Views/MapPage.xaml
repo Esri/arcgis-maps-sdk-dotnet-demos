@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ArcGISMapViewer.Views"
+    xmlns:controls="using:ArcGISMapViewer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
@@ -17,24 +18,24 @@
         <NavigationView x:Name="LeftSidePanelNavView" IsSettingsVisible="False" OpenPaneLength="160" PaneDisplayMode="LeftCompact"
                         IsBackButtonVisible="Collapsed" IsPaneOpen="True" IsPaneToggleButtonVisible="True" ItemInvoked="NavigationView_ItemInvoked">
             <NavigationView.MenuItems>
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=AddLayer, Scale = Small, SymbolSize=20}" Content="Add" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=AddLayer, Scale = Small, SymbolSize=20}" Content="Add" IsEnabled="False" />
                 <NavigationViewItemSeparator />
                 <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Content="Layers" x:Name="LayersPane" IsSelected="True" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Content="Tables" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Content="Basemap" x:Name="BasemapPane" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" Content="Charts" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Content="Tables" IsEnabled="False" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Content="Basemap" x:Name="BasemapPane" Tag="Basemap" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" Content="Charts" IsEnabled="False" />
                 <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" Content="Legend" x:Name="LegendPane" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Content="Bookmarks" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Content="Bookmarks" IsEnabled="False" />
                 <NavigationViewItemSeparator />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" Content="Save and open" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" Content="Map properties" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" Content="Save and open" IsEnabled="False" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" Content="Map properties" IsEnabled="False" />
                 <NavigationViewItemSeparator />
                 <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Share, Scale = Small, SymbolSize=20}" Content="Share map" IsEnabled="False" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" Content="Print" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" Content="Print" IsEnabled="False" />
                 <NavigationViewItemSeparator />
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Content="Information" />
+                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Content="Information" IsEnabled="False" />
             </NavigationView.FooterMenuItems>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -51,86 +52,15 @@
                         <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" />
                         <tk:Legend GeoView="{x:Bind mapView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
 
-                        <StackPanel Visibility="{x:Bind LayersPane.IsSelected, Mode=OneWay}">
-                            <ListView ItemsSource="{x:Bind AppVM.Map.OperationalLayers, Mode=OneWay}" CanReorderItems="True">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate x:DataType="mapping:Layer">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="40"/>
-                                                <ColumnDefinition Width="40"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock Text="{x:Bind Name, Mode=OneWay}" VerticalAlignment="Center" />
-                                            <!--<ToggleSwitch Grid.Column="1" IsOn="{x:Bind IsVisible, Mode=TwoWay}" />-->
-                                            <ToggleButton Grid.Column="1" IsChecked="{x:Bind IsVisible, Mode=TwoWay}" >
-                                                <ToggleButton.Template>
-                                                    <ControlTemplate TargetType="ToggleButton">
-                                                        <Grid>
-                                                            <VisualStateManager.VisualStateGroups>
-                                                                <VisualStateGroup x:Name="CommonStates">
-                                                                    <VisualState x:Name="Checked">
-                                                                        <VisualState.Setters>
-                                                                            <Setter Target="VisibleIcon.Visibility" Value="Visible" />
-                                                                            <Setter Target="NotVisibleIcon.Visibility" Value="Collapsed" />
-                                                                        </VisualState.Setters>
-                                                                    </VisualState>
-                                                                    <VisualState x:Name="CheckedPointerOver">
-                                                                        <VisualState.Setters>
-                                                                            <Setter Target="VisibleIcon.Visibility" Value="Visible" />
-                                                                            <Setter Target="NotVisibleIcon.Visibility" Value="Collapsed" />
-                                                                        </VisualState.Setters>
-                                                                    </VisualState>
-                                                                    <VisualState x:Name="PointerOver">
-                                                                        <VisualState.Setters>
-                                                                            <Setter Target="NotVisibleIcon.Visibility" Value="Visible" />
-                                                                            <Setter Target="VisibleIcon.Visibility" Value="Collapsed" />
-                                                                        </VisualState.Setters>
-                                                                    </VisualState>
-                                                                    <VisualState x:Name="Normal">
-                                                                        <VisualState.Setters>
-                                                                            <Setter Target="NotVisibleIcon.Visibility" Value="Visible" />
-                                                                            <Setter Target="VisibleIcon.Visibility" Value="Collapsed" />
-                                                                        </VisualState.Setters>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                            </VisualStateManager.VisualStateGroups>
-                                                            <IconSourceElement x:Name="VisibleIcon" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=ViewVisible, SymbolSize=32, Scale=Medium}" Visibility="Collapsed" />
-                                                            <IconSourceElement x:Name="NotVisibleIcon" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=ViewHide, SymbolSize=32, Scale=Medium}" />
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </ToggleButton.Template>
-                                            </ToggleButton>
-                                            <AppBarButton Icon="More" Grid.Column="2" VerticalAlignment="Center" VerticalContentAlignment="Bottom" >
-                                                <AppBarButton.Flyout>
-                                                    <MenuFlyout Placement="RightEdgeAlignedTop">
-                                                        <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" Click="MenuFlyoutItem_Click" />
-                                                        <MenuFlyoutItem Text="Show Properties" Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" />
-                                                        <MenuFlyoutItem Text="Show Table" Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" />
-                                                        <MenuFlyoutSeparator />
-                                                        <MenuFlyoutItem Text="Rename" Icon="{calcite:CalciteIconSourceElement Icon=Pencil, Scale = Small, SymbolSize=20}" />
-                                                        <MenuFlyoutItem Text="Save as" Icon="{calcite:CalciteIconSourceElement Icon=Save, Scale = Small, SymbolSize=20}" />
-                                                        <MenuFlyoutItem Text="Duplicate" Icon="{calcite:CalciteIconSourceElement Icon=Duplicate, Scale = Small, SymbolSize=20}" />
-                                                        <MenuFlyoutItem Text="Remove" Icon="{calcite:CalciteIconSourceElement Icon=Trash, Scale = Small, SymbolSize=20}" />
-                                                        <MenuFlyoutSeparator />
-                                                        <MenuFlyoutItem Text="Group" Icon="{calcite:CalciteIconSourceElement Icon=GroupLayers, Scale = Small, SymbolSize=20}" />
-                                                    </MenuFlyout>
-                                                </AppBarButton.Flyout>
-                                            </AppBarButton>
-                                        </Grid>
-
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </StackPanel>
+                        <controls:LayerListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Visibility="{x:Bind LayersPane.IsSelected, Mode=OneWay}"/>
+                        
                     </Grid>
                     <Grid Padding="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Title Here" Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock Text="{Binding LeftSidePanelNavView.SelectedItem.Tag}" Style="{StaticResource SubtitleTextBlockStyle}" />
                         <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="SidePanelClose_Click" Background="Transparent" BorderThickness="0" Grid.Column="1" >
                             <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=X, Foreground=Black}" />
                         </Button>
@@ -166,15 +96,15 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <tk:FeatureFormView x:Name="FeatureForm" FeatureForm="{x:Bind PageVM.FeatureForm, Mode=OneWay}" Margin="5,5,5,0" />
-                            <Grid Grid.Row="1" Background="Black">
+                            <Grid Grid.Row="1" BorderBrush="{ThemeResource CalciteUIBorder3Color}" BorderThickness="0,1,0,0">
                                 <Grid.ColumnDefinitions >
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Content="Close" Margin="5,0,0,0" Background="#007AC2" Foreground="White" Padding="5" Grid.Column="0" HorizontalAlignment="Stretch" />
-                                <Button Content="Reset" Margin="5" Background="#D83020" Foreground="White" Padding="5" Grid.Column="1" HorizontalAlignment="Stretch" />
-                                <Button Content="Apply" Margin="0,0,5,0" Background="#35AC46" Foreground="White" Padding="5" Grid.Column="2" HorizontalAlignment="Stretch" />
+                                <Button Content="Close" Margin="5,0,0,0" Background="{ThemeResource CalciteUIInfoColor}" Foreground="White" Padding="5" Grid.Column="0" HorizontalAlignment="Stretch" />
+                                <Button Content="Reset" Margin="5" Background="{ThemeResource CalciteUIDangerColor}" Foreground="White" Padding="5" Grid.Column="1" HorizontalAlignment="Stretch" />
+                                <Button Content="Apply" Margin="0,0,5,0" Background="{ThemeResource CalciteUISuccessColor}" Foreground="White" Padding="5" Grid.Column="2" HorizontalAlignment="Stretch" />
                             </Grid>
                         </Grid>
                     </Grid>

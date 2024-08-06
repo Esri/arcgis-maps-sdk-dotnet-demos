@@ -67,16 +67,5 @@ namespace ArcGISMapViewer.Views
             LeftSidePanel.Visibility = Visibility.Collapsed;
         }
 
-        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
-        {
-            var layer = (sender as FrameworkElement).DataContext as Layer;
-            if (layer?.FullExtent is not null)
-                mapView.SetViewpointAsync(new Viewpoint(layer.FullExtent));
-        }
-        public void ZoomTo(Layer? layer)
-        {
-            if (layer?.FullExtent is not null)
-                mapView.SetViewpointAsync(new Viewpoint(layer.FullExtent));
-        }
     }
 }
