@@ -54,6 +54,9 @@
                     </Border>
                 </DataTemplate>
             </GridView.ItemTemplate>
+            <GridView.Footer>
+                <ProgressRing IsActive="{x:Bind PageVM.MapItems.HasMoreItems, Mode=OneWay}" />
+            </GridView.Footer>
         </GridView>
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"

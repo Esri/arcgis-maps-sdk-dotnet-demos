@@ -57,8 +57,8 @@ namespace ArcGISMapViewer.ViewModels
                     PortalItemType.MapService,
                     PortalItemType.KML, 
                     PortalItemType.FeatureCollection], search: query);
-                var result = await portal.FindItemsAsync(queryParams);
-                MapItems = new PortalItemQuerySource(portal, result);
+                
+                MapItems = new PortalItemQuerySource(portal, queryParams);
             }
             catch(System.Exception ex)
             {
@@ -74,40 +74,41 @@ namespace ArcGISMapViewer.ViewModels
         private bool _isLoading;
 
         [ObservableProperty]
-        private IEnumerable<PortalItem>? _mapItems;
+        private PortalItemQuerySource? _mapItems;
 
-
-        private class PortalItemQuerySource : ObservableCollection<PortalItem>, ISupportIncrementalLoading
+        public class PortalItemQuerySource : ObservableCollection<PortalItem>, ISupportIncrementalLoading
         {
-            private PortalQueryResultSet<PortalItem> _result;
+            //private PortalQueryResultSet<PortalItem>? _result;
             private readonly ArcGISPortal _portal;
-            public PortalItemQuerySource(ArcGISPortal portal, PortalQueryResultSet<PortalItem> result)
+            private Exception? _error;
+            private PortalQueryParameters? _query;
+            public PortalItemQuerySource(ArcGISPortal portal, PortalQueryParameters query)
             {
                 _portal = portal;
-                _result = result;
-                foreach (var item in result.Results)
-                    base.Items.Add(item);
-
+                _query = query;
+                //LoadItems(query);
             }
-            public bool HasMoreItems => _result.NextQueryParameters is not null;
+
+            public bool HasMoreItems => _error is null && _query is not null;
 
             public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count) => LoadMoreItemsTaskAsync(count).AsAsyncOperation();
 
             private async Task<LoadMoreItemsResult> LoadMoreItemsTaskAsync(uint count)
             {
                 LoadMoreItemsResult loadMoreItemsResult = new LoadMoreItemsResult() { Count = 0 };
-                if (_result.NextQueryParameters is not null)
+                if (_query is not null)
                 {
                     int index = this.Items.Count;
-                    var query = _result.NextQueryParameters;
-                    query.Limit = (int)count;
+                    System.Diagnostics.Debug.WriteLine($"Loading {count} more items");
+                    _query.Limit = Math.Max(10, (int)count); //Get at least 10
                     PortalQueryResultSet<PortalItem> result;
                     try
                     {
-                        result = await _portal.FindItemsAsync(query);
+                        result = await _portal.FindItemsAsync(_query);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        _error = ex;
                         return loadMoreItemsResult;
                     }
                     if (result.Results.Any())
@@ -118,7 +119,11 @@ namespace ArcGISMapViewer.ViewModels
                             foreach (var item in list)
                                 base.Items.Add(item);
                             OnCollectionChanged(new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Add, changedItems: list, index));
-                            _result = result;
+                            _query = result.NextQueryParameters;
+                            if (_query is null)
+                            {
+                                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(HasMoreItems)));
+                            }
                             loadMoreItemsResult.Count = (uint)list.Count;
                         }
                     }
