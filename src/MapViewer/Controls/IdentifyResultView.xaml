@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ArcGISMapViewer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:calcite="using:Esri.Calcite.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     mc:Ignorable="d" MaxHeight="300" MaxWidth="300">
@@ -13,9 +14,47 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <tk:PopupViewer x:Name="popupViewer" />
-        <HyperlinkButton Content="Edit" Grid.Row="1" x:Name="EditButton" Click="EditButton_Click" />
-        <AppBarButton Icon="Clear" HorizontalAlignment="Right" Margin="-20,-15"  Click="Close_Click" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <!--<Button BorderThickness="0" Background="Transparent" Foreground="{ThemeResource CalciteUIText3Color}">
+                <StackPanel Orientation="Horizontal">
+                    <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table, SymbolSize=14, Scale=Medium}" Margin="0,0,5,0" />
+                    <TextBlock Text="Table" />
+                </StackPanel>
+            </Button>-->
+            <HyperlinkButton Content="Edit" x:Name="EditButton" Click="EditButton_Click" />
+            <!--<Button >
+                <StackPanel Orientation="Horizontal">
+                    <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table}" />
+                    <TextBlock Text="Zoom To" />
+                </StackPanel>
+            </Button>-->
+        </StackPanel>
+
+        <FlipView x:Name="flipview" Grid.Row="0" SelectionChanged="flipview_SelectionChanged">
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <tk:PopupViewer Grid.Row="1" Popup="{Binding}" />
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+        <PipsPager x:Name="FlipViewPipsPager" Grid.Row="1"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Bottom"
+        SelectedPageIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" />
+
+
+        <!--<Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+            <AppBarButton Content="&lt;" />
+            <AppBarButton Content="&gt;" />
+            </StackPanel>
+        </Grid>-->
+        <AppBarButton Icon="Clear" HorizontalAlignment="Right" Margin="-20,-15"  Click="Close_Click" Grid.RowSpan="3" />
     </Grid>
 </UserControl>

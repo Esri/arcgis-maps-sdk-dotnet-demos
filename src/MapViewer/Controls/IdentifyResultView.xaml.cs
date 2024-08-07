@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Popup = Esri.ArcGISRuntime.Mapping.Popups.Popup;
 
 namespace ArcGISMapViewer.Controls
 {
@@ -22,6 +23,19 @@ namespace ArcGISMapViewer.Controls
         public IdentifyResultView()
         {
             this.InitializeComponent();
+            this.Unloaded += IdentifyResultView_Unloaded;
+        }
+
+        private void IdentifyResultView_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup && popup.GeoElement is GeoElement element)
+            {
+                if (element is Feature feature && feature.FeatureTable?.Layer is FeatureLayer fl)
+                {
+                    fl.UnselectFeature(feature);
+                }
+                // else if(element is Graphic)
+            }
         }
 
         public IReadOnlyList<IdentifyLayerResult> IdentifyResult
@@ -35,78 +49,95 @@ namespace ArcGISMapViewer.Controls
 
         private void OnIdentifyResultPropertyChanged(IReadOnlyList<IdentifyLayerResult>? identifyLayerResults)
         {
-            var popup = GetPopup(identifyLayerResults);
-            popupViewer.Popup = popup;
-            bool canEdit = false;
-            if (popup != null)
+            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup && popup.GeoElement is GeoElement element)
             {
-                canEdit = (popup.GeoElement is Feature feature && feature.FeatureTable?.CanUpdate(feature) == true);
+                if (element is Feature feature && feature.FeatureTable?.Layer is FeatureLayer fl)
+                {
+                    fl.UnselectFeature(feature);
+                }
+                // else if(element is Graphic)
             }
-            EditButton.Visibility = canEdit ? Visibility.Visible : Visibility.Collapsed;
+            var popups = GetPopup(identifyLayerResults).ToList();
+            flipview.ItemsSource = popups;
+            FlipViewPipsPager.NumberOfPages = popups.Count;
+
         }
 
 
-        private Esri.ArcGISRuntime.Mapping.Popups.Popup? GetPopup(IdentifyLayerResult? result)
+        private void flipview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (result == null)
+            if (e.RemovedItems != null)
             {
-                return null;
-            }
-
-            var popup = result.Popups.FirstOrDefault();
-            if (popup != null)
-            {
-                return popup;
-            }
-
-            var geoElement = result.GeoElements.FirstOrDefault();
-            if (geoElement != null)
-            {
-                if (result.LayerContent is IPopupSource)
+                foreach (var item in e.RemovedItems)
                 {
-                    var popupDefinition = ((IPopupSource)result.LayerContent).PopupDefinition;
-                    if (popupDefinition != null)
+                    if(item is Popup p && p.GeoElement is Feature f && f.FeatureTable?.Layer is FeatureLayer fl)
                     {
-                        return new Esri.ArcGISRuntime.Mapping.Popups.Popup(geoElement, popupDefinition);
+                        fl.UnselectFeature(f);
                     }
                 }
-
-                return Esri.ArcGISRuntime.Mapping.Popups.Popup.FromGeoElement(geoElement);
             }
-
-            return null;
-        }
-
-        private Esri.ArcGISRuntime.Mapping.Popups.Popup? GetPopup(IEnumerable<IdentifyLayerResult>? results)
-        {
-            if (results == null)
+            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup)
             {
-                return null;
-            }
-            foreach (var result in results)
-            {
-                var popup = GetPopup(result);
+                bool canEdit = false;
                 if (popup != null)
                 {
-                    return popup;
-                }
-
-                foreach (var subResult in result.SublayerResults)
-                {
-                    popup = GetPopup(subResult);
-                    if (popup != null)
+                    canEdit = (popup.GeoElement is Feature feature && feature.FeatureTable?.CanUpdate(feature) == true);
+                    if (popup.GeoElement is Feature f && f.FeatureTable?.Layer is FeatureLayer fl)
                     {
-                        return popup;
+                        fl.SelectFeature(f);
+                    }
+                }
+                EditButton.Visibility = canEdit ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        private IEnumerable<Esri.ArcGISRuntime.Mapping.Popups.Popup> GetPopup(IdentifyLayerResult? result)
+        {
+            if (result != null)
+            {
+                if (result.Popups.Any())
+                {
+                    foreach (var item in result.Popups)
+                        yield return item;
+                }
+                else
+                {
+                    foreach (var elm in result.GeoElements)
+                    {
+                        if (result.LayerContent is IPopupSource)
+                        {
+                            var popupDefinition = ((IPopupSource)result.LayerContent).PopupDefinition;
+                            if (popupDefinition != null)
+                            {
+                                yield return new Esri.ArcGISRuntime.Mapping.Popups.Popup(elm, popupDefinition);
+                            }
+                        }
+
+                        yield return Esri.ArcGISRuntime.Mapping.Popups.Popup.FromGeoElement(elm);
                     }
                 }
             }
+        }
 
-            return null;
+        private IEnumerable<Esri.ArcGISRuntime.Mapping.Popups.Popup> GetPopup(IEnumerable<IdentifyLayerResult>? results)
+        {
+            if (results != null)
+            {
+                foreach (var result in results)
+                {
+                    foreach (var p in GetPopup(result))
+                        yield return p;
+                    foreach (var subResult in result.SublayerResults)
+                        foreach (var p2 in GetPopup(subResult))
+                            yield return p2;
+                }
+            }
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            if (popupViewer?.Popup?.GeoElement is GeoElement element)
+
+            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup && popup.GeoElement is GeoElement element)
                 EditRequested?.Invoke(this, element);
         }
 

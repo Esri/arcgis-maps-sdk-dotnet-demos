@@ -29,13 +29,20 @@ namespace ArcGISMapViewer.ViewModels
         [ObservableProperty]
         private Feature? currentFeature;
 
-        partial void OnCurrentFeatureChanged(Feature? value)
+        partial void OnCurrentFeatureChanged(Feature? oldValue, Feature? newValue)
         {
-
-            if (value is ArcGISFeature afeature)
+            if(oldValue is not null && oldValue.FeatureTable?.Layer is FeatureLayer fl)
             {
-                var definition = (value?.FeatureTable as ArcGISFeatureTable)?.FeatureFormDefinition ?? (value?.FeatureTable?.Layer as FeatureLayer)?.FeatureFormDefinition;
+                fl.UnselectFeature(oldValue);
+            }
+            if (newValue is ArcGISFeature afeature)
+            {
+                var definition = (newValue?.FeatureTable as ArcGISFeatureTable)?.FeatureFormDefinition ?? (newValue?.FeatureTable?.Layer as FeatureLayer)?.FeatureFormDefinition;
                 FeatureForm = (definition != null) ? new Esri.ArcGISRuntime.Mapping.FeatureForms.FeatureForm(afeature, definition) : null;
+                if (afeature.FeatureTable?.Layer is FeatureLayer layer)
+                {
+                    layer.SelectFeature(afeature);
+                }
             }
             else
                 FeatureForm = null;
