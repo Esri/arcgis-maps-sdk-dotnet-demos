@@ -14,14 +14,8 @@
     <WindowsSdkPackageVersion>10.0.19041.35-preview</WindowsSdkPackageVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Views\HomePage.xaml" />
-    <None Remove="Views\MapPage.xaml" />
-    <None Remove="Views\NewMapPage.xaml" />
-    <None Remove="Views\PortalPage.xaml" />
-  </ItemGroup>
 
-  <ItemGroup>
+    <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
@@ -33,7 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4321" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4322" />
     <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-51.gc4a641e82c" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240701003-experimental2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />

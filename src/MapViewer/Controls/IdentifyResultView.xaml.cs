@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -58,10 +59,21 @@ namespace ArcGISMapViewer.Controls
                 // else if(element is Graphic)
             }
             var popups = GetPopup(identifyLayerResults).ToList();
-            flipview.ItemsSource = popups;
-            FlipViewPipsPager.NumberOfPages = popups.Count;
-
+            this.Items = popups;
         }
+
+
+
+        public IList Items
+        {
+            get { return (IList)GetValue(ItemsProperty); }
+            set { SetValue(ItemsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ItemsProperty =
+            DependencyProperty.Register("Items", typeof(IList), typeof(IdentifyResultView), new PropertyMetadata(null));
+
+
 
 
         private void flipview_SelectionChanged(object sender, SelectionChangedEventArgs e)

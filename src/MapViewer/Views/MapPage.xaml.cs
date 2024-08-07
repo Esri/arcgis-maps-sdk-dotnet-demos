@@ -36,11 +36,11 @@ namespace ArcGISMapViewer.Views
 
         private async void GeoViewTapped(object sender, GeoViewInputEventArgs e)
         {
-            if (e.Location is null) return;
             mapView.DismissCallout();
+            if (e.Location is null) return;
             try
             {
-                var result = await mapView.IdentifyLayersAsync(e.Position, 2, false);
+                var result = await mapView.IdentifyLayersAsync(e.Position, 2, false, 10);
                 if (result.Any())
                 {
                     var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result };
