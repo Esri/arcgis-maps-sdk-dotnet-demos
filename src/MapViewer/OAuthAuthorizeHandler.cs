@@ -20,6 +20,11 @@ public class OAuthAuthorizeHandler : Esri.ArcGISRuntime.Security.IOAuthAuthorize
 
     async Task<IDictionary<string, string>> Esri.ArcGISRuntime.Security.IOAuthAuthorizeHandler.AuthorizeAsync(Uri serviceUri, Uri authorizeUri, Uri callbackUri)
     {
+        if(ApplicationViewModel.Instance.PortalUser is not null)
+        {
+            // We already signed in
+            throw new UnauthorizedAccessException();
+        }
         var result = await WinUIEx.WebAuthenticator.AuthenticateAsync(authorizeUri, callbackUri).ConfigureAwait(false);
         return result.Properties;
     }

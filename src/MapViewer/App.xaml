@@ -57,6 +57,13 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style TargetType="Button" x:Key="ChromeLessButton">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

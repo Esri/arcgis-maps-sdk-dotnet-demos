@@ -43,7 +43,7 @@ namespace ArcGISMapViewer.Views
                 var result = await mapView.IdentifyLayersAsync(e.Position, 2, false, 10);
                 if (result.Any())
                 {
-                    var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result };
+                    var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result, GeoViewController = PageVM.ViewController };
                     mapView.ShowCalloutAt(e.Location, calloutview);
                     calloutview.EditRequested += (s, e) => PageVM.CurrentFeature = e as Feature;
                     calloutview.CloseRequested += (s, e) => mapView.DismissCallout();

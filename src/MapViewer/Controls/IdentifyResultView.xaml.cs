@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Mapping.Popups;
+using Esri.ArcGISRuntime.Toolkit.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -27,9 +28,22 @@ namespace ArcGISMapViewer.Controls
             this.Unloaded += IdentifyResultView_Unloaded;
         }
 
+
+
+        public GeoViewController? GeoViewController
+        {
+            get { return (GeoViewController?)GetValue(GeoViewControllerProperty); }
+            set { SetValue(GeoViewControllerProperty, value); }
+        }
+
+        public static readonly DependencyProperty GeoViewControllerProperty =
+            DependencyProperty.Register("GeoViewController", typeof(GeoViewController), typeof(IdentifyResultView), new PropertyMetadata(null));
+
+
+
         private void IdentifyResultView_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup && popup.GeoElement is GeoElement element)
+            if (flipview.SelectedItem is Popup popup && popup.GeoElement is GeoElement element)
             {
                 if (element is Feature feature && feature.FeatureTable?.Layer is FeatureLayer fl)
                 {
@@ -39,9 +53,9 @@ namespace ArcGISMapViewer.Controls
             }
         }
 
-        public IReadOnlyList<IdentifyLayerResult> IdentifyResult
+        public IReadOnlyList<IdentifyLayerResult>? IdentifyResult
         {
-            get { return (IReadOnlyList<IdentifyLayerResult>)GetValue(IdentifyResultProperty); }
+            get { return (IReadOnlyList<IdentifyLayerResult>?)GetValue(IdentifyResultProperty); }
             set { SetValue(IdentifyResultProperty, value); }
         }
 
@@ -50,7 +64,7 @@ namespace ArcGISMapViewer.Controls
 
         private void OnIdentifyResultPropertyChanged(IReadOnlyList<IdentifyLayerResult>? identifyLayerResults)
         {
-            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup && popup.GeoElement is GeoElement element)
+            if (flipview.SelectedItem is Popup popup && popup.GeoElement is GeoElement element)
             {
                 if (element is Feature feature && feature.FeatureTable?.Layer is FeatureLayer fl)
                 {
@@ -64,9 +78,9 @@ namespace ArcGISMapViewer.Controls
 
 
 
-        public IList Items
+        public IList? Items
         {
-            get { return (IList)GetValue(ItemsProperty); }
+            get { return (IList?)GetValue(ItemsProperty); }
             set { SetValue(ItemsProperty, value); }
         }
 
@@ -88,7 +102,7 @@ namespace ArcGISMapViewer.Controls
                     }
                 }
             }
-            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup)
+            if (flipview.SelectedItem is Popup popup)
             {
                 bool canEdit = false;
                 if (popup != null)
@@ -103,7 +117,7 @@ namespace ArcGISMapViewer.Controls
             }
         }
 
-        private IEnumerable<Esri.ArcGISRuntime.Mapping.Popups.Popup> GetPopup(IdentifyLayerResult? result)
+        private IEnumerable<Popup> GetPopup(IdentifyLayerResult? result)
         {
             if (result != null)
             {
@@ -121,17 +135,17 @@ namespace ArcGISMapViewer.Controls
                             var popupDefinition = ((IPopupSource)result.LayerContent).PopupDefinition;
                             if (popupDefinition != null)
                             {
-                                yield return new Esri.ArcGISRuntime.Mapping.Popups.Popup(elm, popupDefinition);
+                                yield return new Popup(elm, popupDefinition);
                             }
                         }
 
-                        yield return Esri.ArcGISRuntime.Mapping.Popups.Popup.FromGeoElement(elm);
+                        yield return Popup.FromGeoElement(elm);
                     }
                 }
             }
         }
 
-        private IEnumerable<Esri.ArcGISRuntime.Mapping.Popups.Popup> GetPopup(IEnumerable<IdentifyLayerResult>? results)
+        private IEnumerable<Popup> GetPopup(IEnumerable<IdentifyLayerResult>? results)
         {
             if (results != null)
             {
@@ -142,6 +156,24 @@ namespace ArcGISMapViewer.Controls
                     foreach (var subResult in result.SublayerResults)
                         foreach (var p2 in GetPopup(subResult))
                             yield return p2;
+                }
+            }
+        }
+
+        private void ZoomTo_Click(object sender, RoutedEventArgs e)
+        {
+            if (flipview.SelectedItem is Esri.ArcGISRuntime.Mapping.Popups.Popup popup && popup.GeoElement is GeoElement element)
+            {
+                var geometry = element.Geometry;
+                if(geometry is MapPoint p && !p.IsEmpty)
+                {
+                    var vp = GeoViewController?.GetCurrentViewpoint(ViewpointType.CenterAndScale);
+                    if (vp is not null)
+                        GeoViewController?.SetViewpointAsync(new Viewpoint(p, vp.TargetScale / 2));
+                }
+                else if(geometry?.Extent is not null && !geometry.Extent.IsEmpty)
+                {
+                    GeoViewController?.SetViewpointAsync(new Viewpoint(geometry.Extent));
                 }
             }
         }

@@ -11,26 +11,29 @@
     xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     mc:Ignorable="d" MaxHeight="300" MaxWidth="300">
 
-    <Grid>
+    <Grid Margin="0,0,0,-10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Visibility="Collapsed">
+        <controls:PagerControl Grid.Row="2" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectedIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" Margin="-10,0" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
             <!--<Button BorderThickness="0" Background="Transparent" Foreground="{ThemeResource CalciteUIText3Color}">
                 <StackPanel Orientation="Horizontal">
                     <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table, SymbolSize=14, Scale=Medium}" Margin="0,0,5,0" />
                     <TextBlock Text="Table" />
                 </StackPanel>
             </Button>-->
-            <HyperlinkButton Content="Edit" x:Name="EditButton" Click="EditButton_Click" />
-            <!--<Button >
-                <StackPanel Orientation="Horizontal">
-                    <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table}" />
-                    <TextBlock Text="Zoom To" />
-                </StackPanel>
-            </Button>-->
+            <Button Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Table" IsEnabled="False">
+                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table, Scale=Medium}" />
+            </Button>
+            <Button x:Name="EditButton" Click="EditButton_Click" Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Edit" Margin="5,0">
+                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=PencilSquare, Scale=Medium}" />
+            </Button>
+            <Button Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Zoom to" Click="ZoomTo_Click">
+                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=MagnifyingGlassPlus, Scale=Medium}" />
+            </Button>
         </StackPanel>
 
         <FlipView x:Name="flipview" Grid.Row="0" SelectionChanged="flipview_SelectionChanged" ItemsSource="{x:Bind Items, Mode=OneWay}">
@@ -40,23 +43,7 @@
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-        <!--<PipsPager x:Name="FlipViewPipsPager" Grid.Row="1"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Bottom"
-        SelectedPageIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" />-->
 
-
-        <!--<Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal">
-            <AppBarButton Content="&lt;" />
-            <AppBarButton Content="&gt;" />
-            </StackPanel>
-        </Grid>-->
-        <controls:PagerControl Grid.Row="2" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectedIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" Margin="-10,0,-10,-10" />
         <AppBarButton Icon="Clear" HorizontalAlignment="Right" Margin="-20,-15"  Click="Close_Click" Grid.RowSpan="3" />
     </Grid>
 </UserControl>

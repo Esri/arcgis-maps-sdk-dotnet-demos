@@ -9,7 +9,7 @@
     xmlns:calcite="using:Esri.Calcite.WinUI"
     mc:Ignorable="d">
 
-    <Grid BorderBrush="{ThemeResource CalciteUIBorder3Color}" BorderThickness="0,1">
+    <Grid BorderBrush="{ThemeResource CalciteUIBorder3Color}" BorderThickness="0,1,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
@@ -32,7 +32,7 @@
         <Grid Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource CalciteUIBorder3Color}">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ListBullet, Foreground=Black, Scale=Medium }" VerticalAlignment="Center"  Margin="2,4,2,0"/>
-                <TextBlock Text="{x:Bind SelectionText, Mode=OneWay}" VerticalAlignment="Center" FontSize="12" />
+                <TextBlock Text="{x:Bind SelectionText, Mode=OneWay}" VerticalAlignment="Center" FontSize="12" MinWidth="35" TextAlignment="Right" />
             </StackPanel>
         </Grid>
     </Grid>

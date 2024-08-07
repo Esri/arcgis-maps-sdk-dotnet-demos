@@ -82,8 +82,8 @@
                         <Grid >
 
                             <esri:MapView Map="{x:Bind AppVM.Map, Mode=OneWay}" Grid.Row="1" x:Name="mapView"
-              GeoViewTapped="GeoViewTapped"
-              tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
+                                  GeoViewTapped="GeoViewTapped"
+                                  tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
 
                             <tk:ScaleLine MapView="{x:Bind mapView}" Margin="20" />
 
