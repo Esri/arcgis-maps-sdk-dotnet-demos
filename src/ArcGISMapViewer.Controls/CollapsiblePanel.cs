@@ -57,6 +57,7 @@ namespace ArcGISMapViewer.Controls
             
             OnIsOpenPropertyChanged(false);
             OnIsPaneExpandedPropertyChanged(false);
+            OnPanePlacementPropertyChanged(false);
         }
 
         private void CollapsiblePanel_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

@@ -58,19 +58,6 @@ namespace ArcGISMapViewer.Views
             }
         }
 
-        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            //LeftSidePanelNavView.OpenPaneLength = 160;
-            LeftSidePanelNavView.IsPaneOpen = false;
-            LeftSidePanel.Visibility = Visibility.Visible;
-        }
-
-        private void SidePanelClose_Click(object sender, RoutedEventArgs e)
-        {
-            //LeftSidePanelNavView.OpenPaneLength = 50;
-            LeftSidePanel.Visibility = Visibility.Collapsed;
-        }
-
         private void OnFeatureEditingEnded(object sender, EventArgs e)
         {
             RightPanel.IsOpen = false;

@@ -15,59 +15,45 @@
     mc:Ignorable="d">
 
     <Grid>
-        <NavigationView x:Name="LeftSidePanelNavView" IsSettingsVisible="False" OpenPaneLength="160" PaneDisplayMode="LeftCompact"
-                        IsBackButtonVisible="Collapsed" IsPaneOpen="True" IsPaneToggleButtonVisible="True" ItemInvoked="NavigationView_ItemInvoked">
-            <NavigationView.MenuItems>
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=PlusCircle, Scale = Small, SymbolSize=20}" Content="Add" IsEnabled="False" />
-                <NavigationViewItemSeparator />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Content="Layers" x:Name="LayersPane" IsSelected="True" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Content="Tables" IsEnabled="False" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Content="Basemap" x:Name="BasemapPane" Tag="Basemap" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" Content="Charts" IsEnabled="False" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" Content="Legend" x:Name="LegendPane" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Content="Bookmarks" IsEnabled="False" />
-                <NavigationViewItemSeparator />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" Content="Save and open" IsEnabled="False" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" Content="Map properties" IsEnabled="False" />
-                <NavigationViewItemSeparator />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Share, Scale = Small, SymbolSize=20}" Content="Share map" IsEnabled="False" />
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" Content="Print" IsEnabled="False" />
-                <NavigationViewItemSeparator />
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left side Map Document panel -->
+        <controls:CollapsiblePanel x:Name="LeftSidePanelNavView" Grid.Column="0" PanePlacement="Left" IsPaneExpanded="True" IsOpen="False" ContentWidth="300"
+                                   ExpandButtonVisibility="Visible"
+                                   CloseButtonVisibility="Visible">
+            <controls:CollapsiblePanel.Items>
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=PlusCircle, Scale = Small, SymbolSize=20}" Title="Add" IsEnabled="False" />
+                <!--<NavigationViewItemSeparator />-->
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Title="Layers" x:Name="LayersPane" IsSelected="True" ContentTitle="Layers">
+                    <controls:LayerListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Grid.Row="1" />
+                </controls:CollapsiblePanelItem>
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Title="Tables" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Title="Basemap" x:Name="BasemapPane" ContentTitle="Basemap">
+                    <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" BorderThickness="0" />
+                </controls:CollapsiblePanelItem>
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" Title="Charts" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" Title="Legend" x:Name="LegendPane" ContentTitle="Legend">
+                    <tk:Legend GeoView="{x:Bind mapView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
+                </controls:CollapsiblePanelItem>
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Title="Bookmarks" IsEnabled="False" />
+                <!--<NavigationViewItemSeparator />-->
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" Title="Save and open" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" Title="Map properties" IsEnabled="False" />
+                <!--<NavigationViewItemSeparator />-->
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Share, Scale = Small, SymbolSize=20}" Title="Share map" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" Title="Print" IsEnabled="False" />
+                <!--<NavigationViewItemSeparator />-->
+            </controls:CollapsiblePanel.Items>
+
+            <!--<NavigationView.FooterMenuItems>
                 <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Content="Information" IsEnabled="False" />
-            </NavigationView.FooterMenuItems>
-            <Grid>
-                <Grid.ColumnDefinitions>
-
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <!-- Left side Map Document panel -->
-                <Grid x:Name="LeftSidePanel" Width="300">
-                    <Grid Grid.Row="0">
-                        <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" />
-                        <tk:Legend GeoView="{x:Bind mapView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
-
-                        <Grid Visibility="{x:Bind LayersPane.IsSelected, Mode=OneWay}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Border Padding="15,10,15,15" Background="{ThemeResource CalciteUIBackground3Color}">
-                            <TextBlock Text="Layers" Style="{StaticResource NavigationViewItemHeaderTextStyle}" FontSize="20" />
-                            </Border>
-                            <controls:LayerListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Grid.Row="1" />
-
-                        </Grid>
-                    </Grid>
-                    <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="SidePanelClose_Click" Background="Transparent" BorderThickness="0" 
-                            Padding="10" Margin="0,5,0,0">
-                            <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=X, Foreground=Black}" />
-                    </Button>
-                </Grid>
-
+            </NavigationView.FooterMenuItems>-->
+        </controls:CollapsiblePanel>
                 <!-- Main Map View Content -->
                 <Grid Grid.Column="1">
 
@@ -83,8 +69,7 @@
 
                 <!-- Right side collapsible tool panel -->
                 <controls:CollapsiblePanel x:Name="RightPanel" Grid.Column="2" PanePlacement="Right" IsPaneExpanded="False" IsOpen="False" ContentWidth="250"
-                                           ExpandButtonVisibility="Collapsed"
-                                           CloseButtonVisibility="Visible">
+                                           ExpandButtonVisibility="Visible">
                     <controls:CollapsiblePanel.Items>
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" IsEnabled="False" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Shapes, Scale=Small, SymbolSize=20}" IsEnabled="False" />
@@ -103,9 +88,7 @@
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Wrench, Scale=Small, SymbolSize=20}" IsEnabled="False" />
                     </controls:CollapsiblePanel.Items>
                 </controls:CollapsiblePanel>
-            </Grid>
-        </NavigationView>
-
+            
         
     </Grid>
 </Page>

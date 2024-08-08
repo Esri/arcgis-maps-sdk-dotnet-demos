@@ -57,13 +57,13 @@
                                 <VisualState x:Name="PaneExpandedLeft">
                                     <VisualState.Setters>
                                         <Setter Target="ItemsColumn.Width" Value="NaN" />
-                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsRight, Foreground=Black}" />
+                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsLeft, Foreground=Black}" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PaneCollapsedLeft">
                                     <VisualState.Setters>
                                         <Setter Target="ItemsColumn.Width" Value="50" />
-                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsLeft, Foreground=Black}" />
+                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsRight, Foreground=Black}" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PaneExpandedRight">
@@ -243,7 +243,7 @@
                         <ContentPresenter x:Name="TitlePresenter" Grid.Column="1" Foreground="{TemplateBinding Foreground}" 
                                           Content="{TemplateBinding Title}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Margin="{TemplateBinding Padding}" AutomationProperties.AccessibilityView="Raw" />
+                                          Margin="0,0,16,0" AutomationProperties.AccessibilityView="Raw" />
 
                         <Rectangle x:Name="PART_SelectionVisual" 
                                    Style="{StaticResource SelectorBarItemPill}" 
