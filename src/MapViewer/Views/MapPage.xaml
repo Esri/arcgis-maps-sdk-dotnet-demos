@@ -27,7 +27,25 @@
                                    ExpandButtonVisibility="Visible"
                                    CloseButtonVisibility="Visible">
             <controls:CollapsiblePanel.Items>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=PlusCircle, Scale = Small, SymbolSize=20}" Title="Add" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=PlusCircle, Scale = Small, SymbolSize=20}" Title="Add" IsEnabled="True" ContentTitle="Add Data" >
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Add Layer from Service" Style="{ThemeResource BaseTextBlockStyle}" />
+                        <TextBox PlaceholderText="https://" />
+                        <ComboBox Header="Type" HorizontalAlignment="Stretch">
+                            <ComboBoxItem Content="ArcGIS Server web service" />
+                            <ComboBoxItem Content="KML (OGC)" />
+                            <ComboBoxItem Content="WFS (OGC)" />
+                            <ComboBoxItem Content="WMTS (OGC)" />
+                            <ComboBoxItem Content="Tile Layer" />
+                        </ComboBox>
+                        <Button Content="Next" HorizontalAlignment="Right" Margin="0,10,0,0" />
+
+                        <Rectangle Height="1" Fill="{ThemeResource CalciteUIBorder3Color}" Margin="-10,10" />
+                        <TextBlock Text="Add Layer from file" Style="{ThemeResource BaseTextBlockStyle}" />
+                        <Button Content="Browse..." />
+                        
+                    </StackPanel>
+                </controls:CollapsiblePanelItem>
                 <!--<NavigationViewItemSeparator />-->
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Title="Layers" x:Name="LayersPane" IsSelected="True" ContentTitle="Layers">
                     <controls:LayerListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Grid.Row="1" />
@@ -40,7 +58,12 @@
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" Title="Legend" x:Name="LegendPane" ContentTitle="Legend">
                     <tk:Legend GeoView="{x:Bind mapView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
                 </controls:CollapsiblePanelItem>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Title="Bookmarks" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Title="Bookmarks" ContentTitle="Bookmarks" >
+                    <StackPanel>
+                    <tk:BookmarksView GeoView="{x:Bind mapView}" />
+                        <Button Click="AddBookmark_Click" Content="Add Bookmark" HorizontalAlignment="Center" Padding="30,7" />
+                    </StackPanel>
+                </controls:CollapsiblePanelItem>
                 <!--<NavigationViewItemSeparator />-->
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" Title="Save and open" IsEnabled="False" />
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" Title="Map properties" IsEnabled="False" />

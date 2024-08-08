@@ -63,5 +63,11 @@ namespace ArcGISMapViewer.Views
             RightPanel.IsOpen = false;
             PageVM.CurrentFeature = null;
         }
+
+
+        private void AddBookmark_Click(object sender, RoutedEventArgs e)
+        {
+            AppVM.Map.Bookmarks.Add(new Bookmark() { Name = "New Bookmark", Viewpoint = mapView.GetCurrentViewpoint(ViewpointType.BoundingGeometry) });
+        }
     }
 }
