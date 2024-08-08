@@ -12,9 +12,6 @@ using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace ArcGISMapViewer.Controls
 {
     public sealed class CollapsiblePanel : Control
@@ -25,6 +22,7 @@ namespace ArcGISMapViewer.Controls
             this.DefaultStyleKey = typeof(CollapsiblePanel);
 
             ((INotifyCollectionChanged)_items).CollectionChanged += CollapsiblePanel_CollectionChanged;
+            ((INotifyCollectionChanged)_footerItems).CollectionChanged += CollapsiblePanel_CollectionChanged;
         }
 
         protected override void OnApplyTemplate()
@@ -45,6 +43,10 @@ namespace ArcGISMapViewer.Controls
             if(GetTemplateChild("PART_MenuPanel") is ItemsControl menuPanel)
             {
                 menuPanel.ItemsSource = Items;
+            }
+            if (GetTemplateChild("PART_FooterMenuPanel") is ItemsControl footerPanel)
+            {
+                footerPanel.ItemsSource = FooterItems;
             }
             if (GetTemplateChild("PART_CloseButton") is ButtonBase button)
             {
@@ -93,6 +95,10 @@ namespace ArcGISMapViewer.Controls
 
         public IList<CollapsiblePanelItem> Items => _items;
 
+        private readonly IList<CollapsiblePanelItem> _footerItems = new ObservableCollection<CollapsiblePanelItem>();
+
+        public IList<CollapsiblePanelItem> FooterItems => _footerItems;
+
         public CollapsiblePanelItem? SelectedItem
         {
             get { return (CollapsiblePanelItem?)GetValue(SelectedItemProperty); }
@@ -110,6 +116,10 @@ namespace ArcGISMapViewer.Controls
             if(GetTemplateChild("PART_Title") is TextBlock tb)
                 tb.Text = selectedItem?.Title;
             foreach (var item in Items)
+            {
+                item.IsSelected = item == selectedItem;
+            }
+            foreach (var item in FooterItems)
             {
                 item.IsSelected = item == selectedItem;
             }

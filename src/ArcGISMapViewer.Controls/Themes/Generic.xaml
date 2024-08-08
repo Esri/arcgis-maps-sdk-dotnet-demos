@@ -26,8 +26,6 @@
                                     <VisualState.Setters>
                                         <Setter Target="ContentPanel.(Grid.Column)" Value="1" />
                                         <Setter Target="ItemsColumn.(Grid.Column)" Value="0" />
-                                        <Setter Target="LeftColumnDefinition.Height" Value="Auto" />
-                                        <Setter Target="RightColumnDefinition.Height" Value="*" />
                                         <Setter Target="ContentPanel.BorderThickness" Value="1,0,0,0" />
                                     </VisualState.Setters>
                                 </VisualState>
@@ -35,8 +33,6 @@
                                     <VisualState.Setters>
                                         <Setter Target="ContentPanel.(Grid.Column)" Value="0" />
                                         <Setter Target="ItemsColumn.(Grid.Column)" Value="1" />
-                                        <Setter Target="LeftColumnDefinition.Height" Value="*" />
-                                        <Setter Target="RightColumnDefinition.Height" Value="Auto" />
                                         <Setter Target="ContentPanel.BorderThickness" Value="0,0,1,0" />
                                     </VisualState.Setters>
                                 </VisualState>
@@ -90,7 +86,7 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Border x:Name="TitleBarContainer" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTitle, Converter={StaticResource EmptyToCollapsedConverter}}" Background="{ThemeResource CalciteUIBorder3Color}" Padding="10,15">
-                                <TextBlock x:Name="PART_Title" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTitle}" Style="{StaticResource BaseTextBlockStyle}" FontSize="18" />
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTitle}" Style="{StaticResource BaseTextBlockStyle}" FontSize="18" />
                             </Border>
 
                             <ContentPresenter x:Name="PART_ContentPresenter" Grid.Row="1" />
@@ -101,12 +97,15 @@
                         </Grid>
                         <Grid Grid.Column="1" Width="50" x:Name="ItemsColumn">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*" x:Name="LeftColumnDefinition" />
-                                <RowDefinition Height="Auto" x:Name="RightColumnDefinition" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
                             <ItemsControl x:Name="PART_MenuPanel" Grid.Row="0" />
-                            <Button VerticalAlignment="Bottom" x:Name="PART_ExpandButton" Visibility="{TemplateBinding ExpandButtonVisibility}" Grid.Row="1" Background="Transparent" BorderThickness="0" Padding="10" Margin="5,0,0,0" >
+                            <ItemsControl x:Name="PART_FooterMenuPanel" Grid.Row="1" VerticalAlignment="Bottom" />
+                            
+                            <Button VerticalAlignment="Bottom" x:Name="PART_ExpandButton" Visibility="{TemplateBinding ExpandButtonVisibility}" Grid.Row="2" Background="Transparent" BorderThickness="0" Padding="10" Margin="5,0,0,0" >
                                 <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronsRight, Foreground=Black}" x:Name="ExpandIcon" />
                             </Button>
                         </Grid>

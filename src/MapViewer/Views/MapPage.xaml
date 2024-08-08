@@ -50,9 +50,14 @@
                 <!--<NavigationViewItemSeparator />-->
             </controls:CollapsiblePanel.Items>
 
-            <!--<NavigationView.FooterMenuItems>
-                <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Content="Information" IsEnabled="False" />
-            </NavigationView.FooterMenuItems>-->
+            <controls:CollapsiblePanel.FooterItems>
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Title="About" ContentTitle="About">
+                    <StackPanel Padding="5">
+                        <TextBlock TextWrapping="Wrap">This is a sample application that demonstrates the use of the ArcGIS Maps SDK for .NET.
+                            The application is built using the Microsoft Windows App SDK and the Esri ArcGIS Runtime SDK for .NET.</TextBlock>
+                    </StackPanel>
+                </controls:CollapsiblePanelItem>
+            </controls:CollapsiblePanel.FooterItems>
         </controls:CollapsiblePanel>
                 <!-- Main Map View Content -->
                 <Grid Grid.Column="1">
