@@ -71,5 +71,10 @@ namespace ArcGISMapViewer.Views
             LeftSidePanel.Visibility = Visibility.Collapsed;
         }
 
+        private void OnFeatureEditingEnded(object sender, EventArgs e)
+        {
+            RightPanel.IsOpen = false;
+            PageVM.CurrentFeature = null;
+        }
     }
 }

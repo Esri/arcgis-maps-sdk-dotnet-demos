@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>ArcGISMapViewer.Controls</RootNamespace>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers> <!-- Needed because of a WinUI bug https://github.com/microsoft/microsoft-ui-xaml/issues/8599 -->
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn> <!-- Needed because the above line causes this warning -->
+    <UseWinUI>true</UseWinUI>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
+      <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
+      <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-51.gc4a641e82c" />
+  </ItemGroup>
+</Project>

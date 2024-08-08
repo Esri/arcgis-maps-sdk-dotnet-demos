@@ -65,5 +65,48 @@ namespace ArcGISMapViewer.Views
             DependencyProperty.Register("FeatureForm", typeof(FeatureForm), typeof(FeatureEditingPage), new PropertyMetadata(null));
 
 
+        private async void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog dialog = new ContentDialog
+            {
+                Title = "Cancel edit?",
+                PrimaryButtonText = "OK",
+                CloseButtonText = "Cancel",
+                XamlRoot = XamlRoot
+            };
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await FeatureFormView.DiscardEditsAsync();
+                FeatureForm = null;
+                EditingEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private async void Update_Click(object sender, RoutedEventArgs e)
+        {
+            await FeatureFormView.FinishEditingAsync();
+            EditingEnded?.Invoke(this, EventArgs.Empty);
+        }
+
+        private async void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog dialog = new ContentDialog
+            {
+                Title = "Delete Feature?",
+                PrimaryButtonText = "OK",
+                CloseButtonText = "Cancel",
+                XamlRoot = XamlRoot
+            };
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                _ = FeatureForm?.Feature.FeatureTable?.DeleteFeatureAsync(FeatureForm.Feature);
+                FeatureForm = null;
+                EditingEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler? EditingEnded;
     }
 }

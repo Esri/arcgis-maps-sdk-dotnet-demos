@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <controls:PagerControl Grid.Row="2" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectedIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" Margin="-10,0" />
+        <controls:Pager Grid.Row="2" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectedIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" Margin="-10,0" />
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
             <!--<Button BorderThickness="0" Background="Transparent" Foreground="{ThemeResource CalciteUIText3Color}">
                 <StackPanel Orientation="Horizontal">

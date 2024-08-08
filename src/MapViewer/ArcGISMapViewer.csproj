@@ -42,5 +42,6 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ArcGISMapViewer.Controls\ArcGISMapViewer.Controls.csproj" />
   </ItemGroup>
 </Project>
