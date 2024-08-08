@@ -45,7 +45,11 @@ namespace ArcGISMapViewer.Views
                 {
                     var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result, GeoViewController = PageVM.ViewController };
                     mapView.ShowCalloutAt(e.Location, calloutview);
-                    calloutview.EditRequested += (s, e) => PageVM.CurrentFeature = e as Feature;
+                    calloutview.EditRequested += (s, e) =>
+                    {
+                        PageVM.CurrentFeature = e as Feature;
+                        RightPanel.IsOpen = true;
+                    };
                     calloutview.CloseRequested += (s, e) => mapView.DismissCallout();
                 }
             }

@@ -28,8 +28,6 @@ namespace ArcGISMapViewer.Controls
             this.Unloaded += IdentifyResultView_Unloaded;
         }
 
-
-
         public GeoViewController? GeoViewController
         {
             get { return (GeoViewController?)GetValue(GeoViewControllerProperty); }
@@ -38,8 +36,6 @@ namespace ArcGISMapViewer.Controls
 
         public static readonly DependencyProperty GeoViewControllerProperty =
             DependencyProperty.Register("GeoViewController", typeof(GeoViewController), typeof(IdentifyResultView), new PropertyMetadata(null));
-
-
 
         private void IdentifyResultView_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -75,8 +71,6 @@ namespace ArcGISMapViewer.Controls
             var popups = GetPopup(identifyLayerResults).ToList();
             this.Items = popups;
         }
-
-
 
         public IList? Items
         {

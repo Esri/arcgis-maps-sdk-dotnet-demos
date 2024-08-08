@@ -17,7 +17,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Border Background="{ThemeResource CalciteUIBrandBrush}" />
-        <TitleBar Foreground="White"
+        <TitleBar Foreground="White" 
                   VerticalContentAlignment="Center" Title="ArcGIS MapViewer" Subtitle="{x:Bind AppVM.WindowSubTitle, Mode=OneWay}">
             <TitleBar.Header>
                 <AppBarToggleButton Icon="{calcite:CalciteIconSourceElement Icon=AppLauncher, Scale = Small, SymbolSize=22,Foreground=White}" Width="48" IsChecked="{x:Bind AppVM.IsAppMenuVisible, Mode=TwoWay}" />

@@ -42,7 +42,9 @@
 
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                <!-- Left side Map Document panel -->
                 <Grid x:Name="LeftSidePanel" Width="300">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
@@ -67,49 +69,38 @@
                     </Grid>
                 </Grid>
 
-                <SplitView IsPaneOpen="False" PanePlacement="Right" DisplayMode="CompactInline" Grid.Column="1">
-                    <SplitView.Pane>
-                        <StackPanel>
-                            <NavigationViewItem Icon="Accept" Content="Blah" />
-                        </StackPanel>
-                    </SplitView.Pane>
+                <!-- Main Map View Content -->
+                <Grid Grid.Column="1">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="300" />
-                        </Grid.ColumnDefinitions>
-                        <Grid >
+                    <esri:MapView Map="{x:Bind AppVM.Map, Mode=OneWay}" x:Name="mapView"
+                                GeoViewTapped="GeoViewTapped"
+                                tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
 
-                            <esri:MapView Map="{x:Bind AppVM.Map, Mode=OneWay}" Grid.Row="1" x:Name="mapView"
-                                  GeoViewTapped="GeoViewTapped"
-                                  tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
+                    <tk:ScaleLine MapView="{x:Bind mapView}" Margin="20" />
 
-                            <tk:ScaleLine MapView="{x:Bind mapView}" Margin="20" />
+                    <tk:Compass GeoView="{x:Bind mapView}" Margin="20" />
 
-                            <tk:Compass GeoView="{x:Bind mapView}" Margin="20" />
+                </Grid>
 
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <tk:FeatureFormView x:Name="FeatureForm" FeatureForm="{x:Bind PageVM.FeatureForm, Mode=OneWay}" Margin="5,5,5,0" />
-                            <Grid Grid.Row="1" BorderBrush="{ThemeResource CalciteUIBorder3Color}" BorderThickness="0,1,0,0">
-                                <Grid.ColumnDefinitions >
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Content="Close" Margin="5,0,0,0" Background="{ThemeResource CalciteUIInfoColor}" Foreground="White" Padding="5" Grid.Column="0" HorizontalAlignment="Stretch" />
-                                <Button Content="Reset" Margin="5" Background="{ThemeResource CalciteUIDangerColor}" Foreground="White" Padding="5" Grid.Column="1" HorizontalAlignment="Stretch" />
-                                <Button Content="Apply" Margin="0,0,5,0" Background="{ThemeResource CalciteUISuccessColor}" Foreground="White" Padding="5" Grid.Column="2" HorizontalAlignment="Stretch" />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </SplitView>
-
+                <!-- Right side collapsible tool panel -->
+                <controls:CollapsibleSidePanel x:Name="RightPanel" Grid.Column="2" PanePlacement="Right" IsExpanded="False" IsOpen="False" ContentWidth="250">
+                    <controls:CollapsibleSidePanel.Items>
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=Shapes, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=Filter, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=Effects, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=OverlapFeatures, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=ConfigurePopup, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=AccessStringResults, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=Label, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=ChartGear, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem IsSelected="True" Title="Edit" Icon="{calcite:CalciteIconSourceElement Icon=PencilSquare, Scale=Small, SymbolSize=20}">
+                            <local:FeatureEditingPage GeoElement="{x:Bind PageVM.CurrentFeature, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                        </controls:PanelItem>
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=PencilMark, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:PanelItem Icon="{calcite:CalciteIconSourceElement Icon=Wrench, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                    </controls:CollapsibleSidePanel.Items>
+                </controls:CollapsibleSidePanel>
             </Grid>
         </NavigationView>
 
