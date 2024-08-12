@@ -65,9 +65,23 @@ namespace ArcGISMapViewer.Views
         }
 
 
-        private void AddBookmark_Click(object sender, RoutedEventArgs e)
+        private async void AddBookmark_Click(object sender, RoutedEventArgs e)
         {
-            AppVM.Map.Bookmarks.Add(new Bookmark() { Name = "New Bookmark", Viewpoint = mapView.GetCurrentViewpoint(ViewpointType.BoundingGeometry) });
+            var vp = mapView.GetCurrentViewpoint(ViewpointType.CenterAndScale);
+            var name = $"{CoordinateFormatter.ToLatitudeLongitude((MapPoint)vp.TargetGeometry, LatitudeLongitudeFormat.DecimalDegrees, 6)} - 1:{Math.Round(vp.TargetScale)}";
+            ContentDialog cd = new ContentDialog()
+            {
+                Title = "Add Bookmark",
+                Content = new TextBox() { Text = name, Header = "Enter bookmark name", PlaceholderText = "Bookmark Name" },
+                PrimaryButtonText = "Add",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.XamlRoot
+            };
+            if (await cd.ShowAsync() == ContentDialogResult.Primary)
+            {
+                if (AppVM.Map != null)
+                    AppVM.Map.Bookmarks.Add(new Bookmark() { Name = ((TextBox)cd.Content).Text, Viewpoint = vp });
+            }
         }
     }
 }
