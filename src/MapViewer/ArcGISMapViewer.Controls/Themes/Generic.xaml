@@ -92,7 +92,7 @@
                             <ContentPresenter x:Name="PART_ContentPresenter" Grid.Row="1" />
                             <Button x:Name="PART_CloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Visibility="{TemplateBinding CloseButtonVisibility}"
                             Padding="10" Margin="0,5,0,0" Grid.RowSpan="2">
-                                <calcite:SymbolIcon Symbol="X" />
+                                <calcite:SymbolIcon Symbol="X" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
                             </Button>
                         </Grid>
                         <Grid Grid.Column="1" Width="50" x:Name="ItemsColumn">

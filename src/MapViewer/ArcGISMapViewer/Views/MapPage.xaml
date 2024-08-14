@@ -99,9 +99,11 @@
 
                 <!-- Right side collapsible tool panel -->
                 <controls:CollapsiblePanel x:Name="RightPanel" Grid.Column="2" PanePlacement="Right" IsPaneExpanded="False" IsOpen="False" ContentWidth="250"
-                                           ExpandButtonVisibility="Visible">
+                                           ExpandButtonVisibility="Visible" CloseButtonVisibility="Collapsed">
                     <controls:CollapsiblePanel.Items>
-                        <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" IsEnabled="False" />
+                        <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" Title="Properties" >
+                            <controls:MapPropertiesView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" />
+                        </controls:CollapsiblePanelItem>
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Shapes, Scale=Small, SymbolSize=20}" IsEnabled="False" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Filter, Scale=Small, SymbolSize=20}" IsEnabled="False" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Effects, Scale=Small, SymbolSize=20}" IsEnabled="False" />
