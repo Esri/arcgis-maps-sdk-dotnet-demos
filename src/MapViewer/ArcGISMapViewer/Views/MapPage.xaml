@@ -50,7 +50,9 @@
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Title="Layers" x:Name="LayersPane" IsSelected="True" ContentTitle="Layers">
                     <controls:LayerListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Grid.Row="1" />
                 </controls:CollapsiblePanelItem>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Title="Tables" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Title="Tables" ContentTitle="Tables" >
+                    <controls:TableListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" />
+                </controls:CollapsiblePanelItem>
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Title="Basemap" x:Name="BasemapPane" ContentTitle="Basemap">
                     <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" BorderThickness="0" />
                 </controls:CollapsiblePanelItem>
