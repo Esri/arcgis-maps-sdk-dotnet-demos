@@ -96,7 +96,7 @@ public partial class ApplicationViewModel : ObservableObject
     [ObservableProperty]
     private bool _isMapVisible;
     [ObservableProperty]
-    private bool _isAppMenuVisible;
+    private bool _isAppMenuVisible = true;
     partial void OnIsAppMenuVisibleChanged(bool value)
     {
         IsMapVisible = !value;

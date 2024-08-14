@@ -106,7 +106,7 @@
                             <ItemsControl x:Name="PART_FooterMenuPanel" Grid.Row="1" VerticalAlignment="Bottom" />
                             
                             <Button VerticalAlignment="Bottom" x:Name="PART_ExpandButton" Visibility="{TemplateBinding ExpandButtonVisibility}" Grid.Row="2" Background="Transparent" BorderThickness="0" Padding="10" Margin="5,0,0,0" >
-                                <calcite:SymbolIcon Symbol="ChevronsRight" x:Name="ExpandIcon" IconScale="Small" />
+                                <calcite:SymbolIcon Symbol="ChevronsRight" x:Name="ExpandIcon" IconScale="Small" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
                             </Button>
                         </Grid>
 

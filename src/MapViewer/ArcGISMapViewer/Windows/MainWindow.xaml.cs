@@ -52,20 +52,5 @@ namespace ArcGISMapViewer.Windows
             signinWindow.Activate();
             this.Close();
         }
-
-        //private void TitleBar_PaneToggleRequested(TitleBar sender, object args)
-        //{
-        //    if (MapPage.Visibility == Visibility.Visible)
-        //    {
-        //        MapPage.Visibility = Visibility.Collapsed;
-        //        HomePage.Visibility = Visibility.Visible;
-        //    }
-        //    else
-        //    {
-        //        MapPage.Visibility = Visibility.Visible;
-        //        HomePage.Visibility = Visibility.Collapsed;
-        //        AppVM.WindowSubTitle = AppVM.Map?.Item?.Title ?? String.Empty;
-        //    }
-        //}
     }
 }
