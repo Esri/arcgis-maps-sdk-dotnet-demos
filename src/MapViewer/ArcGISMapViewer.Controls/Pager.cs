@@ -22,6 +22,7 @@ namespace ArcGISMapViewer.Controls
             {
                 nextButton.Click += NextButton_Click;
             }
+            UpdateSelectedText();
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
@@ -84,10 +85,15 @@ namespace ArcGISMapViewer.Controls
             }
             else
                 SelectedItem = null;
+            UpdateSelectedText();
+        }
+
+        private void UpdateSelectedText()
+        {
             if (GetTemplateChild("CurrentText") is TextBlock tb)
             {
                 if (ItemsSource != null && ItemsSource.Count > 0)
-                    tb.Text = string.Format(CurrentTextFormat, newValue + 1, ItemsSource?.Count);
+                    tb.Text = string.Format(CurrentTextFormat, SelectedIndex + 1, ItemsSource?.Count);
                 else
                     tb.Text = "";
             }

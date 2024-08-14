@@ -116,6 +116,10 @@ namespace ArcGISMapViewer.Controls
                 TablesListView.SelectedItem = table;
                 SelectedItemText = table.DisplayName;
             }
+            else if(newValue is ILayerContent ilayer)
+            {
+                SelectedItemText = ilayer.Name;
+            }
             else
             {
                 SelectedItemText = string.Empty;

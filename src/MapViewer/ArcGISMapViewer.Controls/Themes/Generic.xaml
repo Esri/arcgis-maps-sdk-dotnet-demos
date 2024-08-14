@@ -237,7 +237,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Viewbox x:Name="IconBox" Margin="14,9">
-                            <ContentPresenter x:Name="Icon" Foreground="{TemplateBinding Foreground}" Content="{TemplateBinding Icon}" />
+                            <ContentPresenter x:Name="Icon" Foreground="{TemplateBinding Foreground}" Content="{TemplateBinding Icon}" ToolTipService.ToolTip="{TemplateBinding Title}" />
                         </Viewbox>
                         <ContentPresenter x:Name="TitlePresenter" Grid.Column="1" Foreground="{TemplateBinding Foreground}" 
                                           Content="{TemplateBinding Title}"
