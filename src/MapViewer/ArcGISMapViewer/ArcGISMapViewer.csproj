@@ -28,7 +28,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4329" />
-    <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-64.g53d40f8760" />
+    <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-65.g2a60aa1fc3" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240701003-experimental2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />

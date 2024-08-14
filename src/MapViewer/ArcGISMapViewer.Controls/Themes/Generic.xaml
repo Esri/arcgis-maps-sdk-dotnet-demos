@@ -53,25 +53,25 @@
                                 <VisualState x:Name="PaneExpandedLeft">
                                     <VisualState.Setters>
                                         <Setter Target="ItemsColumn.Width" Value="NaN" />
-                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsLeft, Foreground=Black}" />
+                                        <Setter Target="ExpandIcon.Symbol" Value="ChevronsLeft" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PaneCollapsedLeft">
                                     <VisualState.Setters>
                                         <Setter Target="ItemsColumn.Width" Value="50" />
-                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsRight, Foreground=Black}" />
+                                        <Setter Target="ExpandIcon.Symbol" Value="ChevronsRight" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PaneExpandedRight">
                                     <VisualState.Setters>
                                         <Setter Target="ItemsColumn.Width" Value="NaN" />
-                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsRight, Foreground=Black}" />
+                                        <Setter Target="ExpandIcon.Symbol" Value="ChevronsRight" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PaneCollapsedRight">
                                     <VisualState.Setters>
                                         <Setter Target="ItemsColumn.Width" Value="50" />
-                                        <Setter Target="ExpandIcon.IconSource" Value="{calcite:CalciteIconSource Icon=ChevronsLeft, Foreground=Black}" />
+                                        <Setter Target="ExpandIcon.Symbol" Value="ChevronsLeft" />
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
@@ -92,7 +92,7 @@
                             <ContentPresenter x:Name="PART_ContentPresenter" Grid.Row="1" />
                             <Button x:Name="PART_CloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Visibility="{TemplateBinding CloseButtonVisibility}"
                             Padding="10" Margin="0,5,0,0" Grid.RowSpan="2">
-                                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=X, Foreground=Black}" />
+                                <calcite:SymbolIcon Symbol="X" />
                             </Button>
                         </Grid>
                         <Grid Grid.Column="1" Width="50" x:Name="ItemsColumn">
@@ -106,7 +106,7 @@
                             <ItemsControl x:Name="PART_FooterMenuPanel" Grid.Row="1" VerticalAlignment="Bottom" />
                             
                             <Button VerticalAlignment="Bottom" x:Name="PART_ExpandButton" Visibility="{TemplateBinding ExpandButtonVisibility}" Grid.Row="2" Background="Transparent" BorderThickness="0" Padding="10" Margin="5,0,0,0" >
-                                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronsRight, Foreground=Black}" x:Name="ExpandIcon" />
+                                <calcite:SymbolIcon Symbol="ChevronsRight" x:Name="ExpandIcon" IconScale="Small" />
                             </Button>
                         </Grid>
 
@@ -263,33 +263,35 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:Pager">
-                        <Grid BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                    <Grid BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                            <Grid>
-                                <StackPanel Orientation="Horizontal">
-                                    <StackPanel.Resources>
-                                        <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-                                        <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-                                    </StackPanel.Resources>
-                                    <Button x:Name="PART_PreviousButton"  Background="Transparent" BorderThickness="0" Padding="5">
-                                        <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronLeft, Scale=Medium,SymbolSize=16 }" />
-                                    </Button>
-                                    <Button x:Name="PART_NextButton" Background="Transparent" BorderThickness="0" Padding="5">
-                                        <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronRight, Scale=Medium }" />
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                            <Grid Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource CalciteUIBorder3Color}">
-                                <StackPanel Orientation="Horizontal" Margin="5">
-                                    <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ListBullet, Scale=Medium }" VerticalAlignment="Center"  Margin="2,4,2,0"/>
-                                    <TextBlock x:Name="CurrentText" VerticalAlignment="Center" FontSize="12" MinWidth="35" TextAlignment="Right" />
-                                </StackPanel>
-                            </Grid>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+                                    <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                                    <StaticResource x:Key="ButtonForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                                    <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                                </StackPanel.Resources>
+                                <Button x:Name="PART_PreviousButton"  Background="Transparent" BorderThickness="0" Padding="5" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
+                                    <calcite:SymbolIcon Symbol="ChevronLeft" />
+                                </Button>
+                                <Button x:Name="PART_NextButton" Background="Transparent" BorderThickness="0" Padding="5" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
+                                    <calcite:SymbolIcon Symbol="ChevronRight" />
+                                </Button>
+                            </StackPanel>
                         </Grid>
+                        <Grid Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource CalciteUIBorder3Color}">
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <calcite:SymbolIcon Symbol="ListBullet" VerticalAlignment="Center"  Margin="2,0,2,0" IconScale="Small"/>
+                                <TextBlock x:Name="CurrentText" VerticalAlignment="Center" FontSize="12" MinWidth="35" TextAlignment="Right" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
