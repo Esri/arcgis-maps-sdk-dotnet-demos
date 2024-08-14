@@ -26,13 +26,13 @@
                 </StackPanel>
             </Button>-->
             <Button Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Table" IsEnabled="False">
-                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table, Scale=Medium}" />
+                <calcite:SymbolIcon Symbol="Table" Margin="5" />
             </Button>
             <Button x:Name="EditButton" Click="EditButton_Click" Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Edit" Margin="5,0">
-                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=PencilSquare, Scale=Medium}" />
+                <calcite:SymbolIcon Symbol="PencilSquare" Margin="5" />
             </Button>
             <Button Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Zoom to" Click="ZoomTo_Click">
-                <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=MagnifyingGlassPlus, Scale=Medium}" />
+                <calcite:SymbolIcon Symbol="MagnifyingGlassPlus" Margin="5" />
             </Button>
         </StackPanel>
 

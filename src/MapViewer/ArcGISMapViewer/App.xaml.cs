@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -35,6 +36,18 @@ namespace ArcGISMapViewer
         /// </summary>
         public App()
         {
+            UnhandledException += (sender, e) =>
+            {
+                if (global::System.Diagnostics.Debugger.IsAttached)
+                {
+                    Debug.WriteLine($"{e.Exception.GetType().FullName}: {e.Message} ({e.Exception.Message})");
+                    foreach (var key in e.Exception.Data.Keys)
+                    {
+                        Debug.WriteLine($"    {key} = {e.Exception.Data[key]}");
+                    }
+                }
+            };
+
             if (WinUIEx.WebAuthenticator.CheckOAuthRedirectionActivation())
                 return;
             this.InitializeComponent();

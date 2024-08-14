@@ -276,16 +276,16 @@
                                         <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
                                     </StackPanel.Resources>
                                     <Button x:Name="PART_PreviousButton"  Background="Transparent" BorderThickness="0" Padding="5">
-                                        <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronLeft, Foreground=Black, Scale=Medium,SymbolSize=16 }" />
+                                        <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronLeft, Scale=Medium,SymbolSize=16 }" />
                                     </Button>
                                     <Button x:Name="PART_NextButton" Background="Transparent" BorderThickness="0" Padding="5">
-                                        <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronRight, Foreground=Black, Scale=Medium }" />
+                                        <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ChevronRight, Scale=Medium }" />
                                     </Button>
                                 </StackPanel>
                             </Grid>
                             <Grid Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource CalciteUIBorder3Color}">
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ListBullet, Foreground=Black, Scale=Medium }" VerticalAlignment="Center"  Margin="2,4,2,0"/>
+                                    <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=ListBullet, Scale=Medium }" VerticalAlignment="Center"  Margin="2,4,2,0"/>
                                     <TextBlock x:Name="CurrentText" VerticalAlignment="Center" FontSize="12" MinWidth="35" TextAlignment="Right" />
                                 </StackPanel>
                             </Grid>
