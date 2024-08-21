@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -18,11 +19,25 @@ using Windows.Foundation.Collections;
 
 namespace ArcGISMapViewer.Controls
 {
+
     public sealed partial class MapPropertiesView : UserControl
     {
+        public class ShowMapPropertiesMessage
+        {
+            public ShowMapPropertiesMessage(Layer layer)
+            {
+                Layer = layer;
+            }
+            public Layer Layer { get; }
+        }
         public MapPropertiesView()
         {
             this.InitializeComponent();
+
+            CommunityToolkit.Mvvm.Messaging.WeakReferenceMessenger.Default.Register<ShowMapPropertiesMessage>(this, (r, m) =>
+            {
+                ContentPicker.SelectedItem = m.Layer;
+            });
         }
 
         private void MapContentsPicker_SelectedItemChanged(object? sender, object? e)
@@ -38,19 +53,6 @@ namespace ArcGISMapViewer.Controls
 
         public static readonly DependencyProperty GeoModelProperty =
             DependencyProperty.Register("GeoModel", typeof(GeoModel), typeof(MapPropertiesView), new PropertyMetadata(null));
-
-
-
-        public object SelectedLayer
-        {
-            get { return (object)GetValue(SelectedLayerProperty); }
-            set { SetValue(SelectedLayerProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedLayerProperty =
-            DependencyProperty.Register("SelectedLayer", typeof(object), typeof(MapPropertiesView), new PropertyMetadata(null));
-
-
     }
     public class LayerTemplateSelector : DataTemplateSelector
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CommunityToolkit.Mvvm.Messaging;
 using Esri.ArcGISRuntime.Toolkit.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -37,8 +38,6 @@ namespace ArcGISMapViewer.Controls
         public static readonly DependencyProperty GeoModelProperty =
             DependencyProperty.Register("GeoModel", typeof(GeoModel), typeof(LayerListView), new PropertyMetadata(null));
 
-
-
         public GeoViewController GeoViewController
         {
             get { return (GeoViewController)GetValue(GeoViewControllerProperty); }
@@ -70,7 +69,7 @@ namespace ArcGISMapViewer.Controls
                     XamlRoot = XamlRoot
                 };
                 var result = await dialog.ShowAsync();
-                if(result == ContentDialogResult.Primary)
+                if (result == ContentDialogResult.Primary)
                 {
                     layer.Name = tb.Text;
                 }
@@ -95,6 +94,16 @@ namespace ArcGISMapViewer.Controls
                     if (GeoModel.OperationalLayers.Contains(layer))
                         GeoModel.OperationalLayers.Remove(layer);
                 }
+            }
+        }
+
+        private void Properties_Click(object sender, RoutedEventArgs e)
+        {
+            var layer = (sender as FrameworkElement)?.DataContext as Layer;
+            if (layer is not null)
+            {
+                // Send a message from some other module
+                WeakReferenceMessenger.Default.Send(new MapPropertiesView.ShowMapPropertiesMessage(layer));
             }
         }
     }

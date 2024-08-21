@@ -77,10 +77,10 @@
                                     <Expander Header="Symbology">
                                         <tk:LayerLegend LayerContent="{x:Bind}" />
                                     </Expander>
-                                    <Expander Header="Appearance">
+                                    <Expander Header="Appearance" IsExpanded="True">
                                         <Slider Minimum="0" TickFrequency=".25" TickPlacement='BottomRight' Maximum="1" Header="Opacity" Value="{x:Bind Opacity, Mode=TwoWay}" StepFrequency="0.01" />
                                     </Expander>
-                                    <Expander Header="Visibility">
+                                    <Expander Header="Visibility" IsExpanded="True">
                                         <StackPanel>
                                             <ToggleSwitch Header="Visible" IsOn="{x:Bind IsVisible, Mode=TwoWay}" />
                                             <TextBlock Text="Visible range" FontSize="12" />
@@ -95,10 +95,10 @@
                         <local:LayerTemplateSelector.LayerTemplate>
                             <DataTemplate x:DataType="mapping:Layer">
                                 <StackPanel>
-                                    <Expander Header="Appearance">
+                                    <Expander Header="Appearance" IsExpanded="True">
                                         <Slider Minimum="0" TickFrequency=".25" TickPlacement='BottomRight' Maximum="1" Header="Opacity" Value="{x:Bind Opacity, Mode=TwoWay}" StepFrequency="0.01" />
                                     </Expander>
-                                    <Expander Header="Visibility">
+                                    <Expander Header="Visibility" IsExpanded="True">
                                         <StackPanel>
                                             <ToggleSwitch Header="Visible" IsOn="{x:Bind IsVisible, Mode=TwoWay}" />
                                             <TextBlock Text="Visible range" FontSize="12" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CommunityToolkit.Mvvm.Messaging;
 using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Toolkit.UI.Controls;
 using Esri.ArcGISRuntime.UI.Controls;
@@ -26,6 +27,13 @@ namespace ArcGISMapViewer.Views
         public MapPage()
         {
             this.InitializeComponent();
+            WeakReferenceMessenger.Default.Register<Controls.MapPropertiesView.ShowMapPropertiesMessage>(this, (r, m) =>
+            {
+                var panel = RightPanel.Items.Where(p => p.Tag as string == "Properties").First();
+                RightPanel.SelectedItem = panel;
+                RightPanel.IsOpen = true;
+            });
+
         }
 
         public ApplicationViewModel AppVM => ApplicationViewModel.Instance;
@@ -48,6 +56,9 @@ namespace ArcGISMapViewer.Views
                     calloutview.EditRequested += (s, e) =>
                     {
                         PageVM.CurrentFeature = e as Feature;
+                        var panel = RightPanel.Items.Where(p => p.Tag as string == "Edit").First();
+                        panel.IsEnabled = true;
+                        RightPanel.SelectedItem = panel;
                         RightPanel.IsOpen = true;
                     };
                     calloutview.CloseRequested += (s, e) => mapView.DismissCallout();
@@ -62,6 +73,7 @@ namespace ArcGISMapViewer.Views
         {
             RightPanel.IsOpen = false;
             PageVM.CurrentFeature = null;
+            RightPanel.Items.Where(p => p.Tag as string == "Edit").First().IsEnabled = false;
         }
 
 
