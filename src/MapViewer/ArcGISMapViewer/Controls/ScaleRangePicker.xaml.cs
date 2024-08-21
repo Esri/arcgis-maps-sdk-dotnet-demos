@@ -18,29 +18,12 @@ using Windows.Foundation.Collections;
 
 namespace ArcGISMapViewer.Controls
 {
-    public sealed partial class ScaleRangeSelector : UserControl
+    public sealed partial class ScaleRangePicker : UserControl
     {
-        public ScaleRangeSelector()
+        public ScaleRangePicker()
         {
             this.InitializeComponent();
         }
-
-
-
-        public double CurrentScale
-        {
-            get { return (double)GetValue(CurrentScaleProperty); }
-            set { SetValue(CurrentScaleProperty, value); }
-        }
-
-        public static readonly DependencyProperty CurrentScaleProperty =
-            DependencyProperty.Register("CurrentScale", typeof(double), typeof(ScaleRangeSelector), new PropertyMetadata(0d, (s, e) => ((ScaleRangeSelector)s).OnCurrentScalePropertyChanged((double)e.NewValue)));
-
-        private void OnCurrentScalePropertyChanged(double newValue)
-        {
-        }
-
-
 
         public double MinScale
         {
@@ -49,11 +32,10 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty MinScaleProperty =
-            DependencyProperty.Register("MinScale", typeof(double), typeof(ScaleRangeSelector), new PropertyMetadata(-1d, (s, e) => ((ScaleRangeSelector)s).OnMinScalePropertyChanged((double)e.NewValue)));
+            DependencyProperty.Register("MinScale", typeof(double), typeof(ScaleRangePicker), new PropertyMetadata(-1d, (s, e) => ((ScaleRangePicker)s).OnMinScalePropertyChanged((double)e.NewValue)));
 
         private void OnMinScalePropertyChanged(double newValue)
         {
-            UpdateRanges();
             UpdateDropDown(newValue, MinCombo, 0);
         }
 
@@ -64,21 +46,22 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty MaxScaleProperty =
-            DependencyProperty.Register("MaxScale", typeof(double), typeof(ScaleRangeSelector), new PropertyMetadata(-1d, (s, e) => ((ScaleRangeSelector)s).OnMaxScalePropertyChanged((double)e.NewValue)));
+            DependencyProperty.Register("MaxScale", typeof(double), typeof(ScaleRangePicker), new PropertyMetadata(-1d, (s, e) => ((ScaleRangePicker)s).OnMaxScalePropertyChanged((double)e.NewValue)));
 
         private void OnMaxScalePropertyChanged(double newValue)
         {
-            UpdateRanges();
             UpdateDropDown(newValue, MaxCombo, MaxCombo.Items.Count - 1);
         }
 
         private void UpdateDropDown(double newValue, ComboBox combo, int defaultIndex)
         {
+            if (ignore) return;
             if (newValue <= 0)
             {
                 combo.SelectedIndex = defaultIndex;
                 return;
             }
+            ignore = true;
             int index = 0;
             foreach (var value in combo.Items)
             {
@@ -87,33 +70,36 @@ namespace ArcGISMapViewer.Controls
                     if (scale < newValue)
                     {
                         combo.SelectedIndex = index;
+
+                        ignore = false;
                         return;
                     }
                 }
                 index++;
             }
             combo.SelectedIndex = combo.Items.Count - 1;
-        }
-
-        private void UpdateRanges()
-        {
-            if (ignore) return;
-            ignore = true;
-            var min = RangeSelector.Maximum - Math.Log(MinScale, 2) + RangeSelector.Minimum;
-            var max = RangeSelector.Maximum - Math.Log(MaxScale, 2) + RangeSelector.Minimum;
-            RangeSelector.RangeStart = double.IsNormal(min) ? Math.Max(RangeSelector.Minimum, min) : RangeSelector.Minimum;
-            RangeSelector.RangeEnd = double.IsNormal(max) ? Math.Min(RangeSelector.Maximum, max) : RangeSelector.Maximum;
             ignore = false;
         }
         bool ignore;
-        private void RangeSelector_ValueChanged(object sender, CommunityToolkit.WinUI.Controls.RangeChangedEventArgs e)
+        private void MinCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ignore) return;
+            ignore = true;
+            if (double.TryParse((MinCombo.SelectedItem as ComboBoxItem)?.Tag?.ToString(), out double scale))
+            {
+                MinScale = scale;
+            }
+            ignore = false;
+        }
+
+        private void MaxCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ignore) return;
             ignore = true;
-            var min = Math.Pow(2, RangeSelector.Maximum - RangeSelector.RangeStart + RangeSelector.Minimum);
-            var max = Math.Pow(2, RangeSelector.Maximum - RangeSelector.RangeEnd + RangeSelector.Minimum);
-            MinScale = min;
-            MaxScale = max;
+            if (double.TryParse((MaxCombo.SelectedItem as ComboBoxItem)?.Tag?.ToString(), out double scale))
+            {
+                MaxScale = scale;
+            }
             ignore = false;
         }
     }

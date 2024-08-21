@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UserControl
-    x:Class="ArcGISMapViewer.Controls.ScaleRangeSelector"
+    x:Class="ArcGISMapViewer.Controls.ScaleRangePicker"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ArcGISMapViewer.Controls"
@@ -15,12 +15,12 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <rs:RangeSelector Minimum="6" Maximum="30" x:Name="RangeSelector" ValueChanged="RangeSelector_ValueChanged"
-                          StepFrequency="0.1" />
-        <Border IsHitTestVisible="False" Margin="5,15,0,0">
+
+        <local:ScaleRangeSelector MinScale="{x:Bind MinScale, Mode=TwoWay}" MaxScale="{x:Bind MaxScale, Mode=TwoWay}" x:Name="RangeSelector" />
+        <!--<Border IsHitTestVisible="False" Margin="5,15,0,0">
             <TextBlock Text="^" Margin="50,0,0,0" />
-        </Border>
-        <ComboBox x:Name="MinCombo" Grid.Row="1" BorderThickness="0" Background="Transparent" SelectedIndex="0" >
+        </Border>-->
+        <ComboBox x:Name="MinCombo" Margin="-12,0,0,0" Grid.Row="1" BorderThickness="0" Background="Transparent" SelectedIndex="0" SelectionChanged="MinCombo_SelectionChanged" >
             <ComboBox.Items>
                 <ComboBoxItem Content="World" Tag="150000000"/>
                 <ComboBoxItem Content="Continent" Tag="50000000"/>
@@ -43,7 +43,7 @@
                 <ComboBoxItem Content="Rooms" Tag="400"/>
             </ComboBox.Items>
         </ComboBox>
-        <ComboBox x:Name="MaxCombo" Grid.Row="1" BorderThickness="0" Background="Transparent" HorizontalAlignment="Right" SelectedIndex="0" >
+        <ComboBox x:Name="MaxCombo" Margin="0,0,-14,0" Grid.Row="1" BorderThickness="0" Background="Transparent" HorizontalAlignment="Right" SelectedIndex="0" SelectionChanged="MaxCombo_SelectionChanged" >
             <ComboBox.Items>
                 <ComboBoxItem Content="World" Tag="150000000"/>
                 <ComboBoxItem Content="Continent" Tag="50000000"/>

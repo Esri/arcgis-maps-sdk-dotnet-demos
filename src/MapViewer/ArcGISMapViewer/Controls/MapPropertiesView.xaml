@@ -82,8 +82,9 @@
                                     </Expander>
                                     <Expander Header="Visibility">
                                         <StackPanel>
+                                            <ToggleSwitch Header="Visible" IsOn="{x:Bind IsVisible, Mode=TwoWay}" />
                                             <TextBlock Text="Visible range" FontSize="12" />
-                                            <local:ScaleRangeSelector MinScale="{x:Bind MinScale, Mode=TwoWay}" MaxScale="{x:Bind MaxScale, Mode=TwoWay}" />
+                                            <local:ScaleRangePicker MinScale="{x:Bind MinScale, Mode=TwoWay}" MaxScale="{x:Bind MaxScale, Mode=TwoWay}" />
                                         </StackPanel>
                                     </Expander>
                                     <Expander Header="Refresh interval">
@@ -99,8 +100,9 @@
                                     </Expander>
                                     <Expander Header="Visibility">
                                         <StackPanel>
+                                            <ToggleSwitch Header="Visible" IsOn="{x:Bind IsVisible, Mode=TwoWay}" />
                                             <TextBlock Text="Visible range" FontSize="12" />
-                                            <local:ScaleRangeSelector MinScale="{x:Bind MinScale, Mode=TwoWay}" MaxScale="{x:Bind MaxScale, Mode=TwoWay}" />
+                                            <local:ScaleRangePicker MinScale="{x:Bind MinScale, Mode=TwoWay}" MaxScale="{x:Bind MaxScale, Mode=TwoWay}" />
                                         </StackPanel>
                                     </Expander>
                                 </StackPanel>
