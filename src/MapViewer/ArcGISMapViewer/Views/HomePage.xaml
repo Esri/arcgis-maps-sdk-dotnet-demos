@@ -7,8 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:calcite="using:Esri.Calcite.WinUI"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <NavigationView PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" IsPaneToggleButtonVisible="False"
                     NavigationView.IsSettingsVisible="True" SelectionChanged="NavigationView_SelectionChanged">
@@ -16,6 +15,9 @@
             <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Portal, Scale = Small, SymbolSize=20}" Content="My Portal" Tag="PortalPage" IsSelected="True" />
             <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Map, Scale = Small, SymbolSize=20}" Content="New" Tag="NewMapPage" />
         </NavigationView.MenuItems>
+        <NavigationView.FooterMenuItems>
+            <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Content="About" Tag="AboutPage" />
+        </NavigationView.FooterMenuItems>
         <Frame x:Name="contentFrame" />
     </NavigationView>
 </Page>

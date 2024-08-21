@@ -78,8 +78,19 @@
             <controls:CollapsiblePanel.FooterItems>
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Title="About" ContentTitle="About">
                     <StackPanel Padding="5">
-                        <TextBlock TextWrapping="Wrap">This is a sample application that demonstrates the use of the ArcGIS Maps SDK for .NET.
-                            The application is built using the Microsoft Windows App SDK and the Esri ArcGIS Runtime SDK for .NET.</TextBlock>
+                        <Grid Background="{ThemeResource CalciteUIBackground3Color}" Padding="16,5" Margin="-5,-5,-5,0" Height="40">
+                            <TextBlock Text="{x:Bind AppVM.PortalItem.Title, Mode=OneWay}" Style="{StaticResource NavigationViewItemHeaderTextStyle}" />
+                        </Grid>
+                        <Image>
+                            <Image.Source>
+                                <BitmapImage UriSource="{x:Bind AppVM.Map.Item.ThumbnailUri, Mode=OneWay}" />
+                            </Image.Source>
+                        </Image>
+                        <TextBlock Text="{x:Bind AppVM.PortalItem.Name, Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind AppVM.PortalItem.Description, Mode=OneWay}" />
+                        <TextBlock Text="Owner:" />
+                        <TextBlock Text="{x:Bind AppVM.PortalItem.Owner, Mode=OneWay}" />
+                        <RatingControl Value="{x:Bind AppVM.PortalItem.AverageRating, Mode=OneWay}" IsReadOnly="True" />
                     </StackPanel>
                 </controls:CollapsiblePanelItem>
             </controls:CollapsiblePanel.FooterItems>

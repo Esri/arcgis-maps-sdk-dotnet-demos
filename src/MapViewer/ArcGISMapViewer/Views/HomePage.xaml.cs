@@ -45,6 +45,7 @@ namespace ArcGISMapViewer.Views
                     {
                         case "PortalPage": contentFrame.Navigate(typeof(PortalPage)); ApplicationViewModel.Instance.WindowSubTitle = "My Portal"; break;
                         case "NewMapPage": contentFrame.Navigate(typeof(NewMapPage)); ApplicationViewModel.Instance.WindowSubTitle = "New Map"; break;
+                        case "AboutPage": contentFrame.Navigate(typeof(AboutPage)); ApplicationViewModel.Instance.WindowSubTitle = "About"; break;
                     }
                 }
             }
