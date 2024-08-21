@@ -69,16 +69,21 @@ namespace ArcGISMapViewer.Controls
                 }
                 catch { }
             }
-            if (newValue?.OperationalLayers.FirstOrDefault() is Layer layer)
-                SelectedItem = layer;
-            else if (newValue?.Tables.FirstOrDefault() is FeatureTable table)
-                SelectedItem = table;
-            else if (newValue?.Basemap?.ReferenceLayers.FirstOrDefault() is Layer reflayer)
-                SelectedItem = reflayer;
-            else if (newValue?.Basemap?.BaseLayers.FirstOrDefault() is Layer baselayer)
-                SelectedItem = baselayer;
+            if (SelectedItem is not null)
+                OnSelectedItemPropertyChanged(SelectedItem);
             else
-                SelectedItem = null;
+            {
+                if (newValue?.OperationalLayers.FirstOrDefault() is Layer layer)
+                    SelectedItem = layer;
+                else if (newValue?.Tables.FirstOrDefault() is FeatureTable table)
+                    SelectedItem = table;
+                else if (newValue?.Basemap?.ReferenceLayers.FirstOrDefault() is Layer reflayer)
+                    SelectedItem = reflayer;
+                else if (newValue?.Basemap?.BaseLayers.FirstOrDefault() is Layer baselayer)
+                    SelectedItem = baselayer;
+                else
+                    SelectedItem = null;
+            }
         }
 
         public object? SelectedItem

@@ -14,12 +14,8 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace ArcGISMapViewer.Controls
 {
-
     public sealed partial class MapPropertiesView : UserControl
     {
         public class ShowMapPropertiesMessage
@@ -36,12 +32,13 @@ namespace ArcGISMapViewer.Controls
 
             CommunityToolkit.Mvvm.Messaging.WeakReferenceMessenger.Default.Register<ShowMapPropertiesMessage>(this, (r, m) =>
             {
-                ContentPicker.SelectedItem = m.Layer;
+                SelectedItem = m.Layer;
             });
         }
 
         private void MapContentsPicker_SelectedItemChanged(object? sender, object? e)
         {
+            SelectedItem = ContentPicker.SelectedItem;
             PickerFlyout.Hide();
         }
 
@@ -53,7 +50,22 @@ namespace ArcGISMapViewer.Controls
 
         public static readonly DependencyProperty GeoModelProperty =
             DependencyProperty.Register("GeoModel", typeof(GeoModel), typeof(MapPropertiesView), new PropertyMetadata(null));
+
+        public object? SelectedItem
+        {
+            get { return (object?)GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register("SelectedItem", typeof(object), typeof(MapPropertiesView), new PropertyMetadata(null, (s, e) => ((MapPropertiesView)s).OnSelectedItemChanged()));
+
+        private void OnSelectedItemChanged()
+        {
+            ContentPicker.SelectedItem = SelectedItem;
+        }
     }
+
     public class LayerTemplateSelector : DataTemplateSelector
     {
         public LayerTemplateSelector()
