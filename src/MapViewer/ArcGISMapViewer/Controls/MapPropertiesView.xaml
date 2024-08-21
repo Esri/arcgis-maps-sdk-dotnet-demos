@@ -27,7 +27,9 @@
                 </Flyout>
             </DropDownButton.Flyout>
         </DropDownButton>
-        
+        <Grid Background="{ThemeResource CalciteUIBackground3Color}" Padding="16,5" Height="40">
+            <TextBlock Text="Properties" VerticalAlignment="Center" Style="{StaticResource NavigationViewItemHeaderTextStyle}" />
+        </Grid>
         <ContentControl x:Name="LayerPresenter" HorizontalContentAlignment="Stretch" Content="{x:Bind ContentPicker.SelectedItem, Mode=OneWay}" >
             <ContentControl.Resources>
                 <Style TargetType="Button" x:Key="GrayButton" BasedOn="{StaticResource DefaultButtonStyle}">
@@ -71,6 +73,10 @@
                                     <Slider Minimum="0" Maximum="1" Header="Opacity" Value="{x:Bind Opacity, Mode=TwoWay}" StepFrequency="0.01" />
                                 </Expander>
                                 <Expander Header="Visibility">
+                                    <StackPanel>
+                                        <TextBlock Text="Visible range" FontSize="12" />
+                                        <local:ScaleRangeSelector MinScale="{x:Bind MinScale, Mode=TwoWay}" MaxScale="{x:Bind MaxScale, Mode=TwoWay}" />
+                                    </StackPanel>
                                 </Expander>
                                 <Expander Header="Refresh interval">
                                 </Expander>
