@@ -6,6 +6,8 @@
     xmlns:local="using:ArcGISMapViewer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
+    xmlns:data="using:Esri.ArcGISRuntime.Data"
     mc:Ignorable="d">
 
     <StackPanel>
@@ -19,10 +21,79 @@
                             <Setter Property="Padding" Value="0"/>
                         </Style>
                     </Flyout.FlyoutPresenterStyle>
-                    <local:MapContentsView GeoModel="{x:Bind GeoModel, Mode=OneWay}" x:Name="ContentPicker" Width="250" SelectedItemChanged="MapContentsPicker_SelectedItemChanged"/>
+                    <local:MapContentsView GeoModel="{x:Bind GeoModel, Mode=OneWay}" 
+                                           x:Name="ContentPicker" Width="250" 
+                                           SelectedItemChanged="MapContentsPicker_SelectedItemChanged"/>
                 </Flyout>
             </DropDownButton.Flyout>
         </DropDownButton>
+        
+        <ContentControl x:Name="LayerPresenter" HorizontalContentAlignment="Stretch" Content="{x:Bind ContentPicker.SelectedItem, Mode=OneWay}" >
+            <ContentControl.Resources>
+                <Style TargetType="Button" x:Key="GrayButton" BasedOn="{StaticResource DefaultButtonStyle}">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="{ThemeResource CalciteUIBorder1Color}" />
+                    <Setter Property="Foreground" Value="{ThemeResource CalciteUIText1Color}" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                </Style>
+                <Style TargetType="Expander">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ContentControl.Resources>
+            <ContentControl.ContentTemplateSelector>
+                <local:LayerTemplateSelector>
+                    <local:LayerTemplateSelector.FeatureTableTemplate>
+                        <DataTemplate x:DataType="data:FeatureTable">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind DisplayName, Mode=OneWay}" />
+                                <TextBlock Text="{x:Bind TableName, Mode=OneWay}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </local:LayerTemplateSelector.FeatureTableTemplate>
+                    <local:LayerTemplateSelector.FeatureLayerTemplate>
+                        <DataTemplate x:DataType="mapping:FeatureLayer">
+                            <StackPanel>
+                                <Expander Header="Information">
+                                    <StackPanel>
+                                        <TextBlock Text="Source layer" />
+                                        <Button Style="{StaticResource GrayButton}" >
+                                            <StackPanel>
+                                                <TextBlock Text="{x:Bind Item.Title}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </Expander>
+                                <Expander Header="Symbology">
+                                </Expander>
+                                <Expander Header="Appearance">
+                                    <Slider Minimum="0" Maximum="1" Header="Opacity" Value="{x:Bind Opacity, Mode=TwoWay}" StepFrequency="0.01" />
+                                </Expander>
+                                <Expander Header="Visibility">
+                                </Expander>
+                                <Expander Header="Refresh interval">
+                                </Expander>
+                            </StackPanel>
+                        </DataTemplate>
+                    </local:LayerTemplateSelector.FeatureLayerTemplate>
+                    <local:LayerTemplateSelector.LayerTemplate>
+                        <DataTemplate x:DataType="mapping:Layer">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </local:LayerTemplateSelector.LayerTemplate>
+                    <local:LayerTemplateSelector.LayerContentTemplate>
+                        <DataTemplate x:DataType="mapping:ILayerContent">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </local:LayerTemplateSelector.LayerContentTemplate>
+                </local:LayerTemplateSelector>
+            </ContentControl.ContentTemplateSelector>
+        </ContentControl>
 
     </StackPanel>
 </UserControl>
