@@ -86,7 +86,15 @@
                     <local:LayerTemplateSelector.LayerTemplate>
                         <DataTemplate x:DataType="mapping:Layer">
                             <StackPanel>
-                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
+                                <Expander Header="Appearance">
+                                    <Slider Minimum="0" Maximum="1" Header="Opacity" Value="{x:Bind Opacity, Mode=TwoWay}" StepFrequency="0.01" />
+                                </Expander>
+                                <Expander Header="Visibility">
+                                    <StackPanel>
+                                        <TextBlock Text="Visible range" FontSize="12" />
+                                        <local:ScaleRangeSelector MinScale="{x:Bind MinScale, Mode=TwoWay}" MaxScale="{x:Bind MaxScale, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Expander>
                             </StackPanel>
                         </DataTemplate>
                     </local:LayerTemplateSelector.LayerTemplate>
