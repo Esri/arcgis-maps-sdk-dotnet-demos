@@ -49,7 +49,7 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty MinScaleProperty =
-            DependencyProperty.Register("MinScale", typeof(double), typeof(ScaleRangeSelector), new PropertyMetadata(0d, (s, e) => ((ScaleRangeSelector)s).OnMinScalePropertyChanged((double)e.NewValue)));
+            DependencyProperty.Register("MinScale", typeof(double), typeof(ScaleRangeSelector), new PropertyMetadata(-1d, (s, e) => ((ScaleRangeSelector)s).OnMinScalePropertyChanged((double)e.NewValue)));
 
         private void OnMinScalePropertyChanged(double newValue)
         {
@@ -64,7 +64,7 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty MaxScaleProperty =
-            DependencyProperty.Register("MaxScale", typeof(double), typeof(ScaleRangeSelector), new PropertyMetadata(0d, (s, e) => ((ScaleRangeSelector)s).OnMaxScalePropertyChanged((double)e.NewValue)));
+            DependencyProperty.Register("MaxScale", typeof(double), typeof(ScaleRangeSelector), new PropertyMetadata(-1d, (s, e) => ((ScaleRangeSelector)s).OnMaxScalePropertyChanged((double)e.NewValue)));
 
         private void OnMaxScalePropertyChanged(double newValue)
         {
@@ -87,11 +87,12 @@ namespace ArcGISMapViewer.Controls
                     if (scale < newValue)
                     {
                         combo.SelectedIndex = index;
-                        break;
+                        return;
                     }
                 }
                 index++;
             }
+            combo.SelectedIndex = combo.Items.Count - 1;
         }
 
         private void UpdateRanges()
@@ -100,8 +101,8 @@ namespace ArcGISMapViewer.Controls
             ignore = true;
             var min = RangeSelector.Maximum - Math.Log(MinScale, 2) + RangeSelector.Minimum;
             var max = RangeSelector.Maximum - Math.Log(MaxScale, 2) + RangeSelector.Minimum;
-            RangeSelector.RangeStart = min;
-            RangeSelector.RangeEnd = max;
+            RangeSelector.RangeStart = double.IsNormal(min) ? Math.Max(RangeSelector.Minimum, min) : RangeSelector.Minimum;
+            RangeSelector.RangeEnd = double.IsNormal(max) ? Math.Min(RangeSelector.Maximum, max) : RangeSelector.Maximum;
             ignore = false;
         }
         bool ignore;
