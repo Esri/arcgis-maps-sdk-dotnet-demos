@@ -28,26 +28,28 @@
             <TitleBar.Footer>
                 <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
                     <tk:SearchView HorizontalAlignment="Right" GeoView="{x:Bind MapPage.MapView}" Width="190" VerticalAlignment="Bottom" Height="40"/>
-                    <Button VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="0" Margin="0">
+                    <Button VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,-2,0,2">
                         <PersonPicture ProfilePicture="{x:Bind AppVM.PortalUserThumbnail, Mode=OneWay}" 
                                    BorderBrush="Black" BadgeText="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}" 
-                                   Width="60" Height="30" Margin="0,0,0,0"
-                                   DisplayName="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}" >
-                        </PersonPicture>
+                                   Width="60" Height="32" Margin="0"
+                                   DisplayName="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}" />
                         <Button.Flyout>
                             <Flyout>
                                 <StackPanel>
-                                    <TextBlock Text="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}" 
-                                   Style="{StaticResource BodyTextBlockStyle}"
-                                   VerticalAlignment="Center" Margin="5,0,0,0" />
+                                    <PersonPicture ProfilePicture="{x:Bind AppVM.PortalUserThumbnail, Mode=OneWay}" 
+                                        BorderBrush="Black" BadgeText="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}" 
+                                        Width="60" Height="60" Margin="0" DisplayName="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}" />
+                                    <TextBlock Text="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}"  Style="{StaticResource BodyTextBlockStyle}"
+                                        VerticalAlignment="Center" Margin="5,0,0,0" />
                                     <TextBlock Text="{x:Bind AppVM.PortalUser.Portal.PortalInfo.OrganizationName, Mode=OneWay}" 
-                                   Style="{StaticResource CaptionTextBlockStyle}"
-                                   VerticalAlignment="Center" Margin="5,0,0,0" />
-                                    <HyperlinkButton Content="Sign out" 
-                                                 Margin="0,5,0,0" 
-                                                 HorizontalAlignment="Stretch" Click="SignOut_Click" />
+                                        Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                    <Image MaxWidth="200" MaxHeight="200">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="{x:Bind AppVM.PortalUser.Portal.PortalInfo.ThumbnailUri, Mode=OneWay}"/>
+                                        </Image.Source>
+                                    </Image>
+                                    <HyperlinkButton Content="Sign out" Margin="0,5,0,0" HorizontalAlignment="Stretch" Click="SignOut_Click" />
                                 </StackPanel>
-
                             </Flyout>
                         </Button.Flyout>
                     </Button>

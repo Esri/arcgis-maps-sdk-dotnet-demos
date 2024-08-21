@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CommunityToolkit.Mvvm.Messaging;
 using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Toolkit.UI;
 using Microsoft.UI.Xaml;
@@ -80,6 +81,15 @@ namespace ArcGISMapViewer.Controls
                     if (GeoModel.Tables.Contains(table))
                         GeoModel.Tables.Remove(table);
                 }
+            }
+        }
+
+        private void Properties_Click(object sender, RoutedEventArgs e)
+        {
+            var table = (sender as FrameworkElement)?.DataContext as FeatureTable;
+            if (table is not null)
+            {
+                WeakReferenceMessenger.Default.Send(new MapPropertiesView.ShowMapPropertiesMessage(table));
             }
         }
     }

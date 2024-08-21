@@ -27,7 +27,7 @@
                         <AppBarButton Icon="More" Grid.Column="2" VerticalAlignment="Center" VerticalContentAlignment="Bottom" >
                             <AppBarButton.Flyout>
                                 <MenuFlyout Placement="RightEdgeAlignedTop">
-                                    <MenuFlyoutItem Text="Show Properties" Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" IsEnabled="False" />
+                                    <MenuFlyoutItem Text="Show Properties" Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" IsEnabled="True" Click="Properties_Click" />
                                     <MenuFlyoutItem Text="Show Table" Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" IsEnabled="False" />
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem Text="Rename" Icon="{calcite:CalciteIconSourceElement Icon=Pencil, Scale = Small, SymbolSize=20}" Click="Rename_Click" />

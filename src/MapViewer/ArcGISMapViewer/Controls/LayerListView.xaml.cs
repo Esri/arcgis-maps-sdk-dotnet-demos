@@ -102,7 +102,6 @@ namespace ArcGISMapViewer.Controls
             var layer = (sender as FrameworkElement)?.DataContext as Layer;
             if (layer is not null)
             {
-                // Send a message from some other module
                 WeakReferenceMessenger.Default.Send(new MapPropertiesView.ShowMapPropertiesMessage(layer));
             }
         }

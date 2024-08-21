@@ -20,11 +20,11 @@ namespace ArcGISMapViewer.Controls
     {
         public class ShowMapPropertiesMessage
         {
-            public ShowMapPropertiesMessage(Layer layer)
+            public ShowMapPropertiesMessage(object propObject)
             {
-                Layer = layer;
+                Object = propObject;
             }
-            public Layer Layer { get; }
+            public object Object { get; }
         }
         public MapPropertiesView()
         {
@@ -32,7 +32,7 @@ namespace ArcGISMapViewer.Controls
 
             CommunityToolkit.Mvvm.Messaging.WeakReferenceMessenger.Default.Register<ShowMapPropertiesMessage>(this, (r, m) =>
             {
-                SelectedItem = m.Layer;
+                SelectedItem = m.Object;
             });
         }
 
