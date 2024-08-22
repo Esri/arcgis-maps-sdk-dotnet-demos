@@ -87,7 +87,7 @@
                             </Image.Source>
                         </Image>
                         <TextBlock Text="{x:Bind AppVM.PortalItem.Name, Mode=OneWay}" />
-                        <TextBlock Text="{x:Bind AppVM.PortalItem.Description, Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind AppVM.PortalItem.Description, Mode=OneWay}" TextWrapping="Wrap" />
                         <TextBlock Text="Owner:" />
                         <TextBlock Text="{x:Bind AppVM.PortalItem.Owner, Mode=OneWay}" />
                         <RatingControl Value="{x:Bind AppVM.PortalItem.AverageRating, Mode=OneWay}" IsReadOnly="True" />
