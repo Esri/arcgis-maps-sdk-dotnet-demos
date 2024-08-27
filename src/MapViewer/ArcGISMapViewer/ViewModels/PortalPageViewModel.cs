@@ -56,7 +56,10 @@ namespace ArcGISMapViewer.ViewModels
                     PortalItemType.VectorTileService,
                     PortalItemType.MapService,
                     PortalItemType.KML, 
-                    PortalItemType.FeatureCollection], search: query);
+                    PortalItemType.FeatureCollection,
+                    PortalItemType.SceneService,
+                    PortalItemType.WebScene,
+                ], search: query);
                 
                 MapItems = new PortalItemQuerySource(portal, queryParams);
             }

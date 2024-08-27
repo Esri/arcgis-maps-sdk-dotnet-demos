@@ -48,21 +48,21 @@
                 </controls:CollapsiblePanelItem>
                 <!--<NavigationViewItemSeparator />-->
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Title="Layers" x:Name="LayersPane" IsSelected="True" ContentTitle="Layers">
-                    <controls:LayerListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Grid.Row="1" />
+                    <controls:LayerListView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Grid.Row="1" />
                 </controls:CollapsiblePanelItem>
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Title="Tables" ContentTitle="Tables" >
-                    <controls:TableListView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" />
+                    <controls:TableListView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" />
                 </controls:CollapsiblePanelItem>
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Title="Basemap" x:Name="BasemapPane" ContentTitle="Basemap">
-                    <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" BorderThickness="0" />
+                    <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" BorderThickness="0" />
                 </controls:CollapsiblePanelItem>
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" Title="Charts" IsEnabled="False" />
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" Title="Legend" x:Name="LegendPane" ContentTitle="Legend">
-                    <tk:Legend GeoView="{x:Bind mapView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
+                    <tk:Legend GeoView="{x:Bind geoViewWrapper.GeoView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
                 </controls:CollapsiblePanelItem>
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Title="Bookmarks" ContentTitle="Bookmarks" >
                     <StackPanel>
-                    <tk:BookmarksView GeoView="{x:Bind mapView}" />
+                        <tk:BookmarksView GeoView="{x:Bind geoViewWrapper.GeoView}" />
                         <Button Click="AddBookmark_Click" Content="Add Bookmark" HorizontalAlignment="Center" Padding="30,7" />
                     </StackPanel>
                 </controls:CollapsiblePanelItem>
@@ -98,13 +98,13 @@
                 <!-- Main Map View Content -->
                 <Grid Grid.Column="1">
 
-                    <esri:MapView Map="{x:Bind AppVM.Map, Mode=OneWay}" x:Name="mapView"
-                                GeoViewTapped="GeoViewTapped"
-                                tkui:GeoViewController.GeoViewController="{x:Bind PageVM.ViewController}" />
+                    <controls:GeoViewWrapper GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" x:Name="geoViewWrapper"
+                                             GeoViewTapped="GeoViewTapped"
+                                             GeoViewController="{x:Bind PageVM.ViewController}" />
 
-                    <tk:ScaleLine MapView="{x:Bind mapView}" Margin="20" />
+                    <tk:ScaleLine MapView="{x:Bind geoViewWrapper.MapView, Mode=OneWay}" Margin="20" Visibility="{x:Bind AppVM.Is2D, Mode=OneWay}" />
 
-                    <tk:Compass GeoView="{x:Bind mapView}" Margin="20" />
+                    <tk:Compass GeoView="{x:Bind geoViewWrapper.GeoView, Mode=OneWay}" Margin="20" />
 
                 </Grid>
 
@@ -113,7 +113,7 @@
                                            ExpandButtonVisibility="Visible" CloseButtonVisibility="Collapsed">
                     <controls:CollapsiblePanel.Items>
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" Title="Properties" Tag="Properties">
-                            <controls:MapPropertiesView GeoModel="{x:Bind AppVM.Map, Mode=OneWay}" />
+                            <controls:MapPropertiesView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" />
                         </controls:CollapsiblePanelItem>
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Shapes, Scale=Small, SymbolSize=20}" IsEnabled="False" Title="Styles" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Filter, Scale=Small, SymbolSize=20}" IsEnabled="False" Title="Filter" />

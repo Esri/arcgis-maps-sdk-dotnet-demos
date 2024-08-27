@@ -21,17 +21,17 @@ public partial class ApplicationViewModel : ObservableObject
         _ = LocationDataSource.StartAsync();
     }
 
-    public async Task<Map?> LoadLastMapAsync()
+    public async Task<GeoModel?> LoadLastMapAsync()
     {
         var item = await AppSettings.GetLastPortalItemAsync();
         if(item != null)
         {
             PortalItem = item;
-            return Map;
+            return Map as GeoModel ?? Scene as GeoModel;
         }
         else
         {
-            Map = new Map(BasemapStyle.ArcGISStreets);
+            GeoModel = new Map(BasemapStyle.ArcGISStreets);
             return null;
         }
     }
@@ -42,7 +42,25 @@ public partial class ApplicationViewModel : ObservableObject
     public AppSettings AppSettings { get; } = new AppSettings();
 
     [ObservableProperty]
-    private Map? _map;
+    private GeoModel? _geoModel;
+    partial void OnGeoModelChanged(GeoModel? oldValue, GeoModel? newValue)
+    {
+        if (newValue is Map || oldValue is Map)
+            OnPropertyChanged(nameof(Map));
+        if (newValue is Scene || oldValue is Scene)
+            OnPropertyChanged(nameof(Scene));
+        if (oldValue is Map && newValue is Scene || oldValue is Scene && newValue is Map)
+        {
+            OnPropertyChanged(nameof(Is2D));
+            OnPropertyChanged(nameof(Is3D));
+        }
+    }
+
+    public Map? Map => GeoModel as Map;
+    public Scene? Scene => GeoModel as Scene;
+
+    public bool Is2D => GeoModel is Map;
+    public bool Is3D => GeoModel is Scene;
 
     [ObservableProperty]
     private PortalItem? portalItem;
@@ -51,9 +69,11 @@ public partial class ApplicationViewModel : ObservableObject
     {
         if (value is not null)
         {
-
+            Scene? scene = null;
             var map = new Map(BasemapStyle.ArcGISStreets);
-            if (value.Type == PortalItemType.WebMap)
+            if(value.Type == PortalItemType.WebScene)
+                scene = new Scene(value);
+            else if (value.Type == PortalItemType.WebMap)
                 map = new Map(value);
             else if(value.Type == PortalItemType.FeatureService || value.Type == PortalItemType.WFS)
                 map.OperationalLayers.Add(new FeatureLayer(value));
@@ -67,13 +87,23 @@ public partial class ApplicationViewModel : ObservableObject
                 map.OperationalLayers.Add(new ArcGISMapImageLayer(value));
             else if (value.Type == PortalItemType.FeatureCollection)
                 map.OperationalLayers.Add(new FeatureCollectionLayer(new Esri.ArcGISRuntime.Data.FeatureCollection(value)));
+            else if(value.Type == PortalItemType.SceneService)
+            {
+                scene = new Scene();
+                scene.OperationalLayers.Add(new ArcGISSceneLayer(value));
+            }
             else
             {
                 System.Diagnostics.Debug.WriteLine($"{value.Type} not implemented");
             }
             if (value.Extent != null)
-                map.InitialViewpoint = new Viewpoint(value.Extent);
-            Map = map;
+            {
+                if(scene != null)
+                    scene.InitialViewpoint = new Viewpoint(value.Extent);
+                else
+                    map.InitialViewpoint = new Viewpoint(value.Extent);
+            }
+            GeoModel = scene is null ? map : scene;
         }
         AppSettings.SetLastPortalItem(value);
     }
@@ -106,7 +136,7 @@ public partial class ApplicationViewModel : ObservableObject
         IsAppMenuVisible = !value;
         if (value)
         {
-            this.WindowSubTitle = Map?.Item?.Title ?? string.Empty;
+            this.WindowSubTitle = GeoModel?.Item?.Title ?? string.Empty;
         }
     }
 

@@ -36,32 +36,34 @@ namespace ArcGISMapViewer.Views
 
         }
 
+        public Controls.GeoViewWrapper GeoViewWrapper => geoViewWrapper;
+
         public ApplicationViewModel AppVM => ApplicationViewModel.Instance;
 
         public MapPageViewModel PageVM = new MapPageViewModel();
 
-        public MapView MapView => mapView;
-
         private async void GeoViewTapped(object sender, GeoViewInputEventArgs e)
         {
-            mapView.DismissCallout();
+            // TODO: Rewrite to operate in VM
+            geoViewWrapper.GeoViewController.DismissCallout();
             if (e.Location is null) return;
             try
             {
-                var result = await mapView.IdentifyLayersAsync(e.Position, 2, false, 10);
+                var result = await geoViewWrapper.IdentifyLayersAsync(e.Position, 2, false, 10);
                 if (result.Any())
                 {
                     var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result, GeoViewController = PageVM.ViewController };
-                    mapView.ShowCalloutAt(e.Location, calloutview);
+                    geoViewWrapper.ShowCalloutAt(e.Location, calloutview);
                     calloutview.EditRequested += (s, e) =>
                     {
                         PageVM.CurrentFeature = e as Feature;
+                        // TODO: Rewrite as an MVVM message
                         var panel = RightPanel.Items.Where(p => p.Tag as string == "Edit").First();
                         panel.IsEnabled = true;
                         RightPanel.SelectedItem = panel;
                         RightPanel.IsOpen = true;
                     };
-                    calloutview.CloseRequested += (s, e) => mapView.DismissCallout();
+                    calloutview.CloseRequested += (s, e) => geoViewWrapper.GeoViewController.DismissCallout();
                 }
             }
             catch
@@ -79,7 +81,7 @@ namespace ArcGISMapViewer.Views
 
         private async void AddBookmark_Click(object sender, RoutedEventArgs e)
         {
-            var vp = mapView.GetCurrentViewpoint(ViewpointType.CenterAndScale);
+            var vp = geoViewWrapper.GeoViewController.GetCurrentViewpoint(ViewpointType.CenterAndScale);
             var name = $"{CoordinateFormatter.ToLatitudeLongitude((MapPoint)vp.TargetGeometry, LatitudeLongitudeFormat.DecimalDegrees, 6)} - 1:{Math.Round(vp.TargetScale)}";
             ContentDialog cd = new ContentDialog()
             {
@@ -91,8 +93,8 @@ namespace ArcGISMapViewer.Views
             };
             if (await cd.ShowAsync() == ContentDialogResult.Primary)
             {
-                if (AppVM.Map != null)
-                    AppVM.Map.Bookmarks.Add(new Bookmark() { Name = ((TextBox)cd.Content).Text, Viewpoint = vp });
+                if (AppVM.GeoModel != null)
+                    AppVM.GeoModel.Bookmarks.Add(new Bookmark() { Name = ((TextBox)cd.Content).Text, Viewpoint = vp });
             }
         }
     }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ArcGISMapViewer.Controls.GeoViewWrapper"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISMapViewer.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
+    xmlns:tkui="using:Esri.ArcGISRuntime.Toolkit.UI"
+    mc:Ignorable="d">
+
+    <Grid>
+        <esri:MapView x:Name="mapView" Visibility="Collapsed"
+                GeoViewTapped="OnGeoViewTapped" 
+                tkui:GeoViewController.GeoViewController="{x:Bind GeoViewController, Mode=OneWay}" />
+
+        <esri:SceneView x:Name="sceneView" Visibility="Collapsed"
+                GeoViewTapped="OnGeoViewTapped" 
+                tkui:GeoViewController.GeoViewController="{x:Bind GeoViewController, Mode=OneWay}" />
+
+    </Grid>
+</UserControl>

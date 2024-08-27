@@ -12,7 +12,7 @@
   <ItemGroup>
       <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
       <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
-      <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-77.g133f7640f7" />
+      <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-89.gc726240101" />
       <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" Version="8.0.240109" />
   </ItemGroup>
 </Project>
