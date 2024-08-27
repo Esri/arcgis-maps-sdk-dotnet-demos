@@ -15,13 +15,16 @@
     </Window.SystemBackdrop>
 
     <Grid>
+        <Grid.Resources>
+            <StaticResource x:Key="TitleBarForegroundBrush" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
+            <StaticResource x:Key="TitleBarSubtitleForegroundBrush" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="42" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Background="{ThemeResource CalciteUIBrandBrush}" />
-        <TitleBar Foreground="White" 
-                  VerticalContentAlignment="Center" Title="ArcGIS MapViewer" Subtitle="{x:Bind AppVM.WindowSubTitle, Mode=OneWay}">
+        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" />
+        <TitleBar VerticalContentAlignment="Center" Title="ArcGIS MapViewer" Subtitle="{x:Bind AppVM.WindowSubTitle, Mode=OneWay}">
             <TitleBar.Header>
                 <AppBarToggleButton Icon="{calcite:CalciteIconSourceElement Icon=AppLauncher, Scale = Small, SymbolSize=22,Foreground=White}" Width="48" IsChecked="{x:Bind AppVM.IsAppMenuVisible, Mode=TwoWay}" />
             </TitleBar.Header>
