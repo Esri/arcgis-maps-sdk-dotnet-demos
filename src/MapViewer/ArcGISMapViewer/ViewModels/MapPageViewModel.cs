@@ -10,6 +10,7 @@ using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Mapping.FeatureForms;
 using Esri.ArcGISRuntime.Security;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.Tasks;
@@ -38,7 +39,7 @@ namespace ArcGISMapViewer.ViewModels
             if (newValue is ArcGISFeature afeature)
             {
                 var definition = (newValue?.FeatureTable as ArcGISFeatureTable)?.FeatureFormDefinition ?? (newValue?.FeatureTable?.Layer as FeatureLayer)?.FeatureFormDefinition;
-                FeatureForm = (definition != null) ? new Esri.ArcGISRuntime.Mapping.FeatureForms.FeatureForm(afeature, definition) : null;
+                FeatureForm = (definition != null) ? new FeatureForm(afeature, definition) : null;
                 if (afeature.FeatureTable?.Layer is FeatureLayer layer)
                 {
                     layer.SelectFeature(afeature);
@@ -49,12 +50,19 @@ namespace ArcGISMapViewer.ViewModels
         }
 
         [ObservableProperty]
-        private Esri.ArcGISRuntime.Mapping.FeatureForms.FeatureForm? _featureForm;
+        private FeatureForm? _featureForm;
+
+        partial void OnFeatureFormChanged(FeatureForm? value)
+        {
+            OnPropertyChanged(nameof(CanEdit));
+        }
 
         public void ZoomTo(Layer? layer)
         {
             if (layer?.FullExtent is not null)
                 ViewController.SetViewpointAsync(new Viewpoint(layer.FullExtent));
         }
+
+        public bool CanEdit => _featureForm is not null;
     }
 }

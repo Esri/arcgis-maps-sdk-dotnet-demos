@@ -102,7 +102,7 @@ namespace ArcGISMapViewer.Controls
             var layer = (sender as FrameworkElement)?.DataContext as Layer;
             if (layer is not null)
             {
-                WeakReferenceMessenger.Default.Send(new MapPropertiesView.ShowMapPropertiesMessage(layer));
+                WeakReferenceMessenger.Default.Send(new Views.MapPage.ShowRightPanelMessage(Views.MapPage.ShowRightPanelMessage.PanelId.ContentProperties, layer));
             }
         }
     }

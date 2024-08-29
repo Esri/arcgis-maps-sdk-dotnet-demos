@@ -19,13 +19,12 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="Auto "/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="{x:Bind DisplayName, Mode=OneWay}" VerticalAlignment="Center" />
-                        <AppBarButton Icon="More" Grid.Column="2" VerticalAlignment="Center" VerticalContentAlignment="Bottom" >
-                            <AppBarButton.Flyout>
+                        <Button Grid.Column="1" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ApplicationForegroundThemeBrush}" Padding="0">
+                            <Button.Flyout>
                                 <MenuFlyout Placement="RightEdgeAlignedTop">
                                     <MenuFlyoutItem Text="Show Properties" Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" IsEnabled="True" Click="Properties_Click" />
                                     <MenuFlyoutItem Text="Show Table" Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" IsEnabled="False" />
@@ -36,8 +35,8 @@
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem Text="Group" Icon="{calcite:CalciteIconSourceElement Icon=GroupLayers, Scale = Small, SymbolSize=20}" IsEnabled="False" />
                                 </MenuFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
+                            </Button.Flyout>
+                        </Button>
                     </Grid>
 
                 </DataTemplate>

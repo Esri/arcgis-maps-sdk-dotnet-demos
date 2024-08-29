@@ -89,7 +89,7 @@ namespace ArcGISMapViewer.Controls
             var table = (sender as FrameworkElement)?.DataContext as FeatureTable;
             if (table is not null)
             {
-                WeakReferenceMessenger.Default.Send(new MapPropertiesView.ShowMapPropertiesMessage(table));
+                WeakReferenceMessenger.Default.Send(new Views.MapPage.ShowRightPanelMessage(Views.MapPage.ShowRightPanelMessage.PanelId.ContentProperties, table));
             }
         }
     }

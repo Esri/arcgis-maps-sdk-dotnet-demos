@@ -19,13 +19,13 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="{x:Bind Name, Mode=OneWay}" VerticalAlignment="Center" />
                         <ToggleButton Grid.Column="1" IsChecked="{x:Bind IsVisible, Mode=TwoWay}" Style="{StaticResource VisibilityToggleButtonStyle}" />
-                        <AppBarButton Icon="More" Grid.Column="2" VerticalAlignment="Center" VerticalContentAlignment="Bottom" >
-                            <AppBarButton.Flyout>
+                        <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ApplicationForegroundThemeBrush}" Padding="0">
+                            <Button.Flyout>
                                 <MenuFlyout Placement="RightEdgeAlignedTop">
                                     <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" Click="ZoomToItem_Click" />
                                     <MenuFlyoutItem Text="Show Properties" Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Click="Properties_Click" />
@@ -38,8 +38,10 @@
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem Text="Group" Icon="{calcite:CalciteIconSourceElement Icon=GroupLayers, Scale = Small, SymbolSize=20}" IsEnabled="False" />
                                 </MenuFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
+                            </Button.Flyout>
+                            <IconSourceElement x:Name="VisibleIcon" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=Ellipsis, SymbolSize=32, Scale=Medium}" />
+                        </Button>
+
                     </Grid>
 
                 </DataTemplate>

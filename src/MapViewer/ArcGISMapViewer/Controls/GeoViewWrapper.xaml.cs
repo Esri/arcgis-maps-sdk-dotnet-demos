@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.UI.Controls;
 using Esri.ArcGISRuntime.Data;
+using System.Threading;
 
 namespace ArcGISMapViewer.Controls
 {
@@ -72,12 +73,12 @@ namespace ArcGISMapViewer.Controls
             }
             else
                 GeoView = null;
-
+            OnGeoViewControllerPropertyChanged();
         }
 
-        internal Task<IReadOnlyList<IdentifyLayerResult>> IdentifyLayersAsync(Point screenPoint, double tolerance, bool returnPopupsOnly, long maximumResultsPerLayer)
+        internal Task<IReadOnlyList<IdentifyLayerResult>> IdentifyLayersAsync(Point screenPoint, double tolerance, bool returnPopupsOnly, long maximumResultsPerLayer, CancellationToken cancellationToken)
         {
-            return (GeoView ?? mapView).IdentifyLayersAsync(screenPoint, tolerance, returnPopupsOnly, maximumResultsPerLayer);
+            return (GeoView ?? mapView).IdentifyLayersAsync(screenPoint, tolerance, returnPopupsOnly, maximumResultsPerLayer, cancellationToken);
         }
 
         internal void ShowCalloutAt(MapPoint location, IdentifyResultView calloutview)
@@ -92,7 +93,12 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty GeoViewControllerProperty =
-            DependencyProperty.Register("GeoViewController", typeof(Esri.ArcGISRuntime.Toolkit.UI.GeoViewController), typeof(GeoViewWrapper), new PropertyMetadata(null));
+            DependencyProperty.Register("GeoViewController", typeof(Esri.ArcGISRuntime.Toolkit.UI.GeoViewController), typeof(GeoViewWrapper), new PropertyMetadata(null, (s, e) => ((GeoViewWrapper)s).OnGeoViewControllerPropertyChanged()));
+
+        private void OnGeoViewControllerPropertyChanged()
+        {
+            Esri.ArcGISRuntime.Toolkit.UI.GeoViewController.SetGeoViewController(GeoModel is Map ? mapView : sceneView, GeoViewController);
+        }
 
         public event EventHandler<GeoViewInputEventArgs>? GeoViewTapped;
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using CommunityToolkit.Mvvm.Messaging;
 using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Toolkit.UI.Controls;
@@ -27,13 +28,39 @@ namespace ArcGISMapViewer.Views
         public MapPage()
         {
             this.InitializeComponent();
-            WeakReferenceMessenger.Default.Register<Controls.MapPropertiesView.ShowMapPropertiesMessage>(this, (r, m) =>
+
+            WeakReferenceMessenger.Default.Register<ShowRightPanelMessage>(this, (r, m) =>
             {
-                var panel = RightPanel.Items.Where(p => p.Tag as string == "Properties").First();
+                var panel = RightPanel.Items.Where(p => p.Tag as string == m.Panel.ToString()).First();
                 RightPanel.SelectedItem = panel;
                 RightPanel.IsOpen = true;
+                switch (m.Panel)
+                {
+                    case ShowRightPanelMessage.PanelId.EditFeature:
+                        PageVM.CurrentFeature = m.Parameter as Feature;
+                        break;
+                    case ShowRightPanelMessage.PanelId.ContentProperties:
+                        ContentProperties.SelectedItem = m.Parameter;
+                        break;
+                }
             });
+        }
 
+        public class ShowRightPanelMessage
+        {
+            public ShowRightPanelMessage(PanelId panel, object? parameter = null)
+            {
+                Panel = panel;
+                Parameter = parameter;
+            }
+
+            public PanelId Panel { get; }
+            public object? Parameter { get; }
+            public enum PanelId
+            {
+                ContentProperties,
+                EditFeature
+            }
         }
 
         public Controls.GeoViewWrapper GeoViewWrapper => geoViewWrapper;
@@ -42,6 +69,9 @@ namespace ArcGISMapViewer.Views
 
         public MapPageViewModel PageVM = new MapPageViewModel();
 
+
+        private CancellationTokenSource? identifyToken;
+
         private async void GeoViewTapped(object sender, GeoViewInputEventArgs e)
         {
             // TODO: Rewrite to operate in VM
@@ -49,19 +79,17 @@ namespace ArcGISMapViewer.Views
             if (e.Location is null) return;
             try
             {
-                var result = await geoViewWrapper.IdentifyLayersAsync(e.Position, 2, false, 10);
-                if (result.Any())
+                identifyToken?.Cancel();
+                identifyToken = new CancellationTokenSource();
+                var result = await geoViewWrapper.IdentifyLayersAsync(e.Position, 2, false, 10, identifyToken.Token);
+                identifyToken = null;
+                if (result.SelectMany(r=>r.GeoElements).Any())
                 {
                     var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result, GeoViewController = PageVM.ViewController };
                     geoViewWrapper.ShowCalloutAt(e.Location, calloutview);
                     calloutview.EditRequested += (s, e) =>
                     {
-                        PageVM.CurrentFeature = e as Feature;
-                        // TODO: Rewrite as an MVVM message
-                        var panel = RightPanel.Items.Where(p => p.Tag as string == "Edit").First();
-                        panel.IsEnabled = true;
-                        RightPanel.SelectedItem = panel;
-                        RightPanel.IsOpen = true;
+                        WeakReferenceMessenger.Default.Send(new ShowRightPanelMessage(ShowRightPanelMessage.PanelId.EditFeature, e as Feature));
                     };
                     calloutview.CloseRequested += (s, e) => geoViewWrapper.GeoViewController.DismissCallout();
                 }
@@ -75,7 +103,6 @@ namespace ArcGISMapViewer.Views
         {
             RightPanel.IsOpen = false;
             PageVM.CurrentFeature = null;
-            RightPanel.Items.Where(p => p.Tag as string == "Edit").First().IsEnabled = false;
         }
 
 

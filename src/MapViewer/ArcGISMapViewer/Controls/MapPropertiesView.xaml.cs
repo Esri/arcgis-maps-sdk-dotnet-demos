@@ -18,22 +18,9 @@ namespace ArcGISMapViewer.Controls
 {
     public sealed partial class MapPropertiesView : UserControl
     {
-        public class ShowMapPropertiesMessage
-        {
-            public ShowMapPropertiesMessage(object propObject)
-            {
-                Object = propObject;
-            }
-            public object Object { get; }
-        }
         public MapPropertiesView()
         {
             this.InitializeComponent();
-
-            CommunityToolkit.Mvvm.Messaging.WeakReferenceMessenger.Default.Register<ShowMapPropertiesMessage>(this, (r, m) =>
-            {
-                SelectedItem = m.Object;
-            });
         }
 
         private void MapContentsPicker_SelectedItemChanged(object? sender, object? e)

@@ -12,12 +12,10 @@
 
     <Grid>
         <esri:MapView x:Name="mapView" Visibility="Collapsed"
-                GeoViewTapped="OnGeoViewTapped" 
-                tkui:GeoViewController.GeoViewController="{x:Bind GeoViewController, Mode=OneWay}" />
+                GeoViewTapped="OnGeoViewTapped" />
 
         <esri:SceneView x:Name="sceneView" Visibility="Collapsed"
-                GeoViewTapped="OnGeoViewTapped" 
-                tkui:GeoViewController.GeoViewController="{x:Bind GeoViewController, Mode=OneWay}" />
+                GeoViewTapped="OnGeoViewTapped" />
 
     </Grid>
 </UserControl>
