@@ -36,6 +36,7 @@
                                     <MenuFlyoutItem Text="Group" Icon="{calcite:CalciteIconSourceElement Icon=GroupLayers, Scale = Small, SymbolSize=20}" IsEnabled="False" />
                                 </MenuFlyout>
                             </Button.Flyout>
+                            <IconSourceElement x:Name="VisibleIcon" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=Ellipsis, SymbolSize=32, Scale=Medium}" />
                         </Button>
                     </Grid>
 
