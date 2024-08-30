@@ -109,6 +109,8 @@ namespace ArcGISMapViewer.Views
         private async void AddBookmark_Click(object sender, RoutedEventArgs e)
         {
             var vp = geoViewWrapper.GeoViewController.GetCurrentViewpoint(ViewpointType.CenterAndScale);
+            if (vp is null)
+                return;
             var name = $"{CoordinateFormatter.ToLatitudeLongitude((MapPoint)vp.TargetGeometry, LatitudeLongitudeFormat.DecimalDegrees, 6)} - 1:{Math.Round(vp.TargetScale)}";
             ContentDialog cd = new ContentDialog()
             {

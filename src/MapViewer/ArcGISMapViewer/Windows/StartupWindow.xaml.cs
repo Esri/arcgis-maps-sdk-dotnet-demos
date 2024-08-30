@@ -66,7 +66,7 @@ namespace ArcGISMapViewer.Windows
             }
         }
 
-        private void Initializer_ApplicationInitialized(object sender, EventArgs e)
+        private void Initializer_ApplicationInitialized(object? sender, EventArgs e)
         {
             var window = new MainWindow();
             window.Show();
@@ -75,7 +75,7 @@ namespace ArcGISMapViewer.Windows
         }
 
         private TaskCompletionSource<PortalUser>? SigninTask;
-        private void Initializer_SigninRequested(object sender, TaskCompletionSource<PortalUser> e)
+        private void Initializer_SigninRequested(object? sender, TaskCompletionSource<PortalUser> e)
         {
             SigninTask = e;
             LoadingSection.Visibility = Visibility.Collapsed;

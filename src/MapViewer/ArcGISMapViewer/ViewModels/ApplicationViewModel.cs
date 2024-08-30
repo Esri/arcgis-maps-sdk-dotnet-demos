@@ -109,7 +109,7 @@ public partial class ApplicationViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _windowSubTitle;
+    private string _windowSubTitle = string.Empty;
 
     private PortalUser? _PortalUser;
 

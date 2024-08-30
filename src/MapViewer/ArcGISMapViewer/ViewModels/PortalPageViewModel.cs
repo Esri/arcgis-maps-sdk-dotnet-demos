@@ -35,7 +35,7 @@ namespace ArcGISMapViewer.ViewModels
 
         public static PortalPageViewModel Instance { get; } = new PortalPageViewModel();
 
-        public async void Reload(string? query)
+        public void Reload(string? query)
         {
             var portal = ApplicationViewModel.Instance.PortalUser?.Portal;
             SearchError = "";
@@ -71,7 +71,7 @@ namespace ArcGISMapViewer.ViewModels
         }
 
         [ObservableProperty]
-        private string _searchError;
+        private string? _searchError;
 
         [ObservableProperty]
         private bool _isLoading;
@@ -134,6 +134,5 @@ namespace ArcGISMapViewer.ViewModels
                 return loadMoreItemsResult;
             }
         }
-
     }
 }

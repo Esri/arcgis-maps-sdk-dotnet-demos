@@ -39,10 +39,10 @@ namespace ArcGISMapViewer.Controls
         {
             base.OnApplyTemplate();
             var ctrl = GetTemplateChild("TooltipContent") as ContentControl;
-            var _minThumb = GetTemplateChild("MinThumb") as Thumb;
-            var _maxThumb = GetTemplateChild("MaxThumb") as Thumb;
-            _minThumb.DragDelta += MinThumb_DragDelta;
-            _maxThumb.DragDelta += MaxThumb_DragDelta;
+            if (GetTemplateChild("MinThumb") is Thumb _minThumb)
+                _minThumb.DragDelta += MinThumb_DragDelta;
+            if (GetTemplateChild("MaxThumb") is Thumb _maxThumb)
+                _maxThumb.DragDelta += MaxThumb_DragDelta;
         }
 
         private void MaxThumb_DragDelta(object sender, DragDeltaEventArgs e)

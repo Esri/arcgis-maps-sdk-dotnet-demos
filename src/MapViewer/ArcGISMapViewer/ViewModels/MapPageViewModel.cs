@@ -63,6 +63,6 @@ namespace ArcGISMapViewer.ViewModels
                 ViewController.SetViewpointAsync(new Viewpoint(layer.FullExtent));
         }
 
-        public bool CanEdit => _featureForm is not null;
+        public bool CanEdit => FeatureForm is not null;
     }
 }
