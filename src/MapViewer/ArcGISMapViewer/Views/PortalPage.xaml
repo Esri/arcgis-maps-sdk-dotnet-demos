@@ -9,60 +9,86 @@
     xmlns:portal="using:Esri.ArcGISRuntime.Portal"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <DataTemplate x:Key="PortalItemViewTemplate" x:DataType="portal:PortalItem">
+            <Border>
+                <Grid Width="250" Height="150" Margin="5" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" BorderThickness="1" CornerRadius="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Source="{x:Bind Thumbnail, Converter={StaticResource RuntimeImageConverter}}" Grid.RowSpan="2" Stretch="UniformToFill" />
+                    <Border Grid.RowSpan="2">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="Transparent"/>
+                                    <GradientStop Color="#AA000000" Offset="1"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.Background>
 
+                    </Border>
+                    <StackPanel Grid.Row="1" Margin="2">
+                        <TextBlock Text="{x:Bind Title}" FontSize="{StaticResource TextStyleLargeFontSize}" Foreground="White" />
+                        <TextBlock Text="{x:Bind Description}" TextTrimming="CharacterEllipsis" MaxHeight="40" TextWrapping="Wrap" Foreground="White" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
+      
+
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <AutoSuggestBox PlaceholderText="Search for a map" QueryIcon="Find" QuerySubmitted="{x:Bind PageVM.SearchQuerySubmitted}"/>
-            <Button Content="Search" Grid.Column="1"/>
+        <SelectorBar>
+            <SelectorBarItem x:Name="SelectorBarItemMyContent" Text="My Content" IsSelected="True" />
+            <SelectorBarItem x:Name="SelectorBarItemFavs" Text="Favorites" />
+            <SelectorBarItem x:Name="SelectorBarItemPortalSearch" Text="Search ArcGIS Online" />
+        </SelectorBar>
+
+        <Grid  Visibility="{x:Bind SelectorBarItemMyContent.IsSelected, Mode=OneWay}" Grid.Row="1">
+            <GridView ItemsSource="{x:Bind PageVM.UserItems, Mode=OneWay}" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1" ItemTemplate="{StaticResource PortalItemViewTemplate}">
+            </GridView>
         </Grid>
-        <GridView ItemsSource="{x:Bind PageVM.MapItems, Mode=OneWay}" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1">
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="portal:PortalItem">
-                    <Border>
-                        <Grid Width="250" Height="150" Margin="5" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" BorderThickness="1" CornerRadius="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Image Source="{x:Bind Thumbnail, Converter={StaticResource RuntimeImageConverter}}" Grid.RowSpan="2" Stretch="UniformToFill" />
-                            <Border Grid.RowSpan="2">
-                                <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="0,1">
-                                        <LinearGradientBrush.GradientStops>
-                                            <GradientStop Color="Transparent"/>
-                                            <GradientStop Color="#AA000000" Offset="1"/>
-                                        </LinearGradientBrush.GradientStops>
-                                    </LinearGradientBrush>
-                                </Border.Background>
+        
+        <Grid  Visibility="{x:Bind SelectorBarItemFavs.IsSelected, Mode=OneWay}" Grid.Row="1">
+            <GridView ItemsSource="{x:Bind AppVM.Favorites, Mode=OneWay}" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1" ItemTemplate="{StaticResource PortalItemViewTemplate}">
+            </GridView>
+        </Grid>
 
-                            </Border>
-                            <StackPanel Grid.Row="1" Margin="2">
-                                <TextBlock Text="{x:Bind Title}" FontSize="{StaticResource TextStyleLargeFontSize}" Foreground="White" />
-                                <TextBlock Text="{x:Bind Description}" TextTrimming="CharacterEllipsis" MaxHeight="40" TextWrapping="Wrap" Foreground="White" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-            <GridView.Footer>
-                <ProgressRing IsActive="{x:Bind PageVM.MapItems.HasMoreItems, Mode=OneWay}" />
-            </GridView.Footer>
-        </GridView>
+        <!-- Portal Search -->
+        <Grid  Visibility="{x:Bind SelectorBarItemPortalSearch.IsSelected, Mode=OneWay}" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <AutoSuggestBox PlaceholderText="Search for a map" QueryIcon="Find" QuerySubmitted="{x:Bind PageVM.SearchQuerySubmitted}"/>
+                <Button Content="Search" Grid.Column="1" Margin="5,0,12,0" Width="100"/>
+            </Grid>
+            
+            <GridView ItemsSource="{x:Bind PageVM.MapItems, Mode=OneWay}" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1" ItemTemplate="{StaticResource PortalItemViewTemplate}">
+                <GridView.Footer>
+                    <ProgressRing IsActive="{x:Bind PageVM.MapItems.HasMoreItems, Mode=OneWay}" />
+                </GridView.Footer>
+            </GridView>
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="{x:Bind PageVM.SearchError, Mode=OneWay}" IsHitTestVisible="False"
                    Foreground="{StaticResource CalciteUIDangerBrush}"
                    Style="{StaticResource BodyStrongTextBlockStyle}"
                    Grid.Row="1"/>
+        </Grid>
+
     </Grid>
 </Page>

@@ -17,26 +17,30 @@ namespace ArcGISMapViewer.ViewModels
         private PortalPageViewModel()
         {
             ApplicationViewModel.Instance.PropertyChanged += Instance_PropertyChanged;
-            Reload(null);
+            LoadUserItems();
         }
 
         private void Instance_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(ApplicationViewModel.PortalUser))
             {
-                Reload(null);
+                LoadUserItems();
+                MapItems = PortalItemQuerySource.Empty;
             }
         }
 
         public void SearchQuerySubmitted(AutoSuggestBox box, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            Reload(args.QueryText);
+            Search(args.QueryText);
         }
+
+        public ObservableCollection<PortalItem> UserItems = new ObservableCollection<PortalItem>();
 
         public static PortalPageViewModel Instance { get; } = new PortalPageViewModel();
 
-        public void Reload(string? query)
+        public void Search(string? query)
         {
+
             var portal = ApplicationViewModel.Instance.PortalUser?.Portal;
             SearchError = "";
             if (portal is null)
@@ -46,51 +50,69 @@ namespace ArcGISMapViewer.ViewModels
             }
             try
             {
-                IsLoading = true;
-                var queryParams = PortalQueryParameters.CreateForItemsOfTypes(
-                   [PortalItemType.WebMap,
+                var queryParams = CreateQuery(query);
+                MapItems = new PortalItemQuerySource(portal, queryParams);
+            }
+            catch (System.Exception ex)
+            {
+                SearchError = ex.Message;
+            }
+        }
+
+        public async void LoadUserItems()
+        { 
+            try
+            {
+                var contents = await ApplicationViewModel.Instance.PortalUser!.GetContentAsync();
+                UserItems.Clear();
+                foreach (var item in contents.Items)
+                {
+                    if (SupportedItemTypes.Contains(item.Type))
+                        UserItems.Add(item);
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private static PortalItemType[] SupportedItemTypes =
+        {
+                    PortalItemType.WebMap,
                     PortalItemType.FeatureService,
                     PortalItemType.WMS,
                     // PortalItemType.WMTS,
                     // PortalItemType.WFS,
                     PortalItemType.VectorTileService,
                     PortalItemType.MapService,
-                    PortalItemType.KML, 
+                    PortalItemType.KML,
                     PortalItemType.FeatureCollection,
                     PortalItemType.SceneService,
                     PortalItemType.WebScene,
-                ], search: query);
-                
-                MapItems = new PortalItemQuerySource(portal, queryParams);
-            }
-            catch(System.Exception ex)
-            {
-                SearchError = ex.Message;
-            }
-            IsLoading = false;
+        };
+
+        private static PortalQueryParameters CreateQuery(string? query)
+        {
+            return PortalQueryParameters.CreateForItemsOfTypes(SupportedItemTypes, search: query);
         }
 
         [ObservableProperty]
         private string? _searchError;
 
         [ObservableProperty]
-        private bool _isLoading;
-
-        [ObservableProperty]
-        private PortalItemQuerySource? _mapItems;
+        private PortalItemQuerySource? _mapItems = PortalItemQuerySource.Empty;
 
         public class PortalItemQuerySource : ObservableCollection<PortalItem>, ISupportIncrementalLoading
         {
-            //private PortalQueryResultSet<PortalItem>? _result;
             private readonly ArcGISPortal _portal;
             private Exception? _error;
             private PortalQueryParameters? _query;
-            public PortalItemQuerySource(ArcGISPortal portal, PortalQueryParameters query)
+            public PortalItemQuerySource(ArcGISPortal portal, PortalQueryParameters? query)
             {
                 _portal = portal;
                 _query = query;
-                //LoadItems(query);
             }
+            public static PortalItemQuerySource Empty { get; } = new PortalItemQuerySource(null!, null!);
 
             public bool HasMoreItems => _error is null && _query is not null;
 
@@ -134,5 +156,6 @@ namespace ArcGISMapViewer.ViewModels
                 return loadMoreItemsResult;
             }
         }
+
     }
 }

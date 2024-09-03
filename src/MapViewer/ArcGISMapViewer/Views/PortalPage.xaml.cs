@@ -24,13 +24,26 @@ namespace ArcGISMapViewer.Views
         }
 
         public PortalPageViewModel PageVM = PortalPageViewModel.Instance;
+        public ApplicationViewModel AppVM = ApplicationViewModel.Instance;
 
-        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (e.ClickedItem is PortalItem item)
             {
-                ApplicationViewModel.Instance.PortalItem = item;
-                ApplicationViewModel.Instance.IsMapVisible = true;
+                ContentDialog dialog = new ContentDialog
+                {
+                    Title = item.Title,
+                    Content = new PortalItemDetailView() { Item = item },
+                    PrimaryButtonText = "Open in viewer",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.XamlRoot
+                };
+                var result = await dialog.ShowAsync();
+                if(result == ContentDialogResult.Primary)
+                {
+                    ApplicationViewModel.Instance.PortalItem = item;
+                    ApplicationViewModel.Instance.IsMapVisible = true;
+                }
             }
         }
 

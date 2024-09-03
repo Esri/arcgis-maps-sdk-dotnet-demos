@@ -15,6 +15,9 @@
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);WMC1506;WMC1501;WMC1500;CS8305</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Views\PortalItemDetailView.xaml" />
+  </ItemGroup>
 
     <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -28,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4345" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4348" />
     <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-89.gc726240101" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240701003-experimental2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
