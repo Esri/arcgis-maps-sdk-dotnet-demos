@@ -4,6 +4,7 @@ using Esri.ArcGISRuntime.Portal;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -31,7 +32,7 @@ namespace ArcGISMapViewer.ViewModels
         public async Task<PortalItem?> GetLastPortalItemAsync()
         {
             var uri = GetSetting<string?>(null, "PortalItem");
-            if(!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out var result))
+            if (!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out var result))
             {
                 try
                 {
@@ -46,7 +47,7 @@ namespace ArcGISMapViewer.ViewModels
         public string OAuthRedirectUrl { get; }
         public Uri PortalUrl { get; }
 
-        private T GetSetting<T>(T defaultValue, [CallerMemberName] string? key = null)
+        public T GetSetting<T>(T defaultValue, [CallerMemberName] string? key = null)
         {
             if(key is null) throw new ArgumentNullException(nameof(key));
             if (localSettings.Values.ContainsKey(key))
@@ -59,8 +60,8 @@ namespace ArcGISMapViewer.ViewModels
             }
             return defaultValue;
         }
-        
-        private void SetSetting<T>(T value, [CallerMemberName] string? key = null)
+
+        public void SetSetting<T>(T value, [CallerMemberName] string? key = null)
         {
             if (key is null) throw new ArgumentNullException(nameof(key));
             if(typeof(T).IsEnum)

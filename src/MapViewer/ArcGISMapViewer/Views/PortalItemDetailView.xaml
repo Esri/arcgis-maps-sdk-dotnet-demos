@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ArcGISMapViewer.Views.PortalItemDetailView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISMapViewer.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel VerticalAlignment="Center">
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+
+                <TextBlock Text="{x:Bind Item.TypeName}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Owner: " />
+                    <TextBlock Text="{x:Bind Item.Owner}" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Created: " />
+                    <TextBlock Text="{x:Bind Item.Created.ToString('d', x:Null)}" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Modified: " />
+                    <TextBlock Text="{x:Bind Item.Modified.ToString('d', x:Null)}" TextWrapping="Wrap" />
+                </StackPanel>
+                <HyperlinkButton Content="Add to favorites" Click="HyperlinkButton_Click" />
+            </StackPanel>
+            <!--<WebView2 />-->
+            <Image Source="{x:Bind Item.Thumbnail, Converter={StaticResource RuntimeImageConverter}}" Stretch="Uniform" MaxWidth="200" MaxHeight="150"
+                   Grid.Column="1" VerticalAlignment="Top" />
+        </Grid>
+        <WebView2 x:Name="Description" Height="250" Width="500" />
+    </StackPanel>
+</UserControl>

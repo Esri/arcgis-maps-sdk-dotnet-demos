@@ -14,6 +14,9 @@
     <WindowsSdkPackageVersion>10.0.19041.35-preview</WindowsSdkPackageVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Views\PortalItemDetailView.xaml" />
+  </ItemGroup>
 
     <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -27,7 +30,8 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4329" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4348" />
+    <PackageReference Include="Esri.ArcGISRuntime.WinUI" Version="200.6.0-sync2" />
     <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-89.gc726240101" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240701003-experimental2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
@@ -43,5 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArcGISMapViewer.Controls\ArcGISMapViewer.Controls.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\PortalItemDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>

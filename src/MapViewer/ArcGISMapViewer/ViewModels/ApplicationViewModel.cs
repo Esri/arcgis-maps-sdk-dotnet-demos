@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Esri.ArcGISRuntime;
@@ -119,6 +122,7 @@ public partial class ApplicationViewModel : ObservableObject
         private set
         {
             _PortalUser = value; OnPropertyChanged();
+            OnPropertyChanged(nameof(Favorites));
             AppSettings.PortalUser = value?.FullName;
         }
     }
@@ -155,6 +159,41 @@ public partial class ApplicationViewModel : ObservableObject
         }
     }
 
+    private IList<PortalItem>? _Favorites;
+    public IList<PortalItem> Favorites
+    {
+        get
+        {
+            if (_Favorites is null && this.PortalUser?.Portal != null)
+            {
+                _Favorites = new ObservableCollection<PortalItem>();
+                var ids = AppSettings.GetSetting<string[]>(new string[] { }, $"Favorites_{this.PortalUser.UserId}");
+                LoadFavorites(ids);
+                ((INotifyCollectionChanged)_Favorites).CollectionChanged += (s, e) =>
+                {
+                    AppSettings.SetSetting(_Favorites.Select(p => p.ItemId).ToArray(), $"Favorites_{this.PortalUser.UserId}");
+                };
+            }
+            return _Favorites ?? new List<PortalItem>();
+        }
+    }
+
+    private async void LoadFavorites(string[] ids)
+    {
+        var results = await Task.WhenAll<PortalItem?>(ids.Select(async id =>
+        {
+            try
+            {
+                return await PortalItem.CreateAsync(PortalUser!.Portal, id).ConfigureAwait(false);
+            }
+            catch { return null; } // Skip and that fail to load
+        }));
+        foreach(var item in results.Where(i => i is not null))
+        {
+            Favorites.Add(item!);
+        }
+    }
+
     private async Task RefreshUserThumbnail(PortalUser value)
     {
         try
@@ -182,6 +221,7 @@ public partial class ApplicationViewModel : ObservableObject
     public async Task SignOut()
     {
         PortalUser = null;
+        _Favorites = null;
         AppSettings.SetLastPortalItem(null);
         await Esri.ArcGISRuntime.Security.AuthenticationManager.Current.RemoveAndRevokeAllCredentialsAsync();
     }
