@@ -225,4 +225,62 @@ public partial class ApplicationViewModel : ObservableObject
         AppSettings.SetLastPortalItem(null);
         await Esri.ArcGISRuntime.Security.AuthenticationManager.Current.RemoveAndRevokeAllCredentialsAsync();
     }
+
+    internal async Task AddDataFromFileAsync(string path)
+    {
+        if (GeoModel is null) return;
+        var info = new FileInfo(path);
+        try
+        {
+            Layer? layer;
+            switch (info.Extension.ToLowerInvariant())
+            {
+                case ".mmpk":
+                    MobileMapPackage mpk = await MobileMapPackage.OpenAsync(path);
+                    if (mpk.Maps.Any())
+                    {
+                        GeoModel = mpk.Maps.First();
+                        await GeoModel.LoadAsync();
+                    }
+                    break;
+                case ".slpk":
+                    layer = new ArcGISSceneLayer(new Uri(path));
+                    await layer.LoadAsync();
+                    GeoModel?.OperationalLayers.Add(layer);
+                    break;
+                case ".mspk":
+                    MobileScenePackage msp = await MobileScenePackage.OpenAsync(path);
+                    if (msp.Scenes.Any())
+                        GeoModel = msp.Scenes.First();
+                    break;
+                case ".kml":
+                case ".kmz":
+                    layer = new KmlLayer(new Uri(path));
+                    await layer.LoadAsync();
+                    GeoModel?.OperationalLayers.Add(layer);
+                    break;
+                case ".shp":
+                    layer = new FeatureLayer(new Esri.ArcGISRuntime.Data.ShapefileFeatureTable(path));
+                    await layer.LoadAsync();
+                    GeoModel?.OperationalLayers.Add(layer); 
+                    break;
+                case ".tpk":
+                    layer = new ArcGISTiledLayer(new TileCache(path));
+                    await layer.LoadAsync();
+                    GeoModel?.OperationalLayers.Add(layer); 
+                    break;
+                case ".tif":
+                    layer = new RasterLayer(new Esri.ArcGISRuntime.Rasters.Raster(path));
+                    await layer.LoadAsync();
+                    GeoModel?.OperationalLayers.Add(layer); 
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch(System.Exception ex)
+        {
+            throw;
+        }
+    }
 }

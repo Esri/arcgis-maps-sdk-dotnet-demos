@@ -126,5 +126,51 @@ namespace ArcGISMapViewer.Views
                     AppVM.GeoModel.Bookmarks.Add(new Bookmark() { Name = ((TextBox)cd.Content).Text, Viewpoint = vp });
             }
         }
+
+        private async void AddFromFile_CLick(object sender, RoutedEventArgs e)
+        {
+            var hwnd = this.XamlRoot?.ContentIslandEnvironment?.AppWindowId.Value ?? 0;
+            if (hwnd == 0)
+                return; // Can't show dialog without a root window
+
+            var filePicker = new global::Windows.Storage.Pickers.FileOpenPicker();
+            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, (nint)hwnd);
+            var licenseLevel = Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.GetLicense().LicenseLevel;
+            filePicker.FileTypeFilter.Add(".mmpk");
+            filePicker.FileTypeFilter.Add(".mspk");
+            if (AppVM.GeoModel is Scene)
+            {
+                filePicker.FileTypeFilter.Add(".slpk");
+            }
+            // These datatypes requires at least standard level license for local file access
+            if (licenseLevel >= Esri.ArcGISRuntime.LicenseLevel.Standard || licenseLevel == Esri.ArcGISRuntime.LicenseLevel.Developer)
+            {
+                filePicker.FileTypeFilter.Add(".kml");
+                filePicker.FileTypeFilter.Add(".kmz");
+                filePicker.FileTypeFilter.Add(".shp");
+            }
+            filePicker.FileTypeFilter.Add(".tpk");
+            filePicker.FileTypeFilter.Add(".tif");
+            var file = await filePicker.PickSingleFileAsync();
+
+            if (file is null)
+                return;
+            try
+            {
+                await ApplicationViewModel.Instance.AddDataFromFileAsync(file.Path);
+            }
+            catch(System.Exception ex)
+            {
+                _ = new ContentDialog()
+                {
+                    XamlRoot = this.XamlRoot,
+                    Title = "Error adding layer",
+                    Content = ex.Message,
+                    PrimaryButtonText = "OK"
+                }.ShowAsync();
+            }
+           
+        }
     }
 }
+
