@@ -31,6 +31,11 @@ namespace ArcGISMapViewer.Views
 
             WeakReferenceMessenger.Default.Register<ShowRightPanelMessage>(this, (r, m) =>
             {
+                if(m.Panel == ShowRightPanelMessage.PanelId.ClosePanel)
+                {
+                    RightPanel.IsOpen = false;
+                    return;
+                }
                 var panel = RightPanel.Items.Where(p => p.Tag as string == m.Panel.ToString()).First();
                 RightPanel.SelectedItem = panel;
                 RightPanel.IsOpen = true;
@@ -58,6 +63,7 @@ namespace ArcGISMapViewer.Views
             public object? Parameter { get; }
             public enum PanelId
             {
+                ClosePanel,
                 ContentProperties,
                 EditFeature
             }
@@ -68,43 +74,6 @@ namespace ArcGISMapViewer.Views
         public ApplicationViewModel AppVM => ApplicationViewModel.Instance;
 
         public MapPageViewModel PageVM = new MapPageViewModel();
-
-
-        private CancellationTokenSource? identifyToken;
-
-        private async void GeoViewTapped(object sender, GeoViewInputEventArgs e)
-        {
-            // TODO: Rewrite to operate in VM
-            geoViewWrapper.GeoViewController.DismissCallout();
-            if (e.Location is null) return;
-            try
-            {
-                identifyToken?.Cancel();
-                identifyToken = new CancellationTokenSource();
-                var result = await geoViewWrapper.IdentifyLayersAsync(e.Position, 2, false, 10, identifyToken.Token);
-                identifyToken = null;
-                if (result.SelectMany(r=>r.GeoElements).Any())
-                {
-                    var calloutview = new Controls.IdentifyResultView() { IdentifyResult = result, GeoViewController = PageVM.ViewController };
-                    geoViewWrapper.ShowCalloutAt(e.Location, calloutview);
-                    calloutview.EditRequested += (s, e) =>
-                    {
-                        WeakReferenceMessenger.Default.Send(new ShowRightPanelMessage(ShowRightPanelMessage.PanelId.EditFeature, e as Feature));
-                    };
-                    calloutview.CloseRequested += (s, e) => geoViewWrapper.GeoViewController.DismissCallout();
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        private void OnFeatureEditingEnded(object sender, EventArgs e)
-        {
-            RightPanel.IsOpen = false;
-            PageVM.CurrentFeature = null;
-        }
-
 
         private async void AddBookmark_Click(object sender, RoutedEventArgs e)
         {

@@ -99,7 +99,7 @@
                 <Grid Grid.Column="1">
 
                     <controls:GeoViewWrapper GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" x:Name="geoViewWrapper"
-                                             GeoViewTapped="GeoViewTapped"
+                                             GeoViewTapped="{x:Bind PageVM.OnGeoViewTapped}"
                                              GeoViewController="{x:Bind PageVM.ViewController}" />
 
                     <tk:ScaleLine MapView="{x:Bind geoViewWrapper.MapView, Mode=OneWay}" Margin="20" Visibility="{x:Bind AppVM.Is2D, Mode=OneWay}" />
@@ -124,7 +124,7 @@
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Label, Scale=Small, SymbolSize=20}" IsEnabled="False" Title="Labels" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=ChartGear, Scale=Small, SymbolSize=20}" Title="Charts" IsEnabled="False" ContentTitle="Chart Settings" />
                         <controls:CollapsiblePanelItem IsSelected="True" Title="Edit" Icon="{calcite:CalciteIconSourceElement Icon=PencilSquare, Scale=Small, SymbolSize=20}" IsEnabled="{x:Bind PageVM.CanEdit, Mode=OneWay}" Tag="EditFeature">
-                            <local:FeatureEditingPage GeoElement="{x:Bind PageVM.CurrentFeature, Mode=OneWay}" HorizontalAlignment="Stretch" EditingEnded="OnFeatureEditingEnded" />
+                            <local:FeatureEditingPage GeoElement="{x:Bind PageVM.CurrentFeature, Mode=OneWay}" HorizontalAlignment="Stretch" EditingEnded="{x:Bind PageVM.OnFeatureEditComplete}" />
                         </controls:CollapsiblePanelItem>
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=PencilMark, Scale=Small, SymbolSize=20}" IsEnabled="False" Title="Add sketch" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Wrench, Scale=Small, SymbolSize=20}" IsEnabled="False" Title="Map tools" />
