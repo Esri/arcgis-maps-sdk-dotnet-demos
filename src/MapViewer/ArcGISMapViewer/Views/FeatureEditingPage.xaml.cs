@@ -85,7 +85,21 @@ namespace ArcGISMapViewer.Views
 
         private async void Update_Click(object sender, RoutedEventArgs e)
         {
-            await FeatureFormView.FinishEditingAsync();
+            try
+            {
+                await FeatureFormView.FinishEditingAsync();
+            }
+            catch(System.Exception ex)
+            {
+                ContentDialog dialog = new ContentDialog
+                {
+                    Title = ex.Message,
+
+                    PrimaryButtonText = "OK",
+                    XamlRoot = XamlRoot
+                };
+                var result = await dialog.ShowAsync();
+            }
             EditingEnded?.Invoke(this, EventArgs.Empty);
         }
 
