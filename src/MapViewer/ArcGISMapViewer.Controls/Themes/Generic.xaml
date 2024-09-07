@@ -89,7 +89,14 @@
                                 <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTitle}" Style="{StaticResource BaseTextBlockStyle}" FontSize="18" />
                             </Border>
 
-                            <ContentPresenter x:Name="PART_ContentPresenter" Grid.Row="1" />
+                            <ContentPresenter x:Name="PART_ContentPresenter" Grid.Row="1" >
+                                <ContentPresenter.ContentTransitions>
+                                    <TransitionCollection>
+                                        <ContentThemeTransition />
+                                    </TransitionCollection>
+                                </ContentPresenter.ContentTransitions>
+
+                            </ContentPresenter>
                             <Button x:Name="PART_CloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Visibility="{TemplateBinding CloseButtonVisibility}"
                             Padding="10" Margin="0,5,0,0" Grid.RowSpan="2">
                                 <calcite:SymbolIcon Symbol="X" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />

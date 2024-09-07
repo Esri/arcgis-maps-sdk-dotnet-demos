@@ -28,8 +28,6 @@ namespace ArcGISMapViewer.Controls
             this.InitializeComponent();
         }
 
-
-
         public GeoModel GeoModel
         {
             get { return (GeoModel)GetValue(GeoModelProperty); }
@@ -37,9 +35,7 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty GeoModelProperty =
-            DependencyProperty.Register("GeoModel", typeof(GeoModel), typeof(LayerListView), new PropertyMetadata(null));
-
-
+            DependencyProperty.Register(nameof(GeoModel), typeof(GeoModel), typeof(LayerListView), new PropertyMetadata(null));
 
         private async void Rename_Click(object sender, RoutedEventArgs e)
         {
