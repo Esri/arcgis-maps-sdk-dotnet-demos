@@ -274,6 +274,11 @@ public partial class ApplicationViewModel : ObservableObject
                     await layer.LoadAsync();
                     GeoModel?.OperationalLayers.Add(layer); 
                     break;
+                case ".vtpk":
+                    layer = new ArcGISVectorTiledLayer(new Uri(path));
+                    await layer.LoadAsync();
+                    GeoModel?.OperationalLayers.Add(layer);
+                    break;
                 default:
                     break;
             }

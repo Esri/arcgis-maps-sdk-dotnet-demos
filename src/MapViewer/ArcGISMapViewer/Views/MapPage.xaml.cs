@@ -120,6 +120,7 @@ namespace ArcGISMapViewer.Views
             }
             filePicker.FileTypeFilter.Add(".tpk");
             filePicker.FileTypeFilter.Add(".tif");
+            filePicker.FileTypeFilter.Add(".vtpk");
             var file = await filePicker.PickSingleFileAsync();
 
             if (file is null)
