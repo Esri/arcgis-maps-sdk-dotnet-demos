@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>ArcGISMapViewer</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -11,11 +11,13 @@
     <UseWinUI>true</UseWinUI>
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
     <UseRidGraph>true</UseRidGraph>
-    <WindowsSdkPackageVersion>10.0.19041.35-preview</WindowsSdkPackageVersion>
+    <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);WMC1506;WMC1501;WMC1500;CS8305</NoWarn>
+    <RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Controls\FeatureTableView.xaml" />
     <None Remove="Views\PortalItemDetailView.xaml" />
   </ItemGroup>
 
@@ -30,12 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!--<PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.DataTable" Version="0.1.240823-build.1737" />-->
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4348" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4351" />
     <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-89.gc726240101" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240701003-experimental2" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
-    <PackageReference Include="WinUIEx" Version="2.3.4" />
+    <PackageReference Include="WinUI.TableView" Version="1.2.0" />
+    <PackageReference Include="WinUIEx" Version="2.4.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 

@@ -9,6 +9,7 @@
     xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
     xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     xmlns:calcite="using:Esri.Calcite.WinUI"
+    xmlns:ex="using:WinUIEx"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
         <MicaBackdrop />
@@ -24,11 +25,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Border Background="{ThemeResource AccentFillColorDefaultBrush}" />
-        <TitleBar VerticalContentAlignment="Center" Title="ArcGIS MapViewer" Subtitle="{x:Bind AppVM.WindowSubTitle, Mode=OneWay}">
-            <TitleBar.Header>
+        <ex:TitleBar VerticalContentAlignment="Center" Title="ArcGIS MapViewer" Subtitle="{x:Bind AppVM.WindowSubTitle, Mode=OneWay}">
+            <ex:TitleBar.Header>
                 <AppBarToggleButton Icon="{calcite:CalciteIconSourceElement Icon=AppLauncher, Scale = Small, SymbolSize=22,Foreground=White}" Width="48" IsChecked="{x:Bind AppVM.IsAppMenuVisible, Mode=TwoWay}" />
-            </TitleBar.Header>
-            <TitleBar.Footer>
+            </ex:TitleBar.Header>
+            <ex:TitleBar.Footer>
                 <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
                     <tk:SearchView HorizontalAlignment="Right" GeoView="{x:Bind MapPage.GeoViewWrapper.GeoView, Mode=OneWay}" Width="190" VerticalAlignment="Bottom" Height="40"/>
                     <Button VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,-2,0,2">
@@ -57,8 +58,8 @@
                         </Button.Flyout>
                     </Button>
                 </StackPanel>
-            </TitleBar.Footer>
-        </TitleBar>
+            </ex:TitleBar.Footer>
+        </ex:TitleBar>
 
         <Grid x:Name="RootFrame" Grid.Row="1">
             <views:MapPage x:Name="MapPage" Visibility="{x:Bind AppVM.IsMapVisible, Mode=OneWay}"  />
