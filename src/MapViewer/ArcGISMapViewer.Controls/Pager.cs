@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace ArcGISMapViewer.Controls
 {
-    public sealed class Pager : Control
+    public sealed partial class Pager : Control
     {
         public Pager()
         {

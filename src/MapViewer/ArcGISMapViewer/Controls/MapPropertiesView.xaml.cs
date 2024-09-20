@@ -53,7 +53,7 @@ namespace ArcGISMapViewer.Controls
         }
     }
 
-    public class LayerTemplateSelector : DataTemplateSelector
+    public partial class LayerTemplateSelector : DataTemplateSelector
     {
         public LayerTemplateSelector()
         {

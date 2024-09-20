@@ -9,7 +9,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace ArcGISMapViewer.Converters
 {
-    public sealed class RuntimeImageConverter : IValueConverter
+    public sealed partial class RuntimeImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

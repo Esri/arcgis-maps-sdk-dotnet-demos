@@ -4,7 +4,7 @@ using Microsoft.Windows.ApplicationModel.Resources;
 namespace ArcGISMapViewer
 {
     [MarkupExtensionReturnType(ReturnType = typeof(string))]
-    public class StringResourceExtension : MarkupExtension
+    public partial class StringResourceExtension : MarkupExtension
     {
         public StringResourceExtension() { }
 

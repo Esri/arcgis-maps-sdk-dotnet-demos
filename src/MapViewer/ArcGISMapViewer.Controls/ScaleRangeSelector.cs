@@ -16,7 +16,7 @@ using Microsoft.UI.Xaml.Media;
 
 namespace ArcGISMapViewer.Controls
 {
-    public sealed class ScaleRangeSelector : CommunityToolkit.WinUI.Controls.RangeSelector
+    public sealed partial class ScaleRangeSelector : CommunityToolkit.WinUI.Controls.RangeSelector
     {
         public ScaleRangeSelector()
         {

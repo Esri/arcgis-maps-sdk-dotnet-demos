@@ -14,7 +14,7 @@ using Microsoft.UI.Xaml.Media;
 
 namespace ArcGISMapViewer.Controls
 {
-    public sealed class CollapsiblePanel : Control
+    public sealed partial class CollapsiblePanel : Control
     {
         private ContentPresenter? PART_ContentPresenter;
         public CollapsiblePanel()

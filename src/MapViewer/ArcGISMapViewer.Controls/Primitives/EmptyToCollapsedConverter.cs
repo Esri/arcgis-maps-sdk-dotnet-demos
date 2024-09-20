@@ -9,7 +9,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace ArcGISMapViewer.Controls.Primitives
 {
-    public sealed class EmptyToCollapsedConverter : IValueConverter
+    public sealed partial class EmptyToCollapsedConverter : IValueConverter
     {
         public object Convert(object? value, Type targetType, object? parameter, string language)
         {

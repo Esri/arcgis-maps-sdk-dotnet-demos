@@ -102,7 +102,7 @@ namespace ArcGISMapViewer.ViewModels
         [ObservableProperty]
         private PortalItemQuerySource? _mapItems = PortalItemQuerySource.Empty;
 
-        public class PortalItemQuerySource : ObservableCollection<PortalItem>, ISupportIncrementalLoading
+        public partial class PortalItemQuerySource : ObservableCollection<PortalItem>, ISupportIncrementalLoading
         {
             private readonly ArcGISPortal _portal;
             private Exception? _error;

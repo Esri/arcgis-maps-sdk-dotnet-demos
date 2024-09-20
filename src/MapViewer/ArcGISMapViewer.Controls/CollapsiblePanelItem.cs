@@ -11,7 +11,7 @@ namespace ArcGISMapViewer.Controls
 {
 
     [Microsoft.UI.Xaml.Markup.ContentProperty(Name = nameof(Content))]
-    public class CollapsiblePanelItem : Control
+    public partial class CollapsiblePanelItem : Control
     {
         // Visual States
         const string c_pressedSelected = "PressedSelected";
