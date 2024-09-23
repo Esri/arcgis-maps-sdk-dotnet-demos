@@ -24,7 +24,9 @@ namespace ArcGISMapViewer.ViewModels
         {
             if(e.PropertyName == nameof(ApplicationViewModel.PortalUser))
             {
-                LoadUserItems();
+                UserItems.Clear();
+                if (ApplicationViewModel.Instance.PortalUser is not null)
+                    LoadUserItems();
                 MapItems = PortalItemQuerySource.Empty;
             }
         }

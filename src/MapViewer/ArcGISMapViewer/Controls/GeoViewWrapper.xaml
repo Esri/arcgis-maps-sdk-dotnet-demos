@@ -15,7 +15,7 @@
                 GeoViewTapped="OnGeoViewTapped" />
 
         <esri:SceneView x:Name="sceneView" Visibility="Collapsed"
-                GeoViewTapped="OnGeoViewTapped" />
+                GeoViewTapped="OnGeoViewTapped" AtmosphereEffect="Realistic" />
 
     </Grid>
 </UserControl>

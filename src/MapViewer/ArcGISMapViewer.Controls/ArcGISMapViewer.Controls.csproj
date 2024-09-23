@@ -7,11 +7,12 @@
     <NoWarn>$(NoWarn);NETSDK1206</NoWarn> <!-- Needed because the above line causes this warning -->
     <UseWinUI>true</UseWinUI>
     <Nullable>enable</Nullable>
+    <WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-89.gc726240101" />
-      <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" Version="8.0.240109" />
+    <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-102.g571a0a6eb6" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" Version="8.0.240109" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.1.3" >

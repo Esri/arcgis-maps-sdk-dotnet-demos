@@ -27,11 +27,9 @@ namespace ArcGISMapViewer.Controls
             this.InitializeComponent();
         }
 
-
-
-        public GeoModel GeoModel
+        public GeoModel? GeoModel
         {
-            get { return (GeoModel)GetValue(GeoModelProperty); }
+            get { return (GeoModel?)GetValue(GeoModelProperty); }
             set { SetValue(GeoModelProperty, value); }
         }
 
