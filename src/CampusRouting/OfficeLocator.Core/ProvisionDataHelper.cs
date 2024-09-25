@@ -7,7 +7,7 @@ namespace OfficeLocator
 {
     public static class ProvisionDataHelper
     {
-        private const string itemId = "dce76fb7cf1146c990427555fb3c74d2"; //The ArcGIS Portal Item ID for the basemap, network and geocoder.
+        private const string itemId = "a0a519c95ec24ecd9f60eabbe53af6ba"; //The ArcGIS Portal Item ID for the basemap, network and geocoder.
 
 
         /// <summary>
