@@ -42,8 +42,7 @@ namespace ArcGISMapViewer.ViewModels
             }
             if (newValue is ArcGISFeature afeature)
             {
-                var definition = (newValue?.FeatureTable as ArcGISFeatureTable)?.FeatureFormDefinition ?? (newValue?.FeatureTable?.Layer as FeatureLayer)?.FeatureFormDefinition;
-                FeatureForm = (definition != null) ? new FeatureForm(afeature, definition) : null;
+                FeatureForm = new FeatureForm(afeature);
                 if (afeature.FeatureTable?.Layer is FeatureLayer layer)
                 {
                     layer.SelectFeature(afeature);

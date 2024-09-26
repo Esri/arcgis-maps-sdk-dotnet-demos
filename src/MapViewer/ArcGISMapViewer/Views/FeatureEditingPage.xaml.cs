@@ -44,8 +44,7 @@ namespace ArcGISMapViewer.Views
             }
             if (newValue is ArcGISFeature afeature)
             {
-                var definition = (afeature.FeatureTable as ArcGISFeatureTable)?.FeatureFormDefinition ?? (afeature.FeatureTable?.Layer as FeatureLayer)?.FeatureFormDefinition;
-                this.FeatureForm = (definition != null) ? new FeatureForm(afeature, definition) : null;
+                this.FeatureForm = new FeatureForm(afeature);
                 if (afeature.FeatureTable?.Layer is FeatureLayer layer)
                 {
                     layer.SelectFeature(afeature);
