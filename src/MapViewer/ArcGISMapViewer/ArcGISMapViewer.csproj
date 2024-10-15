@@ -34,7 +34,7 @@
   <ItemGroup>
     <!--<PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.DataTable" Version="0.1.240823-build.1737" />-->
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4372" />
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4390" />
     <PackageReference Include="Esri.Calcite.WinUI" Version="0.1.0-105.gc7b23542e2" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
