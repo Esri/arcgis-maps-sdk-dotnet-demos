@@ -84,9 +84,14 @@
             </GridView>
 
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Text="{x:Bind PageVM.SearchError, Mode=OneWay}" IsHitTestVisible="False"
+                   Text="{x:Bind PageVM.SearchError, Mode=OneWay}"
                    Foreground="{StaticResource CalciteUIDangerBrush}"
                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                   Grid.Row="1"/>
+
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="No results found"
+                   Visibility="{x:Bind PageVM.MapItems.HasNoResults, Mode=OneWay}"
+                   Style="{StaticResource SubheaderTextBlockStyle}" Opacity=".75"
                    Grid.Row="1"/>
         </Grid>
 

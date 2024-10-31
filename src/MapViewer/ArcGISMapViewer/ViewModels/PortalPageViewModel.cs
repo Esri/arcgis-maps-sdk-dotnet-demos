@@ -109,6 +109,7 @@ namespace ArcGISMapViewer.ViewModels
             private readonly ArcGISPortal _portal;
             private Exception? _error;
             private PortalQueryParameters? _query;
+    
             public PortalItemQuerySource(ArcGISPortal portal, PortalQueryParameters? query)
             {
                 _portal = portal;
@@ -117,6 +118,8 @@ namespace ArcGISMapViewer.ViewModels
             public static PortalItemQuerySource Empty { get; } = new PortalItemQuerySource(null!, null!);
 
             public bool HasMoreItems => _error is null && _query is not null;
+
+            public bool HasNoResults => !HasMoreItems && Items.Count == 0 && this != Empty;
 
             public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count) => LoadMoreItemsTaskAsync(count).AsAsyncOperation();
 
@@ -138,6 +141,7 @@ namespace ArcGISMapViewer.ViewModels
                         _error = ex;
                         return loadMoreItemsResult;
                     }
+                    _query = null;
                     if (result.Results.Any())
                     {
                         var list = result.Results?.ToList();
@@ -147,12 +151,14 @@ namespace ArcGISMapViewer.ViewModels
                                 base.Items.Add(item);
                             OnCollectionChanged(new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Add, changedItems: list, index));
                             _query = result.NextQueryParameters;
-                            if (_query is null)
-                            {
-                                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(HasMoreItems)));
-                            }
                             loadMoreItemsResult.Count = (uint)list.Count;
                         }
+                    }
+                    if (_query is null)
+                    {
+                        OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(HasMoreItems)));
+                        if (Items.Count == 0)
+                            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(HasNoResults)));
                     }
                 }
                 return loadMoreItemsResult;
@@ -170,6 +176,8 @@ namespace ArcGISMapViewer.ViewModels
                 _query = groupQuery;
             }
             public static PortalItemQuerySource Empty { get; } = new PortalItemQuerySource(null!, null);
+
+            public bool IsEmpty => !HasMoreItems && Items.Count == 0;
 
             public bool HasMoreItems => _error is null && _query is not null;
 
@@ -193,6 +201,7 @@ namespace ArcGISMapViewer.ViewModels
                         _error = ex;
                         return loadMoreItemsResult;
                     }
+                    _query = null;
                     if (result.Results.Any())
                     {
                         var list = result.Results?.ToList();
@@ -202,12 +211,14 @@ namespace ArcGISMapViewer.ViewModels
                                 base.Items.Add(item);
                             OnCollectionChanged(new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Add, changedItems: list, index));
                             _query = result.NextSearchParameters;
-                            if (_query is null)
-                            {
-                                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(HasMoreItems)));
-                            }
                             loadMoreItemsResult.Count = (uint)list.Count;
                         }
+                    }
+                    if (_query is null)
+                    {
+                        OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(HasMoreItems)));
+                        if (Items.Count == 0)
+                            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsEmpty)));
                     }
                 }
                 return loadMoreItemsResult;
