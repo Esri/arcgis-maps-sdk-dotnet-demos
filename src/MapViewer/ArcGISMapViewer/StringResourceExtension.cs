@@ -20,6 +20,10 @@ namespace ArcGISMapViewer
         private static readonly ResourceLoader _resourceLoader = new();
         public static string GetString(string key)
         {
+            if(string.IsNullOrEmpty(key))
+            {
+                return string.Empty;
+            }
             return _resourceLoader.GetString(key);
         }
     }
