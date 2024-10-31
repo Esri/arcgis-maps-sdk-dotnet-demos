@@ -159,5 +159,60 @@ namespace ArcGISMapViewer.ViewModels
             }
         }
 
+        public partial class PortalGroupItemQuerySource : ObservableCollection<PortalItem>, ISupportIncrementalLoading
+        {
+            private Exception? _error;
+            private PortalGroupContentSearchParameters? _query;
+            private readonly PortalGroup _group;
+            public PortalGroupItemQuerySource(PortalGroup group, PortalGroupContentSearchParameters? groupQuery)
+            {
+                _group = group;
+                _query = groupQuery;
+            }
+            public static PortalItemQuerySource Empty { get; } = new PortalItemQuerySource(null!, null);
+
+            public bool HasMoreItems => _error is null && _query is not null;
+
+            public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count) => LoadMoreItemsTaskAsync(count).AsAsyncOperation();
+
+            private async Task<LoadMoreItemsResult> LoadMoreItemsTaskAsync(uint count)
+            {
+                LoadMoreItemsResult loadMoreItemsResult = new LoadMoreItemsResult() { Count = 0 };
+                if (_query is not null || _query is not null)
+                {
+                    int index = this.Items.Count;
+                    System.Diagnostics.Debug.WriteLine($"Loading {count} more items");
+                    _query.Limit = Math.Max(10, (int)count); //Get at least 10
+                    PortalGroupContentSearchResultSet result;
+                    try
+                    {
+                        result = await _group.FindItemsAsync(_query);
+                    }
+                    catch (Exception ex)
+                    {
+                        _error = ex;
+                        return loadMoreItemsResult;
+                    }
+                    if (result.Results.Any())
+                    {
+                        var list = result.Results?.ToList();
+                        if (list != null)
+                        {
+                            foreach (var item in list)
+                                base.Items.Add(item);
+                            OnCollectionChanged(new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Add, changedItems: list, index));
+                            _query = result.NextSearchParameters;
+                            if (_query is null)
+                            {
+                                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(HasMoreItems)));
+                            }
+                            loadMoreItemsResult.Count = (uint)list.Count;
+                        }
+                    }
+                }
+                return loadMoreItemsResult;
+            }
+        }
+
     }
 }

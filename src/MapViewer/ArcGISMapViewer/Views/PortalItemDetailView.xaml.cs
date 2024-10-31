@@ -55,10 +55,20 @@ namespace ArcGISMapViewer.Views
             }
         }
 
-        private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
             if (Item != null)
-                ApplicationViewModel.Instance.Favorites.Add(Item);
+            {
+                try
+                {
+                    bool isFavorite = await ApplicationViewModel.Instance.PortalUser.GetFavoritesStatusAsync(Item);
+                    if (isFavorite)
+                        ApplicationViewModel.Instance.RemoveFromFavorites(Item);
+                    else
+                        ApplicationViewModel.Instance.AddToFavorites(Item);
+                }
+                catch { }
+            }
         }
     }
 }

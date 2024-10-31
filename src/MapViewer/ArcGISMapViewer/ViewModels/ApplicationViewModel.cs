@@ -166,31 +166,57 @@ public partial class ApplicationViewModel : ObservableObject
         {
             if (_Favorites is null && this.PortalUser?.Portal != null)
             {
-                _Favorites = new ObservableCollection<PortalItem>();
-                var ids = AppSettings.GetSetting<string[]>(new string[] { }, $"Favorites_{this.PortalUser.UserId}");
-                LoadFavorites(ids);
-                ((INotifyCollectionChanged)_Favorites).CollectionChanged += (s, e) =>
-                {
-                    AppSettings.SetSetting(_Favorites.Select(p => p.ItemId).ToArray(), $"Favorites_{this.PortalUser.UserId}");
-                };
+                LoadFavorites();
             }
-            return _Favorites ?? new List<PortalItem>();
+            return _Favorites ?? new List<PortalItem>(0);
         }
     }
 
-    private async void LoadFavorites(string[] ids)
+    private void LoadFavorites()
     {
-        var results = await Task.WhenAll<PortalItem?>(ids.Select(async id =>
+        if (!string.IsNullOrEmpty(this.PortalUser?.FavoritesGroupId))
         {
-            try
+            var group = new PortalGroup(this.PortalUser.Portal, this.PortalUser.FavoritesGroupId);
+            _Favorites = new PortalPageViewModel.PortalGroupItemQuerySource(group, new PortalGroupContentSearchParameters(""));
+            OnPropertyChanged(nameof(Favorites));
+        }
+    }
+
+    internal async void AddToFavorites(PortalItem item)
+    {
+        try
+        {
+            if (PortalUser is null) return;
+            await PortalUser.AddToFavoritesAsync(item);
+            if (_Favorites is PortalPageViewModel.PortalGroupItemQuerySource source)
             {
-                return await PortalItem.CreateAsync(PortalUser!.Portal, id).ConfigureAwait(false);
+                if (!source.HasMoreItems)
+                    _Favorites.Add(item);
+                else
+                    LoadFavorites();
             }
-            catch { return null; } // Skip and that fail to load
-        }));
-        foreach(var item in results.Where(i => i is not null))
+        }
+        catch
         {
-            Favorites.Add(item!);
+        }
+    }
+
+    internal async void RemoveFromFavorites(PortalItem item)
+    {
+        try
+        {
+            if (PortalUser is null) return;
+            await PortalUser.RemoveFromFavoritesAsync(item);
+            if (_Favorites is PortalPageViewModel.PortalGroupItemQuerySource source)
+            {
+                if (source.Where(i => i.ItemId == item.ItemId).FirstOrDefault() is PortalItem removedItem)
+                {
+                    _Favorites.Remove(removedItem);
+                }
+            }
+        }
+        catch
+        {
         }
     }
 
