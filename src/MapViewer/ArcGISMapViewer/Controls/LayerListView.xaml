@@ -23,8 +23,11 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="{x:Bind Name, Mode=OneWay}" VerticalAlignment="Center" />
-                        <ToggleButton Grid.Column="1" IsChecked="{x:Bind IsVisible, Mode=TwoWay}" Style="{StaticResource VisibilityToggleButtonStyle}" />
-                        <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ApplicationForegroundThemeBrush}" Padding="0">
+                        <IconSourceElement Grid.Column="2" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=ExclamationMarkTriangle, SymbolSize=32, Scale=Medium,Foreground=Orange}"
+                                           Visibility="{x:Bind LoadError, Converter={StaticResource NullToFalseConverter}}" ToolTipService.ToolTip="{x:Bind LoadError.Message}" />
+
+                        <ToggleButton Grid.Column="1" IsChecked="{x:Bind IsVisible, Mode=TwoWay}" Style="{StaticResource VisibilityToggleButtonStyle}" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" />
+                        <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ApplicationForegroundThemeBrush}" Padding="0" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" >
                             <Button.Flyout>
                                 <MenuFlyout Placement="RightEdgeAlignedTop">
                                     <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" Click="ZoomToItem_Click" />

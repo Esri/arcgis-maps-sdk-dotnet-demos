@@ -17,6 +17,8 @@
                 <ResourceDictionary Source="ms-appx:///ApplicationConfiguration.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <conv:RuntimeImageConverter x:Key="RuntimeImageConverter" />
+            <conv:NullToFalseConverter x:Key="NullToFalseConverter" />
+            <conv:NullToTrueConverter x:Key="NullToTrueConverter" />
             <Style TargetType="ToggleButton" x:Key="VisibilityToggleButtonStyle">
                 <Setter Property="Template">
                     <Setter.Value>
