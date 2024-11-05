@@ -47,36 +47,36 @@
                     </StackPanel>
                 </controls:CollapsiblePanelItem>
                 <!--<NavigationViewItemSeparator />-->
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" Title="Layers" x:Name="LayersPane" IsSelected="True" ContentTitle="Layers">
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Layers, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Layers" x:Name="LayersPane" IsSelected="True">
                     <controls:LayerListView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" GeoViewController="{x:Bind PageVM.ViewController, Mode=OneWay}" Grid.Row="1" />
                 </controls:CollapsiblePanelItem>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" Title="Tables" ContentTitle="Tables" >
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Tables" >
                     <controls:TableListView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" />
                 </controls:CollapsiblePanelItem>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" Title="Basemap" x:Name="BasemapPane" ContentTitle="Basemap">
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Basemap, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Basemap" x:Name="BasemapPane">
                     <tk:BasemapGallery GalleryViewStyle="Grid"  GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" Visibility="{x:Bind BasemapPane.IsSelected, Mode=OneWay}" BorderThickness="0" />
                 </controls:CollapsiblePanelItem>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" Title="Charts" IsEnabled="False" />
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" Title="Legend" x:Name="LegendPane" ContentTitle="Legend">
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=GraphBar, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Charts" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Legend, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Legend" x:Name="LegendPane">
                     <tk:Legend GeoView="{x:Bind geoViewWrapper.GeoView}" Visibility="{x:Bind LegendPane.IsSelected, Mode=OneWay}" />
                 </controls:CollapsiblePanelItem>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" Title="Bookmarks" ContentTitle="Bookmarks" >
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Bookmarks" ContentTitle="Bookmarks" >
                     <StackPanel>
                         <tk:BookmarksView GeoView="{x:Bind geoViewWrapper.GeoView}" />
                         <Button Click="AddBookmark_Click" Content="Add Bookmark" HorizontalAlignment="Center" Padding="30,7" />
                     </StackPanel>
                 </controls:CollapsiblePanelItem>
                 <!--<NavigationViewItemSeparator />-->
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" Title="Save and open" IsEnabled="False" />
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" Title="Map properties" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_SaveOpen" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_MapProperties" IsEnabled="False" />
                 <!--<NavigationViewItemSeparator />-->
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Share, Scale = Small, SymbolSize=20}" Title="Share map" IsEnabled="False" />
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" Title="Print" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Share, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_ShareMap" IsEnabled="False" />
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Print" IsEnabled="False" />
                 <!--<NavigationViewItemSeparator />-->
             </controls:CollapsiblePanel.Items>
 
             <controls:CollapsiblePanel.FooterItems>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Title="About" ContentTitle="About">
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_About">
                     <StackPanel Padding="5">
                         <Grid Background="{ThemeResource CalciteUIBackground3Color}" Padding="16,5" Margin="-5,-5,-5,0" Height="40">
                             <TextBlock Text="{x:Bind AppVM.PortalItem.Title, Mode=OneWay}" Style="{StaticResource NavigationViewItemHeaderTextStyle}" />

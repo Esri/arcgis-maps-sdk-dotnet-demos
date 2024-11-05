@@ -180,4 +180,58 @@
   <data name="Loading" xml:space="preserve">
     <value>Loading...</value>
   </data>
+  <data name="StartupScreen_WaitingForBrowserSignIn" xml:space="preserve">
+    <value>Waiting for sign in... Check your browser.</value>
+  </data>
+  <data name="StartupScreen_FailedToSignIn" xml:space="preserve">
+    <value>Failed to sign in: {0}</value>
+  </data>
+  <data name="LeftPanel_Layers.Title" xml:space="preserve">
+    <value>Layers</value>
+  </data>
+  <data name="LeftPanel_Tables.Title" xml:space="preserve">
+    <value>Tables</value>
+  </data>
+  <data name="LeftPanel_Basemap.Title" xml:space="preserve">
+    <value>Basemap</value>
+  </data>
+  <data name="LeftPanel_Charts.Title" xml:space="preserve">
+    <value>Charts</value>
+  </data>
+  <data name="LeftPanel_Legend.Title" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="LeftPanel_Bookmarks.Title" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
+  <data name="LeftPanel_SaveOpen.Title" xml:space="preserve">
+    <value>Save and open</value>
+  </data>
+  <data name="LeftPanel_MapProperties.Title" xml:space="preserve">
+    <value>Map properties</value>
+  </data>
+  <data name="LeftPanel_ShareMap.Title" xml:space="preserve">
+    <value>Share map</value>
+  </data>
+  <data name="LeftPanel_Print.Title" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="LeftPanel_About.Title" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="LeftPanel_About.ContentTitle" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="LeftPanel_Tables.ContentTitle" xml:space="preserve">
+    <value>Tables</value>
+  </data>
+  <data name="LeftPanel_Layers.ContentTitle" xml:space="preserve">
+    <value>Layers</value>
+  </data>
+  <data name="LeftPanel_Basemap.ContentTitle" xml:space="preserve">
+    <value>Basemap</value>
+  </data>
+  <data name="LeftPanel_Legend.ContentTitle" xml:space="preserve">
+    <value>Legend</value>
+  </data>
 </root>

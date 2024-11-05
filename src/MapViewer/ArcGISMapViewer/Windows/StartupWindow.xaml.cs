@@ -88,7 +88,7 @@ namespace ArcGISMapViewer.Windows
 
             try
             {
-                signinstatus.Text = "Waiting for sign in... Check your browser.";
+                signinstatus.Text = Resources.GetString("StartupScreen_WaitingForBrowserSignIn");
                 ArcGISPortal arcgisPortal = await ArcGISPortal.CreateAsync(serviceUri, true);
                 SigninTask?.TrySetResult(arcgisPortal.User!);
                 signinstatus.Text = string.Empty;
@@ -98,7 +98,7 @@ namespace ArcGISMapViewer.Windows
             }
             catch (Exception ex)
             {
-                signinstatus.Text = "Failed to sign in: " + ex.Message;
+                signinstatus.Text = Resources.GetString("StartupScreen_FailedToSignIn");
             }
             WindowExtensions.SetForegroundWindow(this);
         }
