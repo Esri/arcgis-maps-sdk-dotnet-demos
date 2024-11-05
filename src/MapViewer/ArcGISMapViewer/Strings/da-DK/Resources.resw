@@ -121,162 +121,162 @@
     <value>MapViewer</value>
   </data>
   <data name="AppNamePoweredBy" xml:space="preserve">
-    <value>MapViewer - Powered by ArcGIS Maps SDK for .NET</value>
+    <value>MapViewer - Understøttet af ArcGIS Maps SDK for .NET</value>
   </data>
   <data name="CheckingLicenseStatus" xml:space="preserve">
-    <value>Checking license...</value>
+    <value>Checker for licens...</value>
   </data>
   <data name="FinishingUpStatus" xml:space="preserve">
-    <value>Finishing up...</value>
+    <value>Næsten færdig...</value>
   </data>
   <data name="GeometryEditor_AddPart" xml:space="preserve">
-    <value>Add Part</value>
+    <value>Tilføj del</value>
   </data>
   <data name="GeometryEditor_Cancel" xml:space="preserve">
-    <value>Cancel draw</value>
+    <value>Afbryd tegning</value>
   </data>
   <data name="GeometryEditor_ClearSelection" xml:space="preserve">
-    <value>Clear selection</value>
+    <value>Fjern valg</value>
   </data>
   <data name="GeometryEditor_CompleteDraw" xml:space="preserve">
-    <value>Complete draw</value>
+    <value>Accepter tegning</value>
   </data>
   <data name="GeometryEditor_DeleteSelection" xml:space="preserve">
-    <value>Delete selection</value>
+    <value>Slet valg</value>
   </data>
   <data name="GetLicenseFromPortalError" xml:space="preserve">
-    <value>Could not get a valid ArcGIS Maps SDK license from the portal. Portal returned: {0}</value>
+    <value>Kunne ikke hente en ArcGIS Maps SDK licens fra portalen. Portal returnerede: {0}</value>
   </data>
   <data name="GettingUpdatedLicenseStatus" xml:space="preserve">
-    <value>Getting updated license...</value>
+    <value>Opdaterer licens...</value>
   </data>
   <data name="InitializingMapsSDKStatus" xml:space="preserve">
-    <value>Initializing ArcGIS Maps SDK...</value>
+    <value>Initialiserer ArcGIS Maps SDK...</value>
   </data>
   <data name="LoadingUserStatus" xml:space="preserve">
-    <value>Loading user...</value>
+    <value>Henter bruger...</value>
   </data>
   <data name="PoweredBy" xml:space="preserve">
-    <value>Powered by ArcGIS Maps SDK for .NET</value>
+    <value>Understøttet af ArcGIS Maps SDK for .NET</value>
   </data>
   <data name="Redo" xml:space="preserve">
-    <value>Redo</value>
+    <value>Gendan</value>
   </data>
   <data name="SigningIntoArcGISOnlineStatus" xml:space="preserve">
-    <value>Signing into ArcGIS Online...</value>
+    <value>Logger ind på ArcGIS Online...</value>
   </data>
   <data name="Undo" xml:space="preserve">
-    <value>Undo</value>
+    <value>Fortryd</value>
   </data>
   <data name="StartupScreen_ArcGISOnlineAccountIsRequired.Text" xml:space="preserve">
-    <value>An ArcGIS Online Account is required to use this application</value>
+    <value>En ArcGIS Online konto er krævet for a bruge dette program</value>
   </data>
   <data name="StartupScreen_SignInTitle.Text" xml:space="preserve">
-    <value>Sign into ArcGIS Online</value>
+    <value>Log ind på ArcGIS Online</value>
   </data>
   <data name="StartupScreen_SignInButton.Content" xml:space="preserve">
-    <value>Sign In</value>
+    <value>Log ind</value>
   </data>
   <data name="Loading" xml:space="preserve">
-    <value>Loading...</value>
+    <value>Loader...</value>
   </data>
   <data name="StartupScreen_WaitingForBrowserSignIn" xml:space="preserve">
-    <value>Waiting for sign in... Check your browser.</value>
+    <value>Venter på login... Check din browser.</value>
   </data>
   <data name="StartupScreen_FailedToSignIn" xml:space="preserve">
-    <value>Failed to sign in: {0}</value>
-  </data>
+    <value>Kunne ikke logge ind: {0}</value>
+ </data>
   <data name="LeftPanel_Layers.Title" xml:space="preserve">
-    <value>Layers</value>
+    <value>Lag</value>
   </data>
   <data name="LeftPanel_Tables.Title" xml:space="preserve">
-    <value>Tables</value>
+    <value>Tabeller</value>
   </data>
   <data name="LeftPanel_Basemap.Title" xml:space="preserve">
-    <value>Basemap</value>
+    <value>Baggrundskort</value>
   </data>
   <data name="LeftPanel_Charts.Title" xml:space="preserve">
-    <value>Charts</value>
+    <value>Diagrammer</value>
   </data>
   <data name="LeftPanel_Legend.Title" xml:space="preserve">
-    <value>Legend</value>
+    <value>Signaturforklaring</value>
   </data>
   <data name="LeftPanel_Bookmarks.Title" xml:space="preserve">
-    <value>Bookmarks</value>
+    <value>Bogmærker</value>
   </data>
   <data name="LeftPanel_SaveOpen.Title" xml:space="preserve">
-    <value>Save and open</value>
+    <value>Gem og åbn</value>
   </data>
   <data name="LeftPanel_MapProperties.Title" xml:space="preserve">
-    <value>Map properties</value>
+    <value>Kortegenskaber</value>
   </data>
   <data name="LeftPanel_ShareMap.Title" xml:space="preserve">
-    <value>Share map</value>
+    <value>Del kort</value>
   </data>
   <data name="LeftPanel_Print.Title" xml:space="preserve">
-    <value>Print</value>
+    <value>Udskriv</value>
   </data>
   <data name="LeftPanel_About.Title" xml:space="preserve">
-    <value>About</value>
+    <value>Oplysninger</value>
   </data>
   <data name="LeftPanel_About.ContentTitle" xml:space="preserve">
-    <value>About</value>
+    <value>Oplysninger</value>
   </data>
   <data name="LeftPanel_Tables.ContentTitle" xml:space="preserve">
-    <value>Tables</value>
+    <value>Tabeller</value>
   </data>
   <data name="LeftPanel_Layers.ContentTitle" xml:space="preserve">
-    <value>Layers</value>
+    <value>Lag</value>
   </data>
   <data name="LeftPanel_Basemap.ContentTitle" xml:space="preserve">
-    <value>Basemap</value>
+    <value>Baggrundskort</value>
   </data>
   <data name="LeftPanel_Legend.ContentTitle" xml:space="preserve">
-    <value>Legend</value>
-  </data>
+    <value>Signaturforklaring</value>
+  </data>  
   <data name="LeftPanel_Add.Title" xml:space="preserve">
-    <value>Add</value>
+    <value>Tilføj</value>
   </data>
   <data name="LeftPanel_Add.ContentTitle" xml:space="preserve">
-    <value>Add Data</value>
+    <value>Tilføj data</value>
   </data>
   <data name="RightPanel_Properties.Title" xml:space="preserve">
-    <value>Properties</value>
+    <value>Egenskaber</value>
   </data>
   <data name="RightPanel_Styles.Title" xml:space="preserve">
-    <value>Styles</value>
+    <value>Typografier</value>
   </data>
   <data name="RightPanel_Filter.Title" xml:space="preserve">
-    <value>Filter</value>
+    <value>Filtrér</value>
   </data>
   <data name="RightPanel_Effects.Title" xml:space="preserve">
-    <value>Effects</value>
+    <value>Effekter</value>
   </data>
   <data name="RightPanel_Aggregation.Title" xml:space="preserve">
-    <value>Aggregation</value>
+    <value>Sammenlægning</value>
   </data>
   <data name="RightPanel_Popups.Title" xml:space="preserve">
     <value>Pop-ups</value>
   </data>
   <data name="RightPanel_Fields.Title" xml:space="preserve">
-    <value>Fields</value>
+    <value>Felter</value>
   </data>
   <data name="RightPanel_Labels.Title" xml:space="preserve">
-    <value>Title</value>
+    <value>Etiketter</value>
   </data>
   <data name="RightPanel_Charts.Title" xml:space="preserve">
-    <value>Charts</value>
+    <value>Diagrammer</value>
   </data>
   <data name="RightPanel_Charts.ContentTitle" xml:space="preserve">
-    <value>Chart Settings</value>
+    <value>Konfigurer diagrammer</value>
   </data>
   <data name="RightPanel_Edit.Title" xml:space="preserve">
-    <value>Edit</value>
+    <value>Redigér</value>
   </data>
   <data name="RightPanel_AddSketch.Title" xml:space="preserve">
-    <value>Add sketch</value>
+    <value>Tilføj skitse</value>
   </data>
   <data name="RightPanel_MapTools.Title" xml:space="preserve">
-    <value>Map tools</value>
+    <value>Kortværktøjer</value>
   </data>
 </root>
