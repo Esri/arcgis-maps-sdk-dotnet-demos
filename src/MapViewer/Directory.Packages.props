@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.RangeSelector" Version="8.2.241112-preview1" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0-preview2" />
+    <PackageVersion Include="WinUIEx" Version="2.4.2" />
+
+    <PackageVersion Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.6.0-daily4420" />
+	<PackageVersion Include="Esri.Calcite.WinUI" Version="0.1.0-113.g51cb8e02b6" />
+
+  </ItemGroup>
+</Project>
