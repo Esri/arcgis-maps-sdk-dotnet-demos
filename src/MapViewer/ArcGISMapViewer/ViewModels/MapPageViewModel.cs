@@ -32,7 +32,7 @@ namespace ArcGISMapViewer.ViewModels
         public MyViewController ViewController { get; } = new MyViewController();
 
         [ObservableProperty]
-        private Feature? currentFeature;
+        public partial Feature? CurrentFeature { get; set; }
 
         partial void OnCurrentFeatureChanged(Feature? oldValue, Feature? newValue)
         {
@@ -53,7 +53,7 @@ namespace ArcGISMapViewer.ViewModels
         }
 
         [ObservableProperty]
-        private FeatureForm? _featureForm;
+        public partial FeatureForm? FeatureForm { get; set; }
 
         partial void OnFeatureFormChanged(FeatureForm? value)
         {

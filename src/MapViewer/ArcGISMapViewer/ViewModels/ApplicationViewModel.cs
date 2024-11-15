@@ -40,12 +40,13 @@ public partial class ApplicationViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private LocationDataSource _LocationDataSource = LocationDataSource.CreateDefault();
+    public partial LocationDataSource LocationDataSource { get; set; } = LocationDataSource.CreateDefault();
 
     public AppSettings AppSettings { get; } = new AppSettings();
 
     [ObservableProperty]
-    private GeoModel? _geoModel;
+    public partial GeoModel? GeoModel { get; set; }
+
     partial void OnGeoModelChanged(GeoModel? oldValue, GeoModel? newValue)
     {
         if (newValue is Map || oldValue is Map)
@@ -66,7 +67,7 @@ public partial class ApplicationViewModel : ObservableObject
     public bool Is3D => GeoModel is Scene;
 
     [ObservableProperty]
-    private PortalItem? portalItem;
+    public partial PortalItem? PortalItem { get; set; }
 
     partial void OnPortalItemChanged(PortalItem? value)
     {
@@ -112,7 +113,7 @@ public partial class ApplicationViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _windowSubTitle = string.Empty;
+    public partial string WindowSubTitle { get; set; } = string.Empty;
 
     private PortalUser? _PortalUser;
 
@@ -128,9 +129,9 @@ public partial class ApplicationViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private bool _isMapVisible;
+    public partial bool IsMapVisible { get; set; }
     [ObservableProperty]
-    private bool _isAppMenuVisible = true;
+    public partial bool IsAppMenuVisible { get; set; } = true;
     partial void OnIsAppMenuVisibleChanged(bool value)
     {
         IsMapVisible = !value;

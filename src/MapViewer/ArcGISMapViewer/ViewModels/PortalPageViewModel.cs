@@ -99,10 +99,10 @@ namespace ArcGISMapViewer.ViewModels
         }
 
         [ObservableProperty]
-        private string? _searchError;
+        public partial string? SearchError { get; set; }
 
         [ObservableProperty]
-        private PortalItemQuerySource? _mapItems = PortalItemQuerySource.Empty;
+        public partial PortalItemQuerySource? MapItems { get; set; } = PortalItemQuerySource.Empty;
 
         public partial class PortalItemQuerySource : ObservableCollection<PortalItem>, ISupportIncrementalLoading
         {
