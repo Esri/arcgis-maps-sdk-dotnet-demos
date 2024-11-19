@@ -10,8 +10,10 @@
         <local:BoolToVisibilityConverter x:Key="converter" />
     </UserControl.Resources>
     <StackPanel>
-        <StackPanel Background="CornflowerBlue">
-            <CheckBox Foreground="White" Margin="5" Content="Snapping Enabled " IsChecked="{Binding IsSnappingEnabled}"/>
+        <StackPanel Background="{DynamicResource CalciteUIBackground3Brush}">
+            <CheckBox Foreground="{DynamicResource CalciteUIText1Brush}" Margin="5" IsChecked="{Binding IsSnappingEnabled}">
+                <TextBlock Text="Snapping Enabled" />
+            </CheckBox>
         </StackPanel>
         <ListView ItemsSource="{Binding SnapSourceSettings}" Visibility="{Binding IsSnappingEnabled, Converter={StaticResource converter}}">
             <ListView.ItemContainerStyle>
