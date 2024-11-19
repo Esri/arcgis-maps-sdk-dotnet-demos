@@ -40,12 +40,12 @@
                     <DataTemplate>
                         <StackPanel Width="25" >
                             <local:SnrBar SatelliteInfo="{Binding}" 
-                                          BorderBrush="Gray" BorderThickness="1"
+                                          BorderBrush="{DynamicResource CalciteUIBorder1Brush}" BorderThickness="1"
                                           Background="{Binding Converter={StaticResource SatelliteVechicleColorConverter}}"
                                           Margin="5,-1" Height="{Binding ActualHeight, ElementName=GridLines}" >
                             </local:SnrBar>
                             <TextBlock Text="{Binding Converter={StaticResource SatelliteNumberConverter}}" 
-                                       Foreground="Black" FontSize="10" Width="50" VerticalAlignment="Top"
+                                       Foreground="{DynamicResource CalciteUIText1Brush}" FontSize="10" Width="50" VerticalAlignment="Top"
                                        RenderTransformOrigin="0,0" Margin="13,0,-40,0">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="45"/>

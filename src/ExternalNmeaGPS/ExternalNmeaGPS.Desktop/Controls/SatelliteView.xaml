@@ -25,7 +25,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
          </Grid.ColumnDefinitions>
-         <Ellipse Stroke="Black" StrokeThickness="1"
+            <Ellipse Stroke="{DynamicResource CalciteUIText1Brush}" StrokeThickness="1"
                 Grid.RowSpan="4" Grid.ColumnSpan="4">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
@@ -37,13 +37,13 @@
                 </Ellipse.Fill>
          
          </Ellipse>
-         <Ellipse Stroke="Black" StrokeThickness="1"
+         <Ellipse Stroke="{DynamicResource CalciteUIText1Brush}" StrokeThickness="1"
                 Grid.Row="1" Grid.Column="1"
                 Grid.RowSpan="2" Grid.ColumnSpan="2">
 
          </Ellipse>
 
-         <Path Stroke="Black" StrokeThickness="1"
+         <Path Stroke="{DynamicResource CalciteUIText1Brush}" StrokeThickness="1"
               Grid.RowSpan="4" Grid.ColumnSpan="4"
               Stretch="Fill"
               Data="M0,1 L 2,1 M 1,0 L 1,2" />
