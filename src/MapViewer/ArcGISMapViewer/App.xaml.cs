@@ -36,6 +36,7 @@ namespace ArcGISMapViewer
         /// </summary>
         public App()
         {
+#if DEBUG
             UnhandledException += (sender, e) =>
             {
                 if (global::System.Diagnostics.Debugger.IsAttached)
@@ -47,9 +48,13 @@ namespace ArcGISMapViewer
                     }
                 }
             };
+#endif
 
+#if !DISABLE_XAML_GENERATED_MAIN // With custom main, we'd rather want to do this code in main
             if (WinUIEx.WebAuthenticator.CheckOAuthRedirectionActivation())
                 return;
+            fss = SimpleSplashScreen.ShowDefaultSplashScreen();
+#endif
             this.InitializeComponent();
             // Initialize the ArcGIS Maps SDK runtime before any components are created.
             ArcGISRuntimeEnvironment.Initialize(config => config
@@ -59,6 +64,8 @@ namespace ArcGISMapViewer
             );
         }
 
+        internal SimpleSplashScreen? SimpleSplashScreen { get; set; }
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -67,9 +74,39 @@ namespace ArcGISMapViewer
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new Windows.StartupWindow();
+            m_window.Activated += StartupWindow_Activated;
             m_window.Activate();
+            SimpleSplashScreen?.Hide(TimeSpan.FromSeconds(1));
+            SimpleSplashScreen = null;
+        }
+
+        private void StartupWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            m_window.Activated -= StartupWindow_Activated;
         }
 
         private Window? m_window;
     }
+
+#if DISABLE_XAML_GENERATED_MAIN
+    /// <summary>
+    /// Program class
+    /// </summary>
+    public static class Program
+    {
+        [global::System.STAThreadAttribute]
+        static void Main(string[] args)
+        {
+            if (WebAuthenticator.CheckOAuthRedirectionActivation(true))
+                return;
+            var splash = SimpleSplashScreen.ShowDefaultSplashScreen();
+            global::WinRT.ComWrappersSupport.InitializeComWrappers();
+            global::Microsoft.UI.Xaml.Application.Start((p) => {
+                var context = new global::Microsoft.UI.Dispatching.DispatcherQueueSynchronizationContext(global::Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
+                global::System.Threading.SynchronizationContext.SetSynchronizationContext(context);
+                new App() { SimpleSplashScreen = splash };
+            });
+        }
+    }
+#endif
 }
