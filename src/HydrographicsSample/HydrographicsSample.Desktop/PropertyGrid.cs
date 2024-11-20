@@ -59,7 +59,7 @@ namespace HydrographicsSample
                 BindingMode bindingMode = item.CanWrite ? BindingMode.TwoWay : BindingMode.OneWay;
 
                 displayName = System.Text.RegularExpressions.Regex.Replace(displayName, "(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])", " $1", RegexOptions.Compiled).Trim();
-                TextBlock text = new TextBlock() { Text = displayName };
+                TextBlock text = new TextBlock() { Text = displayName, Opacity = .5, Margin = new Thickness(0,5,0,2) };
                 if (item.PropertyType != typeof(bool))
                     Children.Add(text);
                 if (item.PropertyType == typeof(bool))

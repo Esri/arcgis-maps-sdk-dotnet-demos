@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HydrographicsSample"
         xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
-        mc:Ignorable="d"
+        xmlns:ca="http://schemas.esri.com/calcite/2024"
+        mc:Ignorable="d" Style="{StaticResource CalciteWindowStyle}"
         Title="ArcGIS Maps SDK - ENC Demo App" Height="800" Width="1200">
     <Grid>
 
@@ -37,7 +38,7 @@
         </Menu>
 
         <!--Bottom Status bar area-->
-        <Grid Background="LightGray" Grid.Row="2" Grid.ColumnSpan="3">
+        <Grid Background="{DynamicResource CalciteUIBackground3Brush}" Grid.Row="2" Grid.ColumnSpan="3">
             <TextBlock Text="" x:Name="status" />
             <Grid HorizontalAlignment="Right" Width="200" VerticalAlignment="Stretch" >
                 <ProgressBar x:Name="progress" HorizontalAlignment="Stretch" />
@@ -51,7 +52,7 @@
                       LayerViewStateChanged="mapView_LayerViewStateChanged" 
                       GeoViewTapped="mapView_GeoViewTapped" />
 
-        <Border x:Name="LoadingProgressPanel" BorderBrush="Black" BorderThickness="1" CornerRadius="2" Grid.Row="1" Grid.Column="2" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <Border x:Name="LoadingProgressPanel" BorderBrush="{DynamicResource CalciteUIBorder1Brush}" BorderThickness="1" CornerRadius="2" Grid.Row="1" Grid.Column="2" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <Grid>
                 <StackPanel Margin="20">
                     <TextBlock Text="Loading cells..." />
@@ -60,26 +61,26 @@
                         <TextBlock Text="{Binding Text, ElementName=progressText}" HorizontalAlignment="Center" />
                     </Grid>
                 </StackPanel>
-                <Button Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Background="White"  Width="20" Height="20" BorderThickness="0" Margin="2" Click="LoadingPanelCloseButton_Click" />
+                <Button Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Height="20" BorderThickness="0" Margin="2" Click="LoadingPanelCloseButton_Click" />
             </Grid>
         </Border>
 
         <!--Panel used for display identify results-->
-        <local:IdentifyResultsPanel BorderBrush="Black" BorderThickness="1,0,0,0" Grid.Row="1" Grid.Column="2"
-                                    HorizontalAlignment="Right" Width="250" Visibility="Hidden" Background="#BBFFFFFF"
+        <local:IdentifyResultsPanel BorderBrush="{DynamicResource CalciteUIBorder1Brush}" BorderThickness="1,0,0,0" Grid.Row="1" Grid.Column="2"
+                                    HorizontalAlignment="Right" Width="250" Visibility="Hidden" Background="{DynamicResource CalciteUIBackgroundBrush}"
                                     x:Name="sidePanel" Opened="sidePanel_Opened" Closed="sidePanel_Closed"  ZoomButtonClicked="sidePanel_ZoomButtonClicked"/>
 
         <GridSplitter Grid.Column="1" Grid.Row="1" 
                         HorizontalAlignment="Left" 
                         VerticalAlignment="Stretch"
-                        Background="Gray" 
+                        Background="{DynamicResource CalciteUIBorder1Brush}" 
                         ShowsPreview="true"
                         Width="5"/>
 
         <!--Display properties panel-->
-        <TabControl Grid.Row="1" Background="White">
+        <TabControl Grid.Row="1" Background="{DynamicResource CalciteUIBackgroundBrush}">
             <TabItem Header="Display">
-                <ScrollViewer Padding="5" >
+                <ScrollViewer Padding="10" >
                     <local:PropertyGrid x:Name="DisplayPropertiesPanel">
                         <local:PropertyGrid.Overrides>
                             <local:OverrideList>
@@ -92,12 +93,12 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Text Groups">
-                <ScrollViewer Padding="5" >
+                <ScrollViewer Padding="10" >
                     <local:PropertyGrid x:Name="S52TextGroupPropertiesPanel"/>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="View Groups">
-                <ScrollViewer Padding="5" >
+                <ScrollViewer Padding="10" >
                     <local:PropertyGrid x:Name="S52ViewGroupPropertiesPanel"/>
                 </ScrollViewer>
             </TabItem>
@@ -118,8 +119,8 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="{Binding Name}" Margin="0,0,0,5" FontWeight="Bold"/>
-                                    <Button Content="&#x1F50D;" BorderThickness="0" Background="{x:Null}" Height="20" Width="20" Click="ZoomToLayer_Click" Grid.Column="1" />
-                                    <Button FontFamily="Webdings" Content="r" BorderThickness="0" Background="{x:Null}" Height="20" Width="20" Click="RemoveLayer_Click" Grid.Column="2" />
+                                    <Button ca:Calcite.Symbol="ZoomInFixed" BorderThickness="0" Background="{x:Null}" Click="ZoomToLayer_Click" Grid.Column="1" />
+                                    <Button ca:Calcite.Symbol="Trash" BorderThickness="0" Background="Transparent" Click="RemoveLayer_Click" Grid.Column="2" />
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

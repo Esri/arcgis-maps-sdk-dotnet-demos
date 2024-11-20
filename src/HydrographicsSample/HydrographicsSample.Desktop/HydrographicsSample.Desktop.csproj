@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.3.0" />
     <PackageReference Include="Esri.ArcGISRuntime.Hydrography" Version="200.3.0" />
+    <PackageReference Include="Esri.Calcite.Wpf" Version="0.1.0-129.ga34ef59e09" />
   </ItemGroup>
   
   <ItemGroup>
