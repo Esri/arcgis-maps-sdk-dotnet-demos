@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.Maui" Version="200.3.0" />
+    <PackageReference Include="Esri.Calcite.Maui" Version="0.1.0-128.g6211a35c70" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
   </ItemGroup>
   <Import Project="..\RoutingSample.Shared\RoutingSample.Shared.projitems" Label="Shared" />
 

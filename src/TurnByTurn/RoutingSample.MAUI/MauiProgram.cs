@@ -1,4 +1,5 @@
 ﻿using Esri.ArcGISRuntime.Maui;
+using Esri.Calcite.Maui;
 
 namespace RoutingSample.MAUI
 {
@@ -14,7 +15,7 @@ namespace RoutingSample.MAUI
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 })
-                .UseArcGISRuntime();
+                .UseArcGISRuntime().UseCalcite();
 
             return builder.Build();
         }
