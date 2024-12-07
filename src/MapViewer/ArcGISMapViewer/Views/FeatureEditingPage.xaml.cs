@@ -14,6 +14,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Mapping.FeatureForms;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace ArcGISMapViewer.Views
 {
@@ -84,9 +85,12 @@ namespace ArcGISMapViewer.Views
 
         private async void Update_Click(object sender, RoutedEventArgs e)
         {
+            if (FeatureForm is null) return;
             try
             {
                 await FeatureFormView.FinishEditingAsync();
+                SendEditChangedEvent(FeatureForm);
+                EditingEnded?.Invoke(this, EventArgs.Empty);
             }
             catch(System.Exception ex)
             {
@@ -97,13 +101,13 @@ namespace ArcGISMapViewer.Views
                     PrimaryButtonText = "OK",
                     XamlRoot = XamlRoot
                 };
-                var result = await dialog.ShowAsync();
+                await dialog.ShowAsync();
             }
-            EditingEnded?.Invoke(this, EventArgs.Empty);
         }
 
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
+            if (FeatureForm is null || FeatureForm.Feature.FeatureTable is null) return;
             ContentDialog dialog = new ContentDialog
             {
                 Title = "Delete Feature?",
@@ -114,10 +118,36 @@ namespace ArcGISMapViewer.Views
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                _ = FeatureForm?.Feature.FeatureTable?.DeleteFeatureAsync(FeatureForm.Feature);
-                FeatureForm = null;
+                try
+                {
+                    await FeatureForm.Feature.FeatureTable.DeleteFeatureAsync(FeatureForm.Feature);
+                    SendEditChangedEvent(FeatureForm);
                 EditingEnded?.Invoke(this, EventArgs.Empty);
+                    FeatureForm = null;
             }
+                catch (System.Exception ex)
+                {
+                    ContentDialog errdialog = new ContentDialog
+                    {
+                        Title = ex.Message,
+
+                        PrimaryButtonText = "OK",
+                        XamlRoot = XamlRoot
+                    };
+                    await errdialog.ShowAsync();
+                }
+            }
+        }
+
+        private void SendEditChangedEvent(FeatureForm form)
+        {
+            var feature = form.Feature;
+            WeakReferenceMessenger.Default.Send(new FeatureEditedMessage() { Feature = form.Feature });
+        }
+
+        public class FeatureEditedMessage
+        {
+            public Feature? Feature { get; set; }
         }
 
         public event EventHandler? EditingEnded;
