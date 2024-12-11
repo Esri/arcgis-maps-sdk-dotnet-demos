@@ -8,6 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <local:BoolToVisibilityConverter x:Key="converter" />
+        <local:LayerTypeToNameConverter x:Key="LayerTypeToNameConverter"/>
     </UserControl.Resources>
     <StackPanel>
         <StackPanel Background="CornflowerBlue">
@@ -21,7 +22,7 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsEnabled}" Content="{Binding Source.Name}" />
+                    <CheckBox IsChecked="{Binding IsEnabled}" Content="{Binding Source, Converter={StaticResource LayerTypeToNameConverter}}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

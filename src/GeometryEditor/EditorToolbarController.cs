@@ -18,7 +18,7 @@ namespace EditorDemo
     {
         private readonly MyGeometryEditor editor = new MyGeometryEditor();
         private readonly GeometryEditor lineInputEditor = new GeometryEditor();
-        private readonly GraphicsOverlay EditorOverlay = new GraphicsOverlay();
+        private readonly GraphicsOverlay EditorOverlay = new GraphicsOverlay() { Id = "Select Feature" };
 
         public EditorToolbarController()
         {
