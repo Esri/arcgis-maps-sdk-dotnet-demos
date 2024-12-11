@@ -6,9 +6,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
 
 namespace KmlViewer.Controls
 {
@@ -33,8 +33,6 @@ namespace KmlViewer.Controls
 			((KmlTreeView)d).UpdateVisibilityBoxes();
 		}
 
-		
-
 		public KmlNode KmlFeature
 		{
 			get { return (KmlNode)GetValue(KmlFeatureProperty); }
@@ -58,13 +56,13 @@ namespace KmlViewer.Controls
 			var e2 = GetTemplateChild("VisibilityRadioButton") as FrameworkElement;
 			if (ParentNode is KmlContainer && ((KmlContainer)ParentNode).ListItemType == KmlListItemType.RadioFolder)
 			{
-				if (e1 != null) e1.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-				if (e2 != null) e2.Visibility = Windows.UI.Xaml.Visibility.Visible;
+				if (e1 != null) e1.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+				if (e2 != null) e2.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
 			}
 			else
 			{
-				if (e1 != null) e1.Visibility = Windows.UI.Xaml.Visibility.Visible;
-				if (e2 != null) e2.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+				if (e1 != null) e1.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+				if (e2 != null) e2.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
 			}
 		}
 		private void UpdateShowChildren(KmlNode oldNode, KmlNode newNode)
@@ -92,9 +90,9 @@ namespace KmlViewer.Controls
 			}
 		}
 
-		void elm_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+		void elm_DoubleTapped(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
 		{
-			var parent = Windows.UI.Xaml.Media.VisualTreeHelper.GetParent(this);
+			var parent = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(this);
 			KmlTreeView topTree = null;
 			while (parent != null)
 			{
@@ -104,14 +102,14 @@ namespace KmlViewer.Controls
 					if (topTree.FeatureDoubleTapped != null)
 						topTree.FeatureDoubleTapped(this, KmlFeature);
 				}
-				parent = Windows.UI.Xaml.Media.VisualTreeHelper.GetParent(parent);
+				parent = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(parent);
 			}
 		}
 
-		private void elm_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+		private void elm_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
 		{
 			//walk the tree and raise on top-most treeview or anyone else listening on the way up
-			var parent = Windows.UI.Xaml.Media.VisualTreeHelper.GetParent(this);
+			var parent = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(this);
 			KmlTreeView topTree = null;
 			while(parent != null)
 			{
@@ -121,7 +119,7 @@ namespace KmlViewer.Controls
 					if (topTree.FeatureTapped != null)
 						topTree.FeatureTapped(this, KmlFeature);
 				}
-				parent = Windows.UI.Xaml.Media.VisualTreeHelper.GetParent(parent);
+				parent = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(parent);
 			}
 		}
 		public event EventHandler<KmlNode> FeatureTapped;

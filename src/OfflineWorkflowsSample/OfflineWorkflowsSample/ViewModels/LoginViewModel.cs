@@ -20,7 +20,6 @@ namespace OfflineWorkflowSample.ViewModels
         // TODO - Make sure these are up to date with the registration in ArcGIS Online or your portal.
 #warning These settings must be updated first before building and running. Delete this line when done:
         private const string AppClientId = "YOUR_APP_CLIENT_ID_HERE";
-        private const string ClientSecret = "GET IT FROM https://developers.arcgis.com/applications/";
         private const string OAuthRedirectUrl = @"DON'T FORGET A REDIRECT URL";
         private const string ArcGISOnlinePortalUrl = "https://www.arcgis.com/sharing/rest";
 
@@ -163,25 +162,8 @@ namespace OfflineWorkflowSample.ViewModels
         {
             if (AppClientId == "YOUR_APP_CLIENT_ID_HERE")
                 throw new InvalidOperationException("Please configure your OAuth settings in LoginViewModel.cs");
-            // Register the server information with the AuthenticationManager.
-            ServerInfo serverInfo = new ServerInfo(new Uri(_portalUrl))
-            {
-                TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit,
-
-                OAuthClientInfo = new OAuthClientInfo(AppClientId, new Uri(OAuthRedirectUrl))
-            };
-
-            // If a client secret has been configured, set the authentication type to OAuthAuthorizationCode.
-            if (!String.IsNullOrEmpty(ClientSecret))
-            {
-                // Use OAuthAuthorizationCode if you need a refresh token (and have specified a valid client secret).
-                serverInfo.TokenAuthenticationType = TokenAuthenticationType.OAuthImplicit;
-                serverInfo.OAuthClientInfo.ClientSecret = ClientSecret;
-            }
-
-
-            // Register this server with AuthenticationManager.
-            AuthenticationManager.Current.RegisterServer(serverInfo);
+            // Register the appllication authentication with the AuthenticationManager.
+            AuthenticationManager.Current.OAuthUserConfigurations.Add(new OAuthUserConfiguration(new Uri(_portalUrl), AppClientId, new Uri(OAuthRedirectUrl)));
 
             // Use a function in this class to challenge for credentials.
             AuthenticationManager.Current.ChallengeHandler = new ChallengeHandler(CreateOAuthCredentialAsync);

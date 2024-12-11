@@ -73,13 +73,8 @@ public partial class StartupPage : ContentPage
 
         AuthenticationManager.Current.Persistence = await CredentialPersistence.CreateDefaultAsync();
 
-        //Register server info for portal
-        ServerInfo portalServerInfo = new ServerInfo(AppSettings.PortalUri)
-        {
-            TokenAuthenticationType = TokenAuthenticationType.OAuthAuthorizationCode,
-            OAuthClientInfo = new OAuthClientInfo(AppSettings.OAuthClientId, AppSettings.OAuthRedirectUri)
-        };
-        AuthenticationManager.Current.RegisterServer(portalServerInfo);
+        //Register oauth app info for portal
+        AuthenticationManager.Current.OAuthUserConfigurations.Add(new OAuthUserConfiguration(AppSettings.PortalUri, AppSettings.OAuthClientId, AppSettings.OAuthRedirectUri));
 
         if (AuthenticationManager.Current.Credentials.Any())
         {

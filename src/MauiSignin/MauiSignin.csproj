@@ -32,8 +32,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Esri.ArcGISRuntime.Maui" Version="200.2.0" />
-        <PackageReference Include="WinUIEx" Version="2.3.3" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+        <PackageReference Include="Esri.ArcGISRuntime.Maui" Version="200.5.0" />
+        <PackageReference Include="WinUIEx" Version="2.3.4" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'" />
         <Using Include="Esri.ArcGISRuntime.Maui" />
         <Using Include="Esri.ArcGISRuntime.Mapping" />
     </ItemGroup>

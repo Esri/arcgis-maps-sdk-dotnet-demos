@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Windows.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Data;
 
 namespace KmlViewer
 {
@@ -16,14 +16,14 @@ namespace KmlViewer
 				if (parameter is string && ((string)parameter) == "reverse")
 					b = !b;
 				if (b)
-					return Windows.UI.Xaml.Visibility.Visible;
+					return Microsoft.UI.Xaml.Visibility.Visible;
 			}
-			return Windows.UI.Xaml.Visibility.Collapsed;
+			return Microsoft.UI.Xaml.Visibility.Collapsed;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, string language)
 		{
-			return ((Windows.UI.Xaml.Visibility)value == Windows.UI.Xaml.Visibility.Visible);
+			return ((Microsoft.UI.Xaml.Visibility)value == Microsoft.UI.Xaml.Visibility.Visible);
 		}
 	}
 }

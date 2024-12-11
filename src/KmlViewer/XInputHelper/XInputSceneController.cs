@@ -3,7 +3,7 @@ using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.UI.Controls;
 using SharpDX.XInput;
 using System;
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml;
 
 namespace XInputHelper
 {
