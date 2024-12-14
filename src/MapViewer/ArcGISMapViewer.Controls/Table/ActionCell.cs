@@ -30,7 +30,7 @@ namespace ArcGISMapViewer.Controls
             Invoked?.Invoke(this, EventArgs.Empty);
         }
 
-        public IconSource Icon
+        public IconSource? Icon
         {
             get { return (IconSource)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }

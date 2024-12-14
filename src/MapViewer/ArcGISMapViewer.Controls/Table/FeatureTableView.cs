@@ -172,7 +172,7 @@ namespace ArcGISMapViewer.Controls
                 }
             }
             var column = new TableColumnCollection();
-            var actionColumn = new ActionColumn() { Icon = new SymbolIcon(Symbol.More) };
+            var actionColumn = new ActionColumn() { Icon = new SymbolIconSource() { Symbol = Symbol.More } };
             actionColumn.Invoked += (s, feature) =>
             {
                 if (feature is not null)

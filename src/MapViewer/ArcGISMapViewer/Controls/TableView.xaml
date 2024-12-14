@@ -23,6 +23,8 @@
 
         <local:FeatureTableView x:Name="tableView" Grid.Row="1" />
 
-        <AppBarButton Icon="Cancel" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="-10,-5" Height="32" Foreground="White" />
+        <AppBarButton Icon="Cancel" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="-10,-5" Height="32" Foreground="White"
+                      Click="Close_Clicked"
+                      />
     </Grid>
 </UserControl>

@@ -23,21 +23,27 @@ namespace ArcGISMapViewer.Controls
         public TableView()
         {
             this.InitializeComponent();
-            WeakReferenceMessenger.Default.Register<ShowFeatureTable>(this, (r, m) => OnShowFeatureTable(m.Table, m.FeatureQuery));
+            WeakReferenceMessenger.Default.Register<ShowFeatureTable>(this, (r, m) => OnShowFeatureTable(m.Table, m.WhereClause));
             tableView.FeatureActionInvoked += TableViewFeature_Clicked;
         }
 
-        private void OnShowFeatureTable(FeatureTable? table, FeatureQueryResult featureQuery)
+        private void OnShowFeatureTable(FeatureTable? table, string? whereClause)
         {
             this.Visibility = table != null ? Visibility.Visible : Visibility.Collapsed;
             tableView.Table = table;
+            tableView.WhereClause = whereClause;
+        }
+
+        private void Close_Clicked(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
         }
 
         public class ShowFeatureTable
         {
-            public ShowFeatureTable(FeatureQueryResult result, FeatureTable table) : this(table)
+            public ShowFeatureTable(string whereClause, FeatureTable table) : this(table)
             {
-                FeatureQuery = result;
+                WhereClause = whereClause;
             }
 
             public ShowFeatureTable(FeatureTable table)
@@ -45,7 +51,7 @@ namespace ArcGISMapViewer.Controls
                 Table = table;
             }
 
-            public FeatureQueryResult FeatureQuery { get; }
+            public string? WhereClause { get; }
             public FeatureTable Table { get; }
         }
 
@@ -72,7 +78,7 @@ namespace ArcGISMapViewer.Controls
             //TableView.ItemsSource = new List<Feature>(newResult);
         }
 
-        public void TableViewFeature_Clicked(object sender, Feature feature)
+        public void TableViewFeature_Clicked(object? sender, Feature feature)
         {
             MenuFlyout flyout = new MenuFlyout();
             var edit = new MenuFlyoutItem() { Text = "Edit" };
@@ -98,7 +104,7 @@ namespace ArcGISMapViewer.Controls
                 };
                 flyout.Items.Add(zoomto);
             }
-            flyout.ShowAt(sender as FrameworkElement);
+            flyout.ShowAt(sender as FrameworkElement, new FlyoutShowOptions() {  ShowMode = FlyoutShowMode.Standard });
             
         }
 

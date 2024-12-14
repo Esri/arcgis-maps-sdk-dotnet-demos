@@ -157,7 +157,7 @@ namespace ArcGISMapViewer.Controls
                     }
                     else if (field is ActionColumn ac)
                     {
-                        ActionCell cell = new ActionCell() { Icon = new SymbolIconSource() { Symbol = Symbol.Edit }, Tooltip = ac.Header };
+                        ActionCell cell = new ActionCell() { Icon = ac.Icon , Tooltip = ac.Header };
                         cell.Invoked += (s, e) => // TODO: This should be weak or cleaned up on clear
                         {
                             if (Feature is not null)

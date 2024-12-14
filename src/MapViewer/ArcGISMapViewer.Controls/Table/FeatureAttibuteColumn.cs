@@ -58,7 +58,7 @@ namespace ArcGISMapViewer.Controls
             IsResizeable = false;
         }
         public string? Tooltip { get; set; }
-        public Microsoft.UI.Xaml.Controls.SymbolIcon? Icon { get; set; }
+        public Microsoft.UI.Xaml.Controls.IconSource? Icon { get; set; }
         public override string ToString() => Header ?? string.Empty;
         public event EventHandler<Esri.ArcGISRuntime.Data.Feature>? Invoked;
         internal void Invoke(object? source, Esri.ArcGISRuntime.Data.Feature feature)
