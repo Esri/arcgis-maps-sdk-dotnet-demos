@@ -116,7 +116,6 @@ namespace ArcGISMapViewer.Controls
                 {
                     _columnSizes = value;
                     OnFieldsPropertyChanged(value);
-                    //InvalidateMeasure();
                 }
             }
         }

@@ -67,6 +67,12 @@ namespace ArcGISMapViewer.Controls
                         item.Width = Math.Min(150, Math.Max(50, columnWidth));
                 }
             }
+            if (GetTemplateChild("GridLines") is ItemsControl elm)
+            {
+                // Trigger re-layout, due to issue with Width binding not updating on first load
+                elm.ItemsSource = null;
+                elm.ItemsSource = Columns;
+            }
         }
 
         private void ScrollView_ExtentChanged(ScrollView sender, object args) => LoadMoreData(sender);

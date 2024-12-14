@@ -24,7 +24,7 @@
                                 <Grid Background="{StaticResource SolidBackgroundFillColorBase}" BorderThickness="0,0,0,1" BorderBrush="Black" />
 
                                 <!-- Header strings, resizer seperators/vertical grid lines -->
-                                <ItemsControl Grid.RowSpan="3" IsHitTestVisible="True" x:Name="GridLines" ItemsSource="{TemplateBinding Columns}" VerticalAlignment="Stretch">
+                                <ItemsControl Grid.RowSpan="2" IsHitTestVisible="True" x:Name="GridLines" ItemsSource="{TemplateBinding Columns}" VerticalAlignment="Stretch">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal" />
@@ -44,7 +44,7 @@
                                 <ScrollView Grid.Row="1" Grid.RowSpan="2" x:Name="ScrollViewHost" HorizontalScrollMode="Disabled" ContentOrientation="Vertical">
                                     <ItemsRepeater x:Name="ItemsPresenter" HorizontalAlignment="Left" VerticalCacheLength="1" AllowFocusOnInteraction="True">
                                         <ItemsRepeater.ItemTemplate>
-                                            <DataTemplate >
+                                            <DataTemplate>
                                                 <local:FeatureDataRow />
                                             </DataTemplate>
                                         </ItemsRepeater.ItemTemplate>
