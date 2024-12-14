@@ -6,7 +6,8 @@
     xmlns:local="using:ArcGISMapViewer.Controls">
 
     <ResourceDictionary.MergedDictionaries>
-          <CalciteResources xmlns="using:Esri.Calcite.WinUI" />
+        <CalciteResources xmlns="using:Esri.Calcite.WinUI" />
+        <ResourceDictionary Source="ms-appx:///ArcGISMapViewer.Controls/Table/FeatureTableView.Themes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <primitives:EmptyToCollapsedConverter x:Name="EmptyToCollapsedConverter" />
@@ -584,4 +585,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>

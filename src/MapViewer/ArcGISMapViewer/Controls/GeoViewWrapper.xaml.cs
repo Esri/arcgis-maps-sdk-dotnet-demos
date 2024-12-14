@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Esri.ArcGISRuntime.UI.Controls;
 using Esri.ArcGISRuntime.Data;
 using System.Threading;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace ArcGISMapViewer.Controls
 {
@@ -26,6 +27,10 @@ namespace ArcGISMapViewer.Controls
         public GeoViewWrapper()
         {
             this.InitializeComponent();
+            WeakReferenceMessenger.Default.Register<Viewpoint>(this, (r, vp) =>
+            {
+                GeoViewController?.SetViewpointAsync(vp);
+            });
         }
 
         private void OnGeoViewTapped(object sender, GeoViewInputEventArgs e)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using CommunityToolkit.Mvvm.Messaging;
+using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Toolkit.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -101,6 +102,15 @@ namespace ArcGISMapViewer.Controls
             if (layer is not null)
             {
                 WeakReferenceMessenger.Default.Send(new Views.MapPage.ShowRightPanelMessage(Views.MapPage.ShowRightPanelMessage.PanelId.ContentProperties, layer));
+            }
+        }
+
+        private void ShowTable_Click(object sender, RoutedEventArgs e)
+        {
+            var layer = (sender as FrameworkElement)?.DataContext as FeatureLayer;
+            if (layer?.FeatureTable is not null)
+            {
+                WeakReferenceMessenger.Default.Send(new Controls.TableView.ShowFeatureTable(layer.FeatureTable));
             }
         }
     }

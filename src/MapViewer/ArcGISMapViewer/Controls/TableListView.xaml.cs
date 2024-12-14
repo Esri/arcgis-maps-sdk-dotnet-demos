@@ -88,5 +88,14 @@ namespace ArcGISMapViewer.Controls
                 WeakReferenceMessenger.Default.Send(new Views.MapPage.ShowRightPanelMessage(Views.MapPage.ShowRightPanelMessage.PanelId.ContentProperties, table));
             }
         }
+
+        private void ShowTable_Click(object sender, RoutedEventArgs e)
+        {
+            var table = (sender as FrameworkElement)?.DataContext as FeatureTable;
+            if (table is not null)
+            {
+                WeakReferenceMessenger.Default.Send(new Controls.TableView.ShowFeatureTable(table));
+            }
+        }
     }
 }

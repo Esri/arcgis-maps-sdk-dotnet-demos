@@ -106,6 +106,7 @@
 
                     <tk:Compass GeoView="{x:Bind geoViewWrapper.GeoView, Mode=OneWay}" Margin="20" />
 
+                    <controls:TableView Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" />
                 </Grid>
 
                 <!-- Right side collapsible tool panel -->

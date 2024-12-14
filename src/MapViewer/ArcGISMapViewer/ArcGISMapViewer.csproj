@@ -19,7 +19,6 @@
     <!--<PublishAot>True</PublishAot>-->
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Controls\FeatureTableView.xaml" />
     <None Remove="Views\PortalItemDetailView.xaml" />
   </ItemGroup>
 

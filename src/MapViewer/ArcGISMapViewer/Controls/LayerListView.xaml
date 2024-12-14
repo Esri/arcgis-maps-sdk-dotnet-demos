@@ -32,7 +32,7 @@
                                 <MenuFlyout Placement="RightEdgeAlignedTop">
                                     <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" Click="ZoomToItem_Click" />
                                     <MenuFlyoutItem Text="Show Properties" Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Click="Properties_Click" />
-                                    <MenuFlyoutItem Text="Show Table" Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" IsEnabled="False" />
+                                    <MenuFlyoutItem Text="Show Table" Icon="{calcite:CalciteIconSourceElement Icon=Table, Scale = Small, SymbolSize=20}" IsEnabled="True" Click="ShowTable_Click" />
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem Text="Rename" Icon="{calcite:CalciteIconSourceElement Icon=Pencil, Scale = Small, SymbolSize=20}" Click="Rename_Click" />
                                     <MenuFlyoutItem Text="Save as" Icon="{calcite:CalciteIconSourceElement Icon=Save, Scale = Small, SymbolSize=20}" IsEnabled="False" />
