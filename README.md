@@ -17,7 +17,7 @@ You can also find a set of smaller feature-focused samples in the [ArcGIS Maps S
 * [`Offline workflows`](src/OfflineWorkflowsSample) - Demonstrates how to browse a portal for offline-enabled maps and take them offline. Also demonstrates how to open maps previously taken offline.
 * [`KML Viewer`](src/KmlViewer) - A WinUI 3 app for visualizing KML/KMZ files in 2D and 3D.
 * [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D using a customer editor.
-* [`Measure Tool`](src/MeasureTool) - A simple sample demonstrating how to use the editor to create your own measure tool.
+* [`Background Location Tracking`](src/BackgroundLocationTracking) - A simple sample demonstrating how to keep the location tracking functionality running while the application is in the background (when the screen is off or applications are switched).
 
 ## Resources
 
