@@ -5,7 +5,7 @@ using AndroidX.Core.App;
 
 namespace BackgroundLocationTracking
 {
-    [Service(ForegroundServiceType = global::Android.Content.PM.ForegroundService.TypeLocation)]
+    [Service(ForegroundServiceType = Android.Content.PM.ForegroundService.TypeLocation)]
     public class LocationService : Service
     {
         // This method is called when the service is bound to an activity.
@@ -33,13 +33,10 @@ namespace BackgroundLocationTracking
         public Notification GetServiceStartedNotification(Context context)
         {
             string channelId = "LocationServiceChannel";
-            // Create the notification channel if necessary for Android 8.0 and above
-            if (OperatingSystem.IsAndroidVersionAtLeast(26))
-            {
-                var channel = new NotificationChannel(channelId, "Location Service Channel", NotificationImportance.Default);
-                var notificationManager = context.GetSystemService(Context.NotificationService) as NotificationManager;
-                notificationManager?.CreateNotificationChannel(channel);
-            }
+
+            var channel = new NotificationChannel(channelId, "Location Service Channel", NotificationImportance.Default);
+            var notificationManager = context.GetSystemService(Context.NotificationService) as NotificationManager;
+            notificationManager?.CreateNotificationChannel(channel);
 
             // Create an intent to launch the MainActivity when the notification is tapped
             var intent = new Intent(context, typeof(MainActivity));

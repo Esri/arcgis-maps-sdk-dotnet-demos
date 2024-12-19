@@ -37,7 +37,7 @@ namespace BackgroundLocationTracking
         private async void StartTracking(object sender, EventArgs e)
         {
             if (_locationDataSource is null ||
-                            await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
+                await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
             {
                 return; // Exit if the location data source is not initialized.
             }
