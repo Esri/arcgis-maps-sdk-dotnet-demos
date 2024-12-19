@@ -1,4 +1,8 @@
 ﻿using Esri.ArcGISRuntime.Location;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using System;
+using System.Threading.Tasks;
 using Location = Esri.ArcGISRuntime.Location.Location;
 
 namespace BackgroundLocationTracking
@@ -17,12 +21,14 @@ namespace BackgroundLocationTracking
         {
             try
             {
-                _locationDataSource = new SystemLocationDataSource()
-                {
 #if IOS
-                    AllowsBackgroundLocationUpdates = true 
-#endif
+                _locationDataSource = new SystemLocationDataSource
+                {
+                    AllowsBackgroundLocationUpdates = true
                 };
+#else
+                _locationDataSource = new SystemLocationDataSource();
+#endif
             }
             catch (Exception ex)
             {
@@ -42,10 +48,10 @@ namespace BackgroundLocationTracking
                 return; // Exit if the location data source is not initialized.
             }
 #if ANDROID
-            var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
-            // Check if the Android version is at least Oreo (API level 26)
-            // Start the service as a foreground service
-            _ = Android.App.Application.Context.StartForegroundService(intent);
+                var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
+                // Check if the Android version is at least Oreo (API level 26)
+                // Start the service as a foreground service
+                _ = Android.App.Application.Context.StartForegroundService(intent);
 #endif
             await StartLocationDataSource();
         }
@@ -58,7 +64,7 @@ namespace BackgroundLocationTracking
                 _locationDataSource.LocationChanged += LocationDataSource_LocationChanged;
 
                 // Start the location data source
-                await _locationDataSource.StartAsync(); 
+                await _locationDataSource.StartAsync();
             }
         }
 
@@ -80,8 +86,8 @@ namespace BackgroundLocationTracking
         private async void StopTracking(object sender, EventArgs e)
         {
 #if ANDROID
-            var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
-            Android.App.Application.Context.StopService(intent);
+                var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
+                Android.App.Application.Context.StopService(intent);
 #endif
             await StopLocationDataSource();
         }
