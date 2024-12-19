@@ -1,21 +1,22 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
-             xmlns:vm="clr-namespace:BackgroundLocationTracking"
-             x:DataType="vm:MainPageViewModel"
              x:Class="BackgroundLocationTracking.MainPage">
-    <ContentPage.BindingContext>
-        <vm:MainPageViewModel />
-    </ContentPage.BindingContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        <esri:MapView Map="{Binding WebMapView}" Grid.Row="0"/>
-        <ScrollView Grid.Row="1" Padding="10">
-            <Editor Text="{Binding LogMessage}" IsReadOnly="True" />
+        <Grid Grid.Row="0" Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Text="Start Tracking" Clicked="StartTracking"/>
+            <Button Grid.Column="1" Text="Stop Tracking" Clicked="StopTracking"/>
+        </Grid>
+        <ScrollView Grid.Row="1" Padding="10" Orientation="Vertical">
+            <Editor IsReadOnly="True" x:Name="LogMessage" />
         </ScrollView>
     </Grid>
 </ContentPage>
-

@@ -1,81 +1,58 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using CommunityToolkit.Mvvm.Messaging;
-using Esri.ArcGISRuntime.Location;
-using Location = Esri.ArcGISRuntime.Location.Location;
+using AndroidX.Core.App;
 
 namespace BackgroundLocationTracking
 {
     [Service(ForegroundServiceType = global::Android.Content.PM.ForegroundService.TypeLocation)]
     public class LocationService : Service
     {
-        private LocationDataSource? _locationDataSource;
-
         // This method is called when the service is bound to an activity.
         public override IBinder? OnBind(Intent? intent) => null;
 
         // This method is called when the service is started.
         public override StartCommandResult OnStartCommand(Intent? intent, StartCommandFlags flags, int startId)
         {
-            var notificationHelper = new NotificationHelper(this);
-            var notification = notificationHelper.GetServiceStartedNotification();
-            StartForeground(1, notification); // Start the service in the foreground with a notification.
-            _ = Start(); // Start the location tracking.
-            return StartCommandResult.Sticky; // Ensure the service is restarted if it gets terminated.
-        }
+            var notification = GetServiceStartedNotification(this);
 
-        public override void OnCreate()
-        {
-            base.OnCreate();
-            _locationDataSource = new SystemLocationDataSource();
-        }
-
-        private async Task Start()
-        {
-            if (_locationDataSource is null ||
-                await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
+            // Start the service in the foreground with a notification.
+            if (OperatingSystem.IsAndroidVersionAtLeast(29))
             {
-                return; // Exit if the location data source is not initialized.
+                StartForeground(1, notification, Android.Content.PM.ForegroundService.TypeLocation);
+            }
+            else
+            {
+                StartForeground(1, notification);
             }
 
-            await _locationDataSource.StartAsync(); // Start the location data source.
-
-            _locationDataSource.LocationChanged += LocationDataSource_LocationChanged; // Subscribe to location changes.
+            return base.OnStartCommand(intent, flags, startId);
         }
 
-        // This method handles location changes.
-        private void LocationDataSource_LocationChanged(object? sender, Location e)
+        // Creates and returns a notification for the location service
+        public Notification GetServiceStartedNotification(Context context)
         {
-            WeakReferenceMessenger.Default.Send(e); // Send the new location using the messenger.
-        }
-
-        private async Task<PermissionStatus> CheckAndRequestLocationPermission()
-        {
-            var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
-            if (status == PermissionStatus.Denied || status == PermissionStatus.Unknown)
+            string channelId = "LocationServiceChannel";
+            // Create the notification channel if necessary for Android 8.0 and above
+            if (OperatingSystem.IsAndroidVersionAtLeast(26))
             {
-                await Shell.Current.DisplayAlert("Access Requested", "Please allow precise location all the time to track while phone is locked or viewing other applications.", "OK");
-                status = await Permissions.RequestAsync<Permissions.LocationAlways>(); // Request location permissions.
+                var channel = new NotificationChannel(channelId, "Location Service Channel", NotificationImportance.Default);
+                var notificationManager = context.GetSystemService(Context.NotificationService) as NotificationManager;
+                notificationManager?.CreateNotificationChannel(channel);
             }
 
-            return status; // Return the permission status.
-        }
+            // Create an intent to launch the MainActivity when the notification is tapped
+            var intent = new Intent(context, typeof(MainActivity));
+            var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.Immutable);
 
-        // This method is called when the service is destroyed.
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            _ = Stop(); // Stop the location tracking.
-        }
-
-        private async Task Stop()
-        {
-            if (_locationDataSource != null)
-            {
-                await _locationDataSource.StopAsync(); // Stop the location data source.
-                _locationDataSource.LocationChanged -= LocationDataSource_LocationChanged; // Unsubscribe from location changes.
-            }
+            // Build and return the notification
+            return new NotificationCompat.Builder(context, channelId)
+                .SetContentTitle("Location Tracking")
+                .SetContentText("Tracking your location")
+                .SetSmallIcon(Resource.Drawable.dotnet_bot)
+                .SetOngoing(true)
+                .SetContentIntent(pendingIntent)
+                .Build();
         }
     }
 
