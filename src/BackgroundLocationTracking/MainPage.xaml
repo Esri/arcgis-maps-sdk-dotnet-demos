@@ -13,8 +13,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Text="Start Tracking" Clicked="StartTracking"/>
-            <Button Grid.Column="1" Text="Stop Tracking" Clicked="StopTracking"/>
+            <Button x:Name="StartButton" Grid.Column="0" Text="Start Tracking" Clicked="StartTracking"/>
+            <Button x:Name="StopButton" Grid.Column="1" Text="Stop Tracking" Clicked="StopTracking"/>
         </Grid>
     </Grid>
 </ContentPage>

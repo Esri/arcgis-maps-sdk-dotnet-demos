@@ -33,7 +33,7 @@ namespace BackgroundLocationTracking
                     AllowsBackgroundLocationUpdates = true
                 };
 #else
-                _locationDataSource = new SystemLocationDataSource();
+                    _locationDataSource = new SystemLocationDataSource();
 #endif
                 _locationDataSource.LocationChanged += LocationDataSource_LocationChanged;
                 _locationHistoryLineOverlay = new GraphicsOverlay();
@@ -48,24 +48,30 @@ namespace BackgroundLocationTracking
 
         private async Task StartTracking(object sender, EventArgs e)
         {
+            StartButton.IsEnabled = false;
+            StopButton.IsEnabled = false;
+
             if (await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
             {
+                StartButton.IsEnabled = true;
                 return;
             }
 #if ANDROID
-            var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
-            
-            // Foreground Services are only supported and required after Android version Oreo (API level 26)
-            // Foreground service is required to keep the service running in the background when the main app is not in the foreground.
-            // Start the service as a foreground service.
-            _ = Android.App.Application.Context.StartForegroundService(intent);
+                var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
+                
+                // Foreground Services are only supported and required after Android version Oreo (API level 26)
+                // Foreground service is required to keep the service running in the background when the main app is not in the foreground.
+                // Start the service as a foreground service.
+                _ = Android.App.Application.Context.StartForegroundService(intent);
 #endif
             await StartLocationDataSource();
+            StopButton.IsEnabled = true;
         }
 
         private async Task StartLocationDataSource()
         {
             _locationHistoryLineOverlay?.Graphics.Clear();
+            _polylineBuilder?.Clear();
             if (_locationDataSource is not null)
             {
                 await _locationDataSource.StartAsync();
@@ -86,12 +92,16 @@ namespace BackgroundLocationTracking
 
                 var projectedPoint = (MapPoint)GeometryEngine.Project(e.Position, SpatialReferences.WebMercator);
                 _polylineBuilder?.AddPoint(projectedPoint);
+                _locationHistoryLineOverlay?.Graphics.Clear();
                 _locationHistoryLineOverlay?.Graphics.Add(new Graphic(_polylineBuilder?.ToGeometry()));
             }
         }
 
         private async Task StopTracking(object sender, EventArgs e)
         {
+            StartButton.IsEnabled = false;
+            StopButton.IsEnabled = false;
+
 #if ANDROID
                 var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
                 
@@ -99,6 +109,7 @@ namespace BackgroundLocationTracking
                 Android.App.Application.Context.StopService(intent);
 #endif
             await StopLocationDataSource();
+            StartButton.IsEnabled = true;
         }
 
         private async Task StopLocationDataSource()
@@ -106,6 +117,7 @@ namespace BackgroundLocationTracking
             if (_locationDataSource is not null)
             {
                 await _locationDataSource.StopAsync();
+                MyMapView.LocationDisplay.IsEnabled = false;
             }
         }
 
