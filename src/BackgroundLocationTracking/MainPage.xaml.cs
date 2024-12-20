@@ -46,16 +46,18 @@ namespace BackgroundLocationTracking
             }
         }
 
-        private async Task StartTracking(object sender, EventArgs e)
+        private async void StartTracking(object sender, EventArgs e)
         {
             StartButton.IsEnabled = false;
             StopButton.IsEnabled = false;
 
-            if (await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
+            try
             {
-                StartButton.IsEnabled = true;
-                return;
-            }
+                if (await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
+                {
+                    StartButton.IsEnabled = true;
+                    return;
+                }
 #if ANDROID
                 var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
                 
@@ -64,7 +66,12 @@ namespace BackgroundLocationTracking
                 // Start the service as a foreground service.
                 _ = Android.App.Application.Context.StartForegroundService(intent);
 #endif
-            await StartLocationDataSource();
+                await StartLocationDataSource();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"An error occurred while starting tracking: {ex.Message}.\n Please try again.", "OK");
+            }
             StopButton.IsEnabled = true;
         }
 
@@ -96,18 +103,25 @@ namespace BackgroundLocationTracking
             }
         }
 
-        private async Task StopTracking(object sender, EventArgs e)
+        private async void StopTracking(object sender, EventArgs e)
         {
             StartButton.IsEnabled = false;
             StopButton.IsEnabled = false;
 
+            try
+            {
 #if ANDROID
                 var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
                 
                 // Stop the foreground service when tracking is stopped.
                 Android.App.Application.Context.StopService(intent);
 #endif
-            await StopLocationDataSource();
+                await StopLocationDataSource();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"An error occurred while stopping tracking: {ex.Message}.\n Please try again.", "OK");
+            }
             StartButton.IsEnabled = true;
         }
 
