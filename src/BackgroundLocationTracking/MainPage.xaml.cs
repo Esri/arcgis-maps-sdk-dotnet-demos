@@ -71,7 +71,6 @@ namespace BackgroundLocationTracking
         private async Task StartLocationDataSource()
         {
             _locationHistoryLineOverlay?.Graphics.Clear();
-            _polylineBuilder?.Clear();
             if (_locationDataSource is not null)
             {
                 await _locationDataSource.StartAsync();
