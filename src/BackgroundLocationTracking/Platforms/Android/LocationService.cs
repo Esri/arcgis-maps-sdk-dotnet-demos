@@ -11,12 +11,10 @@ namespace BackgroundLocationTracking
         // This method is called when the service is bound to an activity.
         public override IBinder? OnBind(Intent? intent) => null;
 
-        // This method is called when the service is started.
         public override StartCommandResult OnStartCommand(Intent? intent, StartCommandFlags flags, int startId)
         {
             var notification = GetServiceStartedNotification(this);
 
-            // Start the service in the foreground with a notification.
             if (OperatingSystem.IsAndroidVersionAtLeast(29))
             {
                 StartForeground(1, notification, Android.Content.PM.ForegroundService.TypeLocation);
@@ -29,8 +27,7 @@ namespace BackgroundLocationTracking
             return base.OnStartCommand(intent, flags, startId);
         }
 
-        // Creates and returns a notification for the location service
-        public Notification GetServiceStartedNotification(Context context)
+        private Notification GetServiceStartedNotification(Context context)
         {
             string channelId = "LocationServiceChannel";
 

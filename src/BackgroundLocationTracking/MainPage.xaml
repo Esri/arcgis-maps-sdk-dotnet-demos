@@ -4,10 +4,11 @@
              x:Class="BackgroundLocationTracking.MainPage">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Padding="10">
+        <esri:MapView x:Name="MyMapView" Grid.Row="0"/>
+        <Grid Grid.Row="1" Padding="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -15,8 +16,5 @@
             <Button Grid.Column="0" Text="Start Tracking" Clicked="StartTracking"/>
             <Button Grid.Column="1" Text="Stop Tracking" Clicked="StopTracking"/>
         </Grid>
-        <ScrollView Grid.Row="1" Padding="10" Orientation="Vertical">
-            <Editor IsReadOnly="True" x:Name="LogMessage" />
-        </ScrollView>
     </Grid>
 </ContentPage>

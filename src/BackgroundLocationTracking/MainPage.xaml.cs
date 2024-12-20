@@ -1,4 +1,7 @@
-﻿using Esri.ArcGISRuntime.Location;
+﻿using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.UI;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -10,6 +13,8 @@ namespace BackgroundLocationTracking
     public partial class MainPage : ContentPage
     {
         private LocationDataSource? _locationDataSource;
+        private GraphicsOverlay? _locationHistoryLineOverlay;
+        private PolylineBuilder? _polylineBuilder;
 
         public MainPage()
         {
@@ -21,6 +26,7 @@ namespace BackgroundLocationTracking
         {
             try
             {
+                MyMapView.Map = new Esri.ArcGISRuntime.Mapping.Map(BasemapStyle.ArcGISTopographic);
 #if IOS
                 _locationDataSource = new SystemLocationDataSource
                 {
@@ -29,64 +35,67 @@ namespace BackgroundLocationTracking
 #else
                 _locationDataSource = new SystemLocationDataSource();
 #endif
+                _locationDataSource.LocationChanged += LocationDataSource_LocationChanged;
+                _locationHistoryLineOverlay = new GraphicsOverlay();
+                MyMapView?.GraphicsOverlays?.Add(_locationHistoryLineOverlay);
+                _polylineBuilder = new PolylineBuilder(SpatialReferences.WebMercator);
             }
             catch (Exception ex)
             {
-                // Handle initialization errors
-                LogMessage.Text = $"Error: An error occurred during initialization: {ex.Message}";
+                Console.WriteLine($"Error: An error occurred during initialization: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Starts the location service.
-        /// </summary>
-        private async void StartTracking(object sender, EventArgs e)
+        private async Task StartTracking(object sender, EventArgs e)
         {
-            if (_locationDataSource is null ||
-                await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
+            if (await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
             {
-                return; // Exit if the location data source is not initialized.
+                return;
             }
 #if ANDROID
-                var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
-                // Check if the Android version is at least Oreo (API level 26)
-                // Start the service as a foreground service
-                _ = Android.App.Application.Context.StartForegroundService(intent);
+            var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
+            
+            // Foreground Services are only supported and required after Android version Oreo (API level 26)
+            // Foreground service is required to keep the service running in the background when the main app is not in the foreground.
+            // Start the service as a foreground service.
+            _ = Android.App.Application.Context.StartForegroundService(intent);
 #endif
             await StartLocationDataSource();
         }
 
         private async Task StartLocationDataSource()
         {
+            _locationHistoryLineOverlay?.Graphics.Clear();
             if (_locationDataSource is not null)
             {
-                // Subscribe to the LocationChanged event
-                _locationDataSource.LocationChanged += LocationDataSource_LocationChanged;
-
-                // Start the location data source
                 await _locationDataSource.StartAsync();
+
+                MyMapView.LocationDisplay.DataSource = _locationDataSource;
+                MyMapView.LocationDisplay.IsEnabled = true;
+                MyMapView.LocationDisplay.InitialZoomScale = 1000;
+                MyMapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
             }
         }
 
         private void LocationDataSource_LocationChanged(object? sender, Location e)
         {
-            if (e != null)
+            if (e is not null)
             {
-                // Format the location update message
                 var message = $"Lat: {e.Position.Y:F6}, Lon: {e.Position.X:F6}, Time: {DateTime.Now:HH:mm:ss}";
+                Console.WriteLine($"Location Update: {message}");
 
-                // Log location update
-                LogMessage.Text += $"Location Update: {message}\n";
+                var projectedPoint = (MapPoint)GeometryEngine.Project(e.Position, SpatialReferences.WebMercator);
+                _polylineBuilder?.AddPoint(projectedPoint);
+                _locationHistoryLineOverlay?.Graphics.Add(new Graphic(_polylineBuilder?.ToGeometry()));
             }
         }
 
-        /// <summary>
-        /// Stops the location service.
-        /// </summary>
-        private async void StopTracking(object sender, EventArgs e)
+        private async Task StopTracking(object sender, EventArgs e)
         {
 #if ANDROID
                 var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
+                
+                // Stop the foreground service when tracking is stopped.
                 Android.App.Application.Context.StopService(intent);
 #endif
             await StopLocationDataSource();
@@ -96,22 +105,15 @@ namespace BackgroundLocationTracking
         {
             if (_locationDataSource is not null)
             {
-                // Stop the location data source
                 await _locationDataSource.StopAsync();
-
-                // Unsubscribe from the LocationChanged event
-                _locationDataSource.LocationChanged -= LocationDataSource_LocationChanged;
             }
         }
 
-        // Checks and requests location permission
         private async Task<PermissionStatus> CheckAndRequestLocationPermission()
         {
-            // Check the current location permission status
             var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
             if (status == PermissionStatus.Denied || status == PermissionStatus.Unknown)
             {
-                // Request location permission if denied or unknown
                 await Shell.Current.DisplayAlert("Access Requested", "Please allow precise location all the time to track while phone is locked or viewing other applications.", "OK");
                 status = await Permissions.RequestAsync<Permissions.LocationAlways>();
             }
