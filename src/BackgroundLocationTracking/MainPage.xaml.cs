@@ -1,6 +1,7 @@
 ﻿using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
+using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
@@ -13,8 +14,9 @@ namespace BackgroundLocationTracking
     public partial class MainPage : ContentPage
     {
         private LocationDataSource? _locationDataSource;
-        private GraphicsOverlay? _locationHistoryLineOverlay;
+        private GraphicsOverlay? _trackLineOverlay;
         private PolylineBuilder? _polylineBuilder;
+        private bool _isTracking;
 
         public MainPage()
         {
@@ -24,43 +26,44 @@ namespace BackgroundLocationTracking
 
         private void Initialize()
         {
-            try
-            {
-                MyMapView.Map = new Esri.ArcGISRuntime.Mapping.Map(BasemapStyle.ArcGISTopographic);
+            MyMapView.Map = new Esri.ArcGISRuntime.Mapping.Map(BasemapStyle.ArcGISTopographic);
 #if IOS
-                _locationDataSource = new SystemLocationDataSource
-                {
-                    AllowsBackgroundLocationUpdates = true
-                };
-#else
-                    _locationDataSource = new SystemLocationDataSource();
-#endif
-                _locationDataSource.LocationChanged += LocationDataSource_LocationChanged;
-                _locationHistoryLineOverlay = new GraphicsOverlay();
-                MyMapView?.GraphicsOverlays?.Add(_locationHistoryLineOverlay);
-                _polylineBuilder = new PolylineBuilder(SpatialReferences.WebMercator);
-            }
-            catch (Exception ex)
+            _locationDataSource = new SystemLocationDataSource
             {
-                Console.WriteLine($"Error: An error occurred during initialization: {ex.Message}");
-            }
+                AllowsBackgroundLocationUpdates = true
+            };
+#else
+            _locationDataSource = new SystemLocationDataSource();
+#endif
+            _locationDataSource.LocationChanged += LocationDataSource_LocationChanged;
+
+            // Create and add graphics overlay for displaying the trail.
+            _trackLineOverlay = new GraphicsOverlay();
+            var trackLineSymbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, System.Drawing.Color.LightGreen, 2);
+            _trackLineOverlay.Renderer = new SimpleRenderer(trackLineSymbol);
+            MyMapView?.GraphicsOverlays?.Add(_trackLineOverlay);
+
+            _polylineBuilder = new PolylineBuilder(SpatialReferences.Wgs84);
         }
 
         private async void StartTracking(object sender, EventArgs e)
         {
-            StartButton.IsEnabled = false;
-            StopButton.IsEnabled = false;
+            if (_isTracking) return;
+
+            _isTracking = true;
+            UpdateButtonStates();
 
             try
             {
                 if (await CheckAndRequestLocationPermission() is not PermissionStatus.Granted)
                 {
-                    StartButton.IsEnabled = true;
+                    _isTracking = false;
+                    UpdateButtonStates();
                     return;
                 }
 #if ANDROID
                 var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
-                
+
                 // Foreground Services are only supported and required after Android version Oreo (API level 26)
                 // Foreground service is required to keep the service running in the background when the main app is not in the foreground.
                 // Start the service as a foreground service.
@@ -71,13 +74,45 @@ namespace BackgroundLocationTracking
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error", $"An error occurred while starting tracking: {ex.Message}.\n Please try again.", "OK");
+                _isTracking = false;
             }
-            StopButton.IsEnabled = true;
+            UpdateButtonStates();
+        }
+
+        private async void StopTracking(object sender, EventArgs e)
+        {
+            if (!_isTracking) return;
+
+            _isTracking = false;
+            UpdateButtonStates();
+
+            try
+            {
+#if ANDROID
+                var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
+
+                // Stop the foreground service when tracking is stopped.
+                Android.App.Application.Context.StopService(intent);
+#endif
+                await StopLocationDataSource();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"An error occurred while stopping tracking: {ex.Message}.\n Please try again.", "OK");
+                _isTracking = true;
+            }
+            UpdateButtonStates();
+        }
+
+        private void UpdateButtonStates()
+        {
+            StartButton.IsEnabled = !_isTracking;
+            StopButton.IsEnabled = _isTracking;
         }
 
         private async Task StartLocationDataSource()
         {
-            _locationHistoryLineOverlay?.Graphics.Clear();
+            ClearTrail();
             if (_locationDataSource is not null)
             {
                 await _locationDataSource.StartAsync();
@@ -89,48 +124,29 @@ namespace BackgroundLocationTracking
             }
         }
 
-        private void LocationDataSource_LocationChanged(object? sender, Location e)
-        {
-            if (e is not null)
-            {
-                var message = $"Lat: {e.Position.Y:F6}, Lon: {e.Position.X:F6}, Time: {DateTime.Now:HH:mm:ss}";
-                Console.WriteLine($"Location Update: {message}");
-
-                var projectedPoint = (MapPoint)GeometryEngine.Project(e.Position, SpatialReferences.WebMercator);
-                _polylineBuilder?.AddPoint(projectedPoint);
-                _locationHistoryLineOverlay?.Graphics.Clear();
-                _locationHistoryLineOverlay?.Graphics.Add(new Graphic(_polylineBuilder?.ToGeometry()));
-            }
-        }
-
-        private async void StopTracking(object sender, EventArgs e)
-        {
-            StartButton.IsEnabled = false;
-            StopButton.IsEnabled = false;
-
-            try
-            {
-#if ANDROID
-                var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
-                
-                // Stop the foreground service when tracking is stopped.
-                Android.App.Application.Context.StopService(intent);
-#endif
-                await StopLocationDataSource();
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", $"An error occurred while stopping tracking: {ex.Message}.\n Please try again.", "OK");
-            }
-            StartButton.IsEnabled = true;
-        }
-
         private async Task StopLocationDataSource()
         {
             if (_locationDataSource is not null)
             {
                 await _locationDataSource.StopAsync();
                 MyMapView.LocationDisplay.IsEnabled = false;
+            }
+        }
+
+        private void LocationDataSource_LocationChanged(object? sender, Location e)
+        {
+            if (e is not null)
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    var projectedPoint = (MapPoint)GeometryEngine.Project(e.Position, SpatialReferences.Wgs84);
+                    _polylineBuilder?.AddPoint(projectedPoint);
+
+                    var geometry = _polylineBuilder?.ToGeometry();
+                    _trackLineOverlay?.Graphics.Clear();
+                    _trackLineOverlay?.Graphics.Add(new Graphic(geometry));
+                    MyMapView.SetViewpointGeometryAsync(geometry!, 50);
+                });
             }
         }
 
@@ -144,6 +160,12 @@ namespace BackgroundLocationTracking
             }
 
             return status;
+        }
+
+        private void ClearTrail()
+        {
+            _polylineBuilder?.Parts.Clear();
+            _trackLineOverlay?.Graphics.Clear();
         }
     }
 
