@@ -28,9 +28,15 @@ namespace BackgroundLocationTracking
         {
             MyMapView.Map = new Esri.ArcGISRuntime.Mapping.Map(BasemapStyle.ArcGISTopographic);
 #if IOS
+            // iOS requires the app to have the location capability enabled.
             _locationDataSource = new SystemLocationDataSource
             {
-                AllowsBackgroundLocationUpdates = true
+                // Set AllowsBackgroundLocationUpdates to true to allow location updates when the app is in the background.
+                AllowsBackgroundLocationUpdates = true,
+
+                // Set ActivityType which is used to determine when location updates should be delivered.
+                // This is used to help determine when to turn off GPS hardware to save power.
+                ActivityType = CoreLocation.CLActivityType.Other,
             };
 #else
             _locationDataSource = new SystemLocationDataSource();
@@ -112,6 +118,7 @@ namespace BackgroundLocationTracking
 
         private async Task StartLocationDataSource()
         {
+            // Clear previous trail before starting the location data source.
             ClearTrail();
             if (_locationDataSource is not null)
             {
