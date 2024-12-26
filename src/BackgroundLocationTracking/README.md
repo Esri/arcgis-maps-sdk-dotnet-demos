@@ -19,6 +19,16 @@ Ensure the following code is added to the `MainPage.xaml.cs` file to configure t
 _locationDataSource = new SystemLocationDataSource();
 ```
 
+To start the `ForegroundService` on current application context, use the following code:
+```C#
+var intent = new Android.Content.Intent(Android.App.Application.Context, typeof(LocationService));
+
+// Foreground Services are only supported and required after Android version Oreo (API level 26)
+// Foreground service is required to keep the service running in the background when the main app is not in the foreground.
+// Start the service as a foreground service.
+_ = Android.App.Application.Context.StartForegroundService(intent);
+```
+
 #### `AndroidManifest.xml`
 
 Ensure the following permissions and service declaration are added:
