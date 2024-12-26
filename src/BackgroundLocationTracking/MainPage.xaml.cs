@@ -26,7 +26,7 @@ namespace BackgroundLocationTracking
 
         private void Initialize()
         {
-            MyMapView.Map = new Esri.ArcGISRuntime.Mapping.Map(BasemapStyle.ArcGISTopographic);
+            MyMapView.Map = new Esri.ArcGISRuntime.Mapping.Map(BasemapStyle.ArcGISTopographic) { MaxScale = 500 };
 #if IOS
             // iOS requires the app to have the location capability enabled.
             _locationDataSource = new SystemLocationDataSource
