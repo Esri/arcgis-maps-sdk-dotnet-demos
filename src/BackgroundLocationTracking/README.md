@@ -11,9 +11,18 @@ Android application uses Foreground Service to track the location in the backgro
 
 ### Android
 
+#### `MainPage.xaml.cs`
+Android requires the use of a `ForegroundService` to track location in the background.
+Ensure the following code is added to the `MainPage.xaml.cs` file to configure the location data source:
+
+```C#
+_locationDataSource = new SystemLocationDataSource();
+```
+
 #### `AndroidManifest.xml`
 
 Ensure the following permissions and service declaration are added:
+
 ```xml
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.INTERNET" />
@@ -29,6 +38,7 @@ Ensure the following permissions and service declaration are added:
 #### `LocationService.cs`
 
 Define the Android foreground service for location tracking:
+
 ```C#
 [Service(ForegroundServiceType = Android.Content.PM.ForegroundService.TypeLocation)]
 public class LocationService : Service
@@ -44,6 +54,21 @@ public class LocationService : Service
 
 
 ### iOS
+
+#### `MainPage.xaml.cs`
+Ensure the following code is added to the `MainPage.xaml.cs` file to configure the location data source and request background location updates:
+
+```C#
+_locationDataSource = new SystemLocationDataSource
+{
+    // Set AllowsBackgroundLocationUpdates to true to allow location updates when the app is in the background.
+    AllowsBackgroundLocationUpdates = true,
+
+    // Set ActivityType which is used to determine when location updates should be delivered.
+    // This is used to help determine when to turn off GPS hardware to save power.
+    ActivityType = CoreLocation.CLActivityType.Other,
+};
+```
 
 #### `Info.plist`
 
