@@ -2,7 +2,7 @@
 
 BackgroundLocationTracking is a .NET MAUI application designed to track the location of a device in the background using the [ArcGIS Runtime SDK for .NET](https://developers.arcgis.com/net/).
 
-Android application uses Foreground Service to track the location in the background. iOS application uses [SystemLocationDaatSource.AllowBackgroundLocationUpdates](https://developers.arcgis.com/net/api-reference/api/ios/Esri.ArcGISRuntime/Esri.ArcGISRuntime.Location.SystemLocationDataSource.AllowsBackgroundLocationUpdates.html) to track the location in the background.
+Android application uses Foreground Service to track the location in the background. iOS application uses [SystemLocationDataSource.AllowBackgroundLocationUpdates](https://developers.arcgis.com/net/api-reference/api/ios/Esri.ArcGISRuntime/Esri.ArcGISRuntime.Location.SystemLocationDataSource.AllowsBackgroundLocationUpdates.html) to track the location in the background.
 
 <img src="https://github.com/user-attachments/assets/e5cd7f2f-c488-4953-b944-f908d3c81959" alt="Screenshot" width="500"/>
 
