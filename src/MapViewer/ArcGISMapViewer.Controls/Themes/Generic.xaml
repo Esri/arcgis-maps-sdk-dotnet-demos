@@ -18,8 +18,8 @@
                 <ControlTemplate TargetType="local:CollapsiblePanel">
                     <Grid Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid.Resources>
-                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource CalciteUIBorder3Color}" />
-                            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource CalciteUIBorder3Color}" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource CalciteBorder3Color}" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource CalciteBorder3Color}" />
                         </Grid.Resources>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="Placement">
@@ -81,12 +81,12 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Grid x:Name="ContentPanel" Width="{TemplateBinding ContentWidth}" Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource CalciteUIBorder3Color}">
+                        <Grid x:Name="ContentPanel" Width="{TemplateBinding ContentWidth}" Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource CalciteBorder3Color}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Border x:Name="TitleBarContainer" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTitle, Converter={StaticResource EmptyToCollapsedConverter}}" Background="{ThemeResource CalciteUIBorder3Color}" Padding="10,15">
+                            <Border x:Name="TitleBarContainer" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTitle, Converter={StaticResource EmptyToCollapsedConverter}}" Background="{ThemeResource CalciteBorder3Color}" Padding="10,15">
                                 <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTitle}" Style="{StaticResource BaseTextBlockStyle}" FontSize="18" />
                             </Border>
 
@@ -266,7 +266,7 @@
     </Style>
 
     <Style TargetType="local:Pager" >
-        <Setter Property="BorderBrush" Value="{ThemeResource CalciteUIBorder3Color}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource CalciteBorder3Color}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
@@ -293,7 +293,7 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
-                        <Grid Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource CalciteUIBorder3Color}">
+                        <Grid Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource CalciteBorder3Color}">
                             <StackPanel Orientation="Horizontal" Margin="5">
                                 <calcite:SymbolIcon Symbol="ListBullet" VerticalAlignment="Center"  Margin="2,0,2,0" IconScale="Small"/>
                                 <TextBlock x:Name="CurrentText" VerticalAlignment="Center" FontSize="12" MinWidth="35" TextAlignment="Right" />

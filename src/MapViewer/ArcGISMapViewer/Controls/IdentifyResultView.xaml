@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <controls:Pager Grid.Row="2" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectedIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" Margin="-10,0" />
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
-            <!--<Button BorderThickness="0" Background="Transparent" Foreground="{ThemeResource CalciteUIText3Color}">
+            <!--<Button BorderThickness="0" Background="Transparent" Foreground="{ThemeResource CalciteText3Color}">
                 <StackPanel Orientation="Horizontal">
                     <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table, SymbolSize=14, Scale=Medium}" Margin="0,0,5,0" />
                     <TextBlock Text="Table" />

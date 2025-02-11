@@ -40,7 +40,7 @@
                         </ComboBox>
                         <Button Content="Next" HorizontalAlignment="Right" Margin="0,10,0,0" IsEnabled="False" />
 
-                        <Rectangle Height="1" Fill="{ThemeResource CalciteUIBorder3Color}" Margin="-10,10" />
+                        <Rectangle Height="1" Fill="{ThemeResource CalciteBorder3Color}" Margin="-10,10" />
                         <TextBlock Text="Add Layer from file" Style="{ThemeResource BaseTextBlockStyle}" />
                         <Button Content="Browse..." Width="150" Margin="0,10" HorizontalAlignment="Center" Click="AddFromFile_CLick" />
                         
@@ -78,7 +78,7 @@
             <controls:CollapsiblePanel.FooterItems>
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_About">
                     <StackPanel Padding="5">
-                        <Grid Background="{ThemeResource CalciteUIBackground3Color}" Padding="16,5" Margin="-5,-5,-5,0" Height="40">
+                        <Grid Background="{ThemeResource CalciteBackground3Color}" Padding="16,5" Margin="-5,-5,-5,0" Height="40">
                             <TextBlock Text="{x:Bind AppVM.PortalItem.Title, Mode=OneWay}" Style="{StaticResource NavigationViewItemHeaderTextStyle}" />
                         </Grid>
                         <Image>

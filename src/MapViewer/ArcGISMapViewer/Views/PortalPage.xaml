@@ -85,7 +85,7 @@
 
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="{x:Bind PageVM.SearchError, Mode=OneWay}"
-                   Foreground="{StaticResource CalciteUIDangerBrush}"
+                   Foreground="{StaticResource CalciteStatusDangerBrush}"
                    Style="{StaticResource BodyStrongTextBlockStyle}"
                    Grid.Row="1"/>
 

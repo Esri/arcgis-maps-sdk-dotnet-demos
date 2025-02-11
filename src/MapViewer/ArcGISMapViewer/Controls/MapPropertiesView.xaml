@@ -17,8 +17,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <DropDownButton VerticalAlignment="Top" Background="{ThemeResource CalciteUIBorder3Color}" BorderThickness="0" CornerRadius="0"
-                        Foreground="{ThemeResource CalciteUIText1Color}" Padding="15" x:Name="LayerPickerDropDown" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+        <DropDownButton VerticalAlignment="Top" Background="{ThemeResource CalciteBorder3Color}" BorderThickness="0" CornerRadius="0"
+                        Foreground="{ThemeResource CalciteText1Color}" Padding="15" x:Name="LayerPickerDropDown" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
             <TextBlock Text="{x:Bind ContentPicker.SelectedItemText, Mode=OneWay}" Style="{StaticResource BaseTextBlockStyle}" FontSize="18"/>
             <DropDownButton.Flyout>
                 <Flyout x:Name="PickerFlyout" Placement="BottomEdgeAlignedLeft">
@@ -33,7 +33,7 @@
                 </Flyout>
             </DropDownButton.Flyout>
         </DropDownButton>
-        <Grid Grid.Row="1" Background="{ThemeResource CalciteUIBackground3Color}" Padding="16,5" Height="40">
+        <Grid Grid.Row="1" Background="{ThemeResource CalciteBackground3Color}" Padding="16,5" Height="40">
             <TextBlock Text="Properties" VerticalAlignment="Center" Style="{StaticResource NavigationViewItemHeaderTextStyle}" />
         </Grid>
         <ScrollViewer Grid.Row="2">
@@ -41,8 +41,8 @@
                 <ContentControl.Resources>
                     <Style TargetType="Button" x:Key="GrayButton" BasedOn="{StaticResource DefaultButtonStyle}">
                         <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="BorderBrush" Value="{ThemeResource CalciteUIBorder1Color}" />
-                        <Setter Property="Foreground" Value="{ThemeResource CalciteUIText1Color}" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource CalciteBorder1Color}" />
+                        <Setter Property="Foreground" Value="{ThemeResource CalciteText1Color}" />
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
                         <Setter Property="HorizontalAlignment" Value="Stretch" />
                     </Style>
