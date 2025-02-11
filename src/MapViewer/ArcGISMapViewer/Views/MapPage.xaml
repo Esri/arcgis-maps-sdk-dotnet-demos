@@ -63,7 +63,7 @@
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Bookmark, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Bookmarks" ContentTitle="Bookmarks" >
                     <StackPanel>
                         <tk:BookmarksView GeoView="{x:Bind geoViewWrapper.GeoView}" />
-                        <Button Click="AddBookmark_Click" Content="Add Bookmark" HorizontalAlignment="Center" Padding="30,7" />
+                        <Button Click="AddBookmark_Click" Content="Add Bookmark" HorizontalAlignment="Center" Padding="30,7" Style="{StaticResource CalcitePrimaryButtonStyle}" />
                     </StackPanel>
                 </controls:CollapsiblePanelItem>
                 <!--<NavigationViewItemSeparator />-->

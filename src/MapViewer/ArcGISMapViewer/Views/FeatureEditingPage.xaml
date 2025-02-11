@@ -23,9 +23,9 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Content="Update" Margin="5,0,0,0" Background="{ThemeResource CalciteStatusInfoColor}" BorderBrush="{ThemeResource CalciteStatusInfoColor}" Foreground="White" Padding="5" Grid.Column="0" HorizontalAlignment="Stretch" CornerRadius="0" Click="Update_Click" />
+            <Button Content="Update" Margin="5,0,0,0" Style="{StaticResource CalcitePrimaryButtonStyle}" BorderBrush="{ThemeResource CalciteStatusInfoColor}" Padding="5" Grid.Column="0" HorizontalAlignment="Stretch" CornerRadius="0" Click="Update_Click" />
             <Button Content="Cancel" Margin="0,0,0,0" Background="{ThemeResource CalciteStatusSuccessColor}" BorderBrush="{ThemeResource CalciteStatusSuccessColor}" Foreground="White" Padding="5" Grid.Column="1" HorizontalAlignment="Stretch" CornerRadius="0" Click="Cancel_Click" />
-            <Button Content="Delete" Margin="0,0,5,0" Background="{ThemeResource CalciteStatusDangerColor}" BorderBrush="{ThemeResource CalciteStatusDangerColor}" Foreground="White" Padding="5" Grid.Column="2" HorizontalAlignment="Stretch" CornerRadius="0" Click="Delete_Click" />
+            <Button Content="Delete" Margin="0,0,5,0" Style="{StaticResource CalciteDangerButtonStyle}" Padding="5" Grid.Column="2" HorizontalAlignment="Stretch" CornerRadius="0" Click="Delete_Click" />
         </Grid>
     </Grid>
 </Page>
