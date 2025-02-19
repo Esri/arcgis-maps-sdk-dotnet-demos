@@ -124,7 +124,6 @@ namespace BackgroundLocationTracking
 
                     MyMapView.LocationDisplay.DataSource = _locationDataSource;
                     MyMapView.LocationDisplay.IsEnabled = true;
-                    MyMapView.LocationDisplay.InitialZoomScale = 1000;
                 }
             }
             catch (Exception ex)
@@ -135,17 +134,10 @@ namespace BackgroundLocationTracking
 
         private async Task StopLocationDataSource()
         {
-            try
+            if (_locationDataSource is not null)
             {
-                if (_locationDataSource is not null)
-                {
-                    await _locationDataSource.StopAsync();
-                    MyMapView.LocationDisplay.IsEnabled = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", $"An error occurred while stopping the location data source: {ex.Message}.", "OK");
+                await _locationDataSource.StopAsync();
+                MyMapView.LocationDisplay.IsEnabled = false;
             }
         }
 
