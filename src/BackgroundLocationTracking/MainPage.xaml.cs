@@ -3,10 +3,6 @@ using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
-using System;
-using System.Threading.Tasks;
 using Location = Esri.ArcGISRuntime.Location.Location;
 
 namespace BackgroundLocationTracking
@@ -118,25 +114,38 @@ namespace BackgroundLocationTracking
 
         private async Task StartLocationDataSource()
         {
-            // Clear previous trail before starting the location data source.
-            ClearTrail();
-            if (_locationDataSource is not null)
+            try
             {
-                await _locationDataSource.StartAsync();
+                // Clear previous trail before starting the location data source.
+                ClearTrail();
+                if (_locationDataSource is not null)
+                {
+                    await _locationDataSource.StartAsync();
 
-                MyMapView.LocationDisplay.DataSource = _locationDataSource;
-                MyMapView.LocationDisplay.IsEnabled = true;
-                MyMapView.LocationDisplay.InitialZoomScale = 1000;
-                MyMapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+                    MyMapView.LocationDisplay.DataSource = _locationDataSource;
+                    MyMapView.LocationDisplay.IsEnabled = true;
+                    MyMapView.LocationDisplay.InitialZoomScale = 1000;
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"An error occurred while starting the location data source: {ex.Message}.", "OK");
             }
         }
 
         private async Task StopLocationDataSource()
         {
-            if (_locationDataSource is not null)
+            try
             {
-                await _locationDataSource.StopAsync();
-                MyMapView.LocationDisplay.IsEnabled = false;
+                if (_locationDataSource is not null)
+                {
+                    await _locationDataSource.StopAsync();
+                    MyMapView.LocationDisplay.IsEnabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"An error occurred while stopping the location data source: {ex.Message}.", "OK");
             }
         }
 
