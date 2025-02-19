@@ -124,6 +124,8 @@ namespace BackgroundLocationTracking
 
                     MyMapView.LocationDisplay.DataSource = _locationDataSource;
                     MyMapView.LocationDisplay.IsEnabled = true;
+                    MyMapView.LocationDisplay.InitialZoomScale = 1000;
+                    MyMapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
                 }
             }
             catch (Exception ex)
@@ -153,7 +155,6 @@ namespace BackgroundLocationTracking
                     var geometry = _polylineBuilder?.ToGeometry();
                     _trackLineOverlay?.Graphics.Clear();
                     _trackLineOverlay?.Graphics.Add(new Graphic(geometry));
-                    MyMapView.SetViewpointGeometryAsync(geometry!, 50);
                 });
             }
         }
