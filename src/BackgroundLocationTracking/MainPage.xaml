@@ -1,0 +1,20 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             x:Class="BackgroundLocationTracking.MainPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <esri:MapView x:Name="MyMapView" Grid.Row="0"/>
+        <Grid Grid.Row="1" Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="StartButton" Grid.Column="0" Text="Start Tracking" Clicked="StartTracking"/>
+            <Button x:Name="StopButton" Grid.Column="1" Text="Stop Tracking" Clicked="StopTracking"/>
+        </Grid>
+    </Grid>
+</ContentPage>

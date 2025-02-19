@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35605.110
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundLocationTracking", "BackgroundLocationTracking.csproj", "{5902C212-21BB-472F-BFCD-DA32F1B21CA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5902C212-21BB-472F-BFCD-DA32F1B21CA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5902C212-21BB-472F-BFCD-DA32F1B21CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5902C212-21BB-472F-BFCD-DA32F1B21CA8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5902C212-21BB-472F-BFCD-DA32F1B21CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5902C212-21BB-472F-BFCD-DA32F1B21CA8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {959B3B96-2367-471A-96E2-CD408206E4D7}
+	EndGlobalSection
+EndGlobal
