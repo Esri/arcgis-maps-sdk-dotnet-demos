@@ -34,8 +34,10 @@ namespace ArcGISMapViewer.Views
                 {
                     Title = item.Title,
                     Content = new PortalItemDetailView() { Item = item },
-                    PrimaryButtonText = "Open in viewer",
-                    CloseButtonText = "OK",
+                    PrimaryButtonText = "Open",
+                    PrimaryButtonStyle = (Style)Application.Current.Resources["CalcitePrimaryButtonStyle"],
+                    CloseButtonText = "Cancel",
+                    CloseButtonStyle = (Style)Application.Current.Resources["CalciteSecondaryButtonStyle"],
                     XamlRoot = this.XamlRoot
                 };
                 var result = await dialog.ShowAsync();
