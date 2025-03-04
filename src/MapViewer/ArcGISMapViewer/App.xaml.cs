@@ -82,7 +82,8 @@ namespace ArcGISMapViewer
 
         private void StartupWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
-            m_window.Activated -= StartupWindow_Activated;
+            if (m_window is not null)
+                m_window.Activated -= StartupWindow_Activated;
         }
 
         private Window? m_window;

@@ -289,17 +289,17 @@ public partial class ApplicationViewModel : ObservableObject
                 case ".shp":
                     layer = new FeatureLayer(new Esri.ArcGISRuntime.Data.ShapefileFeatureTable(path));
                     await layer.LoadAsync();
-                    GeoModel?.OperationalLayers.Add(layer); 
+                    GeoModel?.OperationalLayers.Add(layer);
                     break;
                 case ".tpk":
                     layer = new ArcGISTiledLayer(new TileCache(path));
                     await layer.LoadAsync();
-                    GeoModel?.OperationalLayers.Add(layer); 
+                    GeoModel?.OperationalLayers.Add(layer);
                     break;
                 case ".tif":
                     layer = new RasterLayer(new Esri.ArcGISRuntime.Rasters.Raster(path));
                     await layer.LoadAsync();
-                    GeoModel?.OperationalLayers.Add(layer); 
+                    GeoModel?.OperationalLayers.Add(layer);
                     break;
                 case ".vtpk":
                     layer = new ArcGISVectorTiledLayer(new Uri(path));
@@ -310,7 +310,7 @@ public partial class ApplicationViewModel : ObservableObject
                     break;
             }
         }
-        catch(System.Exception ex)
+        catch (System.Exception)
         {
             throw;
         }

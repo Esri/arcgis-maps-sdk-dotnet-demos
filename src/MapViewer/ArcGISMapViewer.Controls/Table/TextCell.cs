@@ -28,13 +28,11 @@ namespace ArcGISMapViewer.Controls
                 if (value != textBlock.Text)
                 {
                     textBlock.Text = value;
-                    isMaxLengthKnown = false;
                     InvalidateMeasure();
                 }
             }
         }
-        bool isMaxLengthKnown;
-
+        
         public TextAlignment HorizontalTextAlignment { get => textBlock.HorizontalTextAlignment; set => textBlock.HorizontalTextAlignment = value; }
 
 

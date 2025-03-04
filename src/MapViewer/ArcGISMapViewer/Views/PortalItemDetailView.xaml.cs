@@ -57,7 +57,7 @@ namespace ArcGISMapViewer.Views
 
         private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Item != null)
+            if (Item != null && ApplicationViewModel.Instance.PortalUser is not null)
             {
                 try
                 {

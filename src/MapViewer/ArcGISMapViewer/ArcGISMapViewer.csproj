@@ -13,7 +13,7 @@
     <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
-    <NoWarn>$(NoWarn);WMC1506;WMC1501;WMC1500;CS8305</NoWarn>
+    <NoWarn>$(NoWarn);WMC1506;WMC1501;WMC1500;CS8305;CS0618</NoWarn>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DefineConstants>DISABLE_XAML_GENERATED_MAIN;$(DefineConstants)</DefineConstants>
     <!--<PublishAot>True</PublishAot>-->

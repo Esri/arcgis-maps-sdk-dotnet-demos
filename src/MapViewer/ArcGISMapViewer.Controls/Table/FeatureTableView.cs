@@ -188,14 +188,22 @@ namespace ArcGISMapViewer.Controls
             }
             Columns = column;
             if (datasource is not null)
+            {
                 datasource.IsBusyChanged -= IsBusyChanged;
+                datasource.ErrorChanged -= QuerySourceErrorChanged;
+            }
             datasource = new FeatureTableQuerySource(newTable, parameters);
             datasource.IsBusyChanged += IsBusyChanged;
+            datasource.ErrorChanged += QuerySourceErrorChanged;
             _ = await datasource.LoadMoreItemsAsync(50);
             if (GetTemplateChild("ItemsPresenter") is ItemsRepeater itemsPresenter)
             {
                 itemsPresenter.ItemsSource = datasource;
             }
+        }
+
+        private void QuerySourceErrorChanged(object? sender, EventArgs e)
+        {
         }
 
         public event EventHandler<Esri.ArcGISRuntime.Data.Feature>? FeatureActionInvoked;

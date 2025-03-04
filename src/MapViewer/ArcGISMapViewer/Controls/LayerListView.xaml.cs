@@ -90,7 +90,7 @@ namespace ArcGISMapViewer.Controls
                 var result = await dialog.ShowAsync();
                 if (result == ContentDialogResult.Primary)
                 {
-                    if (GeoModel.OperationalLayers.Contains(layer))
+                    if (GeoModel?.OperationalLayers.Contains(layer) == true)
                         GeoModel.OperationalLayers.Remove(layer);
                 }
             }

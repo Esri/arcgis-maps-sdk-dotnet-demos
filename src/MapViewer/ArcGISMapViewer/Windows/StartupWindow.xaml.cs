@@ -96,7 +96,7 @@ namespace ArcGISMapViewer.Windows
             catch (OperationCanceledException) {
                 SigninTask?.TrySetCanceled();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 signinstatus.Text = Resources.GetString("StartupScreen_FailedToSignIn");
             }
