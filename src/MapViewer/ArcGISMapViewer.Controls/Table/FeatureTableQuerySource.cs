@@ -41,9 +41,6 @@ namespace ArcGISMapViewer.Controls
             if (_query is not null && !IsBusy)
             {
                 int index = this.Items.Count;
-#if DEBUG
-                System.Diagnostics.Debug.WriteLine($"Loading {count} more items");
-#endif
                 _query.MaxFeatures = Math.Max(10, (int)count); //Get at least 10
                 FeatureQueryResult result;
                 try
