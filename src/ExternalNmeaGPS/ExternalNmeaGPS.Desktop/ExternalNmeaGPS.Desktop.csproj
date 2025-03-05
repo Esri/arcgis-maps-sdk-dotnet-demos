@@ -12,7 +12,7 @@
   
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.5.0" />
-    <PackageReference Include="Esri.Calcite.WPF" Version="0.1.0-128.g6211a35c70" />
+    <PackageReference Include="Esri.Calcite.WPF" Version="0.1.0-preview1" />
   </ItemGroup>
 
   <ItemGroup>

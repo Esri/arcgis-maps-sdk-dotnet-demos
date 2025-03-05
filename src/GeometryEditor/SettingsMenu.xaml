@@ -10,8 +10,8 @@
         <local:BoolToVisibilityConverter x:Key="converter" />
     </UserControl.Resources>
     <StackPanel>
-        <StackPanel Background="{DynamicResource CalciteUIBackground3Brush}">
-            <CheckBox Foreground="{DynamicResource CalciteUIText1Brush}" Margin="5" IsChecked="{Binding IsSnappingEnabled}">
+        <StackPanel Background="{DynamicResource CalciteBackground3Brush}">
+            <CheckBox Foreground="{DynamicResource CalciteText1Brush}" Margin="5" IsChecked="{Binding IsSnappingEnabled}">
                 <TextBlock Text="Snapping Enabled" />
             </CheckBox>
         </StackPanel>

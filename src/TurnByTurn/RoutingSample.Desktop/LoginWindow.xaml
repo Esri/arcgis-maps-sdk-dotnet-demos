@@ -11,7 +11,7 @@
         <TextBlock Text="This sample requires an ArcGIS Online Subscription in order to use the Global Routing Service."
                    HorizontalAlignment="Center" Margin="20" />
 
-        <Border BorderBrush="{StaticResource CalciteUIBorder1Brush}" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
+        <Border BorderBrush="{StaticResource CalciteBorder1Brush}" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
             <Grid>
                 <!-- Login with ArcGIS Online to use http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World -->
                 <Grid.ColumnDefinitions>

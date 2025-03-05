@@ -57,8 +57,8 @@
 
         <!-- Maneuver -->
         <Border Grid.Row="1" Padding="4"
-                Background="{DynamicResource CalciteUIBackground1Brush}"
-                BorderBrush="{DynamicResource CalciteUIBorder1Brush}"
+                Background="{DynamicResource CalciteBackground1Brush}"
+                BorderBrush="{DynamicResource CalciteBorder1Brush}"
                 BorderThickness="0,1,0,1"
                 DataContext="{Binding Maneuver}">
             <Grid>

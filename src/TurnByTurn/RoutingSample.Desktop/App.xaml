@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <CalciteResources xmlns="http://schemas.esri.com/calcite/2024" Theme="efault" />
+                <CalciteResources xmlns="http://schemas.esri.com/calcite/2024" Theme="Default" />
             </ResourceDictionary.MergedDictionaries>
             <conv:TimeFormatter x:Key="TimeFormatter" />
             <conv:DistanceFormatter x:Key="DistanceFormatter" />

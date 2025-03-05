@@ -38,7 +38,7 @@
         </Menu>
 
         <!--Bottom Status bar area-->
-        <Grid Background="{DynamicResource CalciteUIBackground3Brush}" Grid.Row="2" Grid.ColumnSpan="3">
+        <Grid Background="{DynamicResource CalciteBackground3Brush}" Grid.Row="2" Grid.ColumnSpan="3">
             <TextBlock Text="" x:Name="status" />
             <Grid HorizontalAlignment="Right" Width="200" VerticalAlignment="Stretch" >
                 <ProgressBar x:Name="progress" HorizontalAlignment="Stretch" />
@@ -52,7 +52,7 @@
                       LayerViewStateChanged="mapView_LayerViewStateChanged" 
                       GeoViewTapped="mapView_GeoViewTapped" />
 
-        <Border x:Name="LoadingProgressPanel" BorderBrush="{DynamicResource CalciteUIBorder1Brush}" BorderThickness="1" CornerRadius="2" Grid.Row="1" Grid.Column="2" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <Border x:Name="LoadingProgressPanel" BorderBrush="{DynamicResource CalciteBorder1Brush}" BorderThickness="1" CornerRadius="2" Grid.Row="1" Grid.Column="2" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <Grid>
                 <StackPanel Margin="20">
                     <TextBlock Text="Loading cells..." />
@@ -66,19 +66,19 @@
         </Border>
 
         <!--Panel used for display identify results-->
-        <local:IdentifyResultsPanel BorderBrush="{DynamicResource CalciteUIBorder1Brush}" BorderThickness="1,0,0,0" Grid.Row="1" Grid.Column="2"
-                                    HorizontalAlignment="Right" Width="250" Visibility="Hidden" Background="{DynamicResource CalciteUIBackgroundBrush}"
+        <local:IdentifyResultsPanel BorderBrush="{DynamicResource CalciteBorder1Brush}" BorderThickness="1,0,0,0" Grid.Row="1" Grid.Column="2"
+                                    HorizontalAlignment="Right" Width="250" Visibility="Hidden" Background="{DynamicResource CalciteBackgroundBrush}"
                                     x:Name="sidePanel" Opened="sidePanel_Opened" Closed="sidePanel_Closed"  ZoomButtonClicked="sidePanel_ZoomButtonClicked"/>
 
         <GridSplitter Grid.Column="1" Grid.Row="1" 
                         HorizontalAlignment="Left" 
                         VerticalAlignment="Stretch"
-                        Background="{DynamicResource CalciteUIBorder1Brush}" 
+                        Background="{DynamicResource CalciteBorder1Brush}" 
                         ShowsPreview="true"
                         Width="5"/>
 
         <!--Display properties panel-->
-        <TabControl Grid.Row="1" Background="{DynamicResource CalciteUIBackgroundBrush}">
+        <TabControl Grid.Row="1" Background="{DynamicResource CalciteBackgroundBrush}">
             <TabItem Header="Display">
                 <ScrollViewer Padding="10" >
                     <local:PropertyGrid x:Name="DisplayPropertiesPanel">

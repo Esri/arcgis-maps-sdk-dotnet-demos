@@ -26,7 +26,7 @@
             </Behaviors:Interaction.Triggers>
         </esri:MapView>
 
-        <Border Background="{DynamicResource CalciteUIBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource CalciteUIText1Brush}" Margin="20" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="2">
+        <Border Background="{DynamicResource CalciteBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource CalciteText1Brush}" Margin="20" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="2">
 
             <Behaviors:Interaction.Behaviors>
                 <Behaviors:MouseDragElementBehavior ConstrainToParentBounds="True" />
@@ -36,8 +36,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border Background="{DynamicResource CalciteUIBrandBrush}" Padding="5,1,0,2">
-                    <TextBlock Text="Geometry Editor" Foreground="{DynamicResource CalciteUIForegroundBrandContrastBrush}" FontWeight="SemiBold" />
+                <Border Background="{DynamicResource CalciteBrandBrush}" Padding="5,1,0,2">
+                    <TextBlock Text="Geometry Editor" Foreground="{DynamicResource CalciteForegroundBrandContrastBrush}" FontWeight="SemiBold" />
                 </Border>
                 <local:EditorToolbar x:Name="editor" GeoElement="{Binding EditFeatureSelection, Source={StaticResource VM}}"
                                  GraphicsOverlays="{Binding GraphicsOverlays, ElementName=mapView, Mode=OneWay}"
@@ -54,7 +54,7 @@
             </Grid>
         </Border>
 
-        <Border Background="{DynamicResource CalciteUIBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource CalciteUIText1Brush}" Margin="20" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="2" DataContext="{Binding Path=DataContext, ElementName=editor}" Visibility="{Binding IsSettingsPanelVisible, Converter={StaticResource converter}}">
+        <Border Background="{DynamicResource CalciteBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource CalciteText1Brush}" Margin="20" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="2" DataContext="{Binding Path=DataContext, ElementName=editor}" Visibility="{Binding IsSettingsPanelVisible, Converter={StaticResource converter}}">
             <Behaviors:Interaction.Behaviors>
                 <Behaviors:MouseDragElementBehavior ConstrainToParentBounds="True" />
             </Behaviors:Interaction.Behaviors>
@@ -63,8 +63,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border Background="{DynamicResource CalciteUIBrandBrush}" Padding="7,3,2,4">
-                    <TextBlock Text="Settings" Foreground="{DynamicResource CalciteUIForegroundBrandContrastBrush}" FontWeight="SemiBold" />
+                <Border Background="{DynamicResource CalciteBrandBrush}" Padding="7,3,2,4">
+                    <TextBlock Text="Settings" Foreground="{DynamicResource CalciteForegroundBrandContrastBrush}" FontWeight="SemiBold" />
                 </Border>
                 <local:SettingsMenu Grid.Row="1" Margin="0" />
             </Grid>
