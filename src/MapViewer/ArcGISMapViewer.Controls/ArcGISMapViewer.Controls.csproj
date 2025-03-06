@@ -16,6 +16,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" />
     <PackageReference Include="Esri.ArcGISRuntime" />
   </ItemGroup>
 </Project>
