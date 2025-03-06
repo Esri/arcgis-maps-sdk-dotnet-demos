@@ -10,10 +10,10 @@
     mc:Ignorable="d">
 
     <NavigationView PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" IsPaneToggleButtonVisible="False"
-                    NavigationView.IsSettingsVisible="True" SelectionChanged="NavigationView_SelectionChanged">
+                    NavigationView.IsSettingsVisible="False" SelectionChanged="NavigationView_SelectionChanged">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Portal, Scale = Small, SymbolSize=20}" Content="My Portal" Tag="PortalPage" IsSelected="True" />
-            <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Map, Scale = Small, SymbolSize=20}" Content="New" Tag="NewMapPage" />
+            <!--<NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Map, Scale = Small, SymbolSize=20}" Content="New" Tag="NewMapPage" />-->
         </NavigationView.MenuItems>
         <NavigationView.FooterMenuItems>
             <NavigationViewItem Icon="{calcite:CalciteIconSourceElement Icon=Information, Scale = Small, SymbolSize=20}" Content="About" Tag="AboutPage" />
