@@ -49,17 +49,16 @@ namespace ArcGISMapViewer.Controls
         private void SetDefaultColumnSize(double width)
         {
             if (Columns is null) return;
-            isDefaultSizingApplied = true;
-            double reserved = Columns.Count * 6;
-            int nanSizeCount = 0;
-            foreach (var item in Columns)
-            {
-                if (!double.IsNaN(item.Width))
-                    reserved += item.Width;
-                else nanSizeCount++;
-            }
+            
             if (GetTemplateChild("GridLines") is ItemsControl elm)
             {
+                foreach (var item in Columns)
+                {
+                    if (double.IsNaN(item.Width))
+                    {
+                        item.ActualWidth = 150;
+                    }
+                }
                 // Trigger re-layout, due to issue with Width binding not updating on first load
                 elm.ItemsSource = null;
                 elm.ItemsSource = Columns;

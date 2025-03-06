@@ -91,43 +91,13 @@ namespace ArcGISMapViewer.Controls
         protected override Size MeasureOverride(Size availableSize)
         {
             var size = base.MeasureOverride(availableSize);
-            var maxWidth = size.Width;
-            if (Columns is not null && Columns.Any(s => double.IsNaN(s.Width)))
-            {
-                // If have unlimited with which we usually have in a horizontal scroller, find the featuretableview,
-                // and get the width for good intial auto-sizing of the last column
-                if (availableSize.Width == double.PositiveInfinity)
-                {
-                    var parent = VisualTreeHelper.GetParent(this);
-                    while (parent is not FeatureTableView && parent is FrameworkElement e)
-                    {
-                        parent = VisualTreeHelper.GetParent(parent);
-                    }
-                    if (parent is FrameworkElement fe && !double.IsNaN(fe.ActualWidth) && fe.ActualWidth > 0)
-                    {
-                        maxWidth = fe.ActualWidth;
-                    }
-                }
-                double x = 0;
-                foreach (var column in Columns)
-                {
-                    if (double.IsNaN(column.Width))
-                    {
-                        if (column == Columns.Last())
-                            column.ActualWidth = Math.Max(150, maxWidth - x - extraPadding);
-                        else
-                            column.ActualWidth = 150;
-                    }
-                    x += column.ActualWidth + extraPadding;
-                }
-            }
             if (Columns is not null)
             {
-                 var width = Math.Max(maxWidth, Columns.Where(s=>!double.IsNaN(s.Width)).Sum(s => s.Width) + extraPadding * Columns.Count);
-                width += Math.Max(maxWidth, Columns.Where(s => double.IsNaN(s.Width)).Count() * 150 + extraPadding * Columns.Count);
+                var width = Math.Max(size.Width, Columns.Where(s=>!double.IsNaN(s.Width)).Sum(s => s.Width) + extraPadding * Columns.Count);
+                width += Math.Max(size.Width, Columns.Where(s => double.IsNaN(s.Width)).Count() * 150 + extraPadding * Columns.Count);
                 return new Size(width, availableSize.Height);
             }
-            return new Size(maxWidth, availableSize.Height);
+            return new Size(size.Width, availableSize.Height);
         }
 
         private TableColumnCollection? _columnSizes;
