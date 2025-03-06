@@ -32,45 +32,10 @@ namespace ArcGISMapViewer.Controls
                 }
             }
         }
-        
-        public TextAlignment HorizontalTextAlignment { get => textBlock.HorizontalTextAlignment; set => textBlock.HorizontalTextAlignment = value; }
 
+        public FeatureAttibuteColumn? Column { get; set; }
 
-        private FeatureAttibuteColumn? column;
+        internal double TextWidth => textBlock.DesiredSize.Width;
 
-        public FeatureAttibuteColumn? Column
-        {
-            get { return column; }
-            set
-            {
-                if (column != null && propertyChangeToken != 0)
-                {
-                    column.UnregisterPropertyChangedCallback(FeatureAttibuteColumn.WidthProperty, propertyChangeToken);
-                    propertyChangeToken = 0;
-                }
-                column = value;
-                if (column is not null)
-                {
-                    propertyChangeToken = column.RegisterPropertyChangedCallback(FeatureAttibuteColumn.WidthProperty, OnWidthPropertyChanged);
-                    this.Width = column.Width;
-                }
-            }
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            //if(isMaxLengthKnown)
-                return base.MeasureOverride(availableSize);
-            // var size = base.MeasureOverride(new Size(double.PositiveInfinity, availableSize.Height));
-            // Column.MaxWidth = Math.Max(size.Width, Column.MaxWidth);
-            //isMaxLengthKnown = true;
-            //return size;
-        }
-
-        private void OnWidthPropertyChanged(DependencyObject sender, DependencyProperty dp)
-        {
-            this.Width = column?.Width ?? 0;
-            // this.InvalidateMeasure();
-        }
     }
 }

@@ -33,7 +33,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding}" Width="{Binding Width, Mode=TwoWay}" VerticalAlignment="Stretch" TextAlignment="Center" FontWeight="Bold" />
+                                                <TextBlock Text="{Binding Header, Mode=OneTime}" Width="{Binding ActualWidth, Mode=OneWay}" VerticalAlignment="Stretch" TextAlignment="Center" FontWeight="Bold" />
                                                 <local:Separator Visibility="{Binding IsResizeable, Mode=OneTime}" />
                                             </StackPanel>
                                         </DataTemplate>

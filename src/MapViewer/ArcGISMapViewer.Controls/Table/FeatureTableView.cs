@@ -58,15 +58,6 @@ namespace ArcGISMapViewer.Controls
                     reserved += item.Width;
                 else nanSizeCount++;
             }
-            if (nanSizeCount > 0)
-            {
-                var columnWidth = Math.Max(50, (width - reserved) / nanSizeCount);
-                foreach (var item in Columns)
-                {
-                    if (double.IsNaN(item.Width))
-                        item.Width = Math.Min(150, Math.Max(50, columnWidth));
-                }
-            }
             if (GetTemplateChild("GridLines") is ItemsControl elm)
             {
                 // Trigger re-layout, due to issue with Width binding not updating on first load

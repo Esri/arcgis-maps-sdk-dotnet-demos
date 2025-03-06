@@ -11,6 +11,10 @@ using Microsoft.UI.Xaml.Media;
 
 namespace ArcGISMapViewer.Controls
 {
+    /// <summary>
+    /// Renders the separator between columns in the table view and supports dragging for resizing the column to the left of the separator,
+    /// and auto-sizes to the table column content on double-tap.
+    /// </summary>
     public partial class Separator : ContentControl
     {
         private double startWidth = double.NaN;
@@ -50,15 +54,26 @@ namespace ArcGISMapViewer.Controls
             base.OnManipulationDelta(e);
             var sibling = GetSibling();
             if (sibling is not null && !double.IsNaN(startWidth))
+            {
+                var newWidth = Math.Max(0, startWidth + e.Cumulative.Translation.X);
+                if (sibling.DataContext is FeatureAttibuteColumn c)
+                    c.Width = newWidth;
                 sibling.Width = Math.Max(0, startWidth + e.Cumulative.Translation.X);
+            }
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
             var sibling = GetSibling();
             if (sibling is not null && !double.IsNaN(startWidth))
-                sibling.Width = Math.Max(0, startWidth + e.Cumulative.Translation.X);
+            {
+                var newWidth = Math.Max(0, startWidth + e.Cumulative.Translation.X);
+                if (sibling.DataContext is FeatureAttibuteColumn c)
+                    c.Width = newWidth;
+                sibling.Width = newWidth;
+            }
             startWidth = double.NaN;
+
             base.OnManipulationCompleted(e);
         }
 
@@ -72,12 +87,14 @@ namespace ArcGISMapViewer.Controls
                 double minWidth = 0;
                 if (sibling.DataContext is FeatureAttibuteColumn column)
                 {
-                    minWidth = column.MaxWidth;
+                    minWidth = column.DesiredSize;
+
+                    sibling.Measure(new Windows.Foundation.Size(double.PositiveInfinity, double.PositiveInfinity));
+                    if (!double.IsNaN(sibling.ActualWidth) && sibling.ActualWidth > 0)
+                        minWidth = Math.Max(minWidth, sibling.ActualWidth);
+                    column.Width = minWidth;
+                    sibling.Width = minWidth;
                 }
-                sibling.Measure(new Windows.Foundation.Size(double.PositiveInfinity, double.PositiveInfinity));
-                if (!double.IsNaN(sibling.DesiredSize.Width) && sibling.DesiredSize.Width > 0)
-                    minWidth = Math.Max(minWidth, sibling.DesiredSize.Width);
-                sibling.Width = minWidth;
             }
         }
 

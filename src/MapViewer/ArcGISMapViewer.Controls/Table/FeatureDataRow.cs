@@ -50,9 +50,6 @@ namespace ArcGISMapViewer.Controls
             }
         }
 
-        private static readonly DependencyProperty FeatureProperty =
-            DependencyProperty.Register(nameof(Feature), typeof(Feature), typeof(FeatureDataRow), new PropertyMetadata(null));
-
         private void OnFeaturePropertyChanged(Feature? newValue)
         {
             if (cells is null)
@@ -75,34 +72,62 @@ namespace ArcGISMapViewer.Controls
                 var w = item.DesiredSize.Width;
                 if (item is FrameworkElement e && !double.IsNaN(e.Width))
                     w = e.Width;
-                item.Arrange(new(x, 0, item.DesiredSize.Width, item.DesiredSize.Height));
+
+                if (item is TextCell cell && cell.Column is not null)
+                {
+                        w = cell.Column.ActualWidth;
+                    var fe = VisualTreeHelper.GetChild(cell, 0) as FrameworkElement;
+                    if (!double.IsNaN(cell.TextWidth)) // Update desired max size
+                        cell.Column.DesiredSize = Math.Max(cell.Column.DesiredSize, cell.TextWidth);
+                }
+                item.Arrange(new(x - extraPadding / 2, 0, w + extraPadding, item.DesiredSize.Height));
                 x += w+ extraPadding;
             }
             return new Size(Math.Max(finalSize.Width, x), finalSize.Height);
         }
-        double extraPadding = 6;
+
+        private double extraPadding = 6;
+
         protected override Size MeasureOverride(Size availableSize)
         {
             var size = base.MeasureOverride(availableSize);
             var maxWidth = size.Width;
-            if (availableSize.Width == double.PositiveInfinity)
+            if (Columns is not null && Columns.Any(s => double.IsNaN(s.Width)))
             {
-                var parent = this.Parent;
-                while(parent is FrameworkElement e && (double.IsNaN(e.ActualWidth) || e.ActualWidth == 0))
+                // If have unlimited with which we usually have in a horizontal scroller, find the featuretableview,
+                // and get the width for good intial auto-sizing of the last column
+                if (availableSize.Width == double.PositiveInfinity)
                 {
-                    parent = e.Parent;
+                    var parent = VisualTreeHelper.GetParent(this);
+                    while (parent is not FeatureTableView && parent is FrameworkElement e)
+                    {
+                        parent = VisualTreeHelper.GetParent(parent);
+                    }
+                    if (parent is FrameworkElement fe && !double.IsNaN(fe.ActualWidth) && fe.ActualWidth > 0)
+                    {
+                        maxWidth = fe.ActualWidth;
+                    }
                 }
-                if(parent is FrameworkElement fe && !double.IsNaN(fe.ActualWidth) && fe.ActualWidth > 0)
+                double x = 0;
+                foreach (var column in Columns)
                 {
-                    maxWidth = fe.ActualWidth;
+                    if (double.IsNaN(column.Width))
+                    {
+                        if (column == Columns.Last())
+                            column.ActualWidth = Math.Max(150, maxWidth - x - extraPadding);
+                        else
+                            column.ActualWidth = 150;
+                    }
+                    x += column.ActualWidth + extraPadding;
                 }
             }
             if (Columns is not null)
             {
-                var width = Math.Max(maxWidth, Columns.Sum(s => s.Width) + extraPadding * Columns.Count);
+                 var width = Math.Max(maxWidth, Columns.Where(s=>!double.IsNaN(s.Width)).Sum(s => s.Width) + extraPadding * Columns.Count);
+                width += Math.Max(maxWidth, Columns.Where(s => double.IsNaN(s.Width)).Count() * 150 + extraPadding * Columns.Count);
                 return new Size(width, availableSize.Height);
             }
-            return size;
+            return new Size(maxWidth, availableSize.Height);
         }
 
         private TableColumnCollection? _columnSizes;
@@ -114,10 +139,23 @@ namespace ArcGISMapViewer.Controls
             {
                 if (_columnSizes != value)
                 {
+                    if (_columnSizes is not null)
+                    {
+                        _columnSizes.TotalWidthChanged -= Value_TotalWidthChanged;
+                    }
                     _columnSizes = value;
                     OnFieldsPropertyChanged(value);
+                    if (value is not null)
+                    {
+                        value.TotalWidthChanged += Value_TotalWidthChanged;
+                    }
                 }
             }
+        }
+
+        private void Value_TotalWidthChanged(object? sender, EventArgs e)
+        {
+            InvalidateMeasure();
         }
 
         private string GetDisplayValue(Field field)
@@ -150,7 +188,7 @@ namespace ArcGISMapViewer.Controls
                             Tag = column.Field,
                             Column = column,
                             Margin = new Thickness(2),
-                            HorizontalTextAlignment = column.Field.FieldType == FieldType.Text ? TextAlignment.Left : TextAlignment.Right,
+                            HorizontalAlignment = column.Field.FieldType == FieldType.Text ? HorizontalAlignment.Left : HorizontalAlignment.Right
                         };
                         this.Children.Add(textBlock);
                         cells[i++] = textBlock;

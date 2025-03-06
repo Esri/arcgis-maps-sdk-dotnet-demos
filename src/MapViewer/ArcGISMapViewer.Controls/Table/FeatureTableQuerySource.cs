@@ -82,6 +82,10 @@ namespace ArcGISMapViewer.Controls
                         loadMoreItemsResult.Count = (uint)list.Count;
                     }
                 }
+                else
+                {
+                    _query = null;
+                }
                 IsBusy = false;
                 IsBusyChanged?.Invoke(this, EventArgs.Empty);
                 if (_query is null)
