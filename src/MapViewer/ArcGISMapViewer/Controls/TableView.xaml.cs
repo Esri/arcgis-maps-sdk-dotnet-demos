@@ -32,6 +32,7 @@ namespace ArcGISMapViewer.Controls
             this.Visibility = table != null ? Visibility.Visible : Visibility.Collapsed;
             tableView.Table = table;
             tableView.WhereClause = whereClause;
+            FeatureTableTitle.Text = table?.DisplayName ?? table?.TableName;
         }
 
         private void Close_Clicked(object sender, RoutedEventArgs e)

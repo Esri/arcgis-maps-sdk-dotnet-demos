@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         
         <Grid Background="{StaticResource CalciteBrandBrush}">
-            <TextBlock Text="Feature Table" Foreground="White" VerticalAlignment="Center" Margin="12,0,0,0" Style="{StaticResource FlyoutPickerTitleTextBlockStyle}" />
+            <TextBlock x:Name="FeatureTableTitle" Foreground="White" VerticalAlignment="Center" Margin="12,0,0,0" Style="{StaticResource FlyoutPickerTitleTextBlockStyle}" />
         </Grid>
 
         <local:FeatureTableView x:Name="tableView" Grid.Row="1" />
