@@ -7,7 +7,7 @@
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <UseWPF>true</UseWPF>
     <nullable>enable</nullable>
-    <RootNamespace>ExternalNmeaGPS</RootNamespace>
+    <RootNamespace>RoutingSample.Desktop</RootNamespace>
   </PropertyGroup>
   
   <ItemGroup>
@@ -17,10 +17,9 @@
     <PackageReference Include="System.Speech">
       <Version>8.0.0</Version>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="..\RoutingSample.Shared\Assets\Maneuvers\*.png" Link="Assets\Maneuvers\%(RecursiveDir) %(Filename)%(Extension)" />
+    <PackageReference Include="Esri.Calcite.Wpf">
+        <Version>0.1.0-preview1</Version>
+    </PackageReference>
   </ItemGroup>
 
   <Import Project="..\RoutingSample.Shared\RoutingSample.Shared.projitems" Label="Shared" />

@@ -3,8 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
         xmlns:local="clr-namespace:RoutingSample"
-        Title="Turn-by-Turn Sample App" Height="720" Width="960" WindowStartupLocation="CenterScreen">
+        xmlns:conv="clr-namespace:RoutingSample.Desktop"
+        Title="Turn-by-Turn Sample App" Height="720" Width="960" WindowStartupLocation="CenterScreen"
+        Style="{StaticResource CalciteWindowStyle}">
 
+    <Window.Resources>
+        <conv:ManeuverToGlyphConverter x:Key="ManeuverConverter" />
+    </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -14,7 +19,7 @@
 		</Grid.RowDefinitions>
         
 		<!-- Menu -->
-		<Menu Background="White">
+        <Menu >
             <MenuItem Header="_File">
                 <MenuItem Header="E_xit" Click="Exit_Click" />
             </MenuItem>
@@ -52,8 +57,8 @@
 
         <!-- Maneuver -->
         <Border Grid.Row="1" Padding="4"
-                Background="White"
-                BorderBrush="LightGray"
+                Background="{DynamicResource CalciteBackground1Brush}"
+                BorderBrush="{DynamicResource CalciteBorder1Brush}"
                 BorderThickness="0,1,0,1"
                 DataContext="{Binding Maneuver}">
             <Grid>
@@ -63,6 +68,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
+                <TextBlock Text="{Binding Type, Converter={StaticResource ManeuverConverter}}" FontFamily="{StaticResource CalciteUIIconsLargeFontFamily}" FontSize="48" />
                 <Image Width="48" Height="48" Grid.Column="0"
                        Source="{Binding ImageUri}" />
                 <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
@@ -82,7 +88,7 @@
                 VerticalAlignment="Bottom"
                 Margin="8,8,8,28"
                 Padding="4"
-                Background="White"
+                Background="{DynamicResource CalciteUIBackground1Brush}"
                 BorderBrush="LightGray"
                 BorderThickness="1">
             <Grid>
@@ -95,12 +101,12 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="4" />
-                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="40" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="NAVIGATION" FontWeight="SemiBold" FontSize="12" />
                 <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding Address, Mode=TwoWay}" />
-                <Button Grid.Row="2" Grid.Column="2" Content="Go" Command="{Binding NavigateCommand}" />
+                <Button Grid.Row="2" Grid.Column="2" Content="Go" Command="{Binding NavigateCommand}" VerticalAlignment="Stretch" />
 
             </Grid>
         </Border>

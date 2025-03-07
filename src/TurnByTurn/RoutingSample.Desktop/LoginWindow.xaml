@@ -3,15 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RoutingSample"
+        xmlns:local="clr-namespace:RoutingSample.Desktop"
         mc:Ignorable="d"
         Title="Turn-by-Turn Sample App" Height="450" Width="640"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Style="{StaticResource CalciteWindowStyle}">
     <Grid>
         <TextBlock Text="This sample requires an ArcGIS Online Subscription in order to use the Global Routing Service."
                    HorizontalAlignment="Center" Margin="20" />
 
-        <Border BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
+        <Border BorderBrush="{StaticResource CalciteBorder1Brush}" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
             <Grid>
                 <!-- Login with ArcGIS Online to use http://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World -->
                 <Grid.ColumnDefinitions>
@@ -25,11 +25,11 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="Title" Text="ArcGIS Online Sign In" Grid.ColumnSpan="2" Foreground="Black" FontWeight="Bold" FontSize="16"/>
-                <TextBlock x:Name="LoginStatus" Grid.Row="1" Grid.ColumnSpan="2" Foreground="LightGray" />
-                <TextBlock Text="Username" Grid.Row="2" Foreground="Black" Margin="0,5,5,5" />
+                <TextBlock x:Name="Title" Text="ArcGIS Online Sign In" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16"/>
+                <TextBlock x:Name="LoginStatus" Grid.Row="1" Grid.ColumnSpan="2" />
+                <TextBlock Text="Username" Grid.Row="2" Margin="0,5,5,5" />
                 <TextBox x:Name="Username" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
-                <TextBlock Text="Password" Grid.Row="3" Foreground="Black" Margin="0,5,5,5"/>
+                <TextBlock Text="Password" Grid.Row="3" Margin="0,5,5,5"/>
                 <PasswordBox x:Name="Password" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center"/>
                 <Button Content="Sign In" Grid.Row="4" Grid.ColumnSpan="2" Click="Button_Click" Margin="0,5,0,0" Padding="5"/>
             </Grid>

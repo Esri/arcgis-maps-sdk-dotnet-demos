@@ -12,11 +12,11 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Background="LightGray">
-            <TextBlock Text="Identify" Foreground="White" FontWeight="Bold" Margin="5" />
+        <Border Background="{StaticResource CalciteBackground1Brush}">
+            <TextBlock Text="Identify" Foreground="{StaticResource CalciteText1Brush}" FontWeight="Bold" Margin="5" />
         </Border>
         <Button HorizontalAlignment="Right" Content="r" FontFamily="Webdings"
-                BorderThickness="0" Background="Transparent" Padding="10,5" Foreground="White"
+                BorderThickness="0" Background="Transparent" Padding="10,5" Foreground="{StaticResource CalciteText1Brush}"
                 Click="CloseButton_Click" />
 
         <ListView x:Name="Items" Grid.Row="1" SelectionChanged="Items_SelectionChanged" Background="Transparent">

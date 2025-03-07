@@ -1,34 +1,34 @@
 ﻿<Window x:Class="ExternalNmeaGPS.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:local="clr-namespace:ExternalNmeaGPS"
-		xmlns:ctrls="clr-namespace:ExternalNmeaGPS.Controls"
-		xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
-		xmlns:esrimapping="clr-namespace:Esri.ArcGISRuntime.Mapping;assembly=Esri.ArcGISRuntime"
-		xmlns:esriui="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"        
-        Width="1024" Height="768"
+        xmlns:local="clr-namespace:ExternalNmeaGPS"
+        xmlns:ctrls="clr-namespace:ExternalNmeaGPS.Controls"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:esrimapping="clr-namespace:Esri.ArcGISRuntime.Mapping;assembly=Esri.ArcGISRuntime"
+        xmlns:esriui="clr-namespace:Esri.ArcGISRuntime.UI;assembly=Esri.ArcGISRuntime"
+        Width="1024" Height="768" Style="{StaticResource CalciteWindowStyle}"
         Title="NMEA GPS Sample" >
     <Window.Resources>
         <local:FixTypeConverter x:Key="FixTypeConverter" />
     </Window.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
-		
-		<Menu Grid.Row="0" Grid.ColumnSpan="2">
-			<MenuItem Header="File" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" >
+            <MenuItem Header="File" >
                 <MenuItem Header="Exit" Click="MenuItemFileExit_Click" />
             </MenuItem>
             <MenuItem Header="Views">
                 <MenuItem Header="Satellite Sky View" Click="MenuItemShowSkyView_Click" />
             </MenuItem>
-			<MenuItem Header="Auto Pan" >
+            <MenuItem Header="Auto Pan" >
                 <MenuItem Header="Off" x:Name="AutoPanOffItem" Click="AutoPanOff_Click" />
                 <MenuItem Header="Recenter" x:Name="AutoPanRecenterItem" Click="AutoPanRecenter_Click" />
                 <MenuItem Header="Navigation" x:Name="AutoPanNavigationItem" Click="AutoPanNavigation_Click" IsChecked="True" />
@@ -36,11 +36,11 @@
             </MenuItem>
         </Menu>
 
-		<esri:MapView x:Name="mapView" Grid.Row="1"  Grid.ColumnSpan="2">
-			<local:RestoreAutoPanMode.RestoreAutoPanSettings>
-				<local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" RestoreScale="5000" x:Name="restoreAutoModeBehavior" />
-			</local:RestoreAutoPanMode.RestoreAutoPanSettings>
-			<esrimapping:Map>
+        <esri:MapView x:Name="mapView" Grid.Row="1"  Grid.ColumnSpan="2">
+            <local:RestoreAutoPanMode.RestoreAutoPanSettings>
+                <local:RestoreAutoPanMode DelayInSeconds="5" PanMode="Navigation" IsEnabled="True" RestoreScale="5000" x:Name="restoreAutoModeBehavior" />
+            </local:RestoreAutoPanMode.RestoreAutoPanSettings>
+            <esrimapping:Map>
                 <esrimapping:Map.Basemap>
                     <esrimapping:Basemap>
                         <esrimapping:Basemap.BaseLayers>
@@ -48,18 +48,16 @@
                         </esrimapping:Basemap.BaseLayers>
                     </esrimapping:Basemap>
                 </esrimapping:Map.Basemap>
-			</esrimapping:Map>
+            </esrimapping:Map>
             <esri:MapView.GraphicsOverlays>
                 <esriui:GraphicsOverlay />
             </esri:MapView.GraphicsOverlays>
-		</esri:MapView>
-		
-		<Expander Header="Settings" HorizontalAlignment="Left" 
-				  VerticalAlignment="Top"
-				  Background="White"
-				  Grid.Row="1" Margin="20"
-				  Padding="10" MinWidth="250"
-				  >
+        </esri:MapView>
+        
+        <Expander Header="Settings" HorizontalAlignment="Left" 
+                  VerticalAlignment="Top"
+                  Grid.Row="1" Margin="20"
+                  MinWidth="250">
             <TabControl>
                 <TabItem Header="Connect">
                     <StackPanel Margin="10">
@@ -107,25 +105,30 @@
                                 <TextBlock Text="Baud:" Grid.Row="1"  VerticalAlignment="Center" />
                                 <TextBox Text="9600" x:Name="BaudRate" HorizontalContentAlignment="Right" Grid.Row="1" Grid.Column="1" Margin="5,5,0,5" IsEnabled="{Binding SelectedItem.IsSerialPort, ElementName=PortsList}" />
                                 <Button Content="Open Port"
-									Click="SerialPortOpen_Click"
-									Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5" />
+                                    Click="SerialPortOpen_Click"
+                                    Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5" />
                             </Grid>
                         </Border>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="NTRIP">
                     <StackPanel Margin="10">
-                        <TextBlock Text="Endpoint: "/>
-                        <TextBox Text="esricaster.esri.com" x:Name="ntripEndpoint" />
-                        <TextBlock Text="Port: "/>
-                        <TextBox Text="2101" x:Name="ntripPort" />
-                        <TextBlock Text="Username:"/>
-                        <TextBox Text="" x:Name="ntripUsername" />
-                        <TextBlock Text="Password:"/>
-                        <PasswordBox x:Name="ntripPassword" />
+                        <GroupBox Style="{StaticResource CalciteLabeledGroupBoxStyle}" Header="Endpoint">
+                            <TextBox Text="esricaster.esri.com" x:Name="ntripEndpoint" />
+                        </GroupBox>
+                        <GroupBox Style="{StaticResource CalciteLabeledGroupBoxStyle}" Header="Port">
+                            <TextBox Text="2101" x:Name="ntripPort" />
+                        </GroupBox>
+                        <GroupBox Style="{StaticResource CalciteLabeledGroupBoxStyle}" Header="Username">
+                            <TextBox Text="" x:Name="ntripUsername" />
+                        </GroupBox>
+                        <GroupBox Style="{StaticResource CalciteLabeledGroupBoxStyle}" Header="Password">
+                            <PasswordBox x:Name="ntripPassword" />
+                        </GroupBox>
                         <Button Content="Get Streams" Click="GetNtripStreams_Click" Margin="0,5" />
-                        <TextBlock Text="Available Streams:" />
-                        <ComboBox Text="Select Stream" x:Name="ntripStreamList" />
+                        <GroupBox Style="{StaticResource CalciteLabeledGroupBoxStyle}" Header="Available Streams">
+                            <ComboBox Text="Select Stream" x:Name="ntripStreamList" />
+                        </GroupBox>
                         <Button Content="Connect" Click="NtripConnect_Click" Margin="0,5" />
                         <TextBlock x:Name="ntripStatus" Text="Status: Not connected" />
                     </StackPanel>
@@ -133,7 +136,7 @@
             </TabControl>
         </Expander>
 
-        <Border Background="White" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Margin="20" CornerRadius="5">
+        <Border Background="{DynamicResource CalciteBackgroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Margin="20" CornerRadius="5">
             <Border.Style>
                 <Style TargetType="Border">
                 <Setter Property="Visibility" Value="Visible"/>
@@ -145,8 +148,8 @@
             </Style>
             </Border.Style>
             <StackPanel>
-                <Border Background="CornflowerBlue" CornerRadius="5,5,0,0" Padding="2">
-                    <TextBlock Text="Location Info" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" FontSize="16" />
+                <Border Background="{DynamicResource CalciteBrandBrush}" CornerRadius="5,5,0,0" Padding="2">
+                    <TextBlock Text="Location Info" FontWeight="Bold" Foreground="{DynamicResource CalciteForegroundBrandContrastBrush}" HorizontalAlignment="Center" FontSize="16" />
                 </Border>
             <Grid Margin="10" >
                     <Grid.RowDefinitions>
@@ -179,6 +182,6 @@
                 </Grid>
             </StackPanel>
         </Border>
-	</Grid>
+    </Grid>
     
 </Window>
