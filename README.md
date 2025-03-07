@@ -18,6 +18,7 @@ You can also find a set of smaller feature-focused samples in the [ArcGIS Maps S
 * [`KML Viewer`](src/KmlViewer) - A WinUI 3 app for visualizing KML/KMZ files in 2D and 3D.
 * [`Editing geometries in a SceneView`](src/SceneViewEdit) - A Windows Desktop app demonstrating how to do geometry editing in 3D using a customer editor.
 * [`Background Location Tracking`](src/BackgroundLocationTracking) - A simple sample demonstrating how to keep the location tracking functionality running while the application is in the background (when the screen is off or applications are switched).
+* [`WinUI Map Viewer`](src/MapViewer) - This WinUI application attempts to bring together a number of workflows and UI components into a full ArcGIS Portal Item Viewer. It relies heavily on MVVM and a set of custom controls and views, as well as Calcite for .NET Toolkit for creating the custom UI experience.
 
 ## Resources
 
