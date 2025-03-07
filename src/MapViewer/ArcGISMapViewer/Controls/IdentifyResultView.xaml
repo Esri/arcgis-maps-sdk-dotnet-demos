@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ArcGISMapViewer.Controls.IdentifyResultView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISMapViewer"
+    xmlns:controls="using:ArcGISMapViewer.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:calcite="using:Esri.Calcite.WinUI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
+    mc:Ignorable="d" MaxHeight="300" MaxWidth="300">
+
+    <Grid Margin="0,0,0,-10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <controls:Pager Grid.Row="2" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectedIndex="{x:Bind Path=flipview.SelectedIndex, Mode=TwoWay}" Margin="-10,0" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+            <!--<Button BorderThickness="0" Background="Transparent" Foreground="{ThemeResource CalciteText3Color}">
+                <StackPanel Orientation="Horizontal">
+                    <IconSourceElement IconSource="{calcite:CalciteIconSource Icon=Table, SymbolSize=14, Scale=Medium}" Margin="0,0,5,0" />
+                    <TextBlock Text="Table" />
+                </StackPanel>
+            </Button>-->
+            <Button Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Table" IsEnabled="False">
+                <calcite:SymbolIcon Symbol="Table" Margin="5" />
+            </Button>
+            <Button x:Name="EditButton" Click="EditButton_Click" Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Edit" Margin="5,0">
+                <calcite:SymbolIcon Symbol="PencilSquare" Margin="5" />
+            </Button>
+            <Button Style="{StaticResource ChromeLessButton}" VerticalAlignment="Center" ToolTipService.ToolTip="Zoom to" Click="ZoomTo_Click">
+                <calcite:SymbolIcon Symbol="MagnifyingGlassPlus" Margin="5" />
+            </Button>
+        </StackPanel>
+
+        <FlipView x:Name="flipview" Grid.Row="0" SelectionChanged="flipview_SelectionChanged" ItemsSource="{x:Bind Items, Mode=OneWay}">
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <tk:PopupViewer Grid.Row="1" Popup="{Binding}" />
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+
+        <AppBarButton Icon="Clear" HorizontalAlignment="Right" Margin="-20,-15"  Click="Close_Click" Grid.RowSpan="3" />
+    </Grid>
+</UserControl>

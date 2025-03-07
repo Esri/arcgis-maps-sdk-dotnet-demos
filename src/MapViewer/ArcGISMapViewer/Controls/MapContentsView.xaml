@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ArcGISMapViewer.Controls.MapContentsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISMapViewer.Controls"
+    xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
+    xmlns:data="using:Esri.ArcGISRuntime.Data"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Layers" Margin="10" Style="{StaticResource BodyStrongTextBlockStyle}" />
+            <Rectangle Height="1" Fill="Black" />
+            <TreeView ItemsSource="{x:Bind GeoModel.OperationalLayers, Mode=OneWay}" x:Name="OperationalLayersTreeView" SelectionChanged="TreeViewSelectionChanged">
+                <TreeView.ItemTemplate>
+                    <DataTemplate x:DataType="mapping:ILayerContent">
+                        <TreeViewItem Content="{x:Bind Name, Mode=OneWay}" ItemsSource="{x:Bind SublayerContents, Mode=OneWay}" IsExpanded="True" />
+                    </DataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <TextBlock Text="Tables" Margin="10" Style="{StaticResource BodyStrongTextBlockStyle}" />
+            <Rectangle Height="1" Fill="Black" />
+            <ListView ItemsSource="{x:Bind GeoModel.Tables, Mode=OneWay}" x:Name="TablesListView" SelectionChanged="TablesListView_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:FeatureTable">
+                        <TextBlock Text="{x:Bind DisplayName, Mode=OneWay}" Margin="25,0,0,0" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <TextBlock Text="Basemap" Margin="10" Style="{StaticResource BodyStrongTextBlockStyle}" />
+            <Rectangle Height="1" Fill="Black" />
+            <TreeView ItemsSource="{x:Bind GeoModel.Basemap.ReferenceLayers, Mode=OneWay}" x:Name="ReferenceLayersTreeView" SelectionChanged="TreeViewSelectionChanged">
+                <TreeView.ItemTemplate>
+                    <DataTemplate x:DataType="mapping:ILayerContent">
+                        <TreeViewItem Content="{x:Bind Name, Mode=OneWay}" ItemsSource="{x:Bind SublayerContents, Mode=OneWay}" IsExpanded="True" />
+                    </DataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <TreeView ItemsSource="{x:Bind GeoModel.Basemap.BaseLayers, Mode=OneWay}" x:Name="BaseLayersTreeView" SelectionChanged="TreeViewSelectionChanged">
+                <TreeView.ItemTemplate>
+                    <DataTemplate x:DataType="mapping:ILayerContent">
+                        <TreeViewItem Content="{x:Bind Name, Mode=OneWay}" ItemsSource="{x:Bind SublayerContents, Mode=OneWay}" IsExpanded="True" />
+                    </DataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </StackPanel>
+    </Grid>
+</Page>

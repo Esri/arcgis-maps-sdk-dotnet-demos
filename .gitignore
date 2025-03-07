@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 .DS_Store
+src/MapViewer/ArcGISMapViewer.Controls/Generated Files
+src/MapViewer/ArcGISMapViewer/Generated Files

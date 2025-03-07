@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ArcGISMapViewer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ArcGISMapViewer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

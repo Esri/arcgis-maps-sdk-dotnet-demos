@@ -1,0 +1,62 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives"
+    xmlns:local="using:ArcGISMapViewer.Controls">
+
+    <Style TargetType="local:FeatureTableView" >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:FeatureTableView">
+                    <Grid
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+
+                        <ScrollView VerticalScrollMode="Disabled" HorizontalScrollMode="Auto"  ContentOrientation="Horizontal">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Header background -->
+                                <Grid Background="{StaticResource SolidBackgroundFillColorBase}" BorderThickness="0,0,0,1" BorderBrush="Black" />
+
+                                <!-- Header strings, resizer seperators/vertical grid lines -->
+                                <ItemsControl Grid.RowSpan="2" IsHitTestVisible="True" x:Name="GridLines" ItemsSource="{TemplateBinding Columns}" VerticalAlignment="Stretch">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Header, Mode=OneTime}" Width="{Binding ActualWidth, Mode=OneWay}" VerticalAlignment="Stretch" TextAlignment="Center" FontWeight="Bold" />
+                                                <local:Separator Visibility="{Binding IsResizeable, Mode=OneTime}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- Table view -->
+                                <ScrollView Grid.Row="1" Grid.RowSpan="2" x:Name="ScrollViewHost" HorizontalScrollMode="Disabled" ContentOrientation="Vertical">
+                                    <ItemsRepeater x:Name="ItemsPresenter" HorizontalAlignment="Left" VerticalCacheLength="1" AllowFocusOnInteraction="True">
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate>
+                                                <local:FeatureDataRow />
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                </ScrollView>
+                            </Grid>
+                        </ScrollView>
+                        <ProgressBar x:Name="BusyIndicator" IsIndeterminate="False" Visibility="Collapsed" VerticalAlignment="Bottom" Margin="1" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
