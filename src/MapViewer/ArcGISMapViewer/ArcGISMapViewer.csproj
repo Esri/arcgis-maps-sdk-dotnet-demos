@@ -18,9 +18,6 @@
     <DefineConstants>DISABLE_XAML_GENERATED_MAIN;$(DefineConstants)</DefineConstants>
     <!--<PublishAot>True</PublishAot>-->
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Views\PortalItemDetailView.xaml" />
-  </ItemGroup>
 
     <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
