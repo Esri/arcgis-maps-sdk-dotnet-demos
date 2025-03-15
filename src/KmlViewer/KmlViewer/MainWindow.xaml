@@ -14,8 +14,5 @@
     xmlns:loc="using:Esri.ArcGISRuntime.Location"
     mc:Ignorable="d"
     >
-    <Window.SystemBackdrop>
-        <MicaBackdrop />
-    </Window.SystemBackdrop>
     <local:MainPage />
 </Window>

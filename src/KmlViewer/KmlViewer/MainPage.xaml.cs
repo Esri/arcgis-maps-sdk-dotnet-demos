@@ -462,9 +462,9 @@ namespace KmlViewer
 
         private bool isPanePinned = true;
 
-        private void BurgerButton_Toggled(TitleBar sender, object args)
+        private void BurgerButton_Toggled(object sender, RoutedEventArgs e)
         {
-            if(!isPanePinned)
+            if (!isPanePinned)
             {
                 splitView.DisplayMode = SplitViewDisplayMode.Inline;
                 splitView.IsPaneOpen = true;
