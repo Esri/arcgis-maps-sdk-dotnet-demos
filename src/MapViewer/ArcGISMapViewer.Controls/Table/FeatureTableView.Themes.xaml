@@ -1,4 +1,5 @@
 <ResourceDictionary
+    x:Class="ArcGISMapViewer.Controls.FeatureTableViewResources"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives"
@@ -23,7 +24,7 @@
                                 <!-- Header background -->
                                 <Grid Background="{StaticResource SolidBackgroundFillColorBase}" BorderThickness="0,0,0,1" BorderBrush="Black" />
 
-                                <!-- Header strings, resizer seperators/vertical grid lines -->
+                                <!-- Header strings, resizer separators/vertical grid lines -->
                                 <ItemsControl Grid.RowSpan="2" IsHitTestVisible="True" x:Name="GridLines" ItemsSource="{TemplateBinding Columns}" VerticalAlignment="Stretch">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -31,10 +32,10 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="local:TableColumn">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Header, Mode=OneTime}" Width="{Binding ActualWidth, Mode=OneWay}" VerticalAlignment="Stretch" TextAlignment="Center" FontWeight="Bold" />
-                                                <local:Separator Visibility="{Binding IsResizeable, Mode=OneTime}" />
+                                                <TextBlock Text="{x:Bind Header, Mode=OneTime}" Width="{x:Bind ActualWidth, Mode=OneWay}" VerticalAlignment="Stretch" TextAlignment="Center" FontWeight="Bold" />
+                                                <local:Separator Visibility="{x:Bind IsResizeable, Mode=OneTime}" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
