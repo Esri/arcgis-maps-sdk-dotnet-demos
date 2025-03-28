@@ -98,8 +98,13 @@ namespace ArcGISMapViewer
         [global::System.STAThreadAttribute]
         static void Main(string[] args)
         {
-            if (WebAuthenticator.CheckOAuthRedirectionActivation(true))
-                return;
+            var activationArgs = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent()?.GetActivatedEventArgs();
+            if (activationArgs?.Kind == Microsoft.Windows.AppLifecycle.ExtendedActivationKind.Protocol)
+            {
+                var protocolArgs = activationArgs.Data as ProtocolActivatedEventArgs;
+                if (protocolArgs is not null && Microsoft.Security.Authentication.OAuth.OAuth2Manager.CompleteAuthRequest(protocolArgs.Uri))
+                    return;
+            }
             var splash = SimpleSplashScreen.ShowDefaultSplashScreen();
             global::WinRT.ComWrappersSupport.InitializeComWrappers();
             global::Microsoft.UI.Xaml.Application.Start((p) => {
