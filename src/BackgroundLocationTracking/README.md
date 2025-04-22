@@ -76,6 +76,8 @@ _locationDataSource = new SystemLocationDataSource
 
     // Set ActivityType which is used to determine when location updates should be delivered.
     // This is used to help determine when to turn off GPS hardware to save power.
+    // For more information on different activity types, refer to Apple's documentation:
+    // https://developer.apple.com/documentation/corelocation/clactivitytype
     ActivityType = CoreLocation.CLActivityType.Other,
 };
 ```
