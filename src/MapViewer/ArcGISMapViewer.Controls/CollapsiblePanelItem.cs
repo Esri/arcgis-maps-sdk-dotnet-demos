@@ -1,254 +1,187 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ArcGISMapViewer.Controls.Automation.Peers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation.Peers;
-using Microsoft.UI.Xaml.Automation.Provider;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 
-namespace ArcGISMapViewer.Controls
+namespace ArcGISMapViewer.Controls;
+
+[Microsoft.UI.Xaml.Markup.ContentProperty(Name = nameof(Content))]
+public partial class CollapsiblePanelItem : Control
 {
+    // Visual States
+    const string c_pressedSelected = "PressedSelected";
+    const string c_pointerOverSelected = "PointerOverSelected";
+    const string c_selected = "Selected";
+    const string c_pressed = "Pressed";
+    const string c_pointerOver = "PointerOver";
+    const string c_disabled = "Disabled";
+    const string c_enabled = "Enabled";
+    const string c_normal = "Normal";
+    private WeakReference<CollapsiblePanel>? _collapsiblePanel;
 
-    [Microsoft.UI.Xaml.Markup.ContentProperty(Name = nameof(Content))]
-    public partial class CollapsiblePanelItem : Control
+    internal CollapsiblePanel? GetCollapsiblePanel() => _collapsiblePanel?.TryGetTarget(out CollapsiblePanel? panel) == true ? panel : null;
+
+    public CollapsiblePanelItem()
     {
-        // Visual States
-        const string c_pressedSelected = "PressedSelected";
-        const string c_pointerOverSelected = "PointerOverSelected";
-        const string c_selected = "Selected";
-        const string c_pressed = "Pressed";
-        const string c_pointerOver = "PointerOver";
-        const string c_disabled = "Disabled";
-        const string c_enabled = "Enabled";
-        const string c_normal = "Normal";
-        private WeakReference<CollapsiblePanel>? _collapsiblePanel;
-
-        internal CollapsiblePanel? GetCollapsiblePanel() => _collapsiblePanel?.TryGetTarget(out CollapsiblePanel? panel) == true ? panel : null;
-
-        public CollapsiblePanelItem()
-        {
-            this.DefaultStyleKey = typeof(CollapsiblePanelItem);
-            IsEnabledChanged += (s, e) => OnIsEnabledChanged(true);
-        }
-
-        internal void SetCollapsiblePanelParent(CollapsiblePanel? collapsiblePanel)
-        {
-            if (collapsiblePanel is null)
-                _collapsiblePanel = null;
-            else
-                _collapsiblePanel = new WeakReference<CollapsiblePanel>(collapsiblePanel);
-        }
-
-        protected override void OnPointerEntered(PointerRoutedEventArgs e)
-        {
-            base.OnPointerEntered(e);
-            m_isPointerOver = true;
-            UpdateVisualStateForPointer(true);
-        }
-        protected override void OnPointerExited(PointerRoutedEventArgs e)
-        {
-            base.OnPointerExited(e);
-            m_isPointerOver = false;
-            UpdateVisualStateForPointer(true);
-        }
-        protected override void OnPointerPressed(PointerRoutedEventArgs e)
-        {
-            base.OnPointerPressed(e);
-            m_isPressed = true;
-            UpdateVisualStateForPointer(true);
-        }
-        protected override void OnPointerReleased(PointerRoutedEventArgs e)
-        {
-            base.OnPointerReleased(e);
-            m_isPressed = false;
-            UpdateVisualStateForPointer(true);
-        }
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            OnIsExpandedPropertyChanged(false);
-            OnIsEnabledChanged(false);
-        }
-        bool m_isPressed;
-        bool m_isPointerOver;
-        private void UpdateVisualStateForPointer(bool useTransitions)
-        {
-            var isEnabled = IsEnabled;
-            var enabledStateValue = isEnabled ? c_enabled : c_disabled;
-            // DisabledStates and CommonStates
-            bool isSelected = IsSelected;
-            Func<string> selectedStateValue = () =>
-            {
-                if (isEnabled)
-                {
-                    if (isSelected)
-                    {
-                        if (m_isPressed)
-                            return c_pressedSelected;
-                        else if (m_isPointerOver)
-                            return c_pointerOverSelected;
-                        else
-                            return c_selected;
-                    }
-                    else if (m_isPointerOver)
-                    {
-                        if (m_isPressed)
-                            return c_pressed;
-                        else
-                            return c_pointerOver;
-                    }
-                    else if (m_isPressed)
-                        return c_pressed;
-                }
-                else
-                {
-                    if (isSelected)
-                        return c_selected;
-                }
-                return c_normal;
-            };
-            VisualStateManager.GoToState(this, selectedStateValue(), useTransitions);
-            VisualStateManager.GoToState(this, IsEnabled ? c_enabled : c_disabled, useTransitions);
-        }
-
-
-        private void OnIsEnabledChanged(bool useTransitions)
-        {
-            UpdateVisualStateForPointer(useTransitions);
-        }
-
-        public string? Title
-        {
-            get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
-        }
-
-        public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(CollapsiblePanelItem), new PropertyMetadata(""));
-
-
-        public IconElement? Icon
-        {
-            get { return (IconElement)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
-        }
-
-        public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register(nameof(Icon), typeof(IconElement), typeof(CollapsiblePanelItem), new PropertyMetadata(null));
-
-        public object? Content
-        {
-            get { return (object)GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
-        }
-
-        public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register(nameof(Content), typeof(object), typeof(CollapsiblePanelItem), new PropertyMetadata(null));
-
-        public bool IsExpanded
-        {
-            get { return (bool)GetValue(IsExpandedProperty); }
-            set { SetValue(IsExpandedProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsExpandedProperty =
-            DependencyProperty.Register(nameof(IsExpanded), typeof(bool), typeof(CollapsiblePanelItem), new PropertyMetadata(false, (s, e) => ((CollapsiblePanelItem)s).OnIsExpandedPropertyChanged(true)));
-
-        private void OnIsExpandedPropertyChanged(bool useTransitions)
-        {
-            VisualStateManager.GoToState(this, IsExpanded ? "Expanded" : "Collapsed", useTransitions);
-        }
-
-        public bool IsSelected
-        {
-            get { return (bool)GetValue(IsSelectedProperty); }
-            set { SetValue(IsSelectedProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(CollapsiblePanelItem), new PropertyMetadata(false, (s, e) => ((CollapsiblePanelItem)s).OnIsSelectedPropertyChanged(true)));
-
-        private void OnIsSelectedPropertyChanged(bool useTransitions)
-        {
-            UpdateVisualStateForPointer(useTransitions);
-        }
-
-        public string ContentTitle
-        {
-            get { return (string)GetValue(ContentTitleProperty); }
-            set { SetValue(ContentTitleProperty, value); }
-        }
-
-        public static readonly DependencyProperty ContentTitleProperty =
-            DependencyProperty.Register("ContentTitle", typeof(string), typeof(CollapsiblePanelItem), new PropertyMetadata(string.Empty));
-
-        protected override AutomationPeer OnCreateAutomationPeer()
-        {
-            return new CollapsiblePanelItemAutomationPeer(this);
-        }
+        this.DefaultStyleKey = typeof(CollapsiblePanelItem);
+        IsEnabledChanged += (s, e) => OnIsEnabledChanged(true);
     }
 
-    public partial class CollapsiblePanelItemAutomationPeer : AutomationPeer, Microsoft.UI.Xaml.Automation.Provider.ISelectionItemProvider
+    internal void SetCollapsiblePanelParent(CollapsiblePanel? collapsiblePanel)
     {
-        readonly CollapsiblePanelItem _item;
+        if (collapsiblePanel is null)
+            _collapsiblePanel = null;
+        else
+            _collapsiblePanel = new WeakReference<CollapsiblePanel>(collapsiblePanel);
+    }
 
-        public CollapsiblePanelItemAutomationPeer(CollapsiblePanelItem item)
+    protected override void OnPointerEntered(PointerRoutedEventArgs e)
+    {
+        base.OnPointerEntered(e);
+        m_isPointerOver = true;
+        UpdateVisualStateForPointer(true);
+    }
+    protected override void OnPointerExited(PointerRoutedEventArgs e)
+    {
+        base.OnPointerExited(e);
+        m_isPointerOver = false;
+        UpdateVisualStateForPointer(true);
+    }
+    protected override void OnPointerPressed(PointerRoutedEventArgs e)
+    {
+        base.OnPointerPressed(e);
+        m_isPressed = true;
+        UpdateVisualStateForPointer(true);
+    }
+    protected override void OnPointerReleased(PointerRoutedEventArgs e)
+    {
+        base.OnPointerReleased(e);
+        m_isPressed = false;
+        UpdateVisualStateForPointer(true);
+    }
+    protected override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        OnIsExpandedPropertyChanged(false);
+        OnIsEnabledChanged(false);
+    }
+    bool m_isPressed;
+    bool m_isPointerOver;
+    private void UpdateVisualStateForPointer(bool useTransitions)
+    {
+        var isEnabled = IsEnabled;
+        var enabledStateValue = isEnabled ? c_enabled : c_disabled;
+        // DisabledStates and CommonStates
+        bool isSelected = IsSelected;
+        Func<string> selectedStateValue = () =>
         {
-            _item = item;
-        }
-
-        public bool IsSelected => _item.IsSelected;
-
-        public IRawElementProviderSimple? SelectionContainer
-        {
-            get
+            if (isEnabled)
             {
-                var panel = GetParentCollapsiblePanel();
-                if(panel != null && FrameworkElementAutomationPeer.CreatePeerForElement(panel) is CollapsiblePanelAutomationPeer panelPeer)
+                if (isSelected)
                 {
-                    return ProviderFromPeer(panelPeer);
+                    if (m_isPressed)
+                        return c_pressedSelected;
+                    else if (m_isPointerOver)
+                        return c_pointerOverSelected;
+                    else
+                        return c_selected;
                 }
-                return null;
+                else if (m_isPointerOver)
+                {
+                    if (m_isPressed)
+                        return c_pressed;
+                    else
+                        return c_pointerOver;
+                }
+                else if (m_isPressed)
+                    return c_pressed;
             }
-        }
+            else
+            {
+                if (isSelected)
+                    return c_selected;
+            }
+            return c_normal;
+        };
+        VisualStateManager.GoToState(this, selectedStateValue(), useTransitions);
+        VisualStateManager.GoToState(this, IsEnabled ? c_enabled : c_disabled, useTransitions);
+    }
 
-        public void AddToSelection()
-        {
-            _item.IsSelected = true;
-        }
 
-        public void RemoveFromSelection()
-        {
-            _item.IsSelected = false;
-        }
+    private void OnIsEnabledChanged(bool useTransitions)
+    {
+        UpdateVisualStateForPointer(useTransitions);
+    }
 
-        public void Select()
-        {
-            _item.IsSelected = true;
-        }
+    public string? Title
+    {
+        get { return (string)GetValue(TitleProperty); }
+        set { SetValue(TitleProperty, value); }
+    }
 
-        protected override AutomationControlType GetAutomationControlTypeCore() => AutomationControlType.ListItem;
+    public static readonly DependencyProperty TitleProperty =
+        DependencyProperty.Register("Title", typeof(string), typeof(CollapsiblePanelItem), new PropertyMetadata(""));
 
-        protected override string GetNameCore() => _item.Name;
 
-        protected override object GetPatternCore(PatternInterface patternInterface)
-        {
-            if (patternInterface == PatternInterface.SelectionItem)
-                return this;
-            return base.GetPatternCore(patternInterface);
-        }
+    public IconElement? Icon
+    {
+        get { return (IconElement)GetValue(IconProperty); }
+        set { SetValue(IconProperty, value); }
+    }
 
-        protected override int GetPositionInSetCore() => GetParentCollapsiblePanel()?.Items.IndexOf(_item) ?? 0;
+    public static readonly DependencyProperty IconProperty =
+        DependencyProperty.Register(nameof(Icon), typeof(IconElement), typeof(CollapsiblePanelItem), new PropertyMetadata(null));
 
-        protected override int GetSizeOfSetCore() => GetParentCollapsiblePanel()?.Items.Count ?? 0;
+    public object? Content
+    {
+        get { return (object)GetValue(ContentProperty); }
+        set { SetValue(ContentProperty, value); }
+    }
 
-        protected override int GetLevelCore() => 1;
+    public static readonly DependencyProperty ContentProperty =
+        DependencyProperty.Register(nameof(Content), typeof(object), typeof(CollapsiblePanelItem), new PropertyMetadata(null));
 
-        protected override string GetClassNameCore() => nameof(CollapsiblePanelItem);
+    public bool IsExpanded
+    {
+        get { return (bool)GetValue(IsExpandedProperty); }
+        set { SetValue(IsExpandedProperty, value); }
+    }
 
-        private CollapsiblePanel? GetParentCollapsiblePanel() => _item.GetCollapsiblePanel();
+    public static readonly DependencyProperty IsExpandedProperty =
+        DependencyProperty.Register(nameof(IsExpanded), typeof(bool), typeof(CollapsiblePanelItem), new PropertyMetadata(false, (s, e) => ((CollapsiblePanelItem)s).OnIsExpandedPropertyChanged(true)));
+
+    private void OnIsExpandedPropertyChanged(bool useTransitions)
+    {
+        VisualStateManager.GoToState(this, IsExpanded ? "Expanded" : "Collapsed", useTransitions);
+    }
+
+    public bool IsSelected
+    {
+        get { return (bool)GetValue(IsSelectedProperty); }
+        set { SetValue(IsSelectedProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsSelectedProperty =
+        DependencyProperty.Register("IsSelected", typeof(bool), typeof(CollapsiblePanelItem), new PropertyMetadata(false, (s, e) => ((CollapsiblePanelItem)s).OnIsSelectedPropertyChanged(true)));
+
+    private void OnIsSelectedPropertyChanged(bool useTransitions)
+    {
+        UpdateVisualStateForPointer(useTransitions);
+    }
+
+    public string ContentTitle
+    {
+        get { return (string)GetValue(ContentTitleProperty); }
+        set { SetValue(ContentTitleProperty, value); }
+    }
+
+    public static readonly DependencyProperty ContentTitleProperty =
+        DependencyProperty.Register("ContentTitle", typeof(string), typeof(CollapsiblePanelItem), new PropertyMetadata(string.Empty));
+
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new CollapsiblePanelItemAutomationPeer(this);
     }
 }
