@@ -5,6 +5,8 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation.Peers;
+using Microsoft.UI.Xaml.Automation.Provider;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -24,7 +26,10 @@ namespace ArcGISMapViewer.Controls
             ((INotifyCollectionChanged)_items).CollectionChanged += CollapsiblePanel_CollectionChanged;
             ((INotifyCollectionChanged)_footerItems).CollectionChanged += CollapsiblePanel_CollectionChanged;
         }
-
+        protected override AutomationPeer OnCreateAutomationPeer()
+        {
+            return new CollapsiblePanelAutomationPeer(this);
+        }
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -67,13 +72,88 @@ namespace ArcGISMapViewer.Controls
             foreach (var item in e.OldItems?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
             {
                 item.Tapped -= ItemTapped;
+                item.KeyDown -= CollapsiblePanelItem_KeyDown;
+                item.SetCollapsiblePanelParent(null);
             }
             foreach (var item in e.NewItems?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
             {
                 item.IsExpanded = IsPaneExpanded;
                 item.Tapped += ItemTapped;
+                item.KeyDown += CollapsiblePanelItem_KeyDown;
+                item.SetCollapsiblePanelParent(this);
                 if (item.IsSelected)
                     SelectedItem = item;
+            }
+        }
+
+        private void CollapsiblePanelItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.OriginalKey == Windows.System.VirtualKey.GamepadA ||
+                e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+            {
+                // Only handle those keys if the key is not being held down!
+                if (!e.KeyStatus.WasKeyDown && sender is CollapsiblePanelItem item)
+                {
+                    HandleKeyEventForCollapsiblePanelItem(item, e);
+                }
+            }
+            else if(sender is CollapsiblePanelItem item)
+            {
+                HandleKeyEventForCollapsiblePanelItem(item, e);
+            }
+        }
+
+        private void HandleKeyEventForCollapsiblePanelItem(CollapsiblePanelItem item, KeyRoutedEventArgs args)
+        {
+            var key = args.Key;
+            switch (key)
+            {
+                case Windows.System.VirtualKey.Enter:
+                case Windows.System.VirtualKey.Space:
+                    args.Handled = true;
+                    SelectedItem = item;
+                    item.Focus(FocusState.Keyboard);
+                    break;
+                case Windows.System.VirtualKey.Home:
+                    if (Items.Count > 0)
+                    {
+                        SelectedItem = Items.First();
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
+                    }
+                    break;
+                case Windows.System.VirtualKey.End:
+                    if (Items.Count > 0)
+                    {
+                        SelectedItem = Items.Last();
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
+                    }
+                    break;
+                case Windows.System.VirtualKey.Down:
+                    if (Items.Count > 0)
+                    {
+                        var idx = Items.IndexOf(item);
+                        if (idx < Items.Count - 1)
+                        {
+                            SelectedItem = Items[idx+1];
+                            SelectedItem.Focus(FocusState.Keyboard);
+                            args.Handled = true;
+                        }
+                    }
+                    break;
+                case Windows.System.VirtualKey.Up:
+                    if (Items.Count > 0)
+                    {
+                        var idx = Items.IndexOf(item);
+                        if (idx > 0)
+                        {
+                            SelectedItem = Items[idx - 1];
+                            SelectedItem.Focus(FocusState.Keyboard);
+                            args.Handled = true;
+                        }
+                    }
+                    break;
             }
         }
 
@@ -88,6 +168,7 @@ namespace ArcGISMapViewer.Controls
                     IsOpen = true;
                     SelectedItem = item;
                 }
+                item.Focus(FocusState.Pointer);
             }
         }
 
@@ -123,7 +204,10 @@ namespace ArcGISMapViewer.Controls
             {
                 item.IsSelected = item == selectedItem;
             }
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        public event EventHandler SelectionChanged;
 
         public bool IsOpen
         {
@@ -200,5 +284,44 @@ namespace ArcGISMapViewer.Controls
             DependencyProperty.Register(nameof(ExpandButtonVisibility), typeof(Visibility), typeof(CollapsiblePanel), new PropertyMetadata(true));
 
 
+    }
+
+    public sealed partial class CollapsiblePanelAutomationPeer : AutomationPeer, Microsoft.UI.Xaml.Automation.Provider.ISelectionProvider
+    {
+        CollapsiblePanel _panel;
+        public CollapsiblePanelAutomationPeer(CollapsiblePanel panel)
+        {
+            _panel = panel;
+            _panel.SelectionChanged += (s, e) => RaiseSelectionChangedEvent(); //TODO: Make weak
+        }
+
+        private void RaiseSelectionChangedEvent()
+        {
+            RaiseAutomationEvent(AutomationEvents.SelectionItemPatternOnElementSelected);
+        }
+
+        public bool CanSelectMultiple => false;
+
+        public bool IsSelectionRequired => true;
+
+        public IRawElementProviderSimple[] GetSelection()
+        {
+            if (_panel.SelectedItem != null)
+            {
+                var peer = ProviderFromPeer(new CollapsiblePanelItemAutomationPeer(_panel.SelectedItem));
+                if (peer != null)
+                {
+                    return [peer];
+                }
+            }
+            return Array.Empty<IRawElementProviderSimple>();
+        }
+
+        protected override object GetPatternCore(PatternInterface patternInterface)
+        {
+            if (patternInterface == PatternInterface.Selection)
+                return this;
+            return base.GetPatternCore(patternInterface);
+        }
     }
 }

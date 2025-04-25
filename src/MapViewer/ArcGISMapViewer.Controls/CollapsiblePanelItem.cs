@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation.Peers;
+using Microsoft.UI.Xaml.Automation.Provider;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 
@@ -22,12 +24,24 @@ namespace ArcGISMapViewer.Controls
         const string c_disabled = "Disabled";
         const string c_enabled = "Enabled";
         const string c_normal = "Normal";
+        private WeakReference<CollapsiblePanel>? _collapsiblePanel;
+
+        internal CollapsiblePanel? GetCollapsiblePanel() => _collapsiblePanel?.TryGetTarget(out CollapsiblePanel? panel) == true ? panel : null;
 
         public CollapsiblePanelItem()
         {
             this.DefaultStyleKey = typeof(CollapsiblePanelItem);
             IsEnabledChanged += (s, e) => OnIsEnabledChanged(true);
         }
+
+        internal void SetCollapsiblePanelParent(CollapsiblePanel? collapsiblePanel)
+        {
+            if (collapsiblePanel is null)
+                _collapsiblePanel = null;
+            else
+                _collapsiblePanel = new WeakReference<CollapsiblePanel>(collapsiblePanel);
+        }
+
         protected override void OnPointerEntered(PointerRoutedEventArgs e)
         {
             base.OnPointerEntered(e);
@@ -148,7 +162,6 @@ namespace ArcGISMapViewer.Controls
             VisualStateManager.GoToState(this, IsExpanded ? "Expanded" : "Collapsed", useTransitions);
         }
 
-
         public bool IsSelected
         {
             get { return (bool)GetValue(IsSelectedProperty); }
@@ -171,5 +184,71 @@ namespace ArcGISMapViewer.Controls
 
         public static readonly DependencyProperty ContentTitleProperty =
             DependencyProperty.Register("ContentTitle", typeof(string), typeof(CollapsiblePanelItem), new PropertyMetadata(string.Empty));
+
+        protected override AutomationPeer OnCreateAutomationPeer()
+        {
+            return new CollapsiblePanelItemAutomationPeer(this);
+        }
+    }
+
+    public partial class CollapsiblePanelItemAutomationPeer : AutomationPeer, Microsoft.UI.Xaml.Automation.Provider.ISelectionItemProvider
+    {
+        readonly CollapsiblePanelItem _item;
+
+        public CollapsiblePanelItemAutomationPeer(CollapsiblePanelItem item)
+        {
+            _item = item;
+        }
+
+        public bool IsSelected => _item.IsSelected;
+
+        public IRawElementProviderSimple? SelectionContainer
+        {
+            get
+            {
+                var panel = GetParentCollapsiblePanel();
+                if(panel != null && FrameworkElementAutomationPeer.CreatePeerForElement(panel) is CollapsiblePanelAutomationPeer panelPeer)
+                {
+                    return ProviderFromPeer(panelPeer);
+                }
+                return null;
+            }
+        }
+
+        public void AddToSelection()
+        {
+            _item.IsSelected = true;
+        }
+
+        public void RemoveFromSelection()
+        {
+            _item.IsSelected = false;
+        }
+
+        public void Select()
+        {
+            _item.IsSelected = true;
+        }
+
+        protected override AutomationControlType GetAutomationControlTypeCore() => AutomationControlType.ListItem;
+
+        protected override string GetNameCore() => _item.Name;
+
+        protected override object GetPatternCore(PatternInterface patternInterface)
+        {
+            if (patternInterface == PatternInterface.SelectionItem)
+                return this;
+            return base.GetPatternCore(patternInterface);
+        }
+
+        protected override int GetPositionInSetCore() => GetParentCollapsiblePanel()?.Items.IndexOf(_item) ?? 0;
+
+        protected override int GetSizeOfSetCore() => GetParentCollapsiblePanel()?.Items.Count ?? 0;
+
+        protected override int GetLevelCore() => 1;
+
+        protected override string GetClassNameCore() => nameof(CollapsiblePanelItem);
+
+        private CollapsiblePanel? GetParentCollapsiblePanel() => _item.GetCollapsiblePanel();
     }
 }

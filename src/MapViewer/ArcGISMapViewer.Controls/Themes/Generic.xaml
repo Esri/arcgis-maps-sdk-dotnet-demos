@@ -13,6 +13,8 @@
     <primitives:EmptyToCollapsedConverter x:Name="EmptyToCollapsedConverter" />
 
     <Style TargetType="local:CollapsiblePanel" >
+        <Setter Property="XYFocusKeyboardNavigation" Value="Enabled" />
+        <Setter Property="AutomationProperties.AutomationControlType" Value="List" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:CollapsiblePanel">
@@ -124,11 +126,14 @@
         </Setter>
     </Style>
     <Style TargetType="local:CollapsiblePanelItem" >
+        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="IsFocusEngagementEnabled" Value="True" />
+        <Setter Property="AutomationProperties.AutomationControlType" Value="ListItem" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:CollapsiblePanelItem">
                     <Grid HorizontalAlignment="Stretch" x:Name="LayoutRoot"
-                        Background="{TemplateBinding Background}"
+                        Background="{TemplateBinding Background}" Control.IsTemplateFocusTarget="True"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                           Margin="2">

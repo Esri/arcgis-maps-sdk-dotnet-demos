@@ -31,7 +31,7 @@
             </TitleBar.LeftHeader>
             <TitleBar.RightHeader>
                 <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
-                    <tk:SearchView HorizontalAlignment="Right" GeoView="{x:Bind MapPage.GeoViewWrapper.GeoView, Mode=OneWay}" Width="190" VerticalAlignment="Bottom" Height="40"/>
+                    <tk:SearchView HorizontalAlignment="Right" GeoView="{x:Bind MapPage.GeoViewWrapper.GeoView, Mode=OneWay}" Width="190" VerticalAlignment="Bottom" Height="40" AutomationProperties.Name="Search" />
                     <Button VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,-2,0,2">
                         <PersonPicture ProfilePicture="{x:Bind AppVM.PortalUserThumbnail, Mode=OneWay}" 
                                    BorderBrush="Black" BadgeText="{x:Bind AppVM.PortalUser.FullName, Mode=OneWay}" 
