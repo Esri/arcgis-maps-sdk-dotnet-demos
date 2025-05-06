@@ -1,23 +1,29 @@
 ﻿using System;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Automation.Provider;
 
 namespace ArcGISMapViewer.Controls.Automation.Peers;
 
-public sealed partial class CollapsiblePanelAutomationPeer : AutomationPeer, Microsoft.UI.Xaml.Automation.Provider.ISelectionProvider
+public sealed partial class CollapsiblePanelAutomationPeer : AutomationPeer, ISelectionProvider, IExpandCollapseProvider
 {
-    CollapsiblePanel _panel;
+    private CollapsiblePanel _panel;
+
     public CollapsiblePanelAutomationPeer(CollapsiblePanel panel)
     {
         _panel = panel;
-        _panel.SelectionChanged += (s, e) => RaiseSelectionChangedEvent(); //TODO: Make weak
     }
 
-    private void RaiseSelectionChangedEvent()
+    protected override object GetPatternCore(PatternInterface patternInterface)
     {
-        RaiseAutomationEvent(AutomationEvents.SelectionItemPatternOnElementSelected);
+        if (patternInterface == PatternInterface.Selection)
+            return this;
+        if (patternInterface == PatternInterface.ExpandCollapse)
+            return this;
+        return base.GetPatternCore(patternInterface);
     }
 
+    #region ISelectionProvider
     public bool CanSelectMultiple => false;
 
     public bool IsSelectionRequired => true;
@@ -34,11 +40,13 @@ public sealed partial class CollapsiblePanelAutomationPeer : AutomationPeer, Mic
         }
         return Array.Empty<IRawElementProviderSimple>();
     }
+    #endregion ISelectionProvider
 
-    protected override object GetPatternCore(PatternInterface patternInterface)
-    {
-        if (patternInterface == PatternInterface.Selection)
-            return this;
-        return base.GetPatternCore(patternInterface);
-    }
+    #region IExpandCollapseProvider
+    public void Collapse() => _panel.IsPaneExpanded = false;
+
+    public void Expand() => _panel.IsPaneExpanded = true;
+
+    public ExpandCollapseState ExpandCollapseState => this._panel.IsPaneExpanded ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed;
+    #endregion IExpandCollapseProvider
 }

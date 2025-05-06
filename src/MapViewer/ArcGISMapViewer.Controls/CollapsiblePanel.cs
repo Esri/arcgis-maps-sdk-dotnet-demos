@@ -14,7 +14,9 @@ namespace ArcGISMapViewer.Controls;
 
 public sealed partial class CollapsiblePanel : Control
 {
+    private CollapsiblePanelAutomationPeer? _peer;
     private ContentPresenter? PART_ContentPresenter;
+
     public CollapsiblePanel()
     {
         this.DefaultStyleKey = typeof(CollapsiblePanel);
@@ -22,9 +24,14 @@ public sealed partial class CollapsiblePanel : Control
         ((INotifyCollectionChanged)_items).CollectionChanged += CollapsiblePanel_CollectionChanged;
         ((INotifyCollectionChanged)_footerItems).CollectionChanged += CollapsiblePanel_CollectionChanged;
     }
+
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-        return new CollapsiblePanelAutomationPeer(this);
+        if (this._peer == null)
+        {
+            this._peer = new CollapsiblePanelAutomationPeer(this);
+        }
+        return _peer;
     }
     protected override void OnApplyTemplate()
     {
@@ -113,41 +120,92 @@ public sealed partial class CollapsiblePanel : Control
             case Windows.System.VirtualKey.Home:
                 if (Items.Count > 0)
                 {
-                    SelectedItem = Items.First();
-                    SelectedItem.Focus(FocusState.Keyboard);
-                    args.Handled = true;
+                    var firstItem = Items.FirstOrDefault(i => i.IsEnabled) ?? FooterItems.FirstOrDefault(i => i.IsEnabled);
+                    if (firstItem != null && SelectedItem != firstItem)
+                    {
+                        SelectedItem = firstItem;
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
+                    }
                 }
                 break;
             case Windows.System.VirtualKey.End:
                 if (Items.Count > 0)
                 {
-                    SelectedItem = Items.Last();
-                    SelectedItem.Focus(FocusState.Keyboard);
-                    args.Handled = true;
+                    var lastItem = FooterItems.LastOrDefault(i => i.IsEnabled) ?? Items.LastOrDefault(i => i.IsEnabled);
+                    if (lastItem is not null && SelectedItem != lastItem)
+                    {
+                        SelectedItem = lastItem;
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
+                    }
                 }
                 break;
             case Windows.System.VirtualKey.Down:
-                if (Items.Count > 0)
                 {
+                    CollapsiblePanelItem? next = null;
                     var idx = Items.IndexOf(item);
-                    if (idx < Items.Count - 1)
+                    if (idx == -1) // Try footers instead
                     {
-                        SelectedItem = Items[idx+1];
+                        idx = FooterItems.IndexOf(item);
+                        if (idx > -1)
+                            next = FooterItems.Skip(idx + 1).FirstOrDefault(i => i.IsEnabled);
+                    }
+                    else if (idx == Items.Count - 1) // Last item selected
+                    {
+                        next = FooterItems.FirstOrDefault();
+                    }
+                    else
+                    {
+                        next = Items.Skip(idx + 1).FirstOrDefault(i => i.IsEnabled);
+                    }
+                    if (next is not null && next != SelectedItem)
+                    {
+                        SelectedItem = next;
                         SelectedItem.Focus(FocusState.Keyboard);
                         args.Handled = true;
                     }
                 }
                 break;
             case Windows.System.VirtualKey.Up:
-                if (Items.Count > 0)
                 {
-                    var idx = Items.IndexOf(item);
-                    if (idx > 0)
+                    CollapsiblePanelItem? previous = null;
+                    var idx = FooterItems.IndexOf(item);
+                    if (idx == -1) // Try items instead
                     {
-                        SelectedItem = Items[idx - 1];
+                        idx = Items.IndexOf(item);
+                        if (idx > 0)
+                            previous = Items.Take(idx).LastOrDefault(i => i.IsEnabled);
+                    }
+                    else if (idx == 0) // first footer item selected => Go to last item
+                    {
+                        previous = Items.LastOrDefault(i => i.IsEnabled);
+                    }
+                    else
+                    {
+                        previous = FooterItems.Take(idx).LastOrDefault(i => i.IsEnabled);
+                    }
+
+                    if (previous is not null && previous != SelectedItem)
+                    {
+                        SelectedItem = previous;
                         SelectedItem.Focus(FocusState.Keyboard);
                         args.Handled = true;
                     }
+                }
+                break;
+            case Windows.System.VirtualKey.Right:
+                if (!this.IsPaneExpanded)
+                {
+                    this.IsPaneExpanded = true;
+                    args.Handled = true;
+                }
+                break;
+            case Windows.System.VirtualKey.Left:
+                if (this.IsPaneExpanded)
+                {
+                    this.IsPaneExpanded = false;
+                    args.Handled = true;
                 }
                 break;
         }
@@ -183,9 +241,9 @@ public sealed partial class CollapsiblePanel : Control
     }
 
     public static readonly DependencyProperty SelectedItemProperty =
-        DependencyProperty.Register(nameof(SelectedItem), typeof(CollapsiblePanelItem), typeof(CollapsiblePanel), new PropertyMetadata(null, (s, e) => ((CollapsiblePanel)s).OnSelectedItemPropertyChanged(true)));
+        DependencyProperty.Register(nameof(SelectedItem), typeof(CollapsiblePanelItem), typeof(CollapsiblePanel), new PropertyMetadata(null, (s, e) => ((CollapsiblePanel)s).OnSelectedItemPropertyChanged(true, e.OldValue, e.NewValue)));
 
-    private void OnSelectedItemPropertyChanged(bool useTransitions)
+    private void OnSelectedItemPropertyChanged(bool useTransitions, object oldItem, object newItem)
     {
         var selectedItem = SelectedItem;
         if (PART_ContentPresenter is not null && selectedItem != null)
@@ -201,9 +259,16 @@ public sealed partial class CollapsiblePanel : Control
             item.IsSelected = item == selectedItem;
         }
         SelectionChanged?.Invoke(this, EventArgs.Empty);
+        
+        // Raise a UIA property selection changed event
+        if (_peer != null)
+        {
+            _peer.RaisePropertyChangedEvent(Microsoft.UI.Xaml.Automation.SelectionPatternIdentifiers.SelectionProperty, oldItem, newItem);
+            _peer.RaiseAutomationEvent(AutomationEvents.SelectionItemPatternOnElementSelected);
+        }
     }
 
-    public event EventHandler SelectionChanged;
+    public event EventHandler? SelectionChanged;
 
     public bool IsOpen
     {
@@ -235,6 +300,15 @@ public sealed partial class CollapsiblePanel : Control
             item.IsExpanded = IsPaneExpanded;
         }
         VisualStateManager.GoToState(this, (IsPaneExpanded ? "PaneExpanded" : "PaneCollapsed") + PanePlacement.ToString(), useTransitions);
+
+        // Raise a UIA property changed event if the expanded state of panel has changed.
+        if (_peer != null)
+        {
+            _peer.RaisePropertyChangedEvent(
+                Microsoft.UI.Xaml.Automation.ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+                IsPaneExpanded ? Microsoft.UI.Xaml.Automation.ExpandCollapseState.Collapsed : Microsoft.UI.Xaml.Automation.ExpandCollapseState.Expanded,
+                IsPaneExpanded ? Microsoft.UI.Xaml.Automation.ExpandCollapseState.Expanded : Microsoft.UI.Xaml.Automation.ExpandCollapseState.Collapsed);
+        }
     }
 
     public SplitViewPanePlacement PanePlacement
