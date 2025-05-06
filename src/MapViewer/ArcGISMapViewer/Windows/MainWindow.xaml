@@ -25,7 +25,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Border Background="{ThemeResource AccentFillColorDefaultBrush}" />
-        <TitleBar VerticalContentAlignment="Center" Title="ArcGIS MapViewer" Subtitle="{x:Bind AppVM.WindowSubTitle, Mode=OneWay}">
+        <TitleBar VerticalContentAlignment="Center" Title="ArcGIS MapViewer" Subtitle="{x:Bind AppVM.WindowSubTitle, Mode=OneWay}" x:Name="MainWindowTitleBar">
             <TitleBar.LeftHeader>
                 <AppBarToggleButton Icon="{calcite:CalciteIconSourceElement Icon=AppLauncher, Scale = Small, SymbolSize=22,Foreground=White}" Width="48" IsChecked="{x:Bind AppVM.IsAppMenuVisible, Mode=TwoWay}" />
             </TitleBar.LeftHeader>

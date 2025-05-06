@@ -43,6 +43,15 @@ namespace ArcGISMapViewer.Windows
                 //    Microsoft.UI.Colors.White;
                 //this.AppWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
             }
+            MainWindowTitleBar.RegisterPropertyChangedCallback(Microsoft.UI.Xaml.Controls.TitleBar.TitleProperty, (s, e) => UpdateWindowTitle() );
+            MainWindowTitleBar.RegisterPropertyChangedCallback(Microsoft.UI.Xaml.Controls.TitleBar.SubtitleProperty, (s, e) => UpdateWindowTitle());
+            UpdateWindowTitle();
+        }
+
+        private void UpdateWindowTitle()
+        {
+            // This ensures the Title on the taskbar matches the window title, and narrator will read the correct title
+            this.Title = MainWindowTitleBar.Title + " - " + MainWindowTitleBar.Subtitle;
         }
 
         public ApplicationViewModel AppVM => ApplicationViewModel.Instance;
