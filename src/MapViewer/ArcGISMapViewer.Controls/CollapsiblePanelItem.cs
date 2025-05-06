@@ -20,6 +20,7 @@ public partial class CollapsiblePanelItem : Control
     const string c_enabled = "Enabled";
     const string c_normal = "Normal";
     private WeakReference<CollapsiblePanel>? _collapsiblePanel;
+    private CollapsiblePanelItemAutomationPeer? _peer;
 
     internal CollapsiblePanel? GetCollapsiblePanel() => _collapsiblePanel?.TryGetTarget(out CollapsiblePanel? panel) == true ? panel : null;
 
@@ -182,6 +183,8 @@ public partial class CollapsiblePanelItem : Control
 
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-        return new CollapsiblePanelItemAutomationPeer(this);
+        if(_peer is null)
+            _peer = new CollapsiblePanelItemAutomationPeer(this);
+        return _peer;
     }
 }

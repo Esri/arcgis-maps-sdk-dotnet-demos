@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Automation.Provider;
 
 namespace ArcGISMapViewer.Controls.Automation.Peers;
 
-public sealed partial class CollapsiblePanelAutomationPeer : AutomationPeer, ISelectionProvider, IExpandCollapseProvider
+public sealed partial class CollapsiblePanelAutomationPeer : FrameworkElementAutomationPeer, ISelectionProvider, IExpandCollapseProvider
 {
     private CollapsiblePanel _panel;
 
-    public CollapsiblePanelAutomationPeer(CollapsiblePanel panel)
+    public CollapsiblePanelAutomationPeer(CollapsiblePanel panel) : base(panel)
     {
         _panel = panel;
     }

@@ -114,6 +114,7 @@ public sealed partial class CollapsiblePanel : Control
             case Windows.System.VirtualKey.Enter:
             case Windows.System.VirtualKey.Space:
                 args.Handled = true;
+                IsOpen = !IsOpen;
                 SelectedItem = item;
                 item.Focus(FocusState.Keyboard);
                 break;
