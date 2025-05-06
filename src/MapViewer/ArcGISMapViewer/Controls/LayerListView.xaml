@@ -15,7 +15,7 @@
         <ListView ItemsSource="{x:Bind GeoModel.OperationalLayers, Mode=OneWay}" CanReorderItems="True">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="mapping:Layer">
-                    <Grid>
+                    <Grid AutomationProperties.Name="{x:Bind Name, Mode=OneWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="40"/>

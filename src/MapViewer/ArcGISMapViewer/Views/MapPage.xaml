@@ -24,10 +24,10 @@
 
         <!-- Left side Map Document panel -->
         <controls:CollapsiblePanel x:Name="LeftSidePanelNavView" Grid.Column="0" PanePlacement="Left" IsPaneExpanded="True" IsOpen="False" ContentWidth="300"
-                                   ExpandButtonVisibility="Visible"
+                                   ExpandButtonVisibility="Visible" AutomationProperties.Name="Left Pane"
                                    CloseButtonVisibility="Visible">
             <controls:CollapsiblePanel.Items>
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=PlusCircle, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Add" IsEnabled="True" >
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=PlusCircle, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Add" IsEnabled="True">
                     <StackPanel Margin="10">
                         <TextBlock Text="Add Layer from Service" Style="{ThemeResource BaseTextBlockStyle}" />
                         <TextBox PlaceholderText="https://" />
@@ -111,7 +111,7 @@
 
                 <!-- Right side collapsible tool panel -->
                 <controls:CollapsiblePanel x:Name="RightPanel" Grid.Column="2" PanePlacement="Right" IsPaneExpanded="False" IsOpen="False" ContentWidth="250"
-                                           ExpandButtonVisibility="Visible" CloseButtonVisibility="Collapsed">
+                                           ExpandButtonVisibility="Visible" CloseButtonVisibility="Collapsed" AutomationProperties.Name="Right Pane">
                     <controls:CollapsiblePanel.Items>
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" x:Uid="RightPanel_Properties" Tag="ContentProperties">
                             <controls:MapPropertiesView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" x:Name="ContentProperties" />
