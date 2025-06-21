@@ -35,7 +35,7 @@
                 <TextBlock x:Uid="StartupScreen_SignInTitle" Foreground="White" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"  />
                 <TextBlock Foreground="White" x:Uid="StartupScreen_ArcGISOnlineAccountIsRequired"
                        FontSize="14" Style="{StaticResource BodyStrongTextBlockStyle}" HorizontalAlignment="Center" Margin="10" />
-                <Button x:Uid="StartupScreen_SignInButton" Click="SignIn_Click"
+                <Button x:Uid="StartupScreen_SignInButton" x:Name="SignInButton" Click="SignIn_Click"
                     Background="#66000000" BorderBrush="Gray"
                     HorizontalAlignment="Center" Margin="10" Width="200" />
                 <TextBlock x:Name="signinstatus" HorizontalAlignment="Center" Foreground="White" TextWrapping="Wrap" />

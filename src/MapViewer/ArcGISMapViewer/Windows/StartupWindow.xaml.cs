@@ -48,6 +48,7 @@ namespace ArcGISMapViewer.Windows
             initializer.ProgressChanged += (s, progress) => this.progress.Value = progress;
             initializer.StatusTextChanged += (s, status) => this.status.Text = status;
             initializer.SigninRequested += Initializer_SigninRequested;
+            initializer.SigninCompleted += Initializer_SigninCompleted;
             initializer.ApplicationInitialized += Initializer_ApplicationInitialized;
             try
             {
@@ -82,12 +83,20 @@ namespace ArcGISMapViewer.Windows
             SigninSection.Visibility = Visibility.Visible;
         }
 
+        private void Initializer_SigninCompleted(object? sender, EventArgs e)
+        {
+            LoadingSection.Visibility = Visibility.Visible;
+            SigninSection.Visibility = Visibility.Collapsed;
+        }
+
+
         private async Task SignIn()
         {
             var serviceUri = ApplicationViewModel.Instance.AppSettings.PortalUrl;
 
             try
             {
+                SignInButton.IsEnabled = false;
                 signinstatus.Text = Resources.GetString("StartupScreen_WaitingForBrowserSignIn");
                 ArcGISPortal arcgisPortal = await ArcGISPortal.CreateAsync(serviceUri, true);
                 SigninTask?.TrySetResult(arcgisPortal.User!);
@@ -95,10 +104,15 @@ namespace ArcGISMapViewer.Windows
             }
             catch (OperationCanceledException) {
                 SigninTask?.TrySetCanceled();
+                signinstatus.Text = "";
             }
             catch (Exception)
             {
                 signinstatus.Text = Resources.GetString("StartupScreen_FailedToSignIn");
+            }
+            finally
+            {
+                SignInButton.IsEnabled = true;
             }
             WindowExtensions.SetForegroundWindow(this);
         }
