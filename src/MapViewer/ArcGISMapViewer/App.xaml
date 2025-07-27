@@ -14,6 +14,7 @@
                         <CalciteResources xmlns="using:Esri.Calcite.WinUI" />
                     </XamlControlsResources.MergedDictionaries>
                 </XamlControlsResources>
+                <ctrls:ThemeResources xmlns:ctrls="using:ArcGISMapViewer.Controls"/>
                 <ResourceDictionary Source="ms-appx:///ApplicationConfiguration.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <conv:RuntimeImageConverter x:Key="RuntimeImageConverter" />
