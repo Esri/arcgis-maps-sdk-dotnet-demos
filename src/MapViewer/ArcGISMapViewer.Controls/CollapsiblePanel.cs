@@ -3,202 +3,353 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using ArcGISMapViewer.Controls.Automation.Peers;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 
-namespace ArcGISMapViewer.Controls
+namespace ArcGISMapViewer.Controls;
+
+public sealed partial class CollapsiblePanel : Control
 {
-    public sealed partial class CollapsiblePanel : Control
+    private CollapsiblePanelAutomationPeer? _peer;
+    private ContentPresenter? PART_ContentPresenter;
+
+    public CollapsiblePanel()
     {
-        private ContentPresenter? PART_ContentPresenter;
-        public CollapsiblePanel()
-        {
-            this.DefaultStyleKey = typeof(CollapsiblePanel);
+        this.DefaultStyleKey = typeof(CollapsiblePanel);
 
-            ((INotifyCollectionChanged)_items).CollectionChanged += CollapsiblePanel_CollectionChanged;
-            ((INotifyCollectionChanged)_footerItems).CollectionChanged += CollapsiblePanel_CollectionChanged;
+        ((INotifyCollectionChanged)_items).CollectionChanged += CollapsiblePanel_CollectionChanged;
+        ((INotifyCollectionChanged)_footerItems).CollectionChanged += CollapsiblePanel_CollectionChanged;
+    }
+
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        if (this._peer == null)
+        {
+            this._peer = new CollapsiblePanelAutomationPeer(this);
         }
-
-        protected override void OnApplyTemplate()
+        return _peer;
+    }
+    protected override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        if(GetTemplateChild("PART_ContentPresenter") is ContentPresenter contentPresenter)
         {
-            base.OnApplyTemplate();
-            if(GetTemplateChild("PART_ContentPresenter") is ContentPresenter contentPresenter)
+            PART_ContentPresenter = contentPresenter;
+            foreach (var item in Items?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
             {
-                PART_ContentPresenter = contentPresenter;
-                foreach (var item in Items?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
+                if (item.IsSelected)
                 {
-                    if (item.IsSelected)
+                    PART_ContentPresenter.Content = item.Content;
+                    break;
+                }
+            }
+        }
+        if(GetTemplateChild("PART_MenuPanel") is ItemsControl menuPanel)
+        {
+            menuPanel.ItemsSource = Items;
+        }
+        if (GetTemplateChild("PART_FooterMenuPanel") is ItemsControl footerPanel)
+        {
+            footerPanel.ItemsSource = FooterItems;
+        }
+        if (GetTemplateChild("PART_CloseButton") is ButtonBase button)
+        {
+            button.Click += (s, e) => IsOpen = false;
+        }
+        if (GetTemplateChild("PART_ExpandButton") is ButtonBase expandButton)
+        {
+            expandButton.Click += (s, e) => IsPaneExpanded = !IsPaneExpanded;
+        }
+        
+        OnIsOpenPropertyChanged(false);
+        OnIsPaneExpandedPropertyChanged(false);
+        OnPanePlacementPropertyChanged(false);
+    }
+
+    private void CollapsiblePanel_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        foreach (var item in e.OldItems?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
+        {
+            item.Tapped -= ItemTapped;
+            item.KeyDown -= CollapsiblePanelItem_KeyDown;
+            item.SetCollapsiblePanelParent(null);
+        }
+        foreach (var item in e.NewItems?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
+        {
+            item.IsExpanded = IsPaneExpanded;
+            item.Tapped += ItemTapped;
+            item.KeyDown += CollapsiblePanelItem_KeyDown;
+            item.SetCollapsiblePanelParent(this);
+            if (item.IsSelected)
+                SelectedItem = item;
+        }
+    }
+
+    private void CollapsiblePanelItem_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if(e.OriginalKey == Windows.System.VirtualKey.GamepadA ||
+            e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+        {
+            // Only handle those keys if the key is not being held down!
+            if (!e.KeyStatus.WasKeyDown && sender is CollapsiblePanelItem item)
+            {
+                HandleKeyEventForCollapsiblePanelItem(item, e);
+            }
+        }
+        else if(sender is CollapsiblePanelItem item)
+        {
+            HandleKeyEventForCollapsiblePanelItem(item, e);
+        }
+    }
+
+    private void HandleKeyEventForCollapsiblePanelItem(CollapsiblePanelItem item, KeyRoutedEventArgs args)
+    {
+        var key = args.Key;
+        switch (key)
+        {
+            case Windows.System.VirtualKey.Enter:
+            case Windows.System.VirtualKey.Space:
+                args.Handled = true;
+                IsOpen = !IsOpen;
+                SelectedItem = item;
+                item.Focus(FocusState.Keyboard);
+                break;
+            case Windows.System.VirtualKey.Home:
+                if (Items.Count > 0)
+                {
+                    var firstItem = Items.FirstOrDefault(i => i.IsEnabled) ?? FooterItems.FirstOrDefault(i => i.IsEnabled);
+                    if (firstItem != null && SelectedItem != firstItem)
                     {
-                        PART_ContentPresenter.Content = item.Content;
-                        break;
+                        SelectedItem = firstItem;
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
                     }
                 }
-            }
-            if(GetTemplateChild("PART_MenuPanel") is ItemsControl menuPanel)
-            {
-                menuPanel.ItemsSource = Items;
-            }
-            if (GetTemplateChild("PART_FooterMenuPanel") is ItemsControl footerPanel)
-            {
-                footerPanel.ItemsSource = FooterItems;
-            }
-            if (GetTemplateChild("PART_CloseButton") is ButtonBase button)
-            {
-                button.Click += (s, e) => IsOpen = false;
-            }
-            if (GetTemplateChild("PART_ExpandButton") is ButtonBase expandButton)
-            {
-                expandButton.Click += (s, e) => IsPaneExpanded = !IsPaneExpanded;
-            }
-            
-            OnIsOpenPropertyChanged(false);
-            OnIsPaneExpandedPropertyChanged(false);
-            OnPanePlacementPropertyChanged(false);
-        }
-
-        private void CollapsiblePanel_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            foreach (var item in e.OldItems?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
-            {
-                item.Tapped -= ItemTapped;
-            }
-            foreach (var item in e.NewItems?.OfType<CollapsiblePanelItem>() ?? Enumerable.Empty<CollapsiblePanelItem>())
-            {
-                item.IsExpanded = IsPaneExpanded;
-                item.Tapped += ItemTapped;
-                if (item.IsSelected)
-                    SelectedItem = item;
-            }
-        }
-
-        private void ItemTapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (sender is CollapsiblePanelItem item && item.IsEnabled)
-            {
-                if (item == SelectedItem)
-                    IsOpen = !IsOpen;
-                else
+                break;
+            case Windows.System.VirtualKey.End:
+                if (Items.Count > 0)
                 {
-                    IsOpen = true;
-                    SelectedItem = item;
+                    var lastItem = FooterItems.LastOrDefault(i => i.IsEnabled) ?? Items.LastOrDefault(i => i.IsEnabled);
+                    if (lastItem is not null && SelectedItem != lastItem)
+                    {
+                        SelectedItem = lastItem;
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
+                    }
                 }
-            }
+                break;
+            case Windows.System.VirtualKey.Down:
+                {
+                    CollapsiblePanelItem? next = null;
+                    var idx = Items.IndexOf(item);
+                    if (idx == -1) // Try footers instead
+                    {
+                        idx = FooterItems.IndexOf(item);
+                        if (idx > -1)
+                            next = FooterItems.Skip(idx + 1).FirstOrDefault(i => i.IsEnabled);
+                    }
+                    else if (idx == Items.Count - 1) // Last item selected
+                    {
+                        next = FooterItems.FirstOrDefault();
+                    }
+                    else
+                    {
+                        next = Items.Skip(idx + 1).FirstOrDefault(i => i.IsEnabled);
+                    }
+                    if (next is not null && next != SelectedItem)
+                    {
+                        SelectedItem = next;
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
+                    }
+                }
+                break;
+            case Windows.System.VirtualKey.Up:
+                {
+                    CollapsiblePanelItem? previous = null;
+                    var idx = FooterItems.IndexOf(item);
+                    if (idx == -1) // Try items instead
+                    {
+                        idx = Items.IndexOf(item);
+                        if (idx > 0)
+                            previous = Items.Take(idx).LastOrDefault(i => i.IsEnabled);
+                    }
+                    else if (idx == 0) // first footer item selected => Go to last item
+                    {
+                        previous = Items.LastOrDefault(i => i.IsEnabled);
+                    }
+                    else
+                    {
+                        previous = FooterItems.Take(idx).LastOrDefault(i => i.IsEnabled);
+                    }
+
+                    if (previous is not null && previous != SelectedItem)
+                    {
+                        SelectedItem = previous;
+                        SelectedItem.Focus(FocusState.Keyboard);
+                        args.Handled = true;
+                    }
+                }
+                break;
+            case Windows.System.VirtualKey.Right:
+                if (!this.IsPaneExpanded)
+                {
+                    this.IsPaneExpanded = true;
+                    args.Handled = true;
+                }
+                break;
+            case Windows.System.VirtualKey.Left:
+                if (this.IsPaneExpanded)
+                {
+                    this.IsPaneExpanded = false;
+                    args.Handled = true;
+                }
+                break;
         }
-
-        private readonly IList<CollapsiblePanelItem> _items = new ObservableCollection<CollapsiblePanelItem>();
-
-        public IList<CollapsiblePanelItem> Items => _items;
-
-        private readonly IList<CollapsiblePanelItem> _footerItems = new ObservableCollection<CollapsiblePanelItem>();
-
-        public IList<CollapsiblePanelItem> FooterItems => _footerItems;
-
-        public CollapsiblePanelItem? SelectedItem
-        {
-            get { return (CollapsiblePanelItem?)GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register(nameof(SelectedItem), typeof(CollapsiblePanelItem), typeof(CollapsiblePanel), new PropertyMetadata(null, (s, e) => ((CollapsiblePanel)s).OnSelectedItemPropertyChanged(true)));
-
-        private void OnSelectedItemPropertyChanged(bool useTransitions)
-        {
-            var selectedItem = SelectedItem;
-            if (PART_ContentPresenter is not null && selectedItem != null)
-                PART_ContentPresenter.Content = selectedItem.Content;
-            if(GetTemplateChild("PART_Title") is TextBlock tb)
-                tb.Text = selectedItem?.Title;
-            foreach (var item in Items)
-            {
-                item.IsSelected = item == selectedItem;
-            }
-            foreach (var item in FooterItems)
-            {
-                item.IsSelected = item == selectedItem;
-            }
-        }
-
-        public bool IsOpen
-        {
-            get { return (bool)GetValue(IsOpenProperty); }
-            set { SetValue(IsOpenProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(CollapsiblePanel), new PropertyMetadata(false, (s, e) => ((CollapsiblePanel)s).OnIsOpenPropertyChanged(true)));
-
-        private void OnIsOpenPropertyChanged(bool useTransitions)
-        {
-            VisualStateManager.GoToState(this, IsOpen ? "Open" : "Closed", useTransitions);
-        }
-
-        public bool IsPaneExpanded
-        {
-            get { return (bool)GetValue(IsPaneExpandedProperty); }
-            set { SetValue(IsPaneExpandedProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsPaneExpandedProperty =
-            DependencyProperty.Register("IsPaneExpanded", typeof(bool), typeof(CollapsiblePanel), new PropertyMetadata(false, (s, e) => ((CollapsiblePanel)s).OnIsPaneExpandedPropertyChanged(true)));
-
-        private void OnIsPaneExpandedPropertyChanged(bool useTransitions)
-        {
-            foreach (var item in Items)
-            {
-                item.IsExpanded = IsPaneExpanded;
-            }
-            VisualStateManager.GoToState(this, (IsPaneExpanded ? "PaneExpanded" : "PaneCollapsed") + PanePlacement.ToString(), useTransitions);
-        }
-
-        public SplitViewPanePlacement PanePlacement
-        {
-            get { return (SplitViewPanePlacement)GetValue(PanePlacementProperty); }
-            set { SetValue(PanePlacementProperty, value); }
-        }
-
-        public static readonly DependencyProperty PanePlacementProperty =
-            DependencyProperty.Register("PanePlacement", typeof(SplitViewPanePlacement), typeof(CollapsiblePanel), new PropertyMetadata(SplitViewPanePlacement.Left, (s, e) => ((CollapsiblePanel)s).OnPanePlacementPropertyChanged(true)));
-
-        private void OnPanePlacementPropertyChanged(bool useTransitions = false)
-        {
-            VisualStateManager.GoToState(this, PanePlacement == SplitViewPanePlacement.Left ? "PlacementLeft" : "PlacementRight", useTransitions);
-        }
-
-        public double ContentWidth
-        {
-            get { return (double)GetValue(ContentWidthProperty); }
-            set { SetValue(ContentWidthProperty, value); }
-        }
-
-        public static readonly DependencyProperty ContentWidthProperty =
-            DependencyProperty.Register(nameof(ContentWidth), typeof(double), typeof(CollapsiblePanel), new PropertyMetadata(200d));
-
-        public Visibility CloseButtonVisibility
-        {
-            get { return (Visibility)GetValue(CloseButtonVisibilityProperty); }
-            set { SetValue(CloseButtonVisibilityProperty, value); }
-        }
-
-        public static readonly DependencyProperty CloseButtonVisibilityProperty =
-            DependencyProperty.Register(nameof(CloseButtonVisibility), typeof(Visibility), typeof(CollapsiblePanel), new PropertyMetadata(Visibility.Visible));
-
-        public Visibility ExpandButtonVisibility
-        {
-            get { return (Visibility)GetValue(ExpandButtonVisibilityProperty); }
-            set { SetValue(ExpandButtonVisibilityProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ExpandButtonVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ExpandButtonVisibilityProperty =
-            DependencyProperty.Register(nameof(ExpandButtonVisibility), typeof(Visibility), typeof(CollapsiblePanel), new PropertyMetadata(true));
-
-
     }
+
+    private void ItemTapped(object sender, TappedRoutedEventArgs e)
+    {
+        if (sender is CollapsiblePanelItem item && item.IsEnabled)
+        {
+            if (item == SelectedItem)
+                IsOpen = !IsOpen;
+            else
+            {
+                IsOpen = true;
+                SelectedItem = item;
+            }
+            item.Focus(FocusState.Pointer);
+        }
+    }
+
+    private readonly IList<CollapsiblePanelItem> _items = new ObservableCollection<CollapsiblePanelItem>();
+
+    public IList<CollapsiblePanelItem> Items => _items;
+
+    private readonly IList<CollapsiblePanelItem> _footerItems = new ObservableCollection<CollapsiblePanelItem>();
+
+    public IList<CollapsiblePanelItem> FooterItems => _footerItems;
+
+    public CollapsiblePanelItem? SelectedItem
+    {
+        get { return (CollapsiblePanelItem?)GetValue(SelectedItemProperty); }
+        set { SetValue(SelectedItemProperty, value); }
+    }
+
+    public static readonly DependencyProperty SelectedItemProperty =
+        DependencyProperty.Register(nameof(SelectedItem), typeof(CollapsiblePanelItem), typeof(CollapsiblePanel), new PropertyMetadata(null, (s, e) => ((CollapsiblePanel)s).OnSelectedItemPropertyChanged(true, e.OldValue, e.NewValue)));
+
+    private void OnSelectedItemPropertyChanged(bool useTransitions, object oldItem, object newItem)
+    {
+        var selectedItem = SelectedItem;
+        if (PART_ContentPresenter is not null && selectedItem != null)
+            PART_ContentPresenter.Content = selectedItem.Content;
+        if(GetTemplateChild("PART_Title") is TextBlock tb)
+            tb.Text = selectedItem?.Title;
+        foreach (var item in Items)
+        {
+            item.IsSelected = item == selectedItem;
+        }
+        foreach (var item in FooterItems)
+        {
+            item.IsSelected = item == selectedItem;
+        }
+        SelectionChanged?.Invoke(this, EventArgs.Empty);
+        
+        // Raise a UIA property selection changed event
+        if (_peer != null)
+        {
+            _peer.RaisePropertyChangedEvent(Microsoft.UI.Xaml.Automation.SelectionPatternIdentifiers.SelectionProperty, oldItem, newItem);
+            _peer.RaiseAutomationEvent(AutomationEvents.SelectionItemPatternOnElementSelected);
+        }
+    }
+
+    public event EventHandler? SelectionChanged;
+
+    public bool IsOpen
+    {
+        get { return (bool)GetValue(IsOpenProperty); }
+        set { SetValue(IsOpenProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsOpenProperty =
+        DependencyProperty.Register("IsOpen", typeof(bool), typeof(CollapsiblePanel), new PropertyMetadata(false, (s, e) => ((CollapsiblePanel)s).OnIsOpenPropertyChanged(true)));
+
+    private void OnIsOpenPropertyChanged(bool useTransitions)
+    {
+        VisualStateManager.GoToState(this, IsOpen ? "Open" : "Closed", useTransitions);
+    }
+
+    public bool IsPaneExpanded
+    {
+        get { return (bool)GetValue(IsPaneExpandedProperty); }
+        set { SetValue(IsPaneExpandedProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsPaneExpandedProperty =
+        DependencyProperty.Register("IsPaneExpanded", typeof(bool), typeof(CollapsiblePanel), new PropertyMetadata(false, (s, e) => ((CollapsiblePanel)s).OnIsPaneExpandedPropertyChanged(true)));
+
+    private void OnIsPaneExpandedPropertyChanged(bool useTransitions)
+    {
+        foreach (var item in Items)
+        {
+            item.IsExpanded = IsPaneExpanded;
+        }
+        VisualStateManager.GoToState(this, (IsPaneExpanded ? "PaneExpanded" : "PaneCollapsed") + PanePlacement.ToString(), useTransitions);
+
+        // Raise a UIA property changed event if the expanded state of panel has changed.
+        if (_peer != null)
+        {
+            _peer.RaisePropertyChangedEvent(
+                Microsoft.UI.Xaml.Automation.ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+                IsPaneExpanded ? Microsoft.UI.Xaml.Automation.ExpandCollapseState.Collapsed : Microsoft.UI.Xaml.Automation.ExpandCollapseState.Expanded,
+                IsPaneExpanded ? Microsoft.UI.Xaml.Automation.ExpandCollapseState.Expanded : Microsoft.UI.Xaml.Automation.ExpandCollapseState.Collapsed);
+        }
+    }
+
+    public SplitViewPanePlacement PanePlacement
+    {
+        get { return (SplitViewPanePlacement)GetValue(PanePlacementProperty); }
+        set { SetValue(PanePlacementProperty, value); }
+    }
+
+    public static readonly DependencyProperty PanePlacementProperty =
+        DependencyProperty.Register("PanePlacement", typeof(SplitViewPanePlacement), typeof(CollapsiblePanel), new PropertyMetadata(SplitViewPanePlacement.Left, (s, e) => ((CollapsiblePanel)s).OnPanePlacementPropertyChanged(true)));
+
+    private void OnPanePlacementPropertyChanged(bool useTransitions = false)
+    {
+        VisualStateManager.GoToState(this, PanePlacement == SplitViewPanePlacement.Left ? "PlacementLeft" : "PlacementRight", useTransitions);
+    }
+
+    public double ContentWidth
+    {
+        get { return (double)GetValue(ContentWidthProperty); }
+        set { SetValue(ContentWidthProperty, value); }
+    }
+
+    public static readonly DependencyProperty ContentWidthProperty =
+        DependencyProperty.Register(nameof(ContentWidth), typeof(double), typeof(CollapsiblePanel), new PropertyMetadata(200d));
+
+    public Visibility CloseButtonVisibility
+    {
+        get { return (Visibility)GetValue(CloseButtonVisibilityProperty); }
+        set { SetValue(CloseButtonVisibilityProperty, value); }
+    }
+
+    public static readonly DependencyProperty CloseButtonVisibilityProperty =
+        DependencyProperty.Register(nameof(CloseButtonVisibility), typeof(Visibility), typeof(CollapsiblePanel), new PropertyMetadata(Visibility.Visible));
+
+    public Visibility ExpandButtonVisibility
+    {
+        get { return (Visibility)GetValue(ExpandButtonVisibilityProperty); }
+        set { SetValue(ExpandButtonVisibilityProperty, value); }
+    }
+
+    public static readonly DependencyProperty ExpandButtonVisibilityProperty =
+        DependencyProperty.Register(nameof(ExpandButtonVisibility), typeof(Visibility), typeof(CollapsiblePanel), new PropertyMetadata(true));
 }

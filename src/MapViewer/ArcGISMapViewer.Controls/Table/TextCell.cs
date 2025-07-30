@@ -7,7 +7,6 @@ namespace ArcGISMapViewer.Controls
 {
     public partial class TextCell : Cell
     {
-        private long propertyChangeToken;
         private readonly TextBlock textBlock;
         public TextCell()
         {

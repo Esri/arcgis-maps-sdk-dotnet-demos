@@ -16,7 +16,7 @@
         <ListView ItemsSource="{x:Bind GeoModel.Tables, Mode=OneWay}" CanReorderItems="True">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:FeatureTable">
-                    <Grid>
+                    <Grid AutomationProperties.Name="{x:Bind DisplayName, Mode=OneWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto "/>
