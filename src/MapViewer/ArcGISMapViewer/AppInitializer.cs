@@ -82,6 +82,7 @@ internal class AppInitializer
             {
                 var user = await signinTask.Task;
                 await ApplicationViewModel.Instance.SetUserAsync(user);
+                SigninCompleted.Invoke(this, EventArgs.Empty);
             }
             catch (OperationCanceledException)
             {
@@ -113,6 +114,7 @@ internal class AppInitializer
     public event EventHandler<string>? StatusTextChanged;
 
     public event EventHandler<TaskCompletionSource<PortalUser>>? SigninRequested;
+    public event EventHandler? SigninCompleted;
     public event EventHandler? ApplicationInitialized;
 
     private string m_text = "";
