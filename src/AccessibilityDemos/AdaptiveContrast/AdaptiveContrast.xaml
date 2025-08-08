@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="DemoApplicationAccessibility.Contrast.AdaptiveContrast"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DemoApplicationAccessibility.Contrast"
+      mc:Ignorable="d"
+      xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+      d:DesignHeight="450" d:DesignWidth="800" >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="This sample demonstrates how the basemap can automatically adapt to system theme settings, including Light, Dark and High Contrast modes. To use the sample, change your system's theme settings and observe the basemap update automatically." Margin="10" FontSize="15" TextWrapping="Wrap" />
+        <esri:MapView x:Name="MyMapView" Margin="10" Grid.Row="1" />
+    </Grid>
+</UserControl>

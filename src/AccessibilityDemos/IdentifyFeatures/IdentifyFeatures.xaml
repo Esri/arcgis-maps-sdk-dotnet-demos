@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="DemoApplicationAccessibility.IdentifyFeatures.IdentifyFeatures"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DemoApplicationAccessibility.IdentifyFeatures"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             mc:Ignorable="d" 
+             KeyDown="UserControl_PreviewKeyDown">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="GroupedFeatures" Source="{Binding FeatureItems}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="LayerName"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="FeaturesListBox"
+                  Grid.Column="0"
+                  ItemsSource="{Binding Source={StaticResource GroupedFeatures}}"
+                  Padding="0,0,0,40"
+                  KeyDown="FeaturesListBox_KeyDown"
+                  MouseLeftButtonUp="FeaturesListBox_MouseLeftButtonUp">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding IndexOnPage}" Margin="5,0,5,0"/>
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel  Grid.Column="0" Grid.Row="1">
+            <TextBlock Text="Keyboard Shortcuts" FontWeight="Bold" Margin="5"/>
+            <TextBlock Margin="25,0,0,0" TextWrapping="Wrap">
+                <LineBreak/>
+                <Run FontWeight="Bold">Tab</Run>: Navigate to Feature List or Map<LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">Arrow Keys</Run>: Navigate features (in list) or Pan map (in map)<LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">Enter</Run>: Select feature to open poppup (in list)<LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">+ or - </Run> : Zoom the map (in map)<LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">1–7</Run>: Select feature in current list<LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">8</Run>: View Previous Features<LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">9</Run>: View More Features<LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">Esc</Run>: Close popup
+            </TextBlock>
+        </StackPanel>
+        <Grid Grid.Column="1" Grid.RowSpan="2">
+            <esri:MapView x:Name="MyMapView" Margin="5" ViewpointChanged="MyMapView_ViewpointChanged" Focusable="True" KeyboardNavigation.TabIndex="1" Map="https://arcgisruntime.maps.arcgis.com/home/item.html?id=85e162dbf0324eb48ff0d1b942c9e8e8" GeoViewTapped="MyMapView_GeoViewTapped"/>
+            <Rectangle Width="300" Height="300" Stroke="Black" StrokeThickness="2" Fill="Transparent"
+                       HorizontalAlignment="Center" IsHitTestVisible="False" VerticalAlignment="Center"/>
+            <Grid Background="#AA333333" Visibility="Collapsed" x:Name="PopupContainer" MouseDown="PopupBackground_MouseDown">
+                <Border  BorderBrush="Black" BorderThickness="1" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <esri:PopupViewer x:Name="PopupViewer" Margin="5" PopupAttachmentClicked="popupViewer_PopupAttachmentClicked" HyperlinkClicked="popupViewer_LinkClicked" />
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

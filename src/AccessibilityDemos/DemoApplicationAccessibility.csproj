@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WPF" Version="200.8.0" />
+  </ItemGroup>
+
+</Project>

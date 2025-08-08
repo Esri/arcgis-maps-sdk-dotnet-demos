@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="DemoApplicationAccessibility.DescribingNonTextContent.FeatureMap"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DemoApplicationAccessibility.DescribingNonTextContent"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="World Heritage Sites"
+               FontSize="20"
+               FontWeight="Bold"
+               Margin="10"/>
+            <TextBlock Text="This map generates live, audible descriptions of its content for accessibility. Enable a screen reader (like Windows Narrator) to hear these updates as you pan and zoom."
+               Margin="10"
+               TextWrapping="Wrap"/>
+        </StackPanel>
+        <esri:MapView x:Name="MyMapView"
+                      Grid.Row="1"
+                      AutomationProperties.Name="World Heritage Sites."
+                      NavigationCompleted="MyMapView_NavigationCompleted"
+                      Margin="10"
+                      Map="https://arcgisruntime.maps.arcgis.com/home/item.html?id=e4bee241de954263978deb57f247357f"
+                      AutomationProperties.HelpText="This map displays a Topographic Basemap with points marking Cultural, Natural and Mixed World Heritage Sites. Use arrow keys to pan the map. Plus or Minus keys to zoom in or out."/>
+
+        <esri:ScaleLine x:Name="ScaleLine" IsTabStop="True" Grid.Row="1" Focusable="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" MapView="{Binding ElementName=MyMapView}" Margin="0,0,30,40"/>
+    </Grid>
+</UserControl>

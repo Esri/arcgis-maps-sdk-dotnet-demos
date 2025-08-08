@@ -1,0 +1,52 @@
+﻿<Window x:Class="DemoApplicationAccessibility.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:local="clr-namespace:DemoApplicationAccessibility"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu x:Name="menu" >
+            <MenuItem Header="Keyboard Navigation">
+                <MenuItem Header="Geometry Editing - Using Reticle" Click="GeometryEditingUsingReticle_Click"/>
+                <MenuItem Header="Feature Identification - Under Rectangle" Click="FeatureIdentificationUnderRectangle_Click"/>
+            </MenuItem>
+            <MenuItem Header="Non Text Content">
+                <MenuItem Header="Feature Map" Click="FeatureMap_Click"/>
+                <MenuItem Header="Thematic Map" Click="ThematicMap_Click"/>
+            </MenuItem>
+            <MenuItem Header="Contrast">
+                <MenuItem Header="Basemap Contrast" Click="BasemapContrast_Click"/>
+            </MenuItem>
+        </Menu>
+        <Border x:Name="SampleContainer" Grid.Row="1" Margin="10,10,10,10" BorderBrush="Black" BorderThickness="2" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="ArcGIS Maps SDK for .NET Accessibility Demo(WPF)" FontFamily="Segoe UI Light"
+              FontSize="30" />
+
+                    <TextBlock Text="Please select a sample from the menu" FontSize="24" />
+                </StackPanel>
+
+            </Grid>
+
+        </Border>
+    </Grid>
+</Window>
