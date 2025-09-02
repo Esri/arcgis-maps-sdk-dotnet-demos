@@ -9,6 +9,7 @@
     xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
     xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     xmlns:data="using:Esri.ArcGISRuntime.Data"
+    xmlns:ca="using:Esri.Calcite.WinUI"
     mc:Ignorable="d">
 
     <Grid>
@@ -67,10 +68,19 @@
                                     <Expander Header="Information">
                                         <StackPanel>
                                             <TextBlock Text="Source layer" />
-                                            <Button Style="{StaticResource GrayButton}" >
-                                                <StackPanel>
-                                                    <TextBlock Text="{x:Bind Item.Title}" />
-                                                </StackPanel>
+                                            <Button Style="{StaticResource GrayButton}" Margin="0,8" HorizontalContentAlignment="Stretch" 
+                                                    Click="LaunchFeatureLayerSource_Click" >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{x:Bind FeatureTable.DisplayName}" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                                        <TextBlock Text="Feature Layer" Style="{StaticResource CaptionTextBlockStyle}" />
+                                                    </StackPanel>
+                                                    <ca:SymbolIcon Symbol="Launch" IconScale="Small" Foreground="{StaticResource SystemBaseMediumColor}" Grid.Column="1" />
+                                                </Grid>
                                             </Button>
                                         </StackPanel>
                                     </Expander>

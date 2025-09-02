@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using CommunityToolkit.Mvvm.Messaging;
+using Esri.ArcGISRuntime.Data;
+using Esri.ArcGISRuntime.Portal;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -13,6 +15,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 
 namespace ArcGISMapViewer.Controls
 {
@@ -50,6 +53,15 @@ namespace ArcGISMapViewer.Controls
         private void OnSelectedItemChanged()
         {
             ContentPicker.SelectedItem = SelectedItem;
+        }
+
+        private void LaunchFeatureLayerSource_Click(object sender, RoutedEventArgs e)
+        {
+            var fl = ((FrameworkElement)sender).DataContext as FeatureLayer;
+            if(fl?.FeatureTable is ServiceFeatureTable sft)
+            {
+                _ = Launcher.LaunchUriAsync(sft.Source);
+            }
         }
     }
 
