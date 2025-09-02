@@ -10,7 +10,7 @@
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.RangeSelector" Version="8.2.250402" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 
-    <PackageVersion Include="WinUIEx" Version="2.6.0" />
+    <PackageVersion Include="WinUIEx" Version="2.7.0" />
 
     <PackageVersion Include="Esri.ArcGISRuntime" Version="200.8.0" />
     <PackageVersion Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.8.0" />
