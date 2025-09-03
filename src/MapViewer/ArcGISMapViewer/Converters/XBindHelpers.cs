@@ -17,5 +17,5 @@ namespace ArcGISMapViewer.Converters
         {
             return time > TimeSpan.Zero;
         }
-\    }
+    }
 }
