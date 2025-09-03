@@ -73,7 +73,7 @@ namespace ArcGISMapViewer.Controls
                 OnSelectedItemPropertyChanged(SelectedItem);
             else
             {
-                if (newValue?.OperationalLayers.FirstOrDefault() is Layer layer)
+                if (newValue?.OperationalLayers.LastOrDefault() is Layer layer)
                     SelectedItem = layer;
                 else if (newValue?.Tables.FirstOrDefault() is FeatureTable table)
                     SelectedItem = table;

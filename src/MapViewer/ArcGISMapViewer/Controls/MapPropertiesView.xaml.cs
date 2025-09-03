@@ -55,12 +55,40 @@ namespace ArcGISMapViewer.Controls
             ContentPicker.SelectedItem = SelectedItem;
         }
 
-        private void LaunchFeatureLayerSource_Click(object sender, RoutedEventArgs e)
+        private void LaunchSource_Click(object sender, RoutedEventArgs e)
         {
-            var fl = ((FrameworkElement)sender).DataContext as FeatureLayer;
-            if(fl?.FeatureTable is ServiceFeatureTable sft)
+            var d = ((FrameworkElement)sender).DataContext;
+            if(d is FeatureLayer fl && fl.FeatureTable is ServiceFeatureTable sft)
             {
                 _ = Launcher.LaunchUriAsync(sft.Source);
+            }
+            else if (d is ServiceFeatureTable sft2)
+            {
+                _ = Launcher.LaunchUriAsync(sft2.Source);
+            }
+        }
+
+        private static TimeSpan DefaultRefreshInterval = TimeSpan.FromMinutes(5);
+        private void RefreshSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleSwitch tw)
+            {
+                if (tw.DataContext is FeatureLayer fl)
+                {
+                    fl.RefreshInterval = tw.IsOn ? DefaultRefreshInterval : TimeSpan.Zero;
+                }
+                else if (tw.DataContext is ArcGISMapImageLayer mil)
+                {
+                    mil.RefreshInterval = tw.IsOn ? DefaultRefreshInterval : TimeSpan.Zero;
+                }
+                else if (tw.DataContext is ArcGISTiledLayer tl)
+                {
+                    tl.RefreshInterval = tw.IsOn ? DefaultRefreshInterval : TimeSpan.Zero;
+                }
+                else if (tw.DataContext is WmsLayer wmsl)
+                {
+                    wmsl.RefreshInterval = tw.IsOn ? DefaultRefreshInterval : TimeSpan.Zero;
+                }
             }
         }
     }
