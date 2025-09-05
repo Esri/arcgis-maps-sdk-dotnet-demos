@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -24,15 +25,20 @@ namespace ArcGISMapViewer.Controls
         {
             this.InitializeComponent();
             WeakReferenceMessenger.Default.Register<ShowFeatureTable>(this, (r, m) => OnShowFeatureTable(m.Table, m.WhereClause));
-            tableView.FeatureActionInvoked += TableViewFeature_Clicked;
         }
 
-        private void OnShowFeatureTable(FeatureTable? table, string? whereClause)
+        public ObservableCollection<FeatureTable> Tables { get; } = new ObservableCollection<FeatureTable>();
+
+        private void OnShowFeatureTable(FeatureTable table, string? whereClause)
         {
-            this.Visibility = table != null ? Visibility.Visible : Visibility.Collapsed;
-            tableView.Table = table;
-            tableView.WhereClause = whereClause;
-            FeatureTableTitle.Text = table?.DisplayName ?? table?.TableName;
+            if (table is not null)
+            {
+                if (!Tables.Contains(table))
+                    Tables.Add(table);
+                TabView.SelectedItem = table;
+            }
+            if (Tables.Count > 0)
+                this.Visibility = Visibility.Visible;
         }
 
         private void Close_Clicked(object sender, RoutedEventArgs e)
@@ -128,6 +134,14 @@ namespace ArcGISMapViewer.Controls
             {
                 throw new NotImplementedException();
             }
+        }
+
+        private void TabViewItem_CloseRequested(TabViewItem sender, TabViewTabCloseRequestedEventArgs args)
+        {
+            if (args.Item is FeatureTable table && Tables.Contains(table))
+                Tables.Remove(table);
+            if (Tables.Count == 0)
+                this.Visibility = Visibility.Collapsed;
         }
     }
 }
