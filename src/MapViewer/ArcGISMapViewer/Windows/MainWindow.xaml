@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
     xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
+    xmlns:ui="using:Esri.ArcGISRuntime.UI"
     xmlns:calcite="using:Esri.Calcite.WinUI"
     xmlns:ex="using:WinUIEx"
     mc:Ignorable="d">
@@ -47,11 +48,7 @@
                                         VerticalAlignment="Center" Margin="5,0,0,0" />
                                     <TextBlock Text="{x:Bind AppVM.PortalUser.Portal.PortalInfo.OrganizationName, Mode=OneWay}" 
                                         Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" Margin="5,0,0,0" />
-                                    <Image MaxWidth="200" MaxHeight="200">
-                                        <Image.Source>
-                                            <BitmapImage UriSource="{x:Bind AppVM.PortalUser.Portal.PortalInfo.ThumbnailUri, Mode=OneWay}"/>
-                                        </Image.Source>
-                                    </Image>
+                                    <Image MaxWidth="200" MaxHeight="200" Source="{x:Bind ui:RuntimeImageExtensions.ToImageSource(AppVM.PortalUser.Portal.PortalInfo.Thumbnail), Mode=OneWay}" />
                                     <HyperlinkButton Content="Sign out" Margin="0,5,0,0" HorizontalAlignment="Stretch" Click="SignOut_Click" />
                                 </StackPanel>
                             </Flyout>

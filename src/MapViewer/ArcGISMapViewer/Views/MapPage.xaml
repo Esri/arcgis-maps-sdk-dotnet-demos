@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:esri="using:Esri.ArcGISRuntime.UI.Controls"
+    xmlns:ui="using:Esri.ArcGISRuntime.UI"
     xmlns:mapping="using:Esri.ArcGISRuntime.Mapping"
     xmlns:tk="using:Esri.ArcGISRuntime.Toolkit.UI.Controls"
     xmlns:tkui="using:Esri.ArcGISRuntime.Toolkit.UI"
@@ -81,11 +82,7 @@
                         <Grid Background="{ThemeResource CalciteBackground3Color}" Padding="16,5" Margin="-5,-5,-5,0" Height="40">
                             <TextBlock Text="{x:Bind AppVM.PortalItem.Title, Mode=OneWay}" Style="{StaticResource NavigationViewItemHeaderTextStyle}" />
                         </Grid>
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="{x:Bind AppVM.Map.Item.ThumbnailUri, Mode=OneWay}" />
-                            </Image.Source>
-                        </Image>
+                        <Image Source="{x:Bind ui:RuntimeImageExtensions.ToImageSource(AppVM.Map.Item.Thumbnail), Mode=OneWay}" />
                         <TextBlock Text="{x:Bind AppVM.PortalItem.Name, Mode=OneWay}" />
                         <TextBlock Text="{x:Bind AppVM.PortalItem.Description, Mode=OneWay}" TextWrapping="Wrap" />
                         <TextBlock Text="Owner:" />
