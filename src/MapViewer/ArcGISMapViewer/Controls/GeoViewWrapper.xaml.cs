@@ -16,6 +16,7 @@ using Esri.ArcGISRuntime.UI.Controls;
 using Esri.ArcGISRuntime.Data;
 using System.Threading;
 using CommunityToolkit.Mvvm.Messaging;
+using Esri.ArcGISRuntime.Portal;
 
 namespace ArcGISMapViewer.Controls
 {
@@ -58,8 +59,9 @@ namespace ArcGISMapViewer.Controls
         public static readonly DependencyProperty GeoModelProperty =
             DependencyProperty.Register("GeoModel", typeof(GeoModel), typeof(GeoViewWrapper), new PropertyMetadata(null, (s,e)=>((GeoViewWrapper)s).OnGeoModelPropertyChanged(e.OldValue as GeoModel, e.NewValue as GeoModel)));
 
-        private void OnGeoModelPropertyChanged(GeoModel? oldModel, GeoModel? newModel)
+        private async void OnGeoModelPropertyChanged(GeoModel? oldModel, GeoModel? newModel)
         {
+            localSceneView.Scene = null;
             sceneView.Scene = null;
             mapView.Map = null;
             sceneView.Visibility = Visibility.Collapsed;
@@ -72,9 +74,18 @@ namespace ArcGISMapViewer.Controls
             }
             else if (newModel is Scene scene)
             {
-                GeoView = sceneView;
-                sceneView.Visibility = Visibility.Visible;
-                sceneView.Scene = scene;
+                if (scene.ViewingMode == SceneViewingMode.Local)
+                {
+                    GeoView = localSceneView;
+                    localSceneView.Visibility = Visibility.Visible;
+                    localSceneView.Scene = scene;
+                }
+                else
+                {
+                    GeoView = sceneView;
+                    sceneView.Visibility = Visibility.Visible;
+                    sceneView.Scene = scene;
+                }
             }
             else
                 GeoView = null;
@@ -102,7 +113,7 @@ namespace ArcGISMapViewer.Controls
 
         private void OnGeoViewControllerPropertyChanged()
         {
-            Esri.ArcGISRuntime.Toolkit.UI.GeoViewController.SetGeoViewController(GeoModel is Map ? mapView : sceneView, GeoViewController);
+            Esri.ArcGISRuntime.Toolkit.UI.GeoViewController.SetGeoViewController(GeoModel is Map ? mapView : (GeoModel as Scene)?.ViewingMode == SceneViewingMode.Local ? localSceneView : sceneView), GeoViewController);
         }
 
         public event EventHandler<GeoViewInputEventArgs>? GeoViewTapped;

@@ -82,7 +82,7 @@ internal class AppInitializer
             {
                 var user = await signinTask.Task;
                 await ApplicationViewModel.Instance.SetUserAsync(user);
-                SigninCompleted.Invoke(this, EventArgs.Empty);
+                SigninCompleted?.Invoke(this, EventArgs.Empty);
             }
             catch (OperationCanceledException)
             {
