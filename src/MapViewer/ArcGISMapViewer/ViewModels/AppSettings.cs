@@ -23,6 +23,8 @@ namespace ArcGISMapViewer.ViewModels
             OAuthClientId = (string)appResources["OAuthClientID"];
             OAuthRedirectUrl = (string)appResources["OAuthRedirectUrl"];
             PortalUrl = new Uri((string)appResources["PortalUrl"] + "sharing/rest");
+            Theme = Theme;
+            StyleTheme = StyleTheme;
         }
 
         public void SetLastPortalItem(PortalItem? portalItem)
@@ -74,7 +76,23 @@ namespace ArcGISMapViewer.ViewModels
         public Microsoft.UI.Xaml.ElementTheme Theme
         {
             get => GetSetting(ElementTheme.Default, nameof(Theme));
-            set => SetSetting(value, nameof(Theme));
+            set
+            {
+                SetSetting(value, nameof(Theme));
+            }
+        }
+
+        public AppStyleResources.Theme StyleTheme
+        {
+            get => GetSetting(AppStyleResources.Theme.Calcite, nameof(StyleTheme));
+            set
+            {
+                SetSetting(value, nameof(StyleTheme));
+                if(Application.Current is App app)
+                {
+                    app.Theme = value;
+                }
+            }
         }
 
         public string? PortalUser

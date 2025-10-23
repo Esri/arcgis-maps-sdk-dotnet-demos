@@ -78,6 +78,47 @@ namespace ArcGISMapViewer
             SimpleSplashScreen?.Hide(TimeSpan.FromSeconds(1));
             SimpleSplashScreen = null;
         }
+
+        private void StartupWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            if (m_window is not null)
+                m_window.Activated -= StartupWindow_Activated;
+        }
+
+        private Window? m_window;
+
+        internal void SetCurrentWindow(Window window)
+        {
+            m_window = window;
+        }
+
+        private AppStyleResources.Theme _theme = AppStyleResources.Theme.Purple;
+
+        private ResourceDictionary? currentTheme;
+        public AppStyleResources.Theme Theme
+        {
+            get { return _theme; }
+            set {
+                if (value != _theme)
+                {
+                    if (currentTheme is not null)
+                        this.Resources.MergedDictionaries.Remove(currentTheme);
+                    currentTheme = AppStyleResources.GetStyle(value);
+                    if (currentTheme is not null)
+                        this.Resources.MergedDictionaries.Add(currentTheme);
+
+                    _theme = value;
+
+                    if (this.m_window?.Content is FrameworkElement windowContent)
+                    {
+                        // Flip theme back and forth to get it to re-valuate the theme resources
+                        var requestTheme = windowContent.RequestedTheme;
+                        windowContent.RequestedTheme = windowContent.ActualTheme == ElementTheme.Light ? ElementTheme.Dark : ElementTheme.Light;
+                        windowContent.RequestedTheme = requestTheme;
+                    }
+                }
+            }
+        }
     }
 
 #if DISABLE_XAML_GENERATED_MAIN

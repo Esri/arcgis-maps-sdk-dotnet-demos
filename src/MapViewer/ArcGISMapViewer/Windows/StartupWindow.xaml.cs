@@ -70,7 +70,8 @@ namespace ArcGISMapViewer.Windows
         private void Initializer_ApplicationInitialized(object? sender, EventArgs e)
         {
             var window = new MainWindow();
-            window.Activate();
+            window.Show();
+            ((App)App.Current).SetCurrentWindow(window);
             this.Close();
             window.SetForegroundWindow();
         }

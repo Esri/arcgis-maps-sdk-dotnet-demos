@@ -16,7 +16,7 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid>
+    <Grid RequestedTheme="{x:Bind AppVM.AppSettings.Theme, Mode=OneWay}">
         <Grid.Resources>
             <StaticResource x:Key="TitleBarForegroundBrush" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
             <StaticResource x:Key="TitleBarSubtitleForegroundBrush" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
@@ -53,6 +53,23 @@
                             </Flyout>
                         </Button.Flyout>
                     </Button>
+                    <AppBarButton Icon="Setting" Foreground="{StaticResource TextOnAccentFillColorPrimaryBrush}" VerticalAlignment="Center" Margin="0,-2,0,2" Padding="0" Width="40">
+                        <AppBarButton.Flyout>
+                            <Flyout>
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style TargetType="FlyoutPresenter">
+                                        <Setter Property="AllowFocusOnInteraction" Value="True"/>
+                                        <Setter Property="IsTabStop" Value="True" />
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="BorderThickness" Value="0" />
+                                        <Setter Property="CornerRadius" Value="4" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>
+                                <views:AppSettingsView Width="300" AllowFocusOnInteraction="True"/>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+
+                    </AppBarButton>
                 </StackPanel>
             </TitleBar.RightHeader>
         </TitleBar>

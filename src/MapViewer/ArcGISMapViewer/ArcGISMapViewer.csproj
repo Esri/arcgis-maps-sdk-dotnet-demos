@@ -32,13 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.DataTable" Version="0.1.240823-build.1737" />-->
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Esri.ArcGISRuntime.Toolkit.WinUI" />
     <PackageReference Include="Esri.Calcite.WinUI" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
-    <PackageReference Include="Microsoft.Windows.CsWinRT" />
     <PackageReference Include="WinUIEx" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
