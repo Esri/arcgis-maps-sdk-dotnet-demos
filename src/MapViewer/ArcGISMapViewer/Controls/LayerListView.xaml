@@ -15,19 +15,24 @@
         <ListView ItemsSource="{x:Bind GeoModel.OperationalLayers, Mode=OneWay}" CanReorderItems="True">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="mapping:Layer">
-                    <Grid AutomationProperties.Name="{x:Bind Name, Mode=OneWay}">
+                    <Grid AutomationProperties.Name="{x:Bind Name, Mode=OneWay}" Margin="-20,0,0,0"
+                          ToolTipService.ToolTip="{x:Bind local:LayerListView.LayerToDescription((mapping:Layer))}"
+                          >
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="40"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" VerticalAlignment="Center" />
-                        <IconSourceElement Grid.Column="2" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=ExclamationMarkTriangle, SymbolSize=32, Scale=Medium,Foreground=Orange}"
+                        <IconSourceElement Grid.Column="0" Width="32" Height="32" IconSource="{x:Bind local:LayerListView.LayerToIconSource((mapping:Layer))}" />
+
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" VerticalAlignment="Center" Grid.Column="1" />
+                        <IconSourceElement Grid.Column="3" Width="32" Height="32" IconSource="{calcite:CalciteIconSource Icon=ExclamationMarkTriangle, SymbolSize=32, Scale=Medium,Foreground=Orange}"
                                            Visibility="{x:Bind LoadError, Converter={StaticResource NullToFalseConverter}}" ToolTipService.ToolTip="{x:Bind LoadError.Message}" />
 
-                        <ToggleButton Grid.Column="1" IsChecked="{x:Bind IsVisible, Mode=TwoWay}" Style="{StaticResource VisibilityToggleButtonStyle}" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" />
-                        <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ApplicationForegroundThemeBrush}" Padding="0" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" >
+                        <ToggleButton Grid.Column="2" IsChecked="{x:Bind IsVisible, Mode=TwoWay}" Style="{StaticResource VisibilityToggleButtonStyle}" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" />
+                        <Button Grid.Column="3" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ApplicationForegroundThemeBrush}" Padding="0" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" >
                             <Button.Flyout>
                                 <MenuFlyout Placement="RightEdgeAlignedTop">
                                     <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" Click="ZoomToItem_Click" />
