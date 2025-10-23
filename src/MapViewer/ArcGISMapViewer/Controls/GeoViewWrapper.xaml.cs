@@ -113,7 +113,7 @@ namespace ArcGISMapViewer.Controls
 
         private void OnGeoViewControllerPropertyChanged()
         {
-            Esri.ArcGISRuntime.Toolkit.UI.GeoViewController.SetGeoViewController(GeoModel is Map ? mapView : (GeoModel as Scene)?.ViewingMode == SceneViewingMode.Local ? localSceneView : sceneView), GeoViewController);
+            Esri.ArcGISRuntime.Toolkit.UI.GeoViewController.SetGeoViewController(GeoModel is Map ? mapView : (GeoModel as Scene)?.ViewingMode == SceneViewingMode.Local ? localSceneView : sceneView, GeoViewController);
         }
 
         public event EventHandler<GeoViewInputEventArgs>? GeoViewTapped;
