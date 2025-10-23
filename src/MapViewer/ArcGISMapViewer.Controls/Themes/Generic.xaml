@@ -134,6 +134,7 @@
         <Setter Property="UseSystemFocusVisuals" Value="True" />
         <Setter Property="IsFocusEngagementEnabled" Value="True" />
         <Setter Property="AutomationProperties.AutomationControlType" Value="ListItem" />
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:CollapsiblePanelItem">

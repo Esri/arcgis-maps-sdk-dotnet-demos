@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary  x:Class="ArcGISMapViewer.AppStyleResources"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcGISMapViewer">
+    <ResourceDictionary x:Key="PurpleTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor" >#8F53CA</Color>
+                <Color x:Key="CalciteBrandHoverColor" >#7938B6</Color>
+                <Color x:Key="CalciteBrandPressColor" >#652E98</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor" >#7938B6</Color>
+                <Color x:Key="CalciteBrandHoverColor" >#652E98</Color>
+                <Color x:Key="CalciteBrandPressColor" >#51247A</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+    
+    <ResourceDictionary x:Key="CalciteTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor" >#007ac2</Color>
+                <Color x:Key="CalciteBrandHoverColor" >#00619b</Color>
+                <Color x:Key="CalciteBrandPressColor" >#004874</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor" >#009af2</Color>
+                <Color x:Key="CalciteBrandHoverColor" >#007ac2</Color>
+                <Color x:Key="CalciteBrandPressColor" >#00619b</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="CrimsonTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor">#D32F2F</Color>
+                <Color x:Key="CalciteBrandHoverColor">#B71C1C</Color>
+                <Color x:Key="CalciteBrandPressColor">#8E0000</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor">#FF5252</Color>
+                <Color x:Key="CalciteBrandHoverColor">#E53935</Color>
+                <Color x:Key="CalciteBrandPressColor">#C62828</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+    
+    <ResourceDictionary x:Key="EmeraldTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor">#2E7D32</Color>
+                <Color x:Key="CalciteBrandHoverColor">#256628</Color>
+                <Color x:Key="CalciteBrandPressColor">#1B4D1E</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor">#43A047</Color>
+                <Color x:Key="CalciteBrandHoverColor">#2E7D32</Color>
+                <Color x:Key="CalciteBrandPressColor">#256628</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+    
+    <ResourceDictionary x:Key="AmberTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor">#FFB300</Color>
+                <Color x:Key="CalciteBrandHoverColor">#FF8F00</Color>
+                <Color x:Key="CalciteBrandPressColor">#FF6F00</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor">#FFD54F</Color>
+                <Color x:Key="CalciteBrandHoverColor">#FFB300</Color>
+                <Color x:Key="CalciteBrandPressColor">#FF8F00</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+    
+    <ResourceDictionary x:Key="MagentaTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor">#C2185B</Color>
+                <Color x:Key="CalciteBrandHoverColor">#AD1457</Color>
+                <Color x:Key="CalciteBrandPressColor">#880E4F</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor">#E91E63</Color>
+                <Color x:Key="CalciteBrandHoverColor">#C2185B</Color>
+                <Color x:Key="CalciteBrandPressColor">#AD1457</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+    
+    <ResourceDictionary x:Key="TangerineTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor">#F57C00</Color>
+                <Color x:Key="CalciteBrandHoverColor">#EF6C00</Color>
+                <Color x:Key="CalciteBrandPressColor">#E65100</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor">#FF9800</Color>
+                <Color x:Key="CalciteBrandHoverColor">#F57C00</Color>
+                <Color x:Key="CalciteBrandPressColor">#EF6C00</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+    
+    <ResourceDictionary x:Key="TealTheme">
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Default">
+                <Color x:Key="CalciteBrandColor">#00897B</Color>
+                <Color x:Key="CalciteBrandHoverColor">#00796B</Color>
+                <Color x:Key="CalciteBrandPressColor">#004D40</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="CalciteBrandColor">#26A69A</Color>
+                <Color x:Key="CalciteBrandHoverColor">#00897B</Color>
+                <Color x:Key="CalciteBrandPressColor">#00796B</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+</ResourceDictionary>

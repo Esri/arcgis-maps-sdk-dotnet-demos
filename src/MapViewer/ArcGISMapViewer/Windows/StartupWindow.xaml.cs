@@ -71,6 +71,7 @@ namespace ArcGISMapViewer.Windows
         {
             var window = new MainWindow();
             window.Show();
+            ((App)App.Current).SetCurrentWindow(window);
             this.Close();
             window.SetForegroundWindow();
         }
