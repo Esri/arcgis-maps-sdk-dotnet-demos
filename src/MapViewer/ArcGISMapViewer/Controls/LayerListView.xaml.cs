@@ -113,5 +113,59 @@ namespace ArcGISMapViewer.Controls
                 WeakReferenceMessenger.Default.Send(new Controls.TableView.ShowFeatureTable(layer.FeatureTable));
             }
         }
+
+        public static IconSource LayerToIconSource(Layer layer)
+        {
+            var icon = layer switch
+            {
+                FeatureLayer => Esri.Calcite.WinUI.CalciteIcon.FeatureLayer,
+                RasterLayer => Esri.Calcite.WinUI.CalciteIcon.Image,
+                ArcGISSceneLayer => Esri.Calcite.WinUI.CalciteIcon._3DBuilding,
+                ArcGISMapImageLayer => Esri.Calcite.WinUI.CalciteIcon.LayerMapService,
+                ArcGISVectorTiledLayer => Esri.Calcite.WinUI.CalciteIcon.LayerService,
+                KmlLayer => Esri.Calcite.WinUI.CalciteIcon.LayerKml,
+                WmsLayer => Esri.Calcite.WinUI.CalciteIcon.LayerService,
+                WmtsLayer => Esri.Calcite.WinUI.CalciteIcon.TileLayer,
+                ImageTiledLayer => Esri.Calcite.WinUI.CalciteIcon.TileLayer,
+                GroupLayer => Esri.Calcite.WinUI.CalciteIcon.GroupLayers,
+                PointCloudLayer => Esri.Calcite.WinUI.CalciteIcon.LayerPoints,
+                _ => Esri.Calcite.WinUI.CalciteIcon.Layer,
+            };
+            if (layer.GetType().Name == "UnknownLayer")
+                icon = Esri.Calcite.WinUI.CalciteIcon.Question;
+            return new Esri.Calcite.WinUI.CalciteFontIconSource() { Icon = icon, Scale = Esri.Calcite.WinUI.CalciteIconScale.Medium };
+        }
+        public static string LayerToDescription(Layer layer)
+        {
+            var desc = layer.Item?.Title ?? layer.Name;
+            if(!string.IsNullOrEmpty(layer.Item?.Description))
+            {
+                desc += Environment.NewLine + layer.Item.Description;
+            }
+            
+            var layerType = layer switch
+            {
+                FeatureLayer => "Feature Layer",
+                RasterLayer => "Raster Layer",
+                ArcGISSceneLayer => "Scene Layer",
+                ArcGISMapImageLayer => "ArcGIS Map Service",
+                ArcGISVectorTiledLayer => "Vector Tiled Layer",
+                KmlLayer => "KML",
+                WmsLayer => "WMS",
+                WmtsLayer => "WMTS",
+                ImageTiledLayer => "Tile Layer",
+                GroupLayer => "Group Layer",
+                PointCloudLayer => "Point Cloud",
+                _ => null,
+            };
+            if (layer.GetType().Name == "UnknownLayer")
+                layerType = "Unsupported Layer Type";
+            if (!string.IsNullOrEmpty(layerType))
+            {
+                desc += Environment.NewLine + layerType;
+            }
+
+            return desc;
+        }
     }
 }
