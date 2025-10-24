@@ -120,7 +120,8 @@ namespace ArcGISMapViewer.Controls
             {
                 FeatureLayer => Esri.Calcite.WinUI.CalciteIcon.FeatureLayer,
                 RasterLayer => Esri.Calcite.WinUI.CalciteIcon.Image,
-                ArcGISSceneLayer => Esri.Calcite.WinUI.CalciteIcon._3DBuilding,
+                ArcGISSceneLayer => Esri.Calcite.WinUI.CalciteIcon.Layer3D,
+                BuildingSceneLayer => Esri.Calcite.WinUI.CalciteIcon._3DBuilding,
                 ArcGISMapImageLayer => Esri.Calcite.WinUI.CalciteIcon.LayerMapService,
                 ArcGISVectorTiledLayer => Esri.Calcite.WinUI.CalciteIcon.LayerService,
                 KmlLayer => Esri.Calcite.WinUI.CalciteIcon.LayerKml,
@@ -156,6 +157,7 @@ namespace ArcGISMapViewer.Controls
                 ImageTiledLayer => "Tile Layer",
                 GroupLayer => "Group Layer",
                 PointCloudLayer => "Point Cloud",
+                BuildingSceneLayer => "Building Scene Layer",
                 _ => null,
             };
             if (layer.GetType().Name == "UnknownLayer")
