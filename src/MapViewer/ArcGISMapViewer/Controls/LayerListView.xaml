@@ -32,7 +32,7 @@
                                            Visibility="{x:Bind LoadError, Converter={StaticResource NullToFalseConverter}}" ToolTipService.ToolTip="{x:Bind LoadError.Message}" />
 
                         <ToggleButton Grid.Column="2" IsChecked="{x:Bind IsVisible, Mode=TwoWay}" Style="{StaticResource VisibilityToggleButtonStyle}" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" />
-                        <Button Grid.Column="3" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ApplicationForegroundThemeBrush}" Padding="0" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" >
+                        <Button Grid.Column="3" Background="Transparent" BorderThickness="0" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Padding="0" Visibility="{x:Bind LoadError, Converter={StaticResource NullToTrueConverter}}" >
                             <Button.Flyout>
                                 <MenuFlyout Placement="RightEdgeAlignedTop">
                                     <MenuFlyoutItem Text="Zoom to" Icon="{calcite:CalciteIconSourceElement Icon=MagnifyingGlassPlus, Scale = Small, SymbolSize=20}" Click="ZoomToItem_Click" />
