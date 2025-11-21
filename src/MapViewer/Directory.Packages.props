@@ -12,8 +12,8 @@
 
     <PackageVersion Include="WinUIEx" Version="2.9.0" />
 
-    <PackageVersion Include="Esri.ArcGISRuntime" Version="200.8.0" />
-    <PackageVersion Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="200.8.0" />
     <PackageVersion Include="Esri.Calcite.WinUI" Version="1.0.0-rc.1" />
+    <PackageVersion Include="Esri.ArcGISRuntime" Version="300.0.0-daily4789" />
+    <PackageVersion Include="Esri.ArcGISRuntime.Toolkit.WinUI" Version="300.0.0-daily4789" />
   </ItemGroup>
 </Project>

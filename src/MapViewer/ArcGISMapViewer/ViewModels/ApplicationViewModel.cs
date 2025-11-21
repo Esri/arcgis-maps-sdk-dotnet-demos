@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Esri.ArcGISRuntime;
+using Esri.ArcGISRuntime.Http;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Portal;
 using Microsoft.UI.Xaml.Media;
@@ -93,8 +95,27 @@ public partial class ApplicationViewModel : ObservableObject
                 map.OperationalLayers.Add(new FeatureCollectionLayer(new Esri.ArcGISRuntime.Data.FeatureCollection(newValue)));
             else if(newValue.Type == PortalItemType.SceneService)
             {
-                scene = new Scene();
-                scene.OperationalLayers.Add(new ArcGISSceneLayer(newValue));
+                // Check URL metadata to determine which kind of scene layer
+                var url = newValue.ServiceUrl;
+                using var client = new System.Net.Http.HttpClient(new ArcGISHttpMessageHandler());
+                var json = await client.GetFromJsonAsync<ServiceMetadata>(url);
+                var type = json?.Layers.FirstOrDefault()?.LayerType;
+
+                if (type == "Building")
+                {
+                    scene = new Scene(viewingMode: SceneViewingMode.Local);
+                    scene.OperationalLayers.Add(new BuildingSceneLayer(newValue));
+                }
+                else if(type == "IntegratedMesh")
+                {
+                    scene = new Scene();
+                    scene.OperationalLayers.Add(new IntegratedMeshLayer(newValue));
+                }
+                else
+                {
+                    scene = new Scene();
+                    scene.OperationalLayers.Add(new ArcGISSceneLayer(newValue));
+                }
             }
             else
             {
@@ -123,7 +144,14 @@ public partial class ApplicationViewModel : ObservableObject
         }
         AppSettings.SetLastPortalItem((PortalItem?)newValue);
     }
-
+    private partial class ServiceMetadata
+    {
+        public ServiceMetadataLayer[] Layers { get; set; }
+    }
+    private partial class ServiceMetadataLayer
+    {
+        public string LayerType { get; set; }
+    }
     [ObservableProperty]
     public partial string WindowSubTitle { get; set; } = string.Empty;
 

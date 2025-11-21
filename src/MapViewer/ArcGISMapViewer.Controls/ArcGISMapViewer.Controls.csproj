@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>ArcGISMapViewer.Controls</RootNamespace>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
     <Nullable>enable</Nullable>
     <WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
