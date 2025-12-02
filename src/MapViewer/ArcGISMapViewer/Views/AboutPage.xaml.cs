@@ -33,9 +33,7 @@ namespace ArcGISMapViewer.Views
             var assembly = typeof(Esri.ArcGISRuntime.ArcGISRuntimeEnvironment).Assembly;
             var attr = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>();            
             RuntimeInfo.Text += $"\nArcGIS Maps SDK version: {attr?.Version ?? assembly.GetName().Version?.ToString()}";
-            assembly = typeof(Application).Assembly;
-            attr = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>(); 
-            RuntimeInfo.Text += $"\nWinUI version: {attr?.Version ?? assembly.GetName().Version?.ToString()}";
+            RuntimeInfo.Text += $"\nWindows App SDK version: {Microsoft.Windows.ApplicationModel.WindowsAppRuntime.ReleaseInfo.Major}.{Microsoft.Windows.ApplicationModel.WindowsAppRuntime.ReleaseInfo.Minor}.{Microsoft.Windows.ApplicationModel.WindowsAppRuntime.ReleaseInfo.Patch}";
             RuntimeInfo.Text += $"\n.NET version: {Environment.Version}";
         }
     }
