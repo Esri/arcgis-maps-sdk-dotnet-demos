@@ -1,6 +1,7 @@
 ﻿using Esri.ArcGISRuntime.Http;
 using Esri.ArcGISRuntime.Portal;
 using Esri.ArcGISRuntime.Security;
+using Microsoft.Windows.AppNotifications.Builder;
 
 namespace ArcGISMapViewer;
 
@@ -107,6 +108,28 @@ internal class AppInitializer
         ApplicationViewModel.Instance.IsMapVisible = lastMap is not null;
         Progress = 100;
         ApplicationInitialized?.Invoke(this, EventArgs.Empty);
+        CheckForUpdates();
+    }
+
+    private async void CheckForUpdates()
+    {
+        try
+        {
+            var pm = new global::Windows.Management.Deployment.PackageManager();
+            var package = global::Windows.ApplicationModel.Package.Current;
+            var availability = await package.CheckUpdateAvailabilityAsync();
+            if (availability.Availability == global::Windows.ApplicationModel.PackageUpdateAvailability.Available)
+            {
+                // Show application toast notification to user that an update is available using the windows app sdk notification apis
+
+                var appNotification = new AppNotificationBuilder()
+               .AddText("Update available!")
+               .AddText("The mapviewer app has an update available. Restart app to install")
+               .BuildNotification();
+                Microsoft.Windows.AppNotifications.AppNotificationManager.Default.Show(appNotification);
+            }
+        }
+        catch { }
     }
 
     public event EventHandler<int>? ProgressChanged;
