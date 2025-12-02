@@ -133,7 +133,7 @@ internal class AppInitializer
                 var lastversion = ApplicationViewModel.Instance.AppSettings.GetSetting<string?>(null, "LastRunVersion");
                 if(lastversion != null && lastversion != packageVersion)
                 {
-                    ApplicationViewModel.Instance.AppSettings.SetSetting<string>("LastRunVersion", packageVersion);
+                    ApplicationViewModel.Instance.AppSettings.SetSetting<string>(packageVersion, "LastRunVersion");
                     var appNotification = new AppNotificationBuilder()
                    .AddText("App updated!")
                    .AddText("The mapviewer app has been updated to the version: " + packageVersion)
