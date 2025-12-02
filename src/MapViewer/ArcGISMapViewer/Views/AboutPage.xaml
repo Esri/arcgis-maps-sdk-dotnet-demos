@@ -18,6 +18,7 @@
                 <Hyperlink NavigateUri="https://developers.arcgis.com/net">Esri ArcGIS Runtime SDK for .NET.</Hyperlink>
                 <LineBreak /><LineBreak /><Run>Source code can be found at: </Run> <Hyperlink NavigateUri="https://github.com/Esri/arcgis-maps-sdk-dotnet-demos">https://github.com/Esri/arcgis-maps-sdk-dotnet-demos</Hyperlink>
             </TextBlock>
+            <TextBlock x:Name="RuntimeInfo" Margin="20" />
         </StackPanel>
     </Grid>
 </Page>
