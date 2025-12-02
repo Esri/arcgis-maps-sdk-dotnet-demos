@@ -111,7 +111,7 @@
                                            ExpandButtonVisibility="Visible" CloseButtonVisibility="Collapsed" AutomationProperties.Name="Right Pane">
                     <controls:CollapsiblePanel.Items>
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" x:Uid="RightPanel_Properties" Tag="ContentProperties">
-                            <controls:MapPropertiesView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" x:Name="ContentProperties" />
+                            <controls:LayerPropertiesView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" x:Name="ContentProperties" />
                         </controls:CollapsiblePanelItem>
                         <!--<controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Shapes, Scale=Small, SymbolSize=20}" IsEnabled="False" x:Uid="RightPanel_Styles" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Filter, Scale=Small, SymbolSize=20}" IsEnabled="False" x:Uid="RightPanel_Filter"/>

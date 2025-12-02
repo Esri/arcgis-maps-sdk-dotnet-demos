@@ -19,9 +19,9 @@ using Windows.System;
 
 namespace ArcGISMapViewer.Controls
 {
-    public sealed partial class MapPropertiesView : UserControl
+    public sealed partial class LayerPropertiesView : UserControl
     {
-        public MapPropertiesView()
+        public LayerPropertiesView()
         {
             this.InitializeComponent();
         }
@@ -39,7 +39,7 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty GeoModelProperty =
-            DependencyProperty.Register("GeoModel", typeof(GeoModel), typeof(MapPropertiesView), new PropertyMetadata(null));
+            DependencyProperty.Register("GeoModel", typeof(GeoModel), typeof(LayerPropertiesView), new PropertyMetadata(null));
 
         public object? SelectedItem
         {
@@ -48,7 +48,7 @@ namespace ArcGISMapViewer.Controls
         }
 
         public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedItem", typeof(object), typeof(MapPropertiesView), new PropertyMetadata(null, (s, e) => ((MapPropertiesView)s).OnSelectedItemChanged()));
+            DependencyProperty.Register("SelectedItem", typeof(object), typeof(LayerPropertiesView), new PropertyMetadata(null, (s, e) => ((LayerPropertiesView)s).OnSelectedItemChanged()));
 
         private void OnSelectedItemChanged()
         {
