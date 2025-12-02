@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -26,6 +27,9 @@ namespace ArcGISMapViewer.Views
         public AboutPage()
         {
             this.InitializeComponent();
+            var assembly = typeof(Esri.ArcGISRuntime.ArcGISRuntimeEnvironment).Assembly;
+            var attr = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>();            
+            RuntimeInfo.Text = $"ArcGIS Maps SDK version: {attr?.Version ?? assembly.GetName().Version?.ToString()}";
         }
     }
 }
