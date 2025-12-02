@@ -29,6 +29,7 @@ namespace ArcGISMapViewer.Windows
         {
             this.InitializeComponent();
             ExtendsContentIntoTitleBar = true;
+            this.SetTitleBar(MainWindowTitleBar);
             WindowManager.Get(this).PersistenceId = nameof(MainWindow);
             WindowManager.Get(this).MinWidth = 900;
             WindowManager.Get(this).MinHeight = 640;
