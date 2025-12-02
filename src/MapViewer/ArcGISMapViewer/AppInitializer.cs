@@ -115,18 +115,35 @@ internal class AppInitializer
     {
         try
         {
-            var pm = new global::Windows.Management.Deployment.PackageManager();
             var package = global::Windows.ApplicationModel.Package.Current;
+
+            var packageVersion = $"{package.Id.Version.Major}.{package.Id.Version.Minor}.{package.Id.Version.Build}.{package.Id.Version.Revision}";
+
             var availability = await package.CheckUpdateAvailabilityAsync();
             if (availability.Availability == global::Windows.ApplicationModel.PackageUpdateAvailability.Available)
             {
-                // Show application toast notification to user that an update is available using the windows app sdk notification apis
-
                 var appNotification = new AppNotificationBuilder()
                .AddText("Update available!")
                .AddText("The mapviewer app has an update available. Restart app to install")
                .BuildNotification();
                 Microsoft.Windows.AppNotifications.AppNotificationManager.Default.Show(appNotification);
+            }
+            else
+            {
+                var lastversion = ApplicationViewModel.Instance.AppSettings.GetSetting<string?>(null, "LastRunVersion");
+                if(lastversion != null && lastversion != packageVersion)
+                {
+                    ApplicationViewModel.Instance.AppSettings.SetSetting<string>("LastRunVersion", packageVersion);
+                    var appNotification = new AppNotificationBuilder()
+                   .AddText("App updated!")
+                   .AddText("The mapviewer app has been updated to the version: " + packageVersion)
+                   .BuildNotification();
+                    Microsoft.Windows.AppNotifications.AppNotificationManager.Default.Show(appNotification);
+                }
+                else if (lastversion is null)
+                {
+                    ApplicationViewModel.Instance.AppSettings.SetSetting<string>(packageVersion, "LastRunVersion");
+                }
             }
         }
         catch { }
