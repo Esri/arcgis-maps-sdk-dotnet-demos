@@ -113,7 +113,7 @@
                 <controls:CollapsiblePanel x:Name="RightPanel" Grid.Column="2" PanePlacement="Right" IsPaneExpanded="False" IsOpen="False" ContentWidth="250"
                                            ExpandButtonVisibility="Visible" CloseButtonVisibility="Collapsed" AutomationProperties.Name="Right Pane">
                     <controls:CollapsiblePanel.Items>
-                        <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" x:Uid="RightPanel_Properties" Tag="ContentProperties">
+                        <controls:CollapsiblePanelItem IsSelected="True" Icon="{calcite:CalciteIconSourceElement Icon=Sliders, Scale=Small, SymbolSize=20}" x:Uid="RightPanel_Properties" Tag="ContentProperties">
                             <controls:LayerPropertiesView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" x:Name="ContentProperties" />
                         </controls:CollapsiblePanelItem>
                         <!--<controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Shapes, Scale=Small, SymbolSize=20}" IsEnabled="False" x:Uid="RightPanel_Styles" />
@@ -124,8 +124,8 @@
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=AccessStringResults, Scale=Small, SymbolSize=20}" IsEnabled="False" x:Uid="RightPanel_Fields" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Label, Scale=Small, SymbolSize=20}" IsEnabled="False" x:Uid="RightPanel_Labels" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=ChartGear, Scale=Small, SymbolSize=20}" x:Uid="RightPanel_Charts" IsEnabled="False" />-->
-                        <controls:CollapsiblePanelItem IsSelected="True" x:Uid="RightPanel_Edit" Icon="{calcite:CalciteIconSourceElement Icon=PencilSquare, Scale=Small, SymbolSize=20}" IsEnabled="{x:Bind PageVM.CanEdit, Mode=OneWay}" Tag="EditFeature">
-                            <local:FeatureEditingPage GeoElement="{x:Bind PageVM.CurrentFeature, Mode=OneWay}" HorizontalAlignment="Stretch" EditingEnded="{x:Bind PageVM.OnFeatureEditComplete}" />
+                        <controls:CollapsiblePanelItem x:Uid="RightPanel_Edit" Icon="{calcite:CalciteIconSourceElement Icon=PencilSquare, Scale=Small, SymbolSize=20}" Tag="EditFeature">
+                            <local:FeatureEditingPage HorizontalAlignment="Stretch" />
                         </controls:CollapsiblePanelItem>
                         <!--<controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=PencilMark, Scale=Small, SymbolSize=20}" IsEnabled="False" x:Uid="RightPanel_AddSketch" />
                         <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Wrench, Scale=Small, SymbolSize=20}" IsEnabled="False" x:Uid="RightPanel_MapTools" />-->

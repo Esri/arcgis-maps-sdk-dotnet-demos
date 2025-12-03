@@ -42,7 +42,11 @@ namespace ArcGISMapViewer.Views
                 switch (m.Panel)
                 {
                     case ShowRightPanelMessage.PanelId.EditFeature:
-                        PageVM.CurrentFeature = m.Parameter as Feature;
+                        if (m.Parameter is GeoElement element)
+                        {
+                            FeatureEditingPage.EditFeature(element);
+                            PageVM.CurrentFeature = m.Parameter as Feature;
+                        }
                         break;
                     case ShowRightPanelMessage.PanelId.ContentProperties:
                         ContentProperties.SelectedItem = m.Parameter;
