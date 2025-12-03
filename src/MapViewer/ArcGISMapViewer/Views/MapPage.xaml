@@ -67,9 +67,11 @@
                         <Button Click="AddBookmark_Click" Content="Add Bookmark" HorizontalAlignment="Center" Padding="30,7" Style="{StaticResource CalcitePrimaryButtonStyle}" />
                     </StackPanel>
                 </controls:CollapsiblePanelItem>
+                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_MapProperties" ContentTitle="Map Properties" >
+                    <controls:MapPropertiesView GeoModel="{x:Bind AppVM.GeoModel, Mode=OneWay}" GeoView="{x:Bind geoViewWrapper.GeoView}"/>
+                </controls:CollapsiblePanelItem>
                 <!--<NavigationViewItemSeparator />-->
-                <!--<controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_SaveOpen" IsEnabled="False" />
-                <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Gear, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_MapProperties" IsEnabled="False" />-->
+                <!--<controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Folder, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_SaveOpen" IsEnabled="False" />-->
                 <!--<NavigationViewItemSeparator />-->
                 <!--<controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Share, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_ShareMap" IsEnabled="False" />
                 <controls:CollapsiblePanelItem Icon="{calcite:CalciteIconSourceElement Icon=Print, Scale = Small, SymbolSize=20}" x:Uid="LeftPanel_Print" IsEnabled="False" />-->
