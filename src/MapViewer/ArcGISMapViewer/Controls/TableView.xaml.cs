@@ -143,5 +143,11 @@ namespace ArcGISMapViewer.Controls
             if (Tables.Count == 0)
                 this.Visibility = Visibility.Collapsed;
         }
+
+        private void WindowPanel_CloseRequested(object sender, EventArgs e)
+        {
+            Tables.Clear();
+            this.Visibility = Visibility.Collapsed;
+        }
     }
 }
