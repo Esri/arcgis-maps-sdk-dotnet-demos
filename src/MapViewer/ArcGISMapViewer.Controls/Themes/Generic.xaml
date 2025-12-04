@@ -598,7 +598,7 @@
     </Style>
 
     <Style TargetType="local:WindowPanel">
-        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Margin" Value="8" />
         <Setter Property="Padding" Value="8" />
@@ -606,43 +606,69 @@
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="local:WindowPanel">
-                    <Grid Background="{TemplateBinding Background}">
+                    <Grid x:Name="PanelContainer" >
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="WindowStates">
+                                <VisualState x:Name="Collapsed">
+                                    <VisualState.Setters>
+                                        <Setter Target="LayoutRoot.RowDefinitions[1].Height" Value="0" />
+                                        <Setter Target="CollapseButton.Icon">
+                                            <Setter.Value>
+                                                <calcite:SymbolIcon Symbol="ChevronUp" Foreground="White" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <!--<Setter Target="PanelContainer.RowDefinitions[1].Height" Value="Auto" />-->
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Expanded">
+                                    <VisualState.Setters>
+                                        <Setter Target="LayoutRoot.RowDefinitions[1].Height" Value="*" />
+                                        <Setter Target="CollapseButton.Icon">
+                                            <Setter.Value>
+                                                <calcite:SymbolIcon Symbol="ChevronDown" Foreground="White" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="1*" x:Name="TopRow" />
+                            <RowDefinition Height="300" x:Name="BottomRow" />
                         </Grid.RowDefinitions>
-                        <Border Background="{ThemeResource CalciteBrandColor}" BorderBrush="{ThemeResource CalciteBorder3Brush}" BorderThickness="0,0,0,1">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ContentPresenter Foreground="White" Content="{TemplateBinding Header}" Margin="12" VerticalAlignment="Center" />
-                                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                    <AppBarButton VerticalAlignment="Top" Margin="-10,-5" Height="32" >
-                                        <AppBarButton.Icon>
-                                            <calcite:SymbolIcon Symbol="ChevronsUp" Foreground="White" />
-                                        </AppBarButton.Icon>
-                                    </AppBarButton>
-                                    <AppBarButton VerticalAlignment="Top" Margin="-10,-5" Height="32" >
-                                        <AppBarButton.Icon>
-                                            <calcite:SymbolIcon Symbol="ChevronsDown" Foreground="White" />
-                                        </AppBarButton.Icon>
-                                    </AppBarButton>
-                                    <AppBarButton VerticalAlignment="Top" Margin="-10,-5" Height="32" >
-                                        <AppBarButton.Icon>
-                                            <calcite:SymbolIcon Symbol="ChevronDown" Foreground="White" />
-                                        </AppBarButton.Icon>
-                                    </AppBarButton>
-                                    <AppBarButton x:Name="CloseButton" Icon="Cancel" VerticalAlignment="Top" Margin="-10,-5" Height="32" Foreground="White" />
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                        <ContentPresenter Margin="{TemplateBinding Padding}" Grid.Row="1" Content="{TemplateBinding Content}" />
+                        <Grid Grid.Row="1" Background="{TemplateBinding Background}" x:Name="LayoutRoot">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{ThemeResource CalciteBrandColor}" BorderBrush="{ThemeResource CalciteBorder3Brush}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter Foreground="White" Content="{TemplateBinding Header}" Margin="12" VerticalAlignment="Center" />
+                                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                        <AppBarButton VerticalAlignment="Top" Margin="-10,-5" Height="32" x:Name="CollapseButton">
+                                            <AppBarButton.Icon>
+                                                <calcite:SymbolIcon Symbol="ChevronDown" Foreground="White" />
+                                            </AppBarButton.Icon>
+                                        </AppBarButton>
+                                        <AppBarButton x:Name="CloseButton" Icon="Cancel" VerticalAlignment="Top" Margin="-10,-5" Height="32" Foreground="White" />
+                                    </StackPanel>
+                                    <local:CursorContentControl Cursor="SizeNorthSouth" x:Name="ResizeThumb"
+                                                                ManipulationMode="TranslateY"
+                                                                VerticalAlignment="Top" Grid.ColumnSpan="2">
+                                        <Border Background="Transparent" Height="3" />
+                                    </local:CursorContentControl>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter Margin="{TemplateBinding Padding}" Grid.Row="1" Content="{TemplateBinding Content}" />
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 </ResourceDictionary>

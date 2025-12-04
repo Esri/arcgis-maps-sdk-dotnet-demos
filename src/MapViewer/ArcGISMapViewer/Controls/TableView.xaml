@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <local:WindowPanel Header="Feature Tables">
+    <local:WindowPanel Header="Feature Tables" IsCollapsed="False" HeightRatio=".3" CloseRequested="WindowPanel_CloseRequested">
         <TabView x:Name="TabView" TabItemsSource="{x:Bind Tables, Mode=OneWay}" Grid.Row="1" IsAddTabButtonVisible="False">
             <TabView.TabItemTemplate>
                 <DataTemplate x:DataType="data:FeatureTable">
