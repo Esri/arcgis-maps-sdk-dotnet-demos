@@ -43,14 +43,11 @@
         </Grid.RowDefinitions>
 
         <TitleBar Title="ArcGIS Maps SDK for .NET - KML Viewer" IsPaneToggleButtonVisible="True" PaneToggleRequested="BurgerButton_Toggled" x:Name="TitleBar">
-            <TitleBar.Footer>
             <local:FindLocationControl LocationPicked="OnLocationPicked"
                                        Width="200" HorizontalAlignment="Right"
                                        VerticalAlignment="Center" BorderThickness="0" />
-            </TitleBar.Footer>
-
         </TitleBar>
-        
+
         <SplitView x:Name="splitView" IsPaneOpen="True"  Grid.Row="1"
                    OpenPaneLength="350" CompactPaneLength="45" DisplayMode="Inline">
             <SplitView.Pane>
