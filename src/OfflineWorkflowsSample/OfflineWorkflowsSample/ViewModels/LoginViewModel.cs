@@ -137,7 +137,7 @@ namespace OfflineWorkflowSample.ViewModels
                 var cred = await AuthenticationManager.Current.GetCredentialAsync(cri, true);
 
                 // Create the portal with authentication info
-                return await ArcGISPortal.CreateAsync(cred.ServiceUri, true);
+                return await ArcGISPortal.CreateAsync(cred.ServerContext, true);
             }
             catch (ArcGISWebException e)
             {
@@ -176,7 +176,7 @@ namespace OfflineWorkflowSample.ViewModels
             try
             {
                 // AuthenticationManager will handle challenging the user for credentials.
-                credential = await AuthenticationManager.Current.GenerateCredentialAsync(info.ServiceUri);
+                credential = await AccessTokenCredential.CreateNetworkSecuredAsync(info.ServiceUri);
             }
             catch (Exception ex)
             {
