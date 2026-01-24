@@ -75,9 +75,9 @@ namespace OfflineWorkflowSample.ViewModels
                     return _runtimeImage;
                 }
 
-                if (Item.Thumbnail?.Source != null)
+                if (Item.ThumbnailUri != null)
                 {
-                    _runtimeImage = new RuntimeImage(Item.Thumbnail.Source);
+                    _runtimeImage = new RuntimeImage(Item.ThumbnailUri);
                     return _runtimeImage;
                 }
 
