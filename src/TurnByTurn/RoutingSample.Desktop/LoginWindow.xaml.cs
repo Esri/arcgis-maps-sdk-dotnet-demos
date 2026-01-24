@@ -35,9 +35,9 @@ namespace RoutingSample.Desktop
             var password = Password.Password.Trim();
             try
             {
-                var credential = await AccessTokenCredential.CreateAsync(new Uri("https://www.arcgis.com/"), username, password);
+                var credential = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri("https://www.arcgis.com/"), username, password);
                 AuthenticationManager.Current.AddCredential(credential);
-                LoginStatus.Text = "Success! Signed in as: " + credential.Username;
+                LoginStatus.Text = "Success! Signed in as: " + credential.UserName;
                 new MainWindow().Show();
                 Close();
             }

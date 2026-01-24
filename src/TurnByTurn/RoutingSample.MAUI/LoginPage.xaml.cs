@@ -17,7 +17,7 @@ public partial class LoginPage : ContentPage
         var password = Password.Text.Trim();
         try
         {
-            var credential = await AccessTokenCredential.CreateAsync(new Uri("https://www.arcgis.com/sharing/rest"), username, password);
+            var credential = await AuthenticationManager.Current.GenerateCredentialAsync(new Uri("https://www.arcgis.com/sharing/rest"), username, password);
             AuthenticationManager.Current.AddCredential(credential);
             LoginStatus.Text = "Success!";
             await Navigation.PushAsync(new MainPage());
