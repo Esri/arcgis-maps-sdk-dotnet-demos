@@ -11,6 +11,7 @@
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <WindowsSdkPackageVersion>10.0.19041.35-preview</WindowsSdkPackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="SampleData\RadarPreview.png" />
@@ -29,9 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esri.ArcGISRuntime.WinUI" Version="200.8.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260101001" />
-    <PackageReference Include="WinUIEx" Version="2.9.0" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240701003-experimental2" />
+    <PackageReference Include="Esri.ArcGISRuntime.WinUI" Version="200.5.0" />
+    <PackageReference Include="WinUIEx" Version="2.3.4" />
     <ProjectReference Include="..\XInputHelper\XInputHelper.csproj" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
