@@ -1,5 +1,9 @@
 ﻿using System;
+using Windows.System;
+using Esri.ArcGISRuntime.Portal;
+using Esri.ArcGISRuntime.UI;
 using System.Drawing;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Esri.ArcGISRuntime.Tasks.Offline;
@@ -19,7 +23,7 @@ namespace OfflineWorkflowsSample.Models
         {
             MapArea = mapArea;
 
-            Thumbnail = mapArea.PortalItem.Thumbnail != null ? new BitmapImage(mapArea.PortalItem.Thumbnail.Source) : null;
+            _ = LoadThumbnailAsync(mapArea);
         }
 
         public Color DisplayColor
@@ -47,5 +51,10 @@ namespace OfflineWorkflowsSample.Models
         public DateTimeOffset Updated => MapArea.PortalItem.Modified;
 
         public PreplannedMapArea MapArea { get; }
+
+        private async Task LoadThumbnailAsync(PreplannedMapArea mapArea)
+        {
+            Thumbnail = await mapArea.PortalItem.Thumbnail.ToImageSourceAsync();
+        }
     }
 }

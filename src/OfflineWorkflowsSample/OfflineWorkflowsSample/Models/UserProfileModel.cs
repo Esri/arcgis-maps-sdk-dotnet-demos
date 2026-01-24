@@ -18,12 +18,7 @@ namespace OfflineWorkflowsSample.Models
 
             User = user;
 
-            _ = LoadProfilePicture(user);
-        }
-
-        private async Task LoadProfilePicture(PortalUser user)
-        {
-            ProfilePicture = await user.Thumbnail.ToImageSourceAsync();
+            _ = LoadProfilePictureAsync(user);
         }
 
         public ImageSource ProfilePicture
@@ -37,5 +32,10 @@ namespace OfflineWorkflowsSample.Models
         public string FullName { get; }
 
         public PortalUser User { get; }
+
+        private async Task LoadProfilePictureAsync(PortalUser user)
+        {
+            ProfilePicture = await user.Thumbnail.ToImageSourceAsync();
+        }
     }
 }
