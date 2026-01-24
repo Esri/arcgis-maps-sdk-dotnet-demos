@@ -132,8 +132,12 @@ namespace OfflineWorkflowSample.ViewModels
         {
             try
             {
-                // Create the portal
-                return await ArcGISPortal.CreateAsync(new Uri(PortalUrl), true);
+                // Authenticate
+                CredentialRequestInfo cri = new CredentialRequestInfo {ServiceUri = new Uri(_portalUrl)};
+                var cred = await AuthenticationManager.Current.GetCredentialAsync(cri, true);
+
+                // Create the portal with authentication info
+                return await ArcGISPortal.CreateAsync(cred.ServerContext, true);
             }
             catch (ArcGISWebException e)
             {
@@ -162,7 +166,25 @@ namespace OfflineWorkflowSample.ViewModels
             AuthenticationManager.Current.OAuthUserConfigurations.Add(new OAuthUserConfiguration(new Uri(_portalUrl), AppClientId, new Uri(OAuthRedirectUrl)));
 
             // Use a function in this class to challenge for credentials.
-            AuthenticationManager.Current.ChallengeHandler = new DefaultChallengeHandler();
+            AuthenticationManager.Current.ChallengeHandler = new ChallengeHandler(CreateOAuthCredentialAsync);
+        }
+
+        private async Task<Credential> CreateOAuthCredentialAsync(CredentialRequestInfo info)
+        {
+            // ChallengeHandler function for AuthenticationManager that will be called whenever a secured resource is accessed.
+            Credential credential;
+            try
+            {
+                // AuthenticationManager will handle challenging the user for credentials.
+                credential = await AccessTokenCredential.CreateNetworkSecuredAsync(info.ServiceUri);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                throw;
+            }
+
+            return credential;
         }
 
         #region log in event
