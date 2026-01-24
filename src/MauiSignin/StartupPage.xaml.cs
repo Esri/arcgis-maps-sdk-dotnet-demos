@@ -58,7 +58,7 @@ public partial class StartupPage : ContentPage
         progress.Progress = 1;
         status.Text = "Finishing up...";
 
-        App.Current!.Windows[0].Page = new AppShell();
+        App.Current!.MainPage = new AppShell();
     }
 
     private async Task FirstTimeSetupAsync()
@@ -93,7 +93,7 @@ public partial class StartupPage : ContentPage
         progress.Progress = 0.25;
 
         AuthenticationManager.Current.ChallengeHandler = new DefaultChallengeHandler();
-        AuthenticationManager.Current.OAuthHandler = OAuthHandler.Instance;
+        AuthenticationManager.Current.OAuthAuthorizeHandler = OAuthAuthorizeHandler.Instance;
         
         var licenseJson = await SecureStorage.GetAsync("License");
         if (!string.IsNullOrEmpty(licenseJson))

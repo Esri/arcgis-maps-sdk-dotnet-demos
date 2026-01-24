@@ -44,7 +44,7 @@ internal class AppSettings : ModelBase
         PortalUser = value;
         if (value != null)
         {
-            if (value.Thumbnail == null)
+            if (value.ThumbnailUri == null)
             {
                 PortalUserThumbnail = null;
             }

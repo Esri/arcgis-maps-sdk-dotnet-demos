@@ -11,7 +11,7 @@
             <DataTemplate>
                 <Border BackgroundColor="{StaticResource White}" StrokeThickness="1" >
                     <Grid Margin="5" RowDefinitions="Auto,Auto" ColumnDefinitions="150,*">
-                        <Image Source="{Binding Thumbnail.Source}" WidthRequest="150" Margin="0,0,10,0" Grid.RowSpan="2" />
+                        <Image Source="{Binding ThumbnailUri}" WidthRequest="150" Margin="0,0,10,0" Grid.RowSpan="2" />
                         <Label Text="{Binding Title}" FontSize="Subtitle" Grid.Column="1" TextColor="{StaticResource Primary}"
                                 FontAttributes="Bold" VerticalOptions="Start" />
                         <Label Text="{Binding Description, Converter={StaticResource stripHtmlConverter}}"
