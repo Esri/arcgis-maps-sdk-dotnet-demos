@@ -11,8 +11,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.8.0" />
-    <PackageReference Include="Esri.Calcite.WPF" Version="1.0.0-rc.1" />
+    <PackageReference Include="Esri.ArcGISRuntime.WPF" Version="200.5.0" />
+    <PackageReference Include="Esri.Calcite.WPF" Version="0.1.0-preview1" />
   </ItemGroup>
 
   <ItemGroup>
