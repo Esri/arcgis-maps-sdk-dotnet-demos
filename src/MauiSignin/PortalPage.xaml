@@ -1,17 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:portal="clr-namespace:Esri.ArcGISRuntime.Portal;assembly=Esri.ArcGISRuntime"
              xmlns:local="clr-namespace:MauiSignin"
              x:Class="MauiSignin.PortalPage">
     <ContentPage.Resources>
         <local:StripHtmlConverter x:Key="stripHtmlConverter" />
     </ContentPage.Resources>
-    <CollectionView BackgroundColor="{StaticResource Gray100}" ItemsSource="{Binding MapItems}" SelectionMode="Single" SelectionChanged="MapItem_ItemTapped">
+    <CollectionView ItemsSource="{Binding MapItems}"
+                    x:DataType="local:AppSettings"
+                    SelectionMode="Single"
+                    SelectionChanged="MapItem_ItemTapped"
+                    BackgroundColor="{StaticResource Gray100}">
         <CollectionView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="portal:PortalItem">
                 <Border BackgroundColor="{StaticResource White}" StrokeThickness="1" >
                     <Grid Margin="5" RowDefinitions="Auto,Auto" ColumnDefinitions="150,*">
-                        <Image Source="{Binding ThumbnailUri}" WidthRequest="150" Margin="0,0,10,0" Grid.RowSpan="2" />
+                        <Image Source="{Binding Thumbnail.Source}" WidthRequest="150" Margin="0,0,10,0" Grid.RowSpan="2" />
                         <Label Text="{Binding Title}" FontSize="Subtitle" Grid.Column="1" TextColor="{StaticResource Primary}"
                                 FontAttributes="Bold" VerticalOptions="Start" />
                         <Label Text="{Binding Description, Converter={StaticResource stripHtmlConverter}}"

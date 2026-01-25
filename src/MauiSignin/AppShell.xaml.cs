@@ -11,7 +11,6 @@ public partial class AppShell : Shell
     private async void SignOutButton_Clicked(object sender, EventArgs e)
     {
         await AppSettings.Instance.SignOut();
-        //await GoToAsync("StartupPage");
-        Application.Current!.MainPage = new StartupPage();
+        App.Current!.Windows[0].Page = new StartupPage();
     }
 }

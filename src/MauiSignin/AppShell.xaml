@@ -4,13 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiSignin"
-    Shell.FlyoutBehavior="Disabled">
+    Shell.FlyoutBehavior="Disabled"
+    x:DataType="local:AppSettings">
 
     <Shell.FlyoutContent>
         <StackLayout HorizontalOptions="Fill" Padding="20">
-            <Frame CornerRadius="25" Padding="0" WidthRequest="50" HeightRequest="50">
-               <Image Source="{Binding PortalUserThumbnail}" />
-            </Frame>
+            <Border StrokeShape="RoundRectangle 25" Padding="0" WidthRequest="50" HeightRequest="50">
+               <Image Source="{Binding PortalUserThumbnail}"/>
+            </Border>
             <Label Text="{Binding PortalUser.FullName}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="Subtitle" />
             <Label Text="{Binding Portal.PortalInfo.PortalName}"  HorizontalOptions="Center" FontSize="Caption" />
             <Button Text="Sign Out" Clicked="SignOutButton_Clicked" />

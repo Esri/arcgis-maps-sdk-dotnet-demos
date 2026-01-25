@@ -59,7 +59,7 @@ internal sealed class AppDataCredentialPersistence : CredentialPersistence
     {
         try
         {
-            var serviceUrl = credential.ServiceUri!.GetLeftPart(UriPartial.Path);
+            var serviceUrl = credential.ServerContext!.GetLeftPart(UriPartial.Path);
             var bytes = Serialize(credential);
 
             var provider = new DataProtectionProvider(DataProtectionDescriptor);
@@ -95,7 +95,7 @@ internal sealed class AppDataCredentialPersistence : CredentialPersistence
     }
     protected override void Remove(Credential credential)
     {
-        var serviceUrl = credential.ServiceUri!.ToString();
+        var serviceUrl = credential.ServerContext!.ToString();
         try
         {
             var settings = GetLocalSettings();
@@ -104,7 +104,7 @@ internal sealed class AppDataCredentialPersistence : CredentialPersistence
         }
         catch (Exception ex)
         {
-            Trace.WriteLine($"There was an error removing the credential for \"{credential.ServiceUri}\".{Environment.NewLine}Exception: {ex}");
+            Trace.WriteLine($"There was an error removing the credential for \"{credential.ServerContext}\".{Environment.NewLine}Exception: {ex}");
         }
     }
 

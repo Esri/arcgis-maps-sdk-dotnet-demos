@@ -1,4 +1,5 @@
 using Esri.ArcGISRuntime.Portal;
+using System.Diagnostics;
 
 namespace MauiSignin;
 
@@ -19,8 +20,9 @@ public partial class SignInPage : ContentPage
                 SignInCompleted?.Invoke(this, arcgisPortal);
             }
         }
-        catch(System.Exception)
+        catch(System.Exception ex)
         {
+            Debug.WriteLine(ex.Message);
         }
     }
 

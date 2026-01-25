@@ -58,7 +58,7 @@ public partial class StartupPage : ContentPage
         progress.Progress = 1;
         status.Text = "Finishing up...";
 
-        App.Current!.MainPage = new AppShell();
+        App.Current!.Windows[0].Page = new AppShell();
     }
 
     private async Task FirstTimeSetupAsync()
