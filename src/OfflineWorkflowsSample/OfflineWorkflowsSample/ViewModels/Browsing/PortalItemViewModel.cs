@@ -59,22 +59,7 @@ namespace OfflineWorkflowSample.ViewModels
 
         private RuntimeImage ItemImage
         {
-            get
-            {
-                if (_runtimeImage != null)
-                {
-                    return _runtimeImage;
-                }
-
-                if (Item.Thumbnail != null)
-                {
-                    _runtimeImage = Item.Thumbnail;
-
-                    return _runtimeImage;
-                }
-
-                return _runtimeImage;
-            }
+            get => _runtimeImage ??= Item.Thumbnail;
         }
 
         private bool _imageLoaded;
