@@ -5,10 +5,8 @@ using Prism.Windows.Mvvm;
 using System;
 using System.Diagnostics;
 using System.Threading;
-#if WINDOWS_UWP
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-#endif
 
 namespace OfflineWorkflowSample.ViewModels
 {
@@ -79,7 +77,6 @@ namespace OfflineWorkflowSample.ViewModels
             }
         }
 
-        #if WINDOWS_UWP
         private bool _imageLoaded;
         private ImageSource _thumbnail;
         public ImageSource Thumbnail
@@ -141,6 +138,5 @@ namespace OfflineWorkflowSample.ViewModels
                 // Ignore - there's already a placeholder thumbnail to be used in case of error.
             }
         }
-        #endif
     }
 }
