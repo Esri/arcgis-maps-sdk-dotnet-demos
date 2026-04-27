@@ -32,7 +32,8 @@ namespace EditorDemo
                 VertexSymbol = null,
                 SelectedVertexSymbol = null,
                 SelectedMidVertexSymbol = null,
-                FeedbackVertexSymbol = null
+                FeedbackVertexSymbol = null,
+                VertexTextSymbol = null
             }
         };
         private VertexTool _rotateTool = new VertexTool()
@@ -108,7 +109,9 @@ namespace EditorDemo
                 VertexSymbol = null,
                 SelectedVertexSymbol = null,
                 SelectedMidVertexSymbol = null,
-                FeedbackVertexSymbol = null, BoundingBoxSymbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, System.Drawing.Color.Cyan, 2)
+                FeedbackVertexSymbol = null, 
+                BoundingBoxSymbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, System.Drawing.Color.Cyan, 2),
+                VertexTextSymbol = null
             }
         };
         #endregion
@@ -140,14 +143,17 @@ namespace EditorDemo
                 if (geometry is Polygon)
                 {
                     _vertexTool.Style.FillSymbol = _rotateTool.Style.FillSymbol = _moveTool.Style.FillSymbol = _inactiveTool.Style.FillSymbol = symbol;
+                    _inactiveTool.Style.SelectedVertexSymbol = _inactiveTool.Style.VertexSymbol = _moveTool.Style.SelectedVertexSymbol = _moveTool.Style.VertexSymbol = null;
                 }
                 else if (geometry is Polyline)
                 {
                     _vertexTool.Style.LineSymbol = _rotateTool.Style.LineSymbol = _moveTool.Style.LineSymbol = symbol;
                     _inactiveTool.Style.LineSymbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, System.Drawing.Color.Cyan, 2);
+                    _inactiveTool.Style.SelectedVertexSymbol = _inactiveTool.Style.VertexSymbol = _moveTool.Style.SelectedVertexSymbol = _moveTool.Style.VertexSymbol = null;
                 }
                 else if (geometry is MapPoint || geometry is Multipoint)
                 {
+                    _inactiveTool.Style.VertexSymbol = _inactiveTool.Style.SelectedVertexSymbol = _moveTool.Style.SelectedVertexSymbol = _moveTool.Style.VertexSymbol = symbol;
                 }
             }
             Start(geometry);
