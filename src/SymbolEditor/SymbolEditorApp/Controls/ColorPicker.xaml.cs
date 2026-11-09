@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +22,7 @@ namespace SymbolEditorApp.Controls
         {
             this.MinWidth = 100;
             InitializeComponent();
-            var values = Enum.GetValues(typeof(KnownColor));
+            var values = Enum.GetValues(typeof(System.Drawing.KnownColor));
             List<Brush> colors = new List<Brush>();
             var props = typeof(System.Windows.Media.Colors).GetProperties(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
             foreach(var value in props)
